@@ -30,12 +30,12 @@ const Nav = () => {
         : setActiveColorChange(false);
     });
   });
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      dispatch(getTokenFromLocal());
-      dispatch<any>(fetchUserProfile());
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     dispatch(getTokenFromLocal());
+  //     dispatch<any>(fetchUserProfile());
+  //   }
+  // }, []);
 
   return (
     <div

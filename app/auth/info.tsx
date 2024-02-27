@@ -8,27 +8,18 @@ type LoginProps = {
 };
 const Info = ({ setSteps }: LoginProps) => {
   return (
-    <div className="lg:w-[80%] w-[90%] mx-auto my-[3%]">
+    <div className="w-[80%] mx-auto">
       <div
-        className="mx-auto grid lg:grid-cols-2 grid-cols-1 font-YekanBakh rounded-3xl overflow-hidden shadow-2xl shadow-[13px_0_61px_-24px_rgba(0, 0, 0, 0.15)]"
+        className="mx-auto grid grid-cols-1 lg:grid lg:grid-cols-2 font-YekanBakh rounded-3xl overflow-hidden my-[3%] shadow-2xl shadow-[13px_0_61px_-24px_rgba(0, 0, 0, 0.15)]"
         dir="rtl"
       >
-        <div className="lg:py-0">
-          <div className="p-[5%]">
-            <Logo />
-          </div>
-          <div className="px-[5%] grid grid-cols-1 gap-[3%]">
-            <p className="">
-              شماره شما تا کنون در سامانه ثبت نشده است لطفا اطلاعات را کامل و
-              تایید کنید.
-            </p>
-
-            <InfoForm setSteps={setSteps} />
-          </div>
+        <div className="py-[5%] w-full relative px-[5%]">
+          <Logo />
+          <InfoForm setSteps={setSteps} />
         </div>
 
-        <div className="lg:block hidden">
-          <FormSlider />
+        <div className="lg:block hidden bg-[#4866CF]">
+          {/* <FormSlider /> */}
         </div>
       </div>
     </div>

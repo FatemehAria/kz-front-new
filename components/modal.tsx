@@ -1,5 +1,7 @@
 "use client";
-import React, { Dispatch, SetStateAction } from "react";
+import { updateStatus } from "@/redux/features/user/userSlice";
+import React, { Dispatch, SetStateAction, useState } from "react";
+import { useDispatch } from "react-redux";
 
 type ModalProps = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
@@ -7,6 +9,8 @@ type ModalProps = {
   data?: any;
   text?: string;
   buttonText?: string;
+  setSteps?: Dispatch<SetStateAction<number>>;
+  mainButtonText?: string;
 };
 function Modal({
   setShowModal,
@@ -14,7 +18,10 @@ function Modal({
   data,
   text,
   buttonText,
+  setSteps,
+  mainButtonText,
 }: ModalProps) {
+  const dispatch = useDispatch();
   return (
     <div
       id="default-modal"
@@ -25,33 +32,46 @@ function Modal({
       }  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center z-50 flex justify-center items-center backdrop-blur-sm h-full`}
     >
       <div className="p-4 w-full">
-        <div className="relative p-4 w-full max-w-2xl max-h-full">
-          <div className="bg-white rounded-[25px] shadow">
-            <div className="p-4 md:p-5 space-y-4 text-black font-semibold">
-              <p className="text-[24px] leading-relaxed max-w-sm mx-auto">{text}</p>
-              <p className="text-[32px] leading-relaxed">{data}</p>
+        <div className="relative p-8 w-full max-w-2xl max-h-full">
+          <div className="bg-white rounded-[25px] shadow border">
+            <div className="md:p-5 text-black font-semibold">
+              <p className="text-[24px] leading-relaxed max-w-sm mx-auto py-3">
+                {text}
+              </p>
+              <p className="text-[32px]">{data}</p>
             </div>
 
             <div className="flex items-center justify-between p-4 md:p-5 rounded-b">
               {data && (
                 <button
-                  onClick={() => setShowModal(false)}
+                  onClick={() => (
+                    setShowModal(false), setSteps?.(5), dispatch(updateStatus())
+                  )}
                   type="button"
-                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                  className="text-white bg-[#4866CF] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 >
-                  تایید شماره همراه
+                  {mainButtonText ? mainButtonText : "تایید شماره همراه"}
                 </button>
               )}
-              <button
-                onClick={() => setShowModal(false)}
-                type="button"
-                className={`py-2.5 px-5 ms-3 text-sm font-medium focus:outline-none bg-[#4866CF] text-white rounded-lg border border-gray-200 ${
-                  data === "" &&
-                  "flex w-full text-center justify-center"
+              <div
+                className={`${
+                  data === "" && "flex justify-center w-full text-center "
                 }`}
               >
-                {buttonText}
-              </button>
+                <button
+                  onClick={() => (
+                    setShowModal(false), dispatch(updateStatus())
+                  )}
+                  type="button"
+                  className={`py-2.5 px-5 ms-3 text-sm font-medium focus:outline-none rounded-lg border border-[#4866CF] ${
+                    data.length === 0
+                      ? "self-center bg-[#4866CF] text-white"
+                      : " bg-white text-[#4866CF]"
+                  }`}
+                >
+                  {buttonText}
+                </button>
+              </div>
             </div>
           </div>
         </div>

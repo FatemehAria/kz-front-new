@@ -10,198 +10,125 @@ import {
   useState,
 } from "react";
 import SubmissionBtn from "./submission-btn";
+import { useFormik } from "formik";
+import { UserPanelPersonalSchema } from "@/schemas/userpanel-profile-schema";
+import FormInput from "@/app/contact-us/components/form/form-inputs";
+import Modal from "@/components/modal";
 
 type infoFormProps = {
   setSteps: Dispatch<SetStateAction<number>>;
 };
-const PhoneNumberRegex = /^(09)\d{9}$/;
-const PasswordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{8,24}$/;
-// const FirstNameRegex = /^(?:[A-Za-z][^\W\d_]){2,}[A-Za-z]$/;
-// const LastNameRegex = /^(?:[A-Za-z][^\W\d_]){3,}[A-Za-z]$/;
+const initialValues = {
+  FirstName: "",
+  LastName: "",
+  email: "",
+};
 
 const InfoForm = ({ setSteps }: infoFormProps) => {
-  const [localStoragePhoneNumber, setLocalStoragePhoneNumber] =
-    useState<string>("");
-  const [info, setInfo] = useState({
-    PhoneNumber: "",
-    FirstName: "",
-    LastName: "",
-    Password: "",
-    confirmPassword: "",
-    skils: "",
-  });
+  const [showModal, setShowModal] = useState(false);
+  // useEffect(() => {
+  //   const timeout = setTimeout(() => {
+  //     setSteps(1);
+  //     // console.log("first");
+  //   }, 5 * 60 * 1000); // 5 minutes in milliseconds
 
-  const [validPassword, setValidPassword] = useState(false);
-  const [PasswordFocus, setPasswordFocus] = useState(false);
-  const [validConfirmPass, setValidConfirmPass] = useState(false);
-  const [ConfirmPasswordFocus, setConfirmPasswordFocus] = useState(false);
-  const [validFirstName, setValidFirstName] = useState(false);
-  const [validLastName, setValidLastName] = useState(false);
-  const [validPhoneNumber, setValidPhoneNumber] = useState(false);
-  const validate =
-    validConfirmPass && validPassword;
-
-  const { PhoneNumber, FirstName, LastName, Password, confirmPassword } = info;
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setSteps(1);
-      // console.log("first");
-    }, 5 * 60 * 1000); // 5 minutes in milliseconds
-
-    return () => clearTimeout(timeout);
-  }, []);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const localStoragePhone = window.localStorage.getItem("PhoneNumber");
-      setLocalStoragePhoneNumber(localStoragePhone || "");
-    }
-  }, []);
+  //   return () => clearTimeout(timeout);
+  // }, []);
 
   const sendInfo = async (
-    PhoneNumber: string,
-    FirstName: string,
-    LastName: string,
-    Password: string,
-    confirmPassword: string
+    // FirstName: string,
+    // LastName: string,
+    // email: string
   ) => {
     try {
-      console.log(PhoneNumber);
-      const { data } = await axios.post(
-        "https://keykavoos.liara.run/User/Signup3",
-        {
-          PhoneNumber: localStoragePhoneNumber,
-          FirstName,
-          LastName,
-          Password,
-          confirmPassword,
-        }
-      );
-      console.log(data);
-      setSteps(4);
+      // const { data } = await axios.post(
+      //   "https://keykavoos.liara.run/User/Signup3",
+      //   {
+      //     FirstName,
+      //     LastName,
+      //     email,
+      //   }
+      // );
+      setShowModal(true);
+      // console.log(showModal);
     } catch (error: any) {
+      setShowModal(false);
       console.log(error.response.data.message);
     }
   };
-  useEffect(() => {
-    const passwordResult = PasswordRegex.test(Password);
-    setValidPassword(passwordResult);
-    setValidConfirmPass(Password === confirmPassword);
-    // const firstnameResult = FirstNameRegex.test(FirstName);
-    // setValidFirstName(firstnameResult);
-    // const lastnameResult = LastNameRegex.test(LastName);
-    // setValidLastName(lastnameResult);
-    const phoneNumberResult = PhoneNumberRegex.test(PhoneNumber);
-    setValidPhoneNumber(phoneNumberResult);
-  }, [Password, confirmPassword, FirstName, LastName, PhoneNumber]);
 
-  const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    await sendInfo(PhoneNumber, FirstName, LastName, Password, confirmPassword);
+  const handleSubmission = async () => {
+    await sendInfo()
+    // await sendInfo(FirstName, LastName, email);
   };
 
+  const formik = useFormik({
+    initialValues,
+    onSubmit: handleSubmission,
+    validationSchema: UserPanelPersonalSchema,
+  });
   return (
-    <form onSubmit={(e) => handleSubmission(e)} className="pb-[8%] lg:pb-0">
-      <div className="grid grid-cols-1 gap-y-[2%]">
-        <input
-          placeholder="شماره موبایل"
-          className="border w-full p-[3%] rounded-md text-center text-lg bg-gray-100"
-          value={localStoragePhoneNumber}
-          onChange={(e) => setLocalStoragePhoneNumber(e.target.value)}
-          required
+    <form onSubmit={formik.handleSubmit} className="flex flex-col gap-5">
+      {showModal && (
+        <Modal
+          setShowModal={setShowModal}
+          showModal={showModal}
+          text="با موفقیت وارد پنل کاربری خود شدید."
+          buttonText="متوجه شدم"
+          data=""
         />
-        <div className="grid grid-cols-2 gap-x-[3%]">
-          <input
-            placeholder="نام"
-            className="border p-[3%] rounded-md"
-            value={info.FirstName}
-            onChange={(e) =>
-              setInfo((last) => ({ ...last, FirstName: e.target.value }))
-            }
-            minLength={3}
-            maxLength={11}
-            required
-          />
-
-          <input
-            placeholder="نام خانوادگی"
-            className="border p-[3%] rounded-md"
-            value={info.LastName}
-            onChange={(e) =>
-              setInfo((last) => ({ ...last, LastName: e.target.value }))
-            }
-            minLength={3}
-          />
-        </div>
-
-        <div className="grid grid-cols-2 gap-x-[3%]">
-          <div className="w-full flex flex-col">
-            <input
-              placeholder="رمز عبور"
-              className="border p-[3%] rounded-md"
-              value={info.Password}
-              onChange={(e) =>
-                setInfo((last) => ({ ...last, Password: e.target.value }))
-              }
-              aria-describedby="passnot"
-              onFocus={() => setPasswordFocus(true)}
-              onBlur={() => setPasswordFocus(false)}
-              required
+      )}
+      <label>
+        <p className="font-bold text-[24px] pt-[3%] pb-1">
+          ثبت نام در کیکاووس زمان
+        </p>
+        <p className="text-[16px]">
+          اطلاعات خود را وارد کنید و به جمع ما بپیوندید تا از خدمات ویژه ما بهره
+          مند شوید.
+        </p>
+      </label>
+      <div className="grid grid-cols-1 gap-3">
+        <div className="grid grid-cols-1 gap-8">
+          <div className="relative">
+            <FormInput
+              value={formik.values.FirstName}
+              onChange={formik.handleChange}
+              name="FirstName"
+              label="نام"
+              // error={formik.errors.FirstName || formik.touched.FirstName}
             />
-            <p
-              id="passnote"
-              className={
-                PasswordFocus && Password && !validPassword
-                  ? "bg-black text-white text-[0.75rem] p-[0.25rem] rounded-lg relative -bottom-[10px]"
-                  : "absolute -left-[9999px]"
-              }
-            >
-              رمز عبور باید شامل یک کاراکتر بزرگ، یک کاراکتر کوچک و حداقل به طول
-              هشت باشد
-            </p>
+            <span className="absolute -top-7 right-12 text-[#4866CF]">*</span>
           </div>
-          <div className="w-full flex flex-col">
-            <input
-              placeholder="تکرار رمز عبور"
-              className="border p-[3%] rounded-md"
-              value={info.confirmPassword}
-              onChange={(e) =>
-                setInfo((last) => ({
-                  ...last,
-                  confirmPassword: e.target.value,
-                }))
-              }
-              aria-describedby="confrimpassnot"
-              onFocus={() => setConfirmPasswordFocus(true)}
-              onBlur={() => setConfirmPasswordFocus(false)}
-              required
+          <div className="relative">
+            <FormInput
+              value={formik.values.LastName}
+              onChange={formik.handleChange}
+              name="LastName"
+              label="نام خانوادگی"
+              // error={formik.errors.LastName}
             />
-            <p
-              id="confirmnote"
-              className={
-                ConfirmPasswordFocus && confirmPassword && !validConfirmPass
-                  ? "bg-black text-white text-[0.75rem] p-[0.25rem] rounded-lg relative -bottom-[10px]"
-                  : "absolute -left-[9999px]"
-              }
-            >
-              پسووردها همخوانی ندارند.
-            </p>
+            <span className="absolute -top-7 right-28 text-[#4866CF]">*</span>
+          </div>
+          <div className="flex flex-col justify-end relative">
+            <FormInput
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              name="email"
+              label="پست الکترونیکی"
+              // error={formik.errors.email}
+            />
+            <span className="absolute -top-7 right-36 text-[#4866CF]">*</span>
+            {/* <div className="relative">
+              {formik.errors.email && (
+                <p className="text-red-500 absolute left-1/2 -translate-x-1/2 w-full z-20">{`${formik.errors.email}`}</p>
+              )}
+            </div> */}
           </div>
         </div>
 
         <div className="grid grid-cols-1 gap-x-[3%] items-center">
-          {/* <input
-            placeholder="مهارت ها"
-            className="border p-[3%] rounded-md"
-            value={info.skils}
-            onChange={(e) =>
-              setInfo((last) => ({ ...last, skils: e.target.value }))
-            }
-            required
-          /> */}
           <div className="text-left">
-            <SubmissionBtn text="تایید اطلاعات" validation={validate} />
+            <SubmissionBtn text="تایید اطلاعات" validation={formik.isValid} />
           </div>
         </div>
       </div>

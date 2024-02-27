@@ -22,21 +22,23 @@ import {
   fetchUserInOTPValidation,
   updateStatus,
 } from "@/redux/features/user/userSlice";
-type UserCheckProps = {
+
+type UserLoginViaOTPProps = {
   setSteps: Dispatch<SetStateAction<number>>;
   steps: number;
 };
 
-const UserCheck = ({ setSteps }: UserCheckProps) => {
+const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
   const { status, userRole } = useSelector((state: any) => state.userRole);
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [PhoneNumber, setPhoneNumber] = useState("");
   const [counter, setCounter] = useState(90);
   const [OTP, setOTP] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  console.log(status);
+  // COUNTER
   useEffect(() => {
     const timeout = setTimeout(() => {
       setCounter((prevCounter) => {
@@ -47,7 +49,7 @@ const UserCheck = ({ setSteps }: UserCheckProps) => {
 
     return () => clearTimeout(timeout);
   }, [counter]);
-
+  // PHONENUMBER FROM LOCALSTORAGE
   useEffect(() => {
     if (typeof window !== "undefined") {
       const PhoneNumber = window.localStorage.getItem("PhoneNumber");
@@ -58,7 +60,7 @@ const UserCheck = ({ setSteps }: UserCheckProps) => {
       }
     }
   }, []);
-
+  // ارسال مجدد
   const getNewOTP = async (PhoneNumber: string) => {
     try {
       const { data } = await axios.post(
@@ -92,23 +94,24 @@ const UserCheck = ({ setSteps }: UserCheckProps) => {
   // };
 
   useEffect(() => {
-    status === "failed"
-      ? (setShowModal(true),
-        setSuccess(""),
-        setError(`کد یکبار مصرف مورد تایید نمی باشد
-    دوباره اقدام فرمایید.`))
-      : (setShowModal(true), setError(""), setSuccess("با موفقیت وارد شدید."));
-  }, [status]);
+    status === "failed" &&
+      (setShowModal(true),
+      setSuccessMessage(""),
+      setErrorMessage(`کد یکبار مصرف مورد تایید نمی باشد
+    دوباره اقدام فرمایید.`),
+      setOTP(""));
+    status === "success" &&
+      (setShowModal(true),
+      setErrorMessage(""),
+      setSuccessMessage("با موفقیت وارد پنل کاربری خود شدید."));
+    status === "idle" && setShowModal(false);
+  }, [status, OTP]);
 
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await dispatch<any>(fetchUserInOTPValidation({ PhoneNumber, OTP }));
     // await validateOTP(OTP, PhoneNumber);
   };
-
-  useEffect(() => {
-    dispatch(updateStatus());
-  }, [OTP]);
 
   return (
     <div className="w-[80%] mx-auto">
@@ -158,21 +161,21 @@ const UserCheck = ({ setSteps }: UserCheckProps) => {
                 renderInput={(props) => <input {...props} />}
                 inputType="tel"
               />
-              {error !== "" && (
+              {errorMessage !== "" && showModal && (
                 <Modal
                   setShowModal={setShowModal}
                   showModal={showModal}
                   buttonText="ارسال مجدد کد یکبارمصرف"
-                  text={error}
+                  text={errorMessage}
                   data=""
                 />
               )}
-              {success !== "" && (
+              {successMessage !== "" && showModal && (
                 <Modal
                   setShowModal={setShowModal}
                   showModal={showModal}
                   buttonText="متوجه شدم"
-                  text={success}
+                  text={successMessage}
                   data=""
                 />
               )}
@@ -208,4 +211,4 @@ const UserCheck = ({ setSteps }: UserCheckProps) => {
     </div>
   );
 };
-export default UserCheck;
+export default UserLoginViaOTP;

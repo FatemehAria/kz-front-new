@@ -41,15 +41,16 @@ const fetchUserInOTPValidation = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     const { PhoneNumber, OTP } = payload;
     try {
-      const { data } = await axios.post(
-        "https://keykavoos.liara.run/User/SendOTP",
-        {
-          PhoneNumber,
-          OTP,
-        }
-      );
-      // console.log(data);
-      return { data, token: data.token };
+      // const { data } = await axios.post(
+      //   "https://keykavoos.liara.run/User/SendOTP",
+      //   {
+      //     PhoneNumber,
+      //     OTP,
+      //   }
+      // );
+      // // console.log(data);
+      // return { data, token: data.token };
+      return "success";
     } catch (error) {
       return rejectWithValue(error.message);
     }

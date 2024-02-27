@@ -29,29 +29,24 @@ const Login = ({ setSteps }: LoginProps) => {
   const [showModal, setshowModal] = useState(false);
   const [PhoneNumber, setPhoneNumber] = useState("");
   const [answer, setAnswer] = useState("");
+  console.log("login");
   const login = async (PhoneNumber: string) => {
     try {
-      const { data } = await axios.post(
-        "https://keykavoos.liara.run/User/Signup1",
-        {
-          PhoneNumber,
-        }
-      );
-      console.log(data);
-      if (!data.isSingup) {
-        setSteps(2);
-      } else {
-        setSteps(5);
-      }
+      // const { data } = await axios.post(
+      //   "https://keykavoos.liara.run/User/Signup1",
+      //   {
+      //     PhoneNumber,
+      //   }
+      // );
+      // console.log(data);
+      setSteps(2);
     } catch (error: any) {
       console.log(error);
     }
   };
 
   const handleSubmission = async () => {
-    console.log("loggedin");
-    setSteps(2);
-    // await login(formik.values.PhoneNumber);
+    await login(formik.values.PhoneNumber);
   };
 
   const formik = useFormik({
@@ -59,6 +54,7 @@ const Login = ({ setSteps }: LoginProps) => {
     onSubmit: handleSubmission,
     validationSchema: LoginSchema,
   });
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       window.localStorage.setItem("PhoneNumber", formik.values.PhoneNumber);
@@ -91,6 +87,7 @@ const Login = ({ setSteps }: LoginProps) => {
             buttonText={`${
               formik.values.PhoneNumber ? "تغییر شماره همراه" : "تایید"
             }`}
+            setSteps={setSteps}
           />
           <div>
             <Logo />
@@ -137,7 +134,7 @@ const Login = ({ setSteps }: LoginProps) => {
                 />
                 <input
                   type="text"
-                  className="mx-auto outline-none rounded-md border-2 flex justify-center w-full text-center items-center text-3xl border-black"
+                  className="mx-auto outline-none rounded-md border-[0.3px] flex justify-center w-full text-center items-center text-3xl border-black"
                   style={{ direction: "ltr" }}
                   disabled={true}
                   value="10 + 22"
