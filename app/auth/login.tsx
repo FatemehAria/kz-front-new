@@ -50,6 +50,7 @@ const Login = ({ setSteps }: LoginProps) => {
 
   const handleSubmission = async () => {
     console.log("loggedin");
+    setSteps(2);
     // await login(formik.values.PhoneNumber);
   };
 
@@ -77,18 +78,24 @@ const Login = ({ setSteps }: LoginProps) => {
         className="mx-auto grid grid-cols-1 lg:grid lg:grid-cols-2 font-YekanBakh rounded-3xl overflow-hidden my-[3%] shadow-2xl shadow-[13px_0_61px_-24px_rgba(0, 0, 0, 0.15)]"
         dir="rtl"
       >
-        <div className="py-[8%] lg:pt-[5%] lg:pb-[8%] w-full relative">
+        <div className="py-[5%] w-full relative px-[5%]">
           <Modal
             setShowModal={setshowModal}
             showModal={showModal}
             data={formik.values.PhoneNumber}
-            text={`${formik.values.PhoneNumber ? "شماره تماس زیر مورد تایید است؟" : "شماره همراه خود را وارد کنید"}`}
-            buttonText={`${formik.values.PhoneNumber ? "تغییر شماره همراه" : "تایید"}`}
+            text={`${
+              formik.values.PhoneNumber
+                ? "شماره تماس زیر مورد تایید است؟"
+                : "شماره همراه خود را وارد کنید"
+            }`}
+            buttonText={`${
+              formik.values.PhoneNumber ? "تغییر شماره همراه" : "تایید"
+            }`}
           />
-          <div className="px-[5%]">
+          <div>
             <Logo />
           </div>
-          <div className="grid grid-cols-1 gap-6 px-[5%]">
+          <div className="grid grid-cols-1 gap-6">
             <form
               className="flex flex-col gap-5"
               onSubmit={formik.handleSubmit}

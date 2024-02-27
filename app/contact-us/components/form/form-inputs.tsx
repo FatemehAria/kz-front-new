@@ -6,7 +6,8 @@ type FormInputsProps = {
   pattern?: string;
   name?: string;
   error?: any;
-  onChange: any;
+  onChange?: any;
+  disabled?: boolean;
   value: string;
 };
 const FormInput = ({
@@ -18,6 +19,7 @@ const FormInput = ({
   pattern,
   name,
   error,
+  disabled,
 }: FormInputsProps) => {
   const setLength = () => {
     if (type === "tel") {
@@ -41,6 +43,8 @@ const FormInput = ({
           error === "" || !error
             ? " border-black text-black"
             : "border-red-600 text-red-600"
+        } ${
+          disabled && "text-center bg-transparent"
         } mx-auto outline-none rounded-md border-2 px-2 py-2 text-lg w-full`}
         placeholder={placeholder}
         type={type}
@@ -52,6 +56,7 @@ const FormInput = ({
         autoComplete="off"
         pattern={pattern}
         name={name}
+        disabled={disabled}
       />
     </div>
   );

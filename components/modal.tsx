@@ -1,5 +1,5 @@
 "use client";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
 type ModalProps = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
@@ -28,9 +28,7 @@ function Modal({
         <div className="relative p-4 w-full max-w-2xl max-h-full">
           <div className="bg-white rounded-[25px] shadow">
             <div className="p-4 md:p-5 space-y-4 text-black font-semibold">
-              <p className="text-[24px] leading-relaxed">
-                {text}
-              </p>
+              <p className="text-[24px] leading-relaxed max-w-sm mx-auto">{text}</p>
               <p className="text-[32px] leading-relaxed">{data}</p>
             </div>
 
@@ -47,9 +45,9 @@ function Modal({
               <button
                 onClick={() => setShowModal(false)}
                 type="button"
-                className={`py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 ${
+                className={`py-2.5 px-5 ms-3 text-sm font-medium focus:outline-none bg-[#4866CF] text-white rounded-lg border border-gray-200 ${
                   data === "" &&
-                  "flex w-full text-center justify-center bg-blue-800 text-white"
+                  "flex w-full text-center justify-center"
                 }`}
               >
                 {buttonText}

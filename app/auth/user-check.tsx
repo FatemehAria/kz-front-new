@@ -12,20 +12,30 @@ import {
 import Logo from "./components/logo";
 import FormSlider from "./components/form-slider";
 import SubmissionBtn from "./components/submission-btn";
-import { useDispatch } from "react-redux";
-import { changePhoneNumber } from "@/redux/features/user/userSlice";
-
+import { useDispatch, useSelector } from "react-redux";
+import FormInput from "../contact-us/components/form/form-inputs";
+import OtpInput from "react-otp-input";
+import sms from "../../public/Auth/sms.svg";
+import phone from "../../public/Auth/phone.svg";
+import Modal from "@/components/modal";
+import {
+  fetchUserInOTPValidation,
+  updateStatus,
+} from "@/redux/features/user/userSlice";
 type UserCheckProps = {
   setSteps: Dispatch<SetStateAction<number>>;
   steps: number;
 };
 
 const UserCheck = ({ setSteps }: UserCheckProps) => {
+  const { status, userRole } = useSelector((state: any) => state.userRole);
+  const dispatch = useDispatch();
+  const [showModal, setShowModal] = useState(false);
   const [PhoneNumber, setPhoneNumber] = useState("");
+  const [counter, setCounter] = useState(90);
   const [OTP, setOTP] = useState("");
   const [error, setError] = useState("");
-  const [counter, setCounter] = useState(90);
-  const dispatch = useDispatch();
+  const [success, setSuccess] = useState("");
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -49,22 +59,6 @@ const UserCheck = ({ setSteps }: UserCheckProps) => {
     }
   }, []);
 
-  const validateOTP = async (OTP: string, PhoneNumber: string) => {
-    try {
-      const { data } = await axios.post(
-        "https://keykavoos.liara.run/User/Signup2",
-        {
-          OTP,
-          PhoneNumber,
-        }
-      );
-      console.log(data);
-      setSteps(3);
-    } catch (error: any) {
-      console.log(error.response.data.message);
-      setError("کد معتبر نیست.");
-    }
-  };
   const getNewOTP = async (PhoneNumber: string) => {
     try {
       const { data } = await axios.post(
@@ -78,79 +72,137 @@ const UserCheck = ({ setSteps }: UserCheckProps) => {
       console.log(error);
     }
   };
+  // const validateOTP = async (OTP: string, PhoneNumber: string) => {
+  //   // try {
+  //   // console.log("success");
+  //   // const { data } = await axios.post(
+  //   //   "https://keykavoos.liara.run/User/Signup2",
+  //   //   {
+  //   //     OTP,
+  //   //     PhoneNumber,
+  //   //   }
+  //   // );
+  //   // console.log(data);
+  //   // setSteps(3);
+  //   // } catch (error: any) {
+  //   // console.log(error.response.data.message);
+  //   setShowModal(true);
+  //   setError("کد معتبر نیست.");
+  //   // }
+  // };
+
+  useEffect(() => {
+    status === "failed"
+      ? (setShowModal(true),
+        setSuccess(""),
+        setError(`کد یکبار مصرف مورد تایید نمی باشد
+    دوباره اقدام فرمایید.`))
+      : (setShowModal(true), setError(""), setSuccess("با موفقیت وارد شدید."));
+  }, [status]);
 
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await validateOTP(OTP, PhoneNumber);
+    await dispatch<any>(fetchUserInOTPValidation({ PhoneNumber, OTP }));
+    // await validateOTP(OTP, PhoneNumber);
   };
+
   useEffect(() => {
-    setError("");
+    dispatch(updateStatus());
   }, [OTP]);
 
   return (
     <div className="w-[80%] mx-auto">
       <div
-        className="mx-auto grid grid-cols-1 lg:grid-cols-2 font-YekanBakh rounded-xl overflow-hidden my-[3%] shadow-2xl shadow-[13px_0_61px_-24px_rgba(0, 0, 0, 0.15)]"
+        className="mx-auto grid grid-cols-1 lg:grid lg:grid-cols-2 font-YekanBakh rounded-3xl overflow-hidden shadow-2xl shadow-[13px_0_61px_-24px_rgba(0, 0, 0, 0.15)]"
         dir="rtl"
       >
-        <div className="py-[8%] lg:py-0">
-          <div className="p-[5%]">
+        <div className="py-[5%] w-full relative px-[5%]">
+          <div>
             <Logo />
           </div>
           <form
             onSubmit={(e) => handleSubmission(e)}
-            className="flex flex-col justify-start gap-[3%] px-[5%] h-full"
+            className="flex flex-col gap-5"
           >
-            <div>
-              <p className="lg:w-[90%]">
-                به {PhoneNumber} یک کد تایید ارسال شد.
+            <label>
+              <p className="font-bold text-[24px] pt-[3%] pb-1">
+                ورود به کیکاووس زمان
               </p>
-              <span
-                className="text-[#4866CF] text-sm cursor-pointer"
-                onClick={() => (dispatch(changePhoneNumber()), setSteps(1))}
-              >
-                ویرایش شماره
-              </span>
-            </div>
-            <div className="w-[90%] flex flex-col gap-4">
-              <input
-                type="text"
-                placeholder="کد تایید"
-                className="border w-full p-[3%] rounded-md"
-                value={OTP}
-                onChange={(e) => setOTP(e.target.value)}
-                maxLength={4}
-                autoFocus
+              <p className="lg:w-[90%] text-[16px]">
+                لطفا کد 6 رقمی که به شماره همراه شما ارسال شده است را وارد کنید.
+              </p>
+            </label>
+
+            <div className="flex flex-col gap-4">
+              <FormInput
+                value={PhoneNumber.slice(9) + "*****" + PhoneNumber.slice(0, 4)}
+                label="شماره تماس"
+                type="tel"
+                name="PhoneNumber"
+                disabled={true}
               />
-              <p
-                className={`w-[100%] ${
-                  error
-                    ? "bg-black text-[0.75rem] p-[0.25rem] text-white relative -bottom-[10px] rounded-lg"
-                    : "absolute -left-[9999px]"
-                }`}
-              >
-                {error}
-              </p>
-              <div className="flex justify-between items-center">
+              <OtpInput
+                value={OTP}
+                onChange={setOTP}
+                numInputs={6}
+                inputStyle={{
+                  border: "1px solid black",
+                  borderRadius: "7px",
+                  width: "43px",
+                  height: "50px",
+                }}
+                containerStyle={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+                renderInput={(props) => <input {...props} />}
+                inputType="tel"
+              />
+              {error !== "" && (
+                <Modal
+                  setShowModal={setShowModal}
+                  showModal={showModal}
+                  buttonText="ارسال مجدد کد یکبارمصرف"
+                  text={error}
+                  data=""
+                />
+              )}
+              {success !== "" && (
+                <Modal
+                  setShowModal={setShowModal}
+                  showModal={showModal}
+                  buttonText="متوجه شدم"
+                  text={success}
+                  data=""
+                />
+              )}
+              <div className="grid grid-cols-1 gap-3">
                 <span
-                  className="text-[#4866CF] cursor-pointer"
+                  className={`flex w-full items-center text-[20px] gap-2 ${
+                    counter === 0 && "text-blue-700 cursor-pointer "
+                  }`}
                   onClick={async () =>
                     counter === 0 &&
                     (await getNewOTP(PhoneNumber), setCounter(90))
                   }
                 >
+                  <Image src={sms} alt="sms" />
                   {counter === 0
                     ? "ارسال مجدد"
-                    : `${counter} ثانیه تا ارسال مجدد.
+                    : `${counter} ثانیه تا ارسال مجدد کد از طریق پیامک
                 `}
                 </span>
-                <SubmissionBtn text="تایید کد تایید" validation={true} />
+                <span className="flex w-full items-center gap-2 text-[20px]">
+                  <Image src={phone} alt="phone" />
+                  <span>ارسال کد از طریق تماس</span>
+                </span>
               </div>
+              <SubmissionBtn text="تایید رمز یکبارمصرف" validation={true} />
             </div>
           </form>
         </div>
-        <div className="lg:block hidden">
-          <FormSlider />
+        <div className="lg:block hidden bg-[#4866CF]">
+          {/* <FormSlider /> */}
         </div>
       </div>
     </div>
