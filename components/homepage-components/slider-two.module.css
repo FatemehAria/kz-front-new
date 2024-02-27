@@ -1,0 +1,15 @@
+.polygonContainer {
+    clip-path: polygon(21% 0, 80% 0, 100% 50%, 80% 100%, 23% 100%, 0% 50%);
+    /* filter: drop-shadow(8px 8px 10px rgb(20, 2, 2)); */
+}
+
+.img {
+    clip-path: polygon(21% 0, 80% 0, 100% 50%, 80% 100%, 23% 100%, 0% 50%);
+    /* background-color: white; */
+}
+
+.polygonContainer:hover {
+    filter: drop-shadow(0 12px 10px rgba(72, 102, 207, 0.50));
+    /* 0px 12px 28px 0px rgba(72, 102, 207, 0.50) */
+    /* cursor: pointer; */
+}

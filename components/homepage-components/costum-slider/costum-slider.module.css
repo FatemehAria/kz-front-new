@@ -1,0 +1,27 @@
+/* .slide {
+    opacity: 0;
+    transition: all 1s ease;
+  }
+  
+  .slideActive {
+    opacity: 1;
+  } */
+  /* .slide {
+    opacity: 0;
+    transition: transform 2s ease, opacity 2s ease;
+    transform: translateX(-100%);
+  }
+  
+  .slideActive {
+    opacity: 1;
+    transform: translateX(0);
+  } */
+  .slide {
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+  
+  .slideActive {
+    opacity: 1;
+    transition: opacity 1s ease;
+  }

@@ -1,0 +1,67 @@
+.rangeInput {
+    appearance: none;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  
+    /* Remove default track styles */
+    --thumb-size: 1rem;
+    --track-height: 3px;
+  }
+  
+  .rangeInput::-webkit-slider-runnable-track {
+    background-color: black;
+    height: var(--track-height);
+  }
+  
+  .rangeInput::-moz-range-track {
+    background-color: black;
+    height: var(--track-height);
+  }
+  
+  .rangeInput::-ms-track {
+    background-color: black;
+    height: var(--track-height);
+  }
+  
+  .rangeInput::-ms-fill-lower {
+    background-color: black;
+    height: var(--track-height);
+  }
+  
+  .rangeInput::-ms-fill-upper {
+    background-color: black;
+    height: var(--track-height);
+  }
+  
+  .rangeInput::-webkit-slider-thumb {
+    appearance: none;
+    background-color: #4866CF;
+    width: var(--thumb-size);
+    height: var(--thumb-size);
+    border-radius: 50%;
+    margin-top: calc((var(--thumb-size) - var(--track-height)) / -2);
+  }
+  
+  .rangeInput::-moz-range-thumb {
+    appearance: none;
+    background-color: #4866CF;
+    width: var(--thumb-size);
+    height: var(--thumb-size);
+    border-radius: 50%;
+    margin-top: calc((var(--thumb-size) - var(--track-height)) / -2);
+  }
+  
+  .rangeInput::-ms-thumb {
+    appearance: none;
+    background-color: #4866CF;
+    width: var(--thumb-size);
+    height: var(--thumb-size);
+    border-radius: 50%;
+    margin-top: calc((var(--thumb-size) - var(--track-height)) / -2);
+  }
+  
+  .rangeInput::-ms-tooltip {
+    display: none;
+  }
