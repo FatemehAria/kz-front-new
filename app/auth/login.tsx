@@ -14,9 +14,9 @@ import FormInput from "../contact-us/components/form/form-inputs";
 import { useFormik } from "formik";
 import { LoginSchema } from "@/schemas/userpanel-profile-schema";
 import LoginVia from "./components/login-via";
-import Link from "next/link";
 import Modal from "@/components/modal";
-
+import { Bounce, toast } from "react-toastify";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 type LoginProps = {
   setSteps: Dispatch<SetStateAction<number>>;
 };
@@ -27,25 +27,50 @@ const initialValues = {
 
 const Login = ({ setSteps }: LoginProps) => {
   const [showModal, setshowModal] = useState(false);
-  const [PhoneNumber, setPhoneNumber] = useState("");
   const [answer, setAnswer] = useState("");
-  console.log("login");
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const login = async (PhoneNumber: string) => {
     try {
-      // const { data } = await axios.post(
-      //   "https://keykavoos.liara.run/User/Signup1",
-      //   {
-      //     PhoneNumber,
-      //   }
-      // );
-      // console.log(data);
+      const { data } = await axios.post(
+        "https://keykavoos.liara.run/Client/SignUp",
+        {
+          PhoneNumber,
+        }
+      );
+      toast.success("کد ارسال شد.", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
       setSteps(2);
     } catch (error: any) {
-      console.log(error);
+      toast.error("خطا در ارسال کد.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      console.log(error.response.data.message);
     }
   };
 
   const handleSubmission = async () => {
+    if (!executeRecaptcha) {
+      console.log("Recaptcha not available");
+      return;
+    }
+    const gRecaptchaToken = await executeRecaptcha("inquirySubmit");
     await login(formik.values.PhoneNumber);
   };
 
@@ -61,17 +86,11 @@ const Login = ({ setSteps }: LoginProps) => {
     }
   }, [formik.values.PhoneNumber]);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const number = window.localStorage.getItem("PhoneNumber") || "";
-      setPhoneNumber(number);
-    }
-  }, []);
-
   return (
-    <div className="w-[80%] mx-auto">
+    <div className="">
+      {/*  lg:grid lg:grid-cols-2 */}
       <div
-        className="mx-auto grid grid-cols-1 lg:grid lg:grid-cols-2 font-YekanBakh rounded-3xl overflow-hidden my-[3%] shadow-2xl shadow-[13px_0_61px_-24px_rgba(0, 0, 0, 0.15)]"
+        className="mx-auto grid grid-cols-1 font-YekanBakh rounded-3xl overflow-hidden shadow-2xl shadow-[13px_0_61px_-24px_rgba(0, 0, 0, 0.15)]"
         dir="rtl"
       >
         <div className="py-[5%] w-full relative px-[5%]">
@@ -101,7 +120,7 @@ const Login = ({ setSteps }: LoginProps) => {
                 <p className="font-bold text-[24px] pt-[3%] pb-1">
                   به خانواده ما خوش آمدید
                 </p>
-                <p className="lg:w-[90%] text-[16px]">
+                <p className="lg:w-[90%] text-[16px] leading-6">
                   دوست عزیز سلام ! <br />
                   از این که شما را در جمع خود می بینیم بسیار خوشحالیم.
                   <br /> لطفا شماره تماس خود را وارد کنید.
@@ -160,9 +179,9 @@ const Login = ({ setSteps }: LoginProps) => {
             </div>
           </div>
         </div>
-        <div className="lg:block hidden bg-[#4866CF]">
-          {/* <FormSlider /> */}
-        </div>
+        {/* <div className="lg:block hidden bg-[#4866CF]">
+          <FormSlider />
+        </div> */}
       </div>
     </div>
   );

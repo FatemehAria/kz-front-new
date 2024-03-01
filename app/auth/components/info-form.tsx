@@ -82,7 +82,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
         <p className="font-bold text-[24px] pt-[3%] pb-1">
           ثبت نام در کیکاووس زمان
         </p>
-        <p className="text-[16px]">
+        <p className="text-[16px] py-4">
           اطلاعات خود را وارد کنید و به جمع ما بپیوندید تا از خدمات ویژه ما بهره
           مند شوید.
         </p>

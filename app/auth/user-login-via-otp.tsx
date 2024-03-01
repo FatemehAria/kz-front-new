@@ -64,7 +64,7 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
   const getNewOTP = async (PhoneNumber: string) => {
     try {
       const { data } = await axios.post(
-        "https://keykavoos.liara.run/User/getOTP",
+        "https://keykavoos.liara.run/Client/SendOTP",
         {
           PhoneNumber,
         }
@@ -74,24 +74,20 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
       console.log(error);
     }
   };
-  // const validateOTP = async (OTP: string, PhoneNumber: string) => {
-  //   // try {
-  //   // console.log("success");
-  //   // const { data } = await axios.post(
-  //   //   "https://keykavoos.liara.run/User/Signup2",
-  //   //   {
-  //   //     OTP,
-  //   //     PhoneNumber,
-  //   //   }
-  //   // );
-  //   // console.log(data);
-  //   // setSteps(3);
-  //   // } catch (error: any) {
-  //   // console.log(error.response.data.message);
-  //   setShowModal(true);
-  //   setError("کد معتبر نیست.");
-  //   // }
-  // };
+  const validateOTP = async (OTP: string) => {
+    try {
+      const { data } = await axios.post(
+        "https://keykavoos.liara.run/Client/OTP",
+        {
+          OTP,
+        }
+      );
+      console.log(data);
+      setSteps(3);
+    } catch (error: any) {
+      console.log(error.response.data.message);
+    }
+  };
 
   useEffect(() => {
     status === "failed" &&
@@ -109,14 +105,14 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
 
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await dispatch<any>(fetchUserInOTPValidation({ PhoneNumber, OTP }));
-    // await validateOTP(OTP, PhoneNumber);
+    await validateOTP(OTP);
   };
 
   return (
-    <div className="w-[80%] mx-auto">
+    <div>
+      {/*  lg:grid lg:grid-cols-2 */}
       <div
-        className="mx-auto grid grid-cols-1 lg:grid lg:grid-cols-2 font-YekanBakh rounded-3xl overflow-hidden shadow-2xl shadow-[13px_0_61px_-24px_rgba(0, 0, 0, 0.15)]"
+        className="mx-auto grid grid-cols-1 font-YekanBakh rounded-3xl overflow-hidden shadow-2xl shadow-[13px_0_61px_-24px_rgba(0, 0, 0, 0.15)]"
         dir="rtl"
       >
         <div className="py-[5%] w-full relative px-[5%]">
@@ -131,7 +127,7 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
               <p className="font-bold text-[24px] pt-[3%] pb-1">
                 ورود به کیکاووس زمان
               </p>
-              <p className="lg:w-[90%] text-[16px]">
+              <p className="lg:w-[90%] text-[16px] py-4">
                 لطفا کد 6 رقمی که به شماره همراه شما ارسال شده است را وارد کنید.
               </p>
             </label>
@@ -204,9 +200,9 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
             </div>
           </form>
         </div>
-        <div className="lg:block hidden bg-[#4866CF]">
-          {/* <FormSlider /> */}
-        </div>
+        {/* <div className="lg:block hidden bg-[#4866CF]">
+          <FormSlider />
+        </div> */}
       </div>
     </div>
   );

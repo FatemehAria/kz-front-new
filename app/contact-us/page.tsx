@@ -9,12 +9,14 @@ import Map from "./components/map/map";
 const Contact = () => {
   return (
     <React.Fragment>
+      <Nav />
       <div dir="rtl" className="font-YekanBakh flex flex-col gap-14">
         <ContactHeading />
         <Options />
         <Form />
         <Map />
       </div>
+      <Footer />
     </React.Fragment>
   );
 };

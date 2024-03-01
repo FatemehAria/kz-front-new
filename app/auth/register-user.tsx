@@ -104,7 +104,7 @@ const RegisterUser = ({ setSteps }: RegisterUserProps) => {
               <p className="font-bold text-[24px] pt-[3%] pb-1">
                 ثبت نام در کیکاووس زمان
               </p>
-              <p className="lg:w-[90%] text-[16px]">
+              <p className="lg:w-[90%] text-[16px] py-4">
                 لطفا کد 6 رقمی که به شماره همراه شما ارسال شده است را وارد کنید.
               </p>
             </label>

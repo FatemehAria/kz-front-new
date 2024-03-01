@@ -8,6 +8,7 @@ const Contact = ({ params }: { params: { courseName: string } }) => {
   console.log(params);
   return (
     <div>
+      <Nav />
       <div className="grid grid-cols-1 gap-[3%] lg:mb-[10%] mb-[40%]">
         <div dir="rtl" className="font-YekanBakh w-[90%] mx-auto">
           {/* SMALL SCREEN */}
@@ -190,6 +191,7 @@ const Contact = ({ params }: { params: { courseName: string } }) => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

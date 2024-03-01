@@ -1,4 +1,6 @@
 import CostumSlider from "@/components/homepage-components/costum-slider/costum-slider";
+import Footer from "@/components/homepage-components/footer";
+import Nav from "@/components/homepage-components/nav";
 import Reasons from "@/components/homepage-components/reason";
 import SliderOne from "@/components/homepage-components/slider-one";
 import SliderTwo from "@/components/homepage-components/slider-two";
@@ -10,6 +12,7 @@ export default function Home() {
   return (
     <>
       <Script src="/navachat.js" async />
+      <Nav />
       <main className="font-YekanBakh">
         <div className="flex flex-col gap-10">
           <SliderOne />
@@ -20,6 +23,7 @@ export default function Home() {
           <CostumSlider />
         </div>
       </main>
+      <Footer />
     </>
   );
 }

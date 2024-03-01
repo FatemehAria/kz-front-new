@@ -13,6 +13,7 @@ const CourseInfo = ({ params }: { params: { courseName: string } }) => {
   const [expand, setExpand] = useState(false);
   return (
     <div>
+      <Nav />
       <div className="grid grid-cols-1 gap-[3%]">
         <div dir="rtl" className="font-YekanBakh w-[90%] mx-auto">
           {params.courseName === "front-end" && (
@@ -561,7 +562,9 @@ const CourseInfo = ({ params }: { params: { courseName: string } }) => {
             </div>
           )}
         </div>
+        N
       </div>
+      <Footer />
     </div>
   );
 };
