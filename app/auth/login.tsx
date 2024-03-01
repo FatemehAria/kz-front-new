@@ -107,6 +107,7 @@ const Login = ({ setSteps }: LoginProps) => {
     initialValues,
     onSubmit: handleSubmission,
     validationSchema: LoginSchema,
+    validateOnMount: true,
   });
 
   useEffect(() => {

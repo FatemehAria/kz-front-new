@@ -36,21 +36,21 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
   // }, []);
 
   const sendInfo = async (
-    // FirstName: string,
-    // LastName: string,
-    // email: string
+    FirstName: string,
+    LastName: string,
+    email: string
   ) => {
     try {
-      // const { data } = await axios.post(
-      //   "https://keykavoos.liara.run/User/Signup3",
-      //   {
-      //     FirstName,
-      //     LastName,
-      //     email,
-      //   }
-      // );
+      const { data } = await axios.post(
+        "https://keykavoos.liara.run/Client/SignUp_Form",
+        {
+          FirstName,
+          LastName,
+          email,
+        }
+      );
       setShowModal(true);
-      // console.log(showModal);
+      console.log(data);
     } catch (error: any) {
       setShowModal(false);
       console.log(error.response.data.message);
@@ -58,15 +58,20 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
   };
 
   const handleSubmission = async () => {
-    await sendInfo()
-    // await sendInfo(FirstName, LastName, email);
+    await sendInfo(
+      formik.values.FirstName,
+      formik.values.LastName,
+      formik.values.email
+    );
   };
 
   const formik = useFormik({
     initialValues,
     onSubmit: handleSubmission,
     validationSchema: UserPanelPersonalSchema,
+    validateOnMount: true,
   });
+  console.log(formik.touched);
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-5">
       {showModal && (
@@ -95,7 +100,8 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
               onChange={formik.handleChange}
               name="FirstName"
               label="نام"
-              // error={formik.errors.FirstName || formik.touched.FirstName}
+              error={formik.errors.FirstName && formik.touched.FirstName}
+              onBlur={formik.handleBlur}
             />
             <span className="absolute -top-7 right-12 text-[#4866CF]">*</span>
           </div>
@@ -105,7 +111,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
               onChange={formik.handleChange}
               name="LastName"
               label="نام خانوادگی"
-              // error={formik.errors.LastName}
+              error={formik.errors.LastName}
             />
             <span className="absolute -top-7 right-28 text-[#4866CF]">*</span>
           </div>
@@ -115,7 +121,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
               onChange={formik.handleChange}
               name="email"
               label="پست الکترونیکی"
-              // error={formik.errors.email}
+              error={formik.errors.email}
             />
             <span className="absolute -top-7 right-36 text-[#4866CF]">*</span>
             {/* <div className="relative">

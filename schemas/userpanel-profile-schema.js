@@ -6,7 +6,7 @@ export const UserPanelPersonalSchema = yup.object().shape({
   FirstName: yup.string().min(3).required("لطفا نام خود را وارد کنید."),
   LastName: yup.string().min(3).required("لطفا نام خانوادگی خود را وارد کنید."),
   Date_of_birth: yup.string(),
-  email: yup.string().email("ایمیل نادرست است.").required(" "),
+  email: yup.string().email("ایمیل نادرست است.").matches("").required(" "),
 });
 
 export const UserPanelMoreInfoSchema = yup.object().shape({

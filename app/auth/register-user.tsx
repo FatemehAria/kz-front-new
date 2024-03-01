@@ -87,9 +87,10 @@ const RegisterUser = ({ setSteps }: RegisterUserProps) => {
   };
 
   return (
-    <div className="w-[80%] mx-auto">
+    <div>
+      {/*  lg:grid lg:grid-cols-2 */}
       <div
-        className="mx-auto grid grid-cols-1 lg:grid lg:grid-cols-2 font-YekanBakh rounded-3xl overflow-hidden shadow-2xl shadow-[13px_0_61px_-24px_rgba(0, 0, 0, 0.15)]"
+        className="mx-auto grid grid-cols-1 font-YekanBakh rounded-3xl overflow-hidden shadow-2xl shadow-[13px_0_61px_-24px_rgba(0, 0, 0, 0.15)]"
         dir="rtl"
       >
         <div className="py-[5%] w-full relative px-[5%]">
@@ -177,9 +178,9 @@ const RegisterUser = ({ setSteps }: RegisterUserProps) => {
             </div>
           </form>
         </div>
-        <div className="lg:block hidden bg-[#4866CF]">
+        {/* <div className="lg:block hidden bg-[#4866CF]"> */}
           {/* <FormSlider /> */}
-        </div>
+        {/* </div> */}
       </div>
     </div>
   );

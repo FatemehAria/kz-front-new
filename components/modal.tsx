@@ -30,7 +30,7 @@ function Modal({
     if (executeFunction) {
       setCounter(90);
     }
-  }, [setCounter,executeFunction]);
+  }, [setCounter, executeFunction]);
   return (
     <div
       id="default-modal"
@@ -68,10 +68,11 @@ function Modal({
                 }`}
               >
                 <button
-                  onClick={() => (
-                    setShowModal(false),
-                    dispatch(updateStatus(), executeFunction())
-                  )}
+                  onClick={() => {
+                    setShowModal(false);
+                    dispatch(updateStatus());
+                    executeFunction && executeFunction();
+                  }}
                   type="button"
                   className={`py-2.5 px-5 ms-3 text-sm font-medium focus:outline-none rounded-lg border border-[#4866CF] ${
                     data.length === 0

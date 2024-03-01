@@ -22,6 +22,7 @@ import {
   fetchUserInOTPValidation,
   updateStatus,
 } from "@/redux/features/user/userSlice";
+import { Bounce, toast } from "react-toastify";
 
 type UserLoginViaOTPProps = {
   setSteps: Dispatch<SetStateAction<number>>;
@@ -59,7 +60,6 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
   }, []);
   // ارسال مجدد
   const getNewOTP = async (PhoneNumber: string) => {
-    console.log(PhoneNumber);
     try {
       const { data } = await axios.post(
         "https://keykavoos.liara.run/Client/SendOTP",
@@ -67,7 +67,7 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
           PhoneNumber,
         }
       );
-      console.log(data);
+      // console.log(data);
     } catch (error: any) {
       console.log(error);
     }
@@ -81,11 +81,10 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
           OTP,
         }
       );
-      console.log(data);
+      // console.log(data);
       setShowModal(true),
-        setErrorMessage(""),
-        setSuccessMessage("با موفقیت وارد پنل کاربری خود شدید.");
-      // setSteps(3);
+      setErrorMessage(""),
+      setSuccessMessage("با موفقیت وارد پنل کاربری خود شدید.");
     } catch (error: any) {
       setShowModal(true);
       setSuccessMessage("");
@@ -94,7 +93,31 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
       setOTP("");
     }
   };
-
+  const getOTPViaCall = async (PhoneNumber: string) => {
+    try {
+      const { data } = await axios.post(
+        "https://keykavoos.liara.run/Client/SendCallOTP",
+        {
+          PhoneNumber,
+        }
+      );
+      // console.log(data);
+    } catch (error) {
+      toast.error("خطا در برقراری تماس.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
+      // console.log(error);
+    }
+  };
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await validateOTP(PhoneNumber, OTP);
@@ -170,27 +193,40 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
                   data=""
                 />
               )}
-              <div className="grid grid-cols-1 gap-3">
-                <span
-                  className={`flex w-full items-center text-[20px] gap-2 ${
-                    counter === 0 && "text-blue-700 cursor-pointer "
-                  }`}
-                  onClick={async () =>
-                    counter === 0 &&
-                    (await getNewOTP(PhoneNumber), setCounter(90))
-                  }
-                >
-                  <Image src={sms} alt="sms" />
-                  {counter === 0
-                    ? "ارسال مجدد"
-                    : `${counter} ثانیه تا ارسال مجدد کد از طریق پیامک
-                `}
-                </span>
-                <span className="flex w-full items-center gap-2 text-[20px]">
-                  <Image src={phone} alt="phone" />
-                  <span>ارسال کد از طریق تماس</span>
-                </span>
-              </div>
+              <span
+                className={`flex w-full items-center text-[20px] gap-2 ${
+                  counter === 0 && "text-blue-700 cursor-pointer "
+                }`}
+              >
+                <Image src={sms} alt="sms" />
+                {counter === 0 ? (
+                  <div className="flex flex-row w-full items-center gap-5 whitespace-nowrap">
+                    <p
+                      onClick={async () =>
+                        counter === 0 &&
+                        (await getNewOTP(PhoneNumber), setCounter(90))
+                      }
+                    >
+                      ارسال مجدد
+                    </p>
+                    <p className="text-black">یا</p>
+                    <p className="flex w-full items-center gap-2">
+                      <Image src={phone} alt="phone" />
+                      <span
+                        className="cursor-pointer"
+                        onClick={() =>
+                          counter === 0 && getOTPViaCall(PhoneNumber)
+                        }
+                      >
+                        ارسال کد از طریق تماس
+                      </span>
+                    </p>
+                  </div>
+                ) : (
+                  `${counter} ثانیه تا ارسال مجدد کد از طریق پیامک
+                `
+                )}
+              </span>
               <SubmissionBtn text="تایید رمز یکبارمصرف" validation={true} />
             </div>
           </form>
