@@ -28,6 +28,13 @@ const initialValues = {
 const Login = ({ setSteps }: LoginProps) => {
   const [showModal, setshowModal] = useState(false);
   const [answer, setAnswer] = useState("");
+  const [firstNumber, setFirstNumber] = useState(
+    Math.floor(Math.random() * 100) + 1
+  );
+  const [secondNumber, setSecondNumber] = useState(
+    Math.floor(Math.random() * 100) + 1
+  );
+  let correctAnswer = firstNumber + secondNumber;
   const { executeRecaptcha } = useGoogleReCaptcha();
   const login = async (PhoneNumber: string) => {
     try {
@@ -48,7 +55,8 @@ const Login = ({ setSteps }: LoginProps) => {
         theme: "light",
         transition: Bounce,
       });
-      setSteps(2);
+      // setSteps(2);
+      console.log(data);
     } catch (error: any) {
       toast.error("خطا در ارسال کد.", {
         position: "top-right",
@@ -70,8 +78,27 @@ const Login = ({ setSteps }: LoginProps) => {
       console.log("Recaptcha not available");
       return;
     }
-    const gRecaptchaToken = await executeRecaptcha("inquirySubmit");
-    await login(formik.values.PhoneNumber);
+
+    const gRecaptchaToken = await executeRecaptcha('inquirySubmit');
+
+    const response = await axios({
+      method: "post",
+      url: "/api/recaptchaSubmit",
+      data: {
+        gRecaptchaToken,
+      },
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response?.data?.success === true) {
+      console.log(`Success with score: ${response?.data?.score}`);
+    } else {
+      console.log(`Failure with score: ${response?.data?.score}`);
+    }
+
   };
 
   const formik = useFormik({
@@ -156,12 +183,14 @@ const Login = ({ setSteps }: LoginProps) => {
                   className="mx-auto outline-none rounded-md border-[0.3px] flex justify-center w-full text-center items-center text-3xl border-black"
                   style={{ direction: "ltr" }}
                   disabled={true}
-                  value="10 + 22"
+                  value={`${firstNumber} + ${secondNumber}`}
                 />
               </div>
               <SubmissionBtn
                 text="ورود"
-                validation={formik.isValid && answer !== ""}
+                validation={
+                  formik.isValid && parseInt(answer) === correctAnswer
+                }
               />
             </form>
             <LoginVia />
