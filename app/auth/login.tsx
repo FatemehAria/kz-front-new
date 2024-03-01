@@ -165,6 +165,7 @@ const Login = ({ setSteps }: LoginProps) => {
                   type="tel"
                   name="PhoneNumber"
                   error={formik.errors.PhoneNumber}
+                  autoFocus={true}
                 />
                 <div className="relative">
                   {formik.errors.PhoneNumber && (

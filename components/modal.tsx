@@ -1,5 +1,8 @@
 "use client";
-import { updateStatus } from "@/redux/features/user/userSlice";
+import {
+  updateInputDisability,
+  updateStatus,
+} from "@/redux/features/user/userSlice";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -13,6 +16,7 @@ type ModalProps = {
   mainButtonText?: string;
   executeFunction?: any;
   setCounter?: any;
+  changeNumber?: boolean;
 };
 function Modal({
   setShowModal,
@@ -24,13 +28,9 @@ function Modal({
   mainButtonText,
   executeFunction,
   setCounter,
+  changeNumber,
 }: ModalProps) {
   const dispatch = useDispatch();
-  useEffect(() => {
-    if (executeFunction) {
-      setCounter(90);
-    }
-  }, [setCounter, executeFunction]);
   return (
     <div
       id="default-modal"
@@ -44,7 +44,7 @@ function Modal({
         <div className="relative p-8 w-full max-w-2xl max-h-full">
           <div className="bg-white rounded-[25px] shadow border">
             <div className="md:p-5 text-black font-semibold">
-              <p className="text-[24px] leading-relaxed max-w-sm mx-auto py-3">
+              <p className="text-[20px] leading-relaxed max-w-sm mx-auto py-3">
                 {text}
               </p>
               <p className="text-[32px]">{data}</p>
@@ -53,9 +53,12 @@ function Modal({
             <div className="flex items-center justify-between p-4 md:p-5 rounded-b">
               {data && (
                 <button
-                  onClick={() => (
-                    setShowModal(false), setSteps?.(5), dispatch(updateStatus())
-                  )}
+                  onClick={() => {
+                    setShowModal(false);
+                    setSteps?.(5);
+                    dispatch(updateStatus());
+                    changeNumber && dispatch(updateInputDisability(false));
+                  }}
                   type="button"
                   className="text-white bg-[#4866CF] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 >
@@ -71,7 +74,7 @@ function Modal({
                   onClick={() => {
                     setShowModal(false);
                     dispatch(updateStatus());
-                    executeFunction && executeFunction();
+                    executeFunction && executeFunction() && setCounter(90);
                   }}
                   type="button"
                   className={`py-2.5 px-5 ms-3 text-sm font-medium focus:outline-none rounded-lg border border-[#4866CF] ${

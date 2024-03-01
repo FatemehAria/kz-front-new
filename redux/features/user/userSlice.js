@@ -15,6 +15,7 @@ const initialState = {
   localToken: "",
   birthDate: "",
   email: "",
+  PhoneNumberInput: true,
 };
 
 const fetchUserRole = createAsyncThunk(
@@ -41,16 +42,15 @@ const fetchUserInOTPValidation = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     const { PhoneNumber, OTP } = payload;
     try {
-      // const { data } = await axios.post(
-      //   "https://keykavoos.liara.run/User/SendOTP",
-      //   {
-      //     PhoneNumber,
-      //     OTP,
-      //   }
-      // );
-      // // console.log(data);
-      // return { data, token: data.token };
-      return "success";
+      const { data } = await axios.post(
+        "https://keykavoos.liara.run/User/SendOTP",
+        {
+          PhoneNumber,
+          OTP,
+        }
+      );
+      // console.log(data);
+      return { data, token: data.token };
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -109,6 +109,9 @@ const userSlice = createSlice({
     },
     updateUserProfile: (state, action) => {
       state.userProfile = { ...state.userProfile, ...action.payload };
+    },
+    updateInputDisability: (state, action) => {
+      state.PhoneNumberInput = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -169,5 +172,6 @@ export const {
   getTokenFromLocal,
   changeUserInfo,
   updateUserProfile,
+  updateInputDisability
 } = userSlice.actions;
 export { fetchUserRole, fetchUserProfile, fetchUserInOTPValidation };

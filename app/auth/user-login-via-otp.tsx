@@ -1,5 +1,4 @@
 "use client";
-import { validateOTP } from "@/utils/utils";
 import axios from "axios";
 import Image from "next/image";
 import {
@@ -12,16 +11,11 @@ import {
 import Logo from "./components/logo";
 import FormSlider from "./components/form-slider";
 import SubmissionBtn from "./components/submission-btn";
-import { useDispatch, useSelector } from "react-redux";
 import FormInput from "../contact-us/components/form/form-inputs";
 import OtpInput from "react-otp-input";
 import sms from "../../public/Auth/sms.svg";
 import phone from "../../public/Auth/phone.svg";
 import Modal from "@/components/modal";
-import {
-  fetchUserInOTPValidation,
-  updateStatus,
-} from "@/redux/features/user/userSlice";
 import { Bounce, toast } from "react-toastify";
 
 type UserLoginViaOTPProps = {
@@ -83,8 +77,8 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
       );
       // console.log(data);
       setShowModal(true),
-      setErrorMessage(""),
-      setSuccessMessage("با موفقیت وارد پنل کاربری خود شدید.");
+        setErrorMessage(""),
+        setSuccessMessage("با موفقیت وارد پنل کاربری خود شدید.");
     } catch (error: any) {
       setShowModal(true);
       setSuccessMessage("");
@@ -101,6 +95,18 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
           PhoneNumber,
         }
       );
+      toast.success("در حال برقراری تماس...", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
       // console.log(data);
     } catch (error) {
       toast.error("خطا در برقراری تماس.", {
@@ -168,10 +174,11 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
                 containerStyle={{
                   display: "flex",
                   justifyContent: "space-between",
-                  direction: "ltr",
+                  flexDirection: "row-reverse",
                 }}
                 renderInput={(props) => <input {...props} />}
                 inputType="tel"
+                shouldAutoFocus={true}
               />
               {errorMessage !== "" && showModal && (
                 <Modal

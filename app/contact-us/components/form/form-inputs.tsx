@@ -10,6 +10,7 @@ type FormInputsProps = {
   disabled?: boolean;
   value: string;
   onBlur?: any;
+  autoFocus?: boolean;
 };
 const FormInput = ({
   label,
@@ -21,7 +22,8 @@ const FormInput = ({
   name,
   error,
   disabled,
-  onBlur
+  onBlur,
+  autoFocus,
 }: FormInputsProps) => {
   const setLength = () => {
     if (type === "tel") {
@@ -52,16 +54,18 @@ const FormInput = ({
         } mx-auto outline-none rounded-md px-2 py-2 text-lg w-full border-[0.3px]`}
         placeholder={placeholder}
         type={type}
-        dir={`${type === "tel" ? "rtl" : "rtl"}`}
+        // dir={`${type === "tel" ? "rtl" : "rtl"}`}
         onChange={onChange}
         maxLength={length}
         value={value}
-        required
+        // required
         autoComplete="off"
         pattern={pattern}
         name={name}
         disabled={disabled}
         onBlur={onBlur}
+        style={{ direction: `${!disabled && type !== "text" ? "ltr" : "rtl"}` }}
+        autoFocus={autoFocus}
       />
     </div>
   );

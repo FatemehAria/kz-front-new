@@ -1,14 +1,6 @@
 "use client";
-
 import axios from "axios";
-import Link from "next/link";
-import {
-  Dispatch,
-  FormEvent,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import SubmissionBtn from "./submission-btn";
 import { useFormik } from "formik";
 import { UserPanelPersonalSchema } from "@/schemas/userpanel-profile-schema";
@@ -71,7 +63,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
     validationSchema: UserPanelPersonalSchema,
     validateOnMount: true,
   });
-  console.log(formik.touched);
+
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-5">
       {showModal && (
@@ -100,8 +92,9 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
               onChange={formik.handleChange}
               name="FirstName"
               label="نام"
-              error={formik.errors.FirstName && formik.touched.FirstName}
+              error={formik.errors.FirstName && !formik.touched.FirstName}
               onBlur={formik.handleBlur}
+              type="text"
             />
             <span className="absolute -top-7 right-12 text-[#4866CF]">*</span>
           </div>
@@ -111,7 +104,9 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
               onChange={formik.handleChange}
               name="LastName"
               label="نام خانوادگی"
-              error={formik.errors.LastName}
+              error={formik.errors.LastName && formik.touched.LastName}
+              onBlur={formik.handleBlur}
+              type="text"
             />
             <span className="absolute -top-7 right-28 text-[#4866CF]">*</span>
           </div>
@@ -121,7 +116,9 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
               onChange={formik.handleChange}
               name="email"
               label="پست الکترونیکی"
-              error={formik.errors.email}
+              error={formik.errors.email && formik.touched.email}
+              onBlur={formik.handleBlur}
+              type="text"
             />
             <span className="absolute -top-7 right-36 text-[#4866CF]">*</span>
             {/* <div className="relative">
