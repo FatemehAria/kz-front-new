@@ -36,6 +36,7 @@ const Login = ({ setSteps }: LoginProps) => {
   );
   let correctAnswer = firstNumber + secondNumber;
   const { executeRecaptcha } = useGoogleReCaptcha();
+
   const login = async (PhoneNumber: string) => {
     try {
       const { data } = await axios.post(
@@ -57,7 +58,44 @@ const Login = ({ setSteps }: LoginProps) => {
         rtl: true,
       });
       setSteps(2);
-      // console.log(data);
+      console.log(data);
+    } catch (error: any) {
+      toast.error("خطا در ارسال کد.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
+      // console.log(error.response.data.message);
+    }
+  };
+
+  const login2 = async (PhoneNumber: string) => {
+    try {
+      const { data } = await axios.post(
+        "https://keykavoos.liara.run/Client/SignUp",
+        {
+          PhoneNumber,
+        }
+      );
+      toast.success("کد ارسال شد.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
     } catch (error: any) {
       toast.error("خطا در ارسال کد.", {
         position: "top-right",
@@ -76,6 +114,9 @@ const Login = ({ setSteps }: LoginProps) => {
   };
 
   const handleSubmission = async () => {
+    if (parseInt(answer) === correctAnswer) {
+      await login(formik.values.PhoneNumber);
+    }
     if (!executeRecaptcha) {
       console.log("Recaptcha not available");
       return;
@@ -95,7 +136,6 @@ const Login = ({ setSteps }: LoginProps) => {
       },
     });
 
-    await login(formik.values.PhoneNumber);
     // if (response?.data?.success === true) {
     //   console.log(`Success with score: ${response?.data?.score}`);
     // } else {
@@ -137,6 +177,7 @@ const Login = ({ setSteps }: LoginProps) => {
               formik.values.PhoneNumber ? "تغییر شماره همراه" : "تایید"
             }`}
             setSteps={setSteps}
+            executeFunction2={() => login2(formik.values.PhoneNumber)}
           />
           <div>
             <Logo />

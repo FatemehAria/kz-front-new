@@ -1,11 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./features/user/userSlice";
+import generalReducer from "./features/user/generalSlice";
 
 const store = configureStore({
   reducer: {
     userRole: userReducer,
+    general: generalReducer,
   },
-//   middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
-
+  //   middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });
 export default store;

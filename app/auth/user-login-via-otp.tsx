@@ -77,8 +77,8 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
       );
       // console.log(data);
       setShowModal(true),
-        setErrorMessage(""),
-        setSuccessMessage("با موفقیت وارد پنل کاربری خود شدید.");
+      setErrorMessage(""),
+      setSuccessMessage("با موفقیت وارد پنل کاربری خود شدید.");
     } catch (error: any) {
       setShowModal(true);
       setSuccessMessage("");
@@ -144,7 +144,7 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
             onSubmit={(e) => handleSubmission(e)}
             className="flex flex-col gap-5"
           >
-            <label>
+            <label className="whitespace-nowrap">
               <p className="font-bold text-[24px] pt-[3%] pb-1">
                 ورود به کیکاووس زمان
               </p>

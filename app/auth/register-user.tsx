@@ -193,6 +193,7 @@ const RegisterUser = ({ setSteps }: RegisterUserProps) => {
                   executeFunction={() => getNewOTP(PhoneNumber)}
                   setCounter={setCounter}
                   changeNumber={true}
+                  setSteps={setSteps}
                 />
               )}
               <span

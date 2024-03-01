@@ -1,9 +1,8 @@
 "use client";
 import {
-  updateInputDisability,
   updateStatus,
 } from "@/redux/features/user/userSlice";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction} from "react";
 import { useDispatch } from "react-redux";
 
 type ModalProps = {
@@ -15,6 +14,7 @@ type ModalProps = {
   setSteps?: Dispatch<SetStateAction<number>>;
   mainButtonText?: string;
   executeFunction?: any;
+  executeFunction2?: any;
   setCounter?: any;
   changeNumber?: boolean;
 };
@@ -27,6 +27,7 @@ function Modal({
   setSteps,
   mainButtonText,
   executeFunction,
+  executeFunction2,
   setCounter,
   changeNumber,
 }: ModalProps) {
@@ -57,7 +58,9 @@ function Modal({
                     setShowModal(false);
                     setSteps?.(5);
                     dispatch(updateStatus());
-                    changeNumber && dispatch(updateInputDisability(false));
+                    // changeNumber && dispatch(updateInputDisability(false));
+                    changeNumber && setSteps?.(1);
+                    data && executeFunction2();
                   }}
                   type="button"
                   className="text-white bg-[#4866CF] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"

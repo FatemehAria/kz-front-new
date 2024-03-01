@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import SubmissionBtn from "./submission-btn";
 import { useFormik } from "formik";
 import { UserPanelPersonalSchema } from "@/schemas/userpanel-profile-schema";
@@ -18,6 +18,13 @@ const initialValues = {
 
 const InfoForm = ({ setSteps }: infoFormProps) => {
   const [showModal, setShowModal] = useState(false);
+  const [PhoneNumber, setPhoneNumber] = useState("");
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      let number = window.localStorage.getItem("PhoneNumber");
+      setPhoneNumber(number || "");
+    }
+  }, []);
   // useEffect(() => {
   //   const timeout = setTimeout(() => {
   //     setSteps(1);
@@ -30,7 +37,8 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
   const sendInfo = async (
     FirstName: string,
     LastName: string,
-    email: string
+    email: string,
+    PhoneNumber: string
   ) => {
     try {
       const { data } = await axios.post(
@@ -39,6 +47,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
           FirstName,
           LastName,
           email,
+          PhoneNumber,
         }
       );
       setShowModal(true);
@@ -53,7 +62,8 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
     await sendInfo(
       formik.values.FirstName,
       formik.values.LastName,
-      formik.values.email
+      formik.values.email,
+      PhoneNumber
     );
   };
 
@@ -95,6 +105,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
               error={formik.errors.FirstName && !formik.touched.FirstName}
               onBlur={formik.handleBlur}
               type="text"
+              autoFocus={true}
             />
             <span className="absolute -top-7 right-12 text-[#4866CF]">*</span>
           </div>
