@@ -1,6 +1,6 @@
 "use client";
 import { updateStatus } from "@/redux/features/user/userSlice";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 type ModalProps = {
@@ -11,6 +11,8 @@ type ModalProps = {
   buttonText?: string;
   setSteps?: Dispatch<SetStateAction<number>>;
   mainButtonText?: string;
+  executeFunction?: any;
+  setCounter?: any;
 };
 function Modal({
   setShowModal,
@@ -20,8 +22,15 @@ function Modal({
   buttonText,
   setSteps,
   mainButtonText,
+  executeFunction,
+  setCounter,
 }: ModalProps) {
   const dispatch = useDispatch();
+  useEffect(() => {
+    if (executeFunction) {
+      setCounter(90);
+    }
+  }, [setCounter,executeFunction]);
   return (
     <div
       id="default-modal"
@@ -60,7 +69,8 @@ function Modal({
               >
                 <button
                   onClick={() => (
-                    setShowModal(false), dispatch(updateStatus())
+                    setShowModal(false),
+                    dispatch(updateStatus(), executeFunction())
                   )}
                   type="button"
                   className={`py-2.5 px-5 ms-3 text-sm font-medium focus:outline-none rounded-lg border border-[#4866CF] ${

@@ -29,15 +29,12 @@ type UserLoginViaOTPProps = {
 };
 
 const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
-  const { status, userRole } = useSelector((state: any) => state.userRole);
-  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [PhoneNumber, setPhoneNumber] = useState("");
   const [counter, setCounter] = useState(90);
   const [OTP, setOTP] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  console.log(status);
   // COUNTER
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -62,6 +59,7 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
   }, []);
   // ارسال مجدد
   const getNewOTP = async (PhoneNumber: string) => {
+    console.log(PhoneNumber);
     try {
       const { data } = await axios.post(
         "https://keykavoos.liara.run/Client/SendOTP",
@@ -74,38 +72,32 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
       console.log(error);
     }
   };
-  const validateOTP = async (OTP: string) => {
+  const validateOTP = async (PhoneNumber: string, OTP: string) => {
     try {
       const { data } = await axios.post(
         "https://keykavoos.liara.run/Client/OTP",
         {
+          PhoneNumber,
           OTP,
         }
       );
       console.log(data);
-      setSteps(3);
+      setShowModal(true),
+        setErrorMessage(""),
+        setSuccessMessage("با موفقیت وارد پنل کاربری خود شدید.");
+      // setSteps(3);
     } catch (error: any) {
-      console.log(error.response.data.message);
+      setShowModal(true);
+      setSuccessMessage("");
+      setErrorMessage(`کد یکبار مصرف مورد تایید نمی باشد
+    دوباره اقدام فرمایید.`);
+      setOTP("");
     }
   };
 
-  useEffect(() => {
-    status === "failed" &&
-      (setShowModal(true),
-      setSuccessMessage(""),
-      setErrorMessage(`کد یکبار مصرف مورد تایید نمی باشد
-    دوباره اقدام فرمایید.`),
-      setOTP(""));
-    status === "success" &&
-      (setShowModal(true),
-      setErrorMessage(""),
-      setSuccessMessage("با موفقیت وارد پنل کاربری خود شدید."));
-    status === "idle" && setShowModal(false);
-  }, [status, OTP]);
-
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await validateOTP(OTP);
+    await validateOTP(PhoneNumber, OTP);
   };
 
   return (
@@ -153,6 +145,7 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
                 containerStyle={{
                   display: "flex",
                   justifyContent: "space-between",
+                  direction: "ltr",
                 }}
                 renderInput={(props) => <input {...props} />}
                 inputType="tel"
@@ -164,6 +157,8 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
                   buttonText="ارسال مجدد کد یکبارمصرف"
                   text={errorMessage}
                   data=""
+                  executeFunction={() => getNewOTP(PhoneNumber)}
+                  setCounter={setCounter}
                 />
               )}
               {successMessage !== "" && showModal && (

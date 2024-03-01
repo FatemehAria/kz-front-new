@@ -46,7 +46,7 @@ const Login = ({ setSteps }: LoginProps) => {
       );
       toast.success("کد ارسال شد.", {
         position: "top-center",
-        autoClose: 5000,
+        autoClose: 3000,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
@@ -54,13 +54,14 @@ const Login = ({ setSteps }: LoginProps) => {
         progress: undefined,
         theme: "light",
         transition: Bounce,
+        rtl: true,
       });
-      // setSteps(2);
-      console.log(data);
+      setSteps(2);
+      // console.log(data);
     } catch (error: any) {
       toast.error("خطا در ارسال کد.", {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -68,8 +69,9 @@ const Login = ({ setSteps }: LoginProps) => {
         progress: undefined,
         theme: "light",
         transition: Bounce,
+        rtl: true,
       });
-      console.log(error.response.data.message);
+      // console.log(error.response.data.message);
     }
   };
 
@@ -79,7 +81,7 @@ const Login = ({ setSteps }: LoginProps) => {
       return;
     }
 
-    const gRecaptchaToken = await executeRecaptcha('inquirySubmit');
+    const gRecaptchaToken = await executeRecaptcha("inquirySubmit");
 
     const response = await axios({
       method: "post",
@@ -93,12 +95,12 @@ const Login = ({ setSteps }: LoginProps) => {
       },
     });
 
-    if (response?.data?.success === true) {
-      console.log(`Success with score: ${response?.data?.score}`);
-    } else {
-      console.log(`Failure with score: ${response?.data?.score}`);
-    }
-
+    await login(formik.values.PhoneNumber);
+    // if (response?.data?.success === true) {
+    //   console.log(`Success with score: ${response?.data?.score}`);
+    // } else {
+    //   console.log(`Failure with score: ${response?.data?.score}`);
+    // }
   };
 
   const formik = useFormik({
