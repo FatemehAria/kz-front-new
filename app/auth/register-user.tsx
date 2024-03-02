@@ -30,6 +30,10 @@ const RegisterUser = ({ setSteps }: RegisterUserProps) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [counter, setCounter] = useState(90);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [User, setUser] = useState();
+  const [redirectToAuth, setRedirectToAuth] = useState(false);
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       setCounter((prevCounter) => {
@@ -49,7 +53,7 @@ const RegisterUser = ({ setSteps }: RegisterUserProps) => {
       window.localStorage.removeItem("PhoneNumber");
     }
   }, [PhoneNumber, PhoneNumberInput]);
-
+  console.log("register user");
   const getNewOTP = async (PhoneNumber: string) => {
     try {
       const { data } = await axios.post(
@@ -60,7 +64,7 @@ const RegisterUser = ({ setSteps }: RegisterUserProps) => {
       );
       // console.log(data);
     } catch (error: any) {
-      console.log(error);
+      // console.log(error);
     }
   };
   const validateOTP = async (PhoneNumber: string, OTP: string) => {
@@ -72,13 +76,27 @@ const RegisterUser = ({ setSteps }: RegisterUserProps) => {
           OTP,
         }
       );
+      setShowModal(true), setErrorMessage("");
       // console.log(data);
-      setShowModal(true), setErrorMessage(""), setSteps(3);
+      if (!data.User) {
+        setSteps(3);
+      } else if (data.isLogin === false && data.User) {
+        // console.log(data.isLogin);
+        setUser(data.User);
+        setRedirectToAuth(true);
+        setSuccessMessage(
+          `${data.User.FirstName} ${data.User.LastName} عزیز لطفا وارد پنل کاربری خود شوید.`
+        );
+        setTimeout(() => {
+          setSteps(1);
+        }, 1500);
+      }
     } catch (error: any) {
       setShowModal(true);
       setErrorMessage(`کد یکبار مصرف مورد تایید نمی باشد
     دوباره اقدام فرمایید.`);
       setOTP("");
+      // console.log(error);
     }
   };
   const getOTPViaCall = async (PhoneNumber: string) => {
@@ -194,6 +212,17 @@ const RegisterUser = ({ setSteps }: RegisterUserProps) => {
                   setCounter={setCounter}
                   changeNumber={true}
                   setSteps={setSteps}
+                  isLoggedIn={true}
+                />
+              )}
+              {successMessage !== "" && showModal && (
+                <Modal
+                  setShowModal={setShowModal}
+                  showModal={showModal}
+                  buttonText="متوجه شدم"
+                  text={successMessage}
+                  data=""
+                  redirect={true}
                 />
               )}
               <span

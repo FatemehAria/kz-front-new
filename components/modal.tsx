@@ -1,8 +1,6 @@
 "use client";
-import {
-  updateStatus,
-} from "@/redux/features/user/userSlice";
-import React, { Dispatch, SetStateAction} from "react";
+import { updateStatus } from "@/redux/features/user/userSlice";
+import React, { Dispatch, SetStateAction } from "react";
 import { useDispatch } from "react-redux";
 
 type ModalProps = {
@@ -17,6 +15,8 @@ type ModalProps = {
   executeFunction2?: any;
   setCounter?: any;
   changeNumber?: boolean;
+  isLoggedIn?: boolean;
+  redirect?: boolean;
 };
 function Modal({
   setShowModal,
@@ -30,8 +30,11 @@ function Modal({
   executeFunction2,
   setCounter,
   changeNumber,
+  isLoggedIn,
+  redirect,
 }: ModalProps) {
   const dispatch = useDispatch();
+  // console.log(redirect);
   return (
     <div
       id="default-modal"
@@ -60,7 +63,7 @@ function Modal({
                     dispatch(updateStatus());
                     // changeNumber && dispatch(updateInputDisability(false));
                     changeNumber && setSteps?.(1);
-                    data && executeFunction2();
+                    data !== "  " && executeFunction2();
                   }}
                   type="button"
                   className="text-white bg-[#4866CF] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
@@ -68,27 +71,31 @@ function Modal({
                   {mainButtonText ? mainButtonText : "تایید شماره همراه"}
                 </button>
               )}
-              <div
-                className={`${
-                  data === "" && "flex justify-center w-full text-center "
-                }`}
-              >
-                <button
-                  onClick={() => {
-                    setShowModal(false);
-                    dispatch(updateStatus());
-                    executeFunction && executeFunction() && setCounter(90);
-                  }}
-                  type="button"
-                  className={`py-2.5 px-5 ms-3 text-sm font-medium focus:outline-none rounded-lg border border-[#4866CF] ${
-                    data.length === 0
-                      ? "self-center bg-[#4866CF] text-white"
-                      : " bg-white text-[#4866CF]"
+              {!redirect && (
+                <div
+                  className={`${
+                    data === "" && "flex justify-center w-full text-center "
                   }`}
                 >
-                  {buttonText}
-                </button>
-              </div>
+                  <button
+                    onClick={() => {
+                      setShowModal(false);
+                      dispatch(updateStatus());
+                      executeFunction && executeFunction() && setCounter(90);
+
+                      !isLoggedIn && setSteps?.(3);
+                    }}
+                    type="button"
+                    className={`py-2.5 px-5 ms-3 text-sm font-medium focus:outline-none rounded-lg border border-[#4866CF] ${
+                      data.length === 0
+                        ? "self-center bg-[#4866CF] text-white"
+                        : " bg-white text-[#4866CF]"
+                    }`}
+                  >
+                    {buttonText}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

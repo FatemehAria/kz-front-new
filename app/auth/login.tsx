@@ -58,7 +58,7 @@ const Login = ({ setSteps }: LoginProps) => {
         rtl: true,
       });
       setSteps(2);
-      console.log(data);
+      // console.log(data);
     } catch (error: any) {
       toast.error("خطا در ارسال کد.", {
         position: "top-right",
@@ -72,7 +72,7 @@ const Login = ({ setSteps }: LoginProps) => {
         transition: Bounce,
         rtl: true,
       });
-      // console.log(error.response.data.message);
+      // console.log(error);
     }
   };
 
@@ -96,6 +96,7 @@ const Login = ({ setSteps }: LoginProps) => {
         transition: Bounce,
         rtl: true,
       });
+      console.log(data);
     } catch (error: any) {
       toast.error("خطا در ارسال کد.", {
         position: "top-right",
@@ -109,7 +110,7 @@ const Login = ({ setSteps }: LoginProps) => {
         transition: Bounce,
         rtl: true,
       });
-      // console.log(error.response.data.message);
+      console.log(error);
     }
   };
 
@@ -178,6 +179,7 @@ const Login = ({ setSteps }: LoginProps) => {
             }`}
             setSteps={setSteps}
             executeFunction2={() => login2(formik.values.PhoneNumber)}
+            isLoggedIn={true}
           />
           <div>
             <Logo />

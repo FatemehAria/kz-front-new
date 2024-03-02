@@ -9,18 +9,21 @@ import Technologie from "@/components/homepage-components/technologie";
 import Intro from "@/components/new-home-components/intro";
 import IntroStatistics from "@/components/new-home-components/intro-statistics";
 import Plans from "@/components/new-home-components/plans";
+import Reason from "@/components/new-home-components/reason";
 import Script from "next/script";
 
 export default function Home() {
   return (
-    <>
+    // className=" bg-blue-100"
+    <div className=" bg-blue-100">
       <Script src="/navachat.js" async />
       <Nav />
-      <main className="font-YekanBakh">
-        <div className="flex flex-col gap-10 w-[80%] mx-auto">
+      <main className="">
+        <div className="flex flex-col gap-12 w-[80%] mx-auto my-[3%]">
           <Intro />
           <IntroStatistics />
           <Plans />
+          <Reason />
           {/* <SliderOne />
           <SliderTwo />
           <Technologie />
@@ -30,6 +33,6 @@ export default function Home() {
         </div>
       </main>
       <Footer />
-    </>
+    </div>
   );
 }

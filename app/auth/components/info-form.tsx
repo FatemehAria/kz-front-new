@@ -19,6 +19,7 @@ const initialValues = {
 const InfoForm = ({ setSteps }: infoFormProps) => {
   const [showModal, setShowModal] = useState(false);
   const [PhoneNumber, setPhoneNumber] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   useEffect(() => {
     if (typeof window !== "undefined") {
       let number = window.localStorage.getItem("PhoneNumber");
@@ -51,10 +52,13 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
         }
       );
       setShowModal(true);
-      console.log(data);
+      setSuccessMessage(
+        `${data.User.FirstName} ${data.User.LastName} عزیز با موفقیت وارد پنل کاربری خود شدید.`
+      );
+      // console.log(data);
     } catch (error: any) {
       setShowModal(false);
-      console.log(error.response.data.message);
+      // console.log(error);
     }
   };
 
@@ -80,7 +84,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
         <Modal
           setShowModal={setShowModal}
           showModal={showModal}
-          text="با موفقیت وارد پنل کاربری خود شدید."
+          text={successMessage}
           buttonText="متوجه شدم"
           data=""
         />

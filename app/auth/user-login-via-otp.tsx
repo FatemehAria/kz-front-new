@@ -30,6 +30,8 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
   const [OTP, setOTP] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState();
+  console.log("user login via otp");
   // COUNTER
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -63,7 +65,7 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
       );
       // console.log(data);
     } catch (error: any) {
-      console.log(error);
+      // console.log(error);
     }
   };
   const validateOTP = async (PhoneNumber: string, OTP: string) => {
@@ -76,17 +78,24 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
         }
       );
       // console.log(data);
-      setShowModal(true),
-      setErrorMessage(""),
-      setSuccessMessage("با موفقیت وارد پنل کاربری خود شدید.");
+      setShowModal(true), setErrorMessage(""), setIsLoggedIn(data.User);
+      if (!data.User) {
+        setSuccessMessage("لطفا اطلاعات خود را تکمیل کنید.");
+      } else {
+        setSuccessMessage(
+          `${data.User.FirstName} ${data.User.LastName} عزیز با موفقیت وارد پنل کاربری خود شدید.`
+        );
+      }
     } catch (error: any) {
       setShowModal(true);
       setSuccessMessage("");
       setErrorMessage(`کد یکبار مصرف مورد تایید نمی باشد
     دوباره اقدام فرمایید.`);
       setOTP("");
+      // console.log(error);
     }
   };
+
   const getOTPViaCall = async (PhoneNumber: string) => {
     try {
       const { data } = await axios.post(
@@ -124,6 +133,7 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
       // console.log(error);
     }
   };
+
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await validateOTP(PhoneNumber, OTP);
@@ -198,6 +208,8 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
                   buttonText="متوجه شدم"
                   text={successMessage}
                   data=""
+                  setSteps={setSteps}
+                  isLoggedIn={isLoggedIn}
                 />
               )}
               <span
