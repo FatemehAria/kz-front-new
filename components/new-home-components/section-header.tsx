@@ -3,16 +3,17 @@ import React from "react";
 type SectionHeaderProps = {
   mainTitle: string;
   subTitle: string;
+  width: string;
 };
-function SectionHeader({ mainTitle, subTitle }: SectionHeaderProps) {
+function SectionHeader({ mainTitle, subTitle, width }: SectionHeaderProps) {
   return (
-    <div className="relative">
+    <div className="relative whitespace-nowrap">
       <div
         style={{
           position: "absolute",
           top: "0",
           left: "0",
-          width: "30%",
+          width: width,
           height: "100%",
           border: "none",
           borderTop: "3px solid",
@@ -25,7 +26,7 @@ function SectionHeader({ mainTitle, subTitle }: SectionHeaderProps) {
           position: "absolute",
           top: "0",
           right: "0",
-          width: "30%",
+          width: width,
           height: "100%",
           border: "none",
           borderTop: "3px solid",
@@ -34,12 +35,8 @@ function SectionHeader({ mainTitle, subTitle }: SectionHeaderProps) {
         }}
       ></div>
       <div className="text-center absolute -top-14 left-1/2 -translate-x-1/2 bg-transparent">
-        <p className="text-[#68707A] text-[37px] font-bold">
-          {mainTitle}
-        </p>
-        <p className="text-[#4866CF] text-[24px]">
-          {subTitle}
-        </p>
+        <p className="text-[#68707A] text-[37px] font-bold">{mainTitle}</p>
+        <p className="text-[#4866CF] text-[24px]">{subTitle}</p>
       </div>
     </div>
   );

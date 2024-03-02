@@ -41,6 +41,7 @@ function Reason() {
       <SectionHeader
         mainTitle="چرا کیکاووس زمان را انتخاب کنیم؟"
         subTitle="دلایل انتخاب کیکاووس زمان چه چیزهایی است؟"
+        width="27%"
       />
       <div className="flex flex-row-reverse justify-between mt-[5%]">
         {ReasonData.map((item) => (

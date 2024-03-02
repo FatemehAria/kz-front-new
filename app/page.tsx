@@ -19,7 +19,7 @@ export default function Home() {
       <Script src="/navachat.js" async />
       <Nav />
       <main className="">
-        <div className="flex flex-col gap-12 w-[80%] mx-auto my-[3%]">
+        <div className="flex flex-col w-[80%] mx-auto my-[3%]">
           <Intro />
           <IntroStatistics />
           <Plans />

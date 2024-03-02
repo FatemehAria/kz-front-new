@@ -25,7 +25,7 @@ function ReasonCard({ data }: ReasonCardProps) {
 
   return (
     <div
-      className="bg-white w-[200px] h-[200px] rounded-2xl flex flex-col items-center text-center gap-2 p-[5%]"
+      className="bg-white w-[200px] h-[200px] rounded-2xl flex flex-col items-center text-center gap-2 p-[5%] shadow cursor-pointer"
       style={{
         backgroundColor: isHovered ? "#4866CF" : "white",
         color: isHovered ? "white" : "black",

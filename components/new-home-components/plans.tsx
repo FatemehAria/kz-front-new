@@ -45,10 +45,11 @@ const PlanData = [
 ];
 function Plans() {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col my-[8%]">
       <SectionHeader
         mainTitle="جدول پلن‌های طراحی سایت"
         subTitle="کدام طرح مناسب کسب و کار شماست؟"
+        width="30%"
       />
       <div className="flex flex-row justify-between mt-[5%]">
         {PlanData.map((item) => (
