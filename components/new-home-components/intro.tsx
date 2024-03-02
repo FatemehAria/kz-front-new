@@ -42,10 +42,10 @@ function Intro() {
 
       <div className="flex flex-col justify-center items-end gap-5">
         <div className="flex items-center justify-center text-[#68707A] text-[45px]">
-          <p>
+          <div>
             شرکت بین المللی <span className="font-extrabold">کیکاووس زمان</span>{" "}
             پیشرو در زمینه <p>برنامه نویسی</p>
-          </p>
+          </div>
         </div>
         <p className="text-[#939393] max-w-sm text-[16px]">
           لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده
