@@ -23,13 +23,13 @@ const Nav = () => {
     (state: any) => state.userRole
   );
 
-  useEffect(() => {
-    window.addEventListener("scroll", () => {
-      window.scrollY > 60
-        ? setActiveColorChange(true)
-        : setActiveColorChange(false);
-    });
-  });
+  // useEffect(() => {
+  //   window.addEventListener("scroll", () => {
+  //     window.scrollY > 60
+  //       ? setActiveColorChange(true)
+  //       : setActiveColorChange(false);
+  //   });
+  // });
   // useEffect(() => {
   //   if (typeof window !== "undefined") {
   //     dispatch(getTokenFromLocal());
@@ -39,7 +39,7 @@ const Nav = () => {
 
   return (
     <div
-      className={`w-full mx-auto top-0 z-[999] font-YekanBakh lg:sticky transition-all lg:${
+      className={`w-full mx-auto top-0 z-[999] font-YekanBakh transition-all mb-3 lg:${
         activeColorChange && "shadow-md bg-slate-50"
       }`}
       onMouseLeave={() => (
@@ -49,7 +49,7 @@ const Nav = () => {
         setShowFour(false)
       )}
     >
-      <div className="flex justify-between items-center h-[5rem] md:h-[5rem] mx-auto shadow-md px-[8%]">
+      <div className="flex justify-between items-center h-[5rem] md:h-[5rem] mx-auto shadow-md px-[10%]">
         {/* Mobile */}
         <NavMobile
           active={active}
