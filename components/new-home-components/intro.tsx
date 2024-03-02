@@ -1,29 +1,50 @@
 import React from "react";
 import tower from "../../public/intro/tower.svg";
 import play from "../../public/intro/play.svg";
+import support from "../../public/intro/support.svg";
 import Image from "next/image";
 
 function Intro() {
   return (
-    <div className="grid grid-cols-2 text-right">
+    <div className="grid grid-cols-2 text-right relative">
       <div
         style={{
           width: "420px",
           maxWidth: "450px",
           height: "420px",
-          background: "radial-gradient(circle closest-side,white 99%,#0000)",
-          borderRadius: "0 0 50% 50%",
+          background: "radial-gradient(circle at bottom,#F6FCFA 99%,#0000)",
+          borderRadius: "50% 50% 50% 50%",
           overflow: "hidden",
           display: "flex",
+          justifyContent: "center",
         }}
       >
-        <Image src={tower} alt="tower" className="mx-auto" />
+        <Image src={tower} alt="tower" />
+        <div className="bg-[#FFFFFF] w-[100px] h-[100px] rounded-[5px] absolute left-0 top-14 flex flex-col items-center py-3 gap-1 shadow">
+          <Image
+            src={support}
+            alt="support"
+            width={25}
+            height={25}
+            className="bg-[#C9D6E9DE] p-[3%] rounded-full"
+          />
+          <p className="text-[12px] text-[#4C6487]">پشتیبانی یک ساله</p>
+          <p className="text-[10px] text-[#4C6487] text-center">
+            یک سال در کنارتان هستیم
+          </p>
+        </div>
+
+        <div className="w-[30px] h-[30px] absolute left-12 bg-[#C9D6E9] rounded-full"></div>
+        <div className="w-[18px] h-[18px] absolute left-[28rem] top-12 bg-[#C9D6E9] rounded-full"></div>
+        <div className="w-[22px] h-[22px] absolute bottom-5 left-2 bg-[#C9D6E9] rounded-full"></div>
+        <div className="w-[8px] h-[8px] absolute bottom-11 right-80 bg-[#C9D6E9] rounded-full"></div>
       </div>
-      <div className="flex flex-col items-end">
+
+      <div className="flex flex-col justify-center items-end gap-5">
         <div className="flex items-center justify-center text-[#68707A] text-[45px]">
           <p>
             شرکت بین المللی <span className="font-extrabold">کیکاووس زمان</span>{" "}
-            پیشرو در زمینه برنامه نویسی
+            پیشرو در زمینه <p>برنامه نویسی</p>
           </p>
         </div>
         <p className="text-[#939393] max-w-sm text-[16px]">

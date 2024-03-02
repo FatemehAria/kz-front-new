@@ -15,7 +15,7 @@ import Script from "next/script";
 export default function Home() {
   return (
     // className=" bg-blue-100"
-    <div className=" bg-blue-100">
+    <div className="bg-[#EAEFF6]">
       <Script src="/navachat.js" async />
       <Nav />
       <main className="">
