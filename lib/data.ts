@@ -74,7 +74,7 @@ export const userSidebarOptions = [
   {
     text: "مدیریت پروژه ها",
     imgSrc: "/Panel/projectsmanagement.svg",
-    address: "/panel/boost",
+    address: "/panel/project-management",
     path: "/boost",
   },
   {
