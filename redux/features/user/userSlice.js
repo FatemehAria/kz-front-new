@@ -4,53 +4,42 @@ import { deleteCookie, getCookie, setCookie } from "cookies-next";
 
 const initialState = {
   status: "idle",
-  userRole: {},
   userProfile: {},
+  userInfoOnLogin: {},
   FirstName: "",
   LastName: "",
   token: "",
-  error: "",
+  errorMessage: "",
+  successMessage: "",
   changePhoneNumber: false,
   loadscript: false,
   localToken: "",
   birthDate: "",
   email: "",
   PhoneNumberInput: true,
+  showModal: false,
+  autoFocus: true,
 };
 
-const fetchUserRole = createAsyncThunk(
-  "userRole/fetchUserRole",
-  async (payload, { rejectWithValue }) => {
-    const { PhoneNumber, Password } = payload;
-    try {
-      const { data } = await axios.post(
-        "https://keykavoos.liara.run/User/Login",
-        {
-          PhoneNumber,
-          Password,
-        }
-      );
-      // console.log(data);
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
 const fetchUserInOTPValidation = createAsyncThunk(
-  "userRole/fetchUserInOTPValidation",
+  "userData/fetchUserInOTPValidation",
   async (payload, { rejectWithValue }) => {
     const { PhoneNumber, OTP } = payload;
     try {
       const { data } = await axios.post(
-        "https://keykavoos.liara.run/User/SendOTP",
+        "https://keykavoos.liara.run/Client/OTP",
         {
           PhoneNumber,
           OTP,
         }
       );
-      // console.log(data);
-      return { data, token: data.token };
+      console.log(data);
+      return {
+        token: data.token,
+        data: data.User,
+        FirstName: data.User.FirstName,
+        LastName: data.User.LastName,
+      };
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -83,15 +72,20 @@ const fetchUserProfile = createAsyncThunk(
 );
 
 const userSlice = createSlice({
-  name: "userRole",
+  name: "userData",
   initialState,
   reducers: {
     updateStatus: (state) => {
       state.status = "idle";
     },
+    closeModal: (state, action) => {
+      state.showModal = action.payload;
+    },
+    handleAutoFocus: (state, action) => {
+      state.autoFocus = action.payload;
+    },
     deleteToken: (state) => {
       state.token = "";
-      localStorage.clear();
       deleteCookie("token");
     },
     changePhoneNumber: (state) => {
@@ -115,42 +109,40 @@ const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchUserRole.pending, (state) => {
-      state.status = "loading";
-    });
-    builder.addCase(fetchUserRole.fulfilled, (state, action) => {
-      state.status = "succeeded";
-      state.userRole = { ...action.payload.data };
-      state.error = "";
-    });
-    builder.addCase(fetchUserRole.rejected, (state, action) => {
-      state.status = "failed";
-      state.error = action.payload;
-    });
     builder.addCase(fetchUserInOTPValidation.pending, (state) => {
       state.status = "loading";
     });
     builder.addCase(fetchUserInOTPValidation.fulfilled, (state, action) => {
+      state.showModal = true;
       state.status = "success";
       state.token = action.payload.token;
-      state.userRole = action.payload.data;
       setCookie("token", state.token, {
         path: "/",
         maxAge: 24 * 60 * 60,
         secure: true,
       });
-      state.error = "";
+      state.userInfoOnLogin = action.payload.data;
+      state.FirstName = action.payload.FirstName;
+      state.LastName = action.payload.LastName;
+      if (!action.payload.data) {
+        state.successMessage = "لطفا اطلاعات خود را تکمیل کنید.";
+      } else {
+        state.successMessage = `${state.FirstName} ${state.LastName} عزیز با موفقیت وارد پنل کاربری خود شدید.`;
+      }
+      state.errorMessage = "";
     });
-    builder.addCase(fetchUserInOTPValidation.rejected, (state, action) => {
+    builder.addCase(fetchUserInOTPValidation.rejected, (state) => {
+      state.showModal = true;
       state.status = "failed";
-      state.error = action.payload;
+      state.errorMessage = `      کد یکبار مصرف مورد تایید نمی باشد
+      دوباره اقدام فرمایید.`;
     });
 
     builder.addCase(fetchUserProfile.pending, (state) => {
       state.status = "loading";
     });
     builder.addCase(fetchUserProfile.fulfilled, (state, action) => {
-      state.status = "succeeded";
+      state.status = "success";
       state.userProfile = action.payload.data;
       state.FirstName = action.payload.FirstName;
       state.LastName = action.payload.LastName;
@@ -172,6 +164,8 @@ export const {
   getTokenFromLocal,
   changeUserInfo,
   updateUserProfile,
-  updateInputDisability
+  updateInputDisability,
+  closeModal,
+  handleAutoFocus,
 } = userSlice.actions;
-export { fetchUserRole, fetchUserProfile, fetchUserInOTPValidation };
+export { fetchUserProfile, fetchUserInOTPValidation };

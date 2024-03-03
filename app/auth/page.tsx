@@ -8,7 +8,7 @@ import UserLoginViaOTP from "./user-login-via-otp";
 
 const Auth = () => {
   const [steps, setSteps] = useState(1);
-  const { localToken } = useSelector((state: any) => state.userRole);
+  const { localToken } = useSelector((state: any) => state.userData);
 
   const renderSteps = () => {
     switch (steps) {

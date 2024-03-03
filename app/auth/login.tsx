@@ -18,6 +18,10 @@ import Modal from "@/components/modal";
 import { Bounce, toast } from "react-toastify";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import MathProblemComponent from "./components/math-problem-component";
+import { login2 } from "@/utils/utils";
+import { useDispatch, useSelector } from "react-redux";
+import { closeModal } from "@/redux/features/user/userSlice";
+
 type LoginProps = {
   setSteps: Dispatch<SetStateAction<number>>;
 };
@@ -27,8 +31,9 @@ const initialValues = {
 };
 
 const Login = ({ setSteps }: LoginProps) => {
+  const { showModal } = useSelector((state: any) => state.userData);
+  const dispatch = useDispatch();
   const { executeRecaptcha } = useGoogleReCaptcha();
-  const [showModal, setshowModal] = useState(false);
   const [answer, setAnswer] = useState("");
   const [mathProblem, setMathProblem] = useState("");
   const [wrongAnswerMessage, setWrongAnswerMessage] = useState("");
@@ -74,44 +79,6 @@ const Login = ({ setSteps }: LoginProps) => {
         transition: Bounce,
         rtl: true,
       });
-    }
-  };
-
-  const login2 = async (PhoneNumber: string) => {
-    try {
-      const { data } = await axios.post(
-        "https://keykavoos.liara.run/Client/SignUp",
-        {
-          PhoneNumber,
-        }
-      );
-      toast.success("کد ارسال شد.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        rtl: true,
-      });
-      console.log(data);
-    } catch (error: any) {
-      toast.error("خطا در ارسال کد.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        rtl: true,
-      });
-      console.log(error);
     }
   };
 
@@ -181,7 +148,6 @@ const Login = ({ setSteps }: LoginProps) => {
       >
         <div className="py-[5%] w-full relative px-[5%]">
           <Modal
-            setShowModal={setshowModal}
             showModal={showModal}
             data={formik.values.PhoneNumber}
             text={`${
@@ -257,7 +223,7 @@ const Login = ({ setSteps }: LoginProps) => {
               <p>حساب کاربری ندارید؟</p>
               <span>
                 <span
-                  onClick={() => setshowModal(true)}
+                  onClick={() => dispatch(closeModal(true))}
                   className="text-[#4866CF] cursor-pointer"
                 >
                   ثبت نام

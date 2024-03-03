@@ -1,7 +1,6 @@
 "use client";
-import axios from "axios";
 import Image from "next/image";
-import {
+import React, {
   Dispatch,
   FormEvent,
   SetStateAction,
@@ -16,7 +15,9 @@ import OtpInput from "react-otp-input";
 import sms from "../../public/Auth/sms.svg";
 import phone from "../../public/Auth/phone.svg";
 import Modal from "@/components/modal";
-import { Bounce, toast } from "react-toastify";
+import { getNewOTP, getOTPViaCall } from "@/utils/utils";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserInOTPValidation, handleAutoFocus } from "@/redux/features/user/userSlice";
 
 type UserLoginViaOTPProps = {
   setSteps: Dispatch<SetStateAction<number>>;
@@ -24,14 +25,12 @@ type UserLoginViaOTPProps = {
 };
 
 const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
-  const [showModal, setShowModal] = useState(false);
+  const { userInfoOnLogin, status, successMessage, errorMessage, showModal, autoFocus } =
+    useSelector((state: any) => state.userData);
+  const dispatch = useDispatch();
   const [PhoneNumber, setPhoneNumber] = useState("");
   const [counter, setCounter] = useState(90);
   const [OTP, setOTP] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState();
-  console.log("user login via otp");
   // COUNTER
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -54,94 +53,50 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
       }
     }
   }, []);
-  // ارسال مجدد
-  const getNewOTP = async (PhoneNumber: string) => {
-    try {
-      const { data } = await axios.post(
-        "https://keykavoos.liara.run/Client/SendOTP",
-        {
-          PhoneNumber,
-        }
-      );
-      // console.log(data);
-    } catch (error: any) {
-      // console.log(error);
-    }
-  };
-  const validateOTP = async (PhoneNumber: string, OTP: string) => {
-    try {
-      const { data } = await axios.post(
-        "https://keykavoos.liara.run/Client/OTP",
-        {
-          PhoneNumber,
-          OTP,
-        }
-      );
-      // console.log(data);
-      setShowModal(true), setErrorMessage(""), setIsLoggedIn(data.User);
-      if (!data.User) {
-        setSuccessMessage("لطفا اطلاعات خود را تکمیل کنید.");
-      } else {
-        setSuccessMessage(
-          `${data.User.FirstName} ${data.User.LastName} عزیز با موفقیت وارد پنل کاربری خود شدید.`
-        );
-      }
-    } catch (error: any) {
-      setShowModal(true);
-      setSuccessMessage("");
-      setErrorMessage(`کد یکبار مصرف مورد تایید نمی باشد
-    دوباره اقدام فرمایید.`);
-      setOTP("");
-      // console.log(error);
-    }
-  };
 
-  const getOTPViaCall = async (PhoneNumber: string) => {
-    try {
-      const { data } = await axios.post(
-        "https://keykavoos.liara.run/Client/SendCallOTP",
-        {
-          PhoneNumber,
-        }
-      );
-      toast.success("در حال برقراری تماس...", {
-        position: "top-center",
-        autoClose: 1000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        rtl: true,
-      });
-      // console.log(data);
-    } catch (error) {
-      toast.error("خطا در برقراری تماس.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        rtl: true,
-      });
-      // console.log(error);
-    }
-  };
+  // ارسال مجدد
+
+  // const validateOTP = async (PhoneNumber: string, OTP: string) => {
+  //   try {
+  //     const { data } = await axios.post(
+  //       "https://keykavoos.liara.run/Client/OTP",
+  //       {
+  //         PhoneNumber,
+  //         OTP,
+  //       }
+  //     );
+  //     // console.log(data);
+  //     setShowModal(true), setErrorMessage(""), setIsLoggedIn(data.User);
+  //     if (!data.User) {
+  //       setSuccessMessage("لطفا اطلاعات خود را تکمیل کنید.");
+  //     } else {
+  //       setSuccessMessage(
+  //         `${data.User.FirstName} ${data.User.LastName} عزیز با موفقیت وارد پنل کاربری خود شدید.`
+  //       );
+  //     }
+  //   } catch (error: any) {
+  //     setShowModal(true);
+  //     setSuccessMessage("");
+  //     setErrorMessage(`کد یکبار مصرف مورد تایید نمی باشد
+  //   دوباره اقدام فرمایید.`);
+  //     setOTP("");
+  //     // console.log(error);
+  //   }
+  // };
 
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await validateOTP(PhoneNumber, OTP);
+    await dispatch<any>(fetchUserInOTPValidation({ PhoneNumber, OTP }));
   };
+  useEffect(() => {
+    if (status === "failed") {
+      setOTP("");
+      dispatch(handleAutoFocus(true))
+    }
+  }, [status]);
 
   return (
-    <div>
-      {/*  lg:grid lg:grid-cols-2 */}
+    <React.Fragment>
       <div
         className="mx-auto grid grid-cols-1 font-YekanBakh rounded-3xl overflow-hidden shadow-2xl shadow-[13px_0_61px_-24px_rgba(0, 0, 0, 0.15)]"
         dir="rtl"
@@ -188,11 +143,10 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
                 }}
                 renderInput={(props) => <input {...props} />}
                 inputType="tel"
-                shouldAutoFocus={true}
+                shouldAutoFocus={autoFocus}
               />
               {errorMessage !== "" && showModal && (
                 <Modal
-                  setShowModal={setShowModal}
                   showModal={showModal}
                   buttonText="ارسال مجدد کد یکبارمصرف"
                   text={errorMessage}
@@ -203,13 +157,12 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
               )}
               {successMessage !== "" && showModal && (
                 <Modal
-                  setShowModal={setShowModal}
                   showModal={showModal}
                   buttonText="متوجه شدم"
                   text={successMessage}
                   data=""
                   setSteps={setSteps}
-                  isLoggedIn={isLoggedIn}
+                  isLoggedIn={userInfoOnLogin}
                 />
               )}
               <span
@@ -250,11 +203,8 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
             </div>
           </form>
         </div>
-        {/* <div className="lg:block hidden bg-[#4866CF]">
-          <FormSlider />
-        </div> */}
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 export default UserLoginViaOTP;

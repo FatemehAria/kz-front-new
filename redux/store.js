@@ -4,7 +4,7 @@ import generalReducer from "./features/user/generalSlice";
 
 const store = configureStore({
   reducer: {
-    userRole: userReducer,
+    userData: userReducer,
     general: generalReducer,
   },
   //   middleware: (getDefaultMiddleware) => getDefaultMiddleware(),

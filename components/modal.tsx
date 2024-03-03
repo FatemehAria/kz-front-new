@@ -1,10 +1,14 @@
 "use client";
-import { updateStatus } from "@/redux/features/user/userSlice";
+import {
+  closeModal,
+  handleAutoFocus,
+  updateStatus,
+} from "@/redux/features/user/userSlice";
 import React, { Dispatch, SetStateAction } from "react";
 import { useDispatch } from "react-redux";
 
 type ModalProps = {
-  setShowModal: Dispatch<SetStateAction<boolean>>;
+  setShowModal?: any;
   showModal: boolean;
   data?: any;
   text?: string;
@@ -58,9 +62,8 @@ function Modal({
               {data && (
                 <button
                   onClick={() => {
-                    setShowModal(false);
+                    dispatch(closeModal(false));
                     setSteps?.(5);
-                    dispatch(updateStatus());
                     // changeNumber && dispatch(updateInputDisability(false));
                     changeNumber && setSteps?.(1);
                     data !== "  " && executeFunction2();
@@ -79,11 +82,10 @@ function Modal({
                 >
                   <button
                     onClick={() => {
-                      setShowModal(false);
-                      dispatch(updateStatus());
+                      dispatch(closeModal(false));
                       executeFunction && executeFunction() && setCounter(90);
-
                       !isLoggedIn && setSteps?.(3);
+                      dispatch(handleAutoFocus(true));
                     }}
                     type="button"
                     className={`py-2.5 px-5 ms-3 text-sm font-medium focus:outline-none rounded-lg border border-[#4866CF] ${
