@@ -68,7 +68,7 @@ export const userSidebarOptions = [
   {
     text: "مشخصات فردی",
     imgSrc: "/Panel/personalinfo.svg",
-    address: "/panel/profile",
+    address: "/panel/personal-info",
     path: "/profile",
   },
   {

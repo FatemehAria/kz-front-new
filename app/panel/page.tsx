@@ -4,10 +4,10 @@ import { useSelector } from "react-redux";
 import { UserDashboardInfo } from "@/lib/data";
 
 const UserPanel = () => {
-  const { userProfile } = useSelector((store: any) => store.userRole);
+  // const { userProfile } = useSelector((store: any) => store.userRole);
 
   const calcMembership = () => {
-    const createdAt = userProfile.createdAt;
+    const createdAt = 11;
     const createdAtDate = new Date(createdAt);
     const currentTime = new Date();
     const duration = currentTime.getTime() - createdAtDate.getTime();
@@ -18,8 +18,8 @@ const UserPanel = () => {
 
   return (
     <>
-      <div className="px-[3%] lg:px-0 py-[1%]">
-        <PanelCards dashboardInfo={UserDashboardInfo} membership={membership} />
+      <div className="">
+        {/* <PanelCards dashboardInfo={UserDashboardInfo} membership={membership} /> */}
       </div>
     </>
   );

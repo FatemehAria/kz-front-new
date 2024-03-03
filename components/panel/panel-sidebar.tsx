@@ -18,14 +18,14 @@ const PanelSidebar = ({ sideOptions }: { sideOptions: SideOptionsProps[] }) => {
   return (
     <div className="flex flex-col h-full">
       <div
-        className="w-[260px] font-YekanBakh py-6 h-full border-l relative"
+        className="w-[260px] font-YekanBakh py-6 border-l relative h-full"
         style={{ boxShadow: "-9px 0px 61px 0px rgba(0, 0, 0, 0.07)" }}
       >
         <div className="flex justify-center">
           <Logo />
         </div>
-        <Image src={sidebarpicbg} alt="sidebarbg" height={600} />
-        <div className="absolute bottom-16 flex flex-col gap-10 pr-2 w-full">
+        <Image src={sidebarpicbg} alt="sidebarbg" height={605} />
+        <div className="absolute bottom-20 flex flex-col gap-10 pr-2 w-full">
           {sideOptions.map((item) => (
             <Link
               href={item.address}
