@@ -19,7 +19,7 @@ function PersonalInfoFileupload() {
               <span className="text-[#68707A] text-[13px]">انتخاب فایل</span>
             </label>
           </div>
-          <p className="w-full text-[18px] text-[#858585]">
+          <p className="w-full text-[18px] text-[#858585] font-faNum">
             فقط فایل های jpg, jpeg, png ، حداکثر حجم 2MB حداقل سایز تصویر
             انتخابی باید 200px * 200px باشد.
           </p>

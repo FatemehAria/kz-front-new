@@ -1,6 +1,8 @@
 import React from "react";
-
-function PersonalInfoHeader() {
+type PersonalInfoHeaderProps = {
+  userType: string;
+};
+function PersonalInfoHeader({ userType }: PersonalInfoHeaderProps) {
   return (
     <div className="relative whitespace-nowrap">
       <div
@@ -30,8 +32,24 @@ function PersonalInfoHeader() {
         }}
       ></div>
       <div className="text-center absolute -top-5 left-1/2 text-[20px] -translate-x-1/2 bg-transparent flex flex-row gap-5">
-        <button className="rounded-[4px] bg-[#EAEFF6] text-[#4866CF] py-[3%] px-[8%]">حقیقی</button>
-        <button className="rounded-[4px] bg-[#EAEFF6] text-[#4866CF] py-[3%] px-[8%]">حقوقی</button>
+        <button
+          className={`rounded-[4px] py-[3%] px-[8%] ${
+            userType === "حقیقی"
+              ? "bg-[#4866CF] text-white"
+              : "bg-[#EAEFF6] text-[#4866CF]"
+          }`}
+        >
+          حقیقی
+        </button>
+        <button
+          className={`rounded-[4px] py-[3%] px-[8%] ${
+            userType === "حقوقی"
+              ? "bg-[#4866CF] text-white"
+              : "bg-[#EAEFF6] text-[#4866CF]"
+          }`}
+        >
+          حقوقی
+        </button>
       </div>
     </div>
   );
