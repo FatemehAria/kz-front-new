@@ -6,6 +6,7 @@ import { useFormik } from "formik";
 import { UserPanelPersonalSchema } from "@/schemas/userpanel-profile-schema";
 import FormInput from "@/app/contact-us/components/form/form-inputs";
 import Modal from "@/components/modal";
+import { useRouter } from "next/navigation";
 
 type infoFormProps = {
   setSteps: Dispatch<SetStateAction<number>>;
@@ -20,6 +21,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
   const [showModal, setShowModal] = useState(false);
   const [PhoneNumber, setPhoneNumber] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const router = useRouter();
   useEffect(() => {
     if (typeof window !== "undefined") {
       let number = window.localStorage.getItem("PhoneNumber");
@@ -55,6 +57,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
       setSuccessMessage(
         `${data.User.FirstName} ${data.User.LastName} عزیز با موفقیت وارد پنل کاربری خود شدید.`
       );
+      router.push("/panel");
       // console.log(data);
     } catch (error: any) {
       setShowModal(false);
@@ -82,7 +85,6 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-5">
       {showModal && (
         <Modal
-          setShowModal={setShowModal}
           showModal={showModal}
           text={successMessage}
           buttonText="متوجه شدم"
