@@ -1,5 +1,5 @@
 "use client";
-import {
+import React, {
   ChangeEvent,
   Dispatch,
   SetStateAction,
@@ -17,6 +17,7 @@ import LoginVia from "./components/login-via";
 import Modal from "@/components/modal";
 import { Bounce, toast } from "react-toastify";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import MathProblemComponent from "./components/math-problem-component";
 type LoginProps = {
   setSteps: Dispatch<SetStateAction<number>>;
 };
@@ -26,16 +27,18 @@ const initialValues = {
 };
 
 const Login = ({ setSteps }: LoginProps) => {
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const [showModal, setshowModal] = useState(false);
   const [answer, setAnswer] = useState("");
+  const [mathProblem, setMathProblem] = useState("");
+  const [wrongAnswerMessage, setWrongAnswerMessage] = useState("");
   const [firstNumber, setFirstNumber] = useState(
-    Math.floor(Math.random() * 100) + 1
+    Math.floor(Math.random() * 10) + 1
   );
   const [secondNumber, setSecondNumber] = useState(
-    Math.floor(Math.random() * 100) + 1
+    Math.floor(Math.random() * 10) + 1
   );
   let correctAnswer = firstNumber + secondNumber;
-  const { executeRecaptcha } = useGoogleReCaptcha();
 
   const login = async (PhoneNumber: string) => {
     try {
@@ -58,7 +61,6 @@ const Login = ({ setSteps }: LoginProps) => {
         rtl: true,
       });
       setSteps(2);
-      // console.log(data);
     } catch (error: any) {
       toast.error("خطا در ارسال کد.", {
         position: "top-right",
@@ -72,7 +74,6 @@ const Login = ({ setSteps }: LoginProps) => {
         transition: Bounce,
         rtl: true,
       });
-      // console.log(error);
     }
   };
 
@@ -152,14 +153,28 @@ const Login = ({ setSteps }: LoginProps) => {
   });
 
   useEffect(() => {
+    setMathProblem(`${firstNumber} + ${secondNumber}`);
+
+    if (answer === "") {
+      setWrongAnswerMessage("");
+    } else if (
+      parseInt(answer) !== correctAnswer &&
+      formik.values.PhoneNumber
+    ) {
+      setWrongAnswerMessage("پاسخ صحیح نیست.");
+    } else if (parseInt(answer) === correctAnswer) {
+      setWrongAnswerMessage("");
+    }
+  }, [answer, formik.values.PhoneNumber]);
+
+  useEffect(() => {
     if (typeof window !== "undefined") {
       window.localStorage.setItem("PhoneNumber", formik.values.PhoneNumber);
     }
   }, [formik.values.PhoneNumber]);
 
   return (
-    <div className="">
-      {/*  lg:grid lg:grid-cols-2 */}
+    <React.Fragment>
       <div
         className="mx-auto grid grid-cols-1 font-YekanBakh rounded-3xl overflow-hidden shadow-2xl shadow-[13px_0_61px_-24px_rgba(0, 0, 0, 0.15)]"
         dir="rtl"
@@ -225,12 +240,9 @@ const Login = ({ setSteps }: LoginProps) => {
                   label="جواب سوال"
                   name="answer"
                 />
-                <input
-                  type="text"
-                  className="mx-auto outline-none rounded-md border-[0.3px] flex justify-center w-full text-center items-center text-3xl border-black"
-                  style={{ direction: "ltr" }}
-                  disabled={true}
-                  value={`${firstNumber} + ${secondNumber}`}
+                <MathProblemComponent
+                  mathProblem={mathProblem}
+                  wrongAnswerMessage={wrongAnswerMessage}
                 />
               </div>
               <SubmissionBtn
@@ -259,7 +271,7 @@ const Login = ({ setSteps }: LoginProps) => {
           <FormSlider />
         </div> */}
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 export default Login;
