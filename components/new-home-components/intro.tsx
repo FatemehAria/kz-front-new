@@ -1,7 +1,7 @@
 import React from "react";
-import tower from "../../public/intro/tower.svg";
-import play from "../../public/intro/play.svg";
-import support from "../../public/intro/support.svg";
+import tower from "../../public/Intro/tower.svg";
+import play from "../../public/Intro/play.svg";
+import support from "../../public/Intro/support.svg";
 import Image from "next/image";
 
 function Intro() {
@@ -9,14 +9,25 @@ function Intro() {
     <div className="grid grid-cols-2 text-right relative">
       <div
         style={{
+          backgroundColor: "#F6FCFA",
+          width: "420px",
+          height: "400px",
+          position: "absolute",
+          borderRadius: "100%",
+          top: "1rem",
+        }}
+      ></div>
+      <div
+        style={{
           width: "420px",
           maxWidth: "450px",
           height: "420px",
-          background: "radial-gradient(circle at bottom,#F6FCFA 99%,#0000)",
+          background: "radial-gradient(circle at bottom,#F6FCFA 0%,#0000)",
           borderRadius: "50% 50% 50% 50%",
           overflow: "hidden",
           display: "flex",
           justifyContent: "center",
+          zIndex: "10",
         }}
       >
         <Image src={tower} alt="tower" />

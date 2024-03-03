@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import options from "../../public/plans/options.svg";
+import options from "../../public/Plans/options.svg";
 type PlanCardProps = {
   data: CardInfo;
 };

@@ -1,9 +1,9 @@
 import React from "react";
 import SectionHeader from "./section-header";
-import data from "../../public/reason/data.svg";
-import time from "../../public/reason/time.svg";
-import mail from "../../public/reason/mail.svg";
-import book from "../../public/reason/book.svg";
+import data from "../../public/Reason/data.svg";
+import time from "../../public/Reason/time.svg";
+import mail from "../../public/Reason/mail.svg";
+import book from "../../public/Reason/book.svg";
 import ReasonCard from "./reason-card";
 const ReasonData = [
   {

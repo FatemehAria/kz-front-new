@@ -1,6 +1,6 @@
 import React from "react";
 import PlanCard from "./plan-card";
-import news from "../../public/plans/news.svg";
+import news from "../../public/Plans/news.svg";
 import SectionHeader from "./section-header";
 const PlanData = [
   {

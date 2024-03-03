@@ -1,6 +1,6 @@
 import React from "react";
-import company from "../../public/intro/company.png";
-import agreement from "../../public/intro/agreement.png";
+import company from "../../public/Intro/company.png";
+import agreement from "../../public/Intro/agreement.png";
 import IntroStatisticsAtom from "./intro-statistics-atom";
 function IntroStatistics() {
   return (
