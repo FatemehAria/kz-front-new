@@ -61,58 +61,46 @@ export const studentSidebarOptions = [
 export const userSidebarOptions = [
   {
     text: "داشبورد",
-    imgSrc: "/userpanel/dashboardcolored.svg",
+    imgSrc: "/Panel/dashboard.svg",
     address: "/panel",
     path: "/panel",
   },
   {
-    text: "پروفایل",
-    imgSrc: "/userpanel/profilecolored.svg",
+    text: "مشخصات فردی",
+    imgSrc: "/Panel/personalinfo.svg",
     address: "/panel/profile",
     path: "/profile",
   },
   {
-    text: "ارتقا پنل",
-    imgSrc: "/userpanel/boostpanelcolored.svg",
+    text: "مدیریت پروژه ها",
+    imgSrc: "/Panel/projectsmanagement.svg",
     address: "/panel/boost",
     path: "/boost",
   },
   {
-    text: "رزومه ساز",
-    imgSrc: "/userpanel/resumegeneratorcolored.svg",
+    text: "پشتیبانی",
+    imgSrc: "/Panel/support.svg",
     address: "/panel/resume-generator",
     path: "/resume-generator",
   },
   {
-    text: "فرصت شغلی",
-    imgSrc: "/userpanel/jobopportunitycolored.svg",
+    text: "ثبت سفارش",
+    imgSrc: "/Panel/orders.svg",
     address: "/panel/job",
     path: "/job",
   },
   {
-    text: "تمرین و چالش",
-    imgSrc: "/userpanel/practicecolored.svg",
+    text: "وضعیت مالی",
+    imgSrc: "/Panel/financialstatus.svg",
     address: "/panel/excercise",
     path: "/excercise",
   },
   {
-    text: "مسابقه و درآمد",
-    imgSrc: "/userpanel/gamecolored.svg",
+    text: "تنظیمات",
+    imgSrc: "/Panel/settings.svg",
     address: "/panel/game",
     path: "/game",
-  },
-  {
-    text: "درخواست منتور",
-    imgSrc: "/userpanel/mentorcolored.svg",
-    address: "/panel/mentor",
-    path: "/mentor",
-  },
-  {
-    text: "اعلانات",
-    imgSrc: "/userpanel/sidenotification.svg",
-    address: "/panel/notifications",
-    path: "/mentor",
-  },
+  }
 ];
 export const employerSidebarOptions = [
   {
