@@ -19,6 +19,8 @@ const initialState = {
   PhoneNumberInput: true,
   showModal: false,
   autoFocus: true,
+  isLoggedIn: false,
+  welcomeMessage: "",
 };
 
 const fetchUserInOTPValidation = createAsyncThunk(
@@ -35,12 +37,15 @@ const fetchUserInOTPValidation = createAsyncThunk(
       );
       console.log(data);
       return {
-        token: data.token,
-        data: data.User,
-        FirstName: data.User.FirstName,
-        LastName: data.User.LastName,
+        token: data.User?.token,
+        userInfoOnLogin: data.User,
+        FirstName: data.User?.FirstName,
+        LastName: data.User?.LastName,
+        isLoggedIn: data.isLogin,
+        welcomeMessage: data.welcome,
       };
     } catch (error) {
+      console.log(error);
       return rejectWithValue(error.message);
     }
   }
@@ -121,10 +126,11 @@ const userSlice = createSlice({
         maxAge: 24 * 60 * 60,
         secure: true,
       });
-      state.userInfoOnLogin = action.payload.data;
+      state.userInfoOnLogin = action.payload.userInfoOnLogin;
       state.FirstName = action.payload.FirstName;
       state.LastName = action.payload.LastName;
-      if (!action.payload.data) {
+      state.welcomeMessage = action.payload.welcomeMessage;
+      if (!state.userInfoOnLogin) {
         state.successMessage = "لطفا اطلاعات خود را تکمیل کنید.";
       } else {
         state.successMessage = `${state.FirstName} ${state.LastName} عزیز با موفقیت وارد پنل کاربری خود شدید.`;

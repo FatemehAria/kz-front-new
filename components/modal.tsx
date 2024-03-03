@@ -4,11 +4,11 @@ import {
   handleAutoFocus,
   updateStatus,
 } from "@/redux/features/user/userSlice";
+import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction } from "react";
 import { useDispatch } from "react-redux";
 
 type ModalProps = {
-  setShowModal?: any;
   showModal: boolean;
   data?: any;
   text?: string;
@@ -23,7 +23,6 @@ type ModalProps = {
   redirect?: boolean;
 };
 function Modal({
-  setShowModal,
   showModal,
   data,
   text,
@@ -38,7 +37,7 @@ function Modal({
   redirect,
 }: ModalProps) {
   const dispatch = useDispatch();
-  // console.log(redirect);
+  const router = useRouter();
   return (
     <div
       id="default-modal"
@@ -74,30 +73,29 @@ function Modal({
                   {mainButtonText ? mainButtonText : "تایید شماره همراه"}
                 </button>
               )}
-              {!redirect && (
-                <div
-                  className={`${
-                    data === "" && "flex justify-center w-full text-center "
+              <div
+                className={`${
+                  data === "" && "flex justify-center w-full text-center "
+                }`}
+              >
+                <button
+                  onClick={() => {
+                    dispatch(closeModal(false));
+                    executeFunction && executeFunction() && setCounter(90);
+                    !isLoggedIn && setSteps?.(3);
+                    dispatch(handleAutoFocus(true));
+                    redirect && router.push("/panel");
+                  }}
+                  type="button"
+                  className={`py-2.5 px-5 ms-3 text-sm font-medium focus:outline-none rounded-lg border border-[#4866CF] ${
+                    data.length === 0
+                      ? "self-center bg-[#4866CF] text-white"
+                      : " bg-white text-[#4866CF]"
                   }`}
                 >
-                  <button
-                    onClick={() => {
-                      dispatch(closeModal(false));
-                      executeFunction && executeFunction() && setCounter(90);
-                      !isLoggedIn && setSteps?.(3);
-                      dispatch(handleAutoFocus(true));
-                    }}
-                    type="button"
-                    className={`py-2.5 px-5 ms-3 text-sm font-medium focus:outline-none rounded-lg border border-[#4866CF] ${
-                      data.length === 0
-                        ? "self-center bg-[#4866CF] text-white"
-                        : " bg-white text-[#4866CF]"
-                    }`}
-                  >
-                    {buttonText}
-                  </button>
-                </div>
-              )}
+                  {buttonText}
+                </button>
+              </div>
             </div>
           </div>
         </div>

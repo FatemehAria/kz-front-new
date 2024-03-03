@@ -21,8 +21,8 @@ import { getCookie } from "cookies-next";
 import Loading from "../loading";
 
 const PanelLayout = ({ children }: { children: React.ReactNode }) => {
-  const { userProfile, localToken } = useSelector(
-    (store: any) => store.userRole
+  const { token } = useSelector(
+    (store: any) => store.userData
   );
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(0);
@@ -68,32 +68,32 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
     >
       {/* {localToken && ( */}
         <>
-          {userProfile.UserType === "Student" && (
+          {/* {userProfile.UserType === "Student" && (
             <div className="hidden lg:block">
               <PanelSidebar sideOptions={studentSidebarOptions} />
             </div>
-          )}
+          )} */}
           {/* {userProfile.UserType === "User" && ( */}
             <div className="hidden lg:block">
               <PanelSidebar sideOptions={userSidebarOptions} />
             </div>
           {/* )} */}
-          {userProfile.UserType === "Employer" && (
+          {/* {userProfile.UserType === "Employer" && (
             <div className="hidden lg:block">
               <PanelSidebar sideOptions={employerSidebarOptions} />
             </div>
-          )}
-          {userProfile.UserType === "GeneralAdmin" && (
+          )} */}
+          {/* {userProfile.UserType === "GeneralAdmin" && (
             <div className="hidden lg:block">
               <PanelSidebar sideOptions={mainAdminSidebarOptions} />
             </div>
-          )}
-          {userProfile.UserType === "Admin" && (
+          )} */}
+          {/* {userProfile.UserType === "Admin" && (
             <div className="hidden lg:block">
               <PanelSidebar sideOptions={AdminSidebarOptions} />
             </div>
-          )}
-          <div className="w-full lg:overflow-auto">
+          )} */}
+          {/* <div className="w-full lg:overflow-auto">
             <div className="hidden lg:block">
               <PanelNav
                 userRole={userProfile.UserType}
@@ -115,7 +115,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
                 <img src="/sidebar/leftarrow.svg" alt="arrow" />
               </button>
             </div>
-          </div>
+          </div> */}
         </>
       {/* )} */}
     </div>

@@ -54,36 +54,6 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
     }
   }, []);
 
-  // ارسال مجدد
-
-  // const validateOTP = async (PhoneNumber: string, OTP: string) => {
-  //   try {
-  //     const { data } = await axios.post(
-  //       "https://keykavoos.liara.run/Client/OTP",
-  //       {
-  //         PhoneNumber,
-  //         OTP,
-  //       }
-  //     );
-  //     // console.log(data);
-  //     setShowModal(true), setErrorMessage(""), setIsLoggedIn(data.User);
-  //     if (!data.User) {
-  //       setSuccessMessage("لطفا اطلاعات خود را تکمیل کنید.");
-  //     } else {
-  //       setSuccessMessage(
-  //         `${data.User.FirstName} ${data.User.LastName} عزیز با موفقیت وارد پنل کاربری خود شدید.`
-  //       );
-  //     }
-  //   } catch (error: any) {
-  //     setShowModal(true);
-  //     setSuccessMessage("");
-  //     setErrorMessage(`کد یکبار مصرف مورد تایید نمی باشد
-  //   دوباره اقدام فرمایید.`);
-  //     setOTP("");
-  //     // console.log(error);
-  //   }
-  // };
-
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await dispatch<any>(fetchUserInOTPValidation({ PhoneNumber, OTP }));
@@ -163,6 +133,7 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
                   data=""
                   setSteps={setSteps}
                   isLoggedIn={userInfoOnLogin}
+                  redirect={userInfoOnLogin}
                 />
               )}
               <span

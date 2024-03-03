@@ -233,9 +233,6 @@ const Login = ({ setSteps }: LoginProps) => {
             </div>
           </div>
         </div>
-        {/* <div className="lg:block hidden bg-[#4866CF]">
-          <FormSlider />
-        </div> */}
       </div>
     </React.Fragment>
   );

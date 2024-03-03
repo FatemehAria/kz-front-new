@@ -20,19 +20,30 @@ import Modal from "@/components/modal";
 import FormInput from "../contact-us/components/form/form-inputs";
 import OTPInput from "react-otp-input";
 import { Bounce, toast } from "react-toastify";
+import { getNewOTP, getOTPViaCall } from "@/utils/utils";
 type RegisterUserProps = {
   setSteps: Dispatch<SetStateAction<number>>;
 };
 const RegisterUser = ({ setSteps }: RegisterUserProps) => {
-  const { PhoneNumberInput } = useSelector((state: any) => state.userRole);
+  const {
+    PhoneNumberInput,
+    successMessage,
+    errorMessage,
+    userInfoOnLogin,
+    status,
+    welcomeMessage,
+    isLoggedIn,
+    showModal
+  } = useSelector((state: any) => state.userData);
+  const dispatch = useDispatch();
   const [PhoneNumber, setPhoneNumber] = useState("");
   const [OTP, setOTP] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [showModal, setShowModal] = useState(false);
+  // const [errorMessage, setErrorMessage] = useState("");
+  // const [showModal, setShowModal] = useState(false);
   const [counter, setCounter] = useState(90);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [User, setUser] = useState();
-  const [redirectToAuth, setRedirectToAuth] = useState(false);
+  // const [successMessage, setSuccessMessage] = useState("");
+  // const [User, setUser] = useState();
+  // const [redirectToAuth, setRedirectToAuth] = useState(true);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -44,7 +55,7 @@ const RegisterUser = ({ setSteps }: RegisterUserProps) => {
 
     return () => clearTimeout(timeout);
   }, [counter]);
-
+console.log(userInfoOnLogin);
   useEffect(() => {
     if (typeof window !== "undefined" && PhoneNumberInput === true) {
       const number = window.localStorage.getItem("PhoneNumber");
@@ -53,98 +64,46 @@ const RegisterUser = ({ setSteps }: RegisterUserProps) => {
       window.localStorage.removeItem("PhoneNumber");
     }
   }, [PhoneNumber, PhoneNumberInput]);
-  console.log("register user");
-  const getNewOTP = async (PhoneNumber: string) => {
-    try {
-      const { data } = await axios.post(
-        "https://keykavoos.liara.run/Client/SendOTP",
-        {
-          PhoneNumber,
-        }
-      );
-      // console.log(data);
-    } catch (error: any) {
-      // console.log(error);
-    }
-  };
-  const validateOTP = async (PhoneNumber: string, OTP: string) => {
-    try {
-      const { data } = await axios.post(
-        "https://keykavoos.liara.run/Client/OTP",
-        {
-          PhoneNumber,
-          OTP,
-        }
-      );
-      setShowModal(true), setErrorMessage("");
-      // console.log(data);
-      if (!data.User) {
-        setSteps(3);
-      } else if (data.isLogin === false && data.User) {
-        // console.log(data.isLogin);
-        setUser(data.User);
-        setRedirectToAuth(true);
-        setSuccessMessage(
-          `${data.User.FirstName} ${data.User.LastName} عزیز لطفا وارد پنل کاربری خود شوید.`
-        );
-        setTimeout(() => {
-          setSteps(1);
-        }, 1500);
-      }
-    } catch (error: any) {
-      setShowModal(true);
-      setErrorMessage(`کد یکبار مصرف مورد تایید نمی باشد
-    دوباره اقدام فرمایید.`);
-      setOTP("");
-      // console.log(error);
-    }
-  };
-  const getOTPViaCall = async (PhoneNumber: string) => {
-    try {
-      const { data } = await axios.post(
-        "https://keykavoos.liara.run/Client/SendCallOTP",
-        {
-          PhoneNumber,
-        }
-      );
-      toast.success("در حال برقراری تماس...", {
-        position: "top-center",
-        autoClose: 1000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        rtl: true,
-      });
-      // console.log(data);
-    } catch (error) {
-      toast.error("خطا در برقراری تماس.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        rtl: true,
-      });
-      // console.log(error);
-    }
-  };
+  // const validateOTP = async (PhoneNumber: string, OTP: string) => {
+  //   try {
+  //     const { data } = await axios.post(
+  //       "https://keykavoos.liara.run/Client/OTP",
+  //       {
+  //         PhoneNumber,
+  //         OTP,
+  //       }
+  //     );
+  //     setShowModal(true), setErrorMessage("");
+  //     // console.log(data);
+  //     if (!data.User) {
+  //       setSteps(3);
+  //     } else if (data.isLogin === false && data.User) {
+  //       // console.log(data.isLogin);
+  //       setUser(data.User);
+  //       setRedirectToAuth(true);
+  //       setSuccessMessage(
+  //         `${data.User.FirstName} ${data.User.LastName} عزیز لطفا وارد پنل کاربری خود شوید.`
+  //       );
+  //       setTimeout(() => {
+  //         setSteps(1);
+  //       }, 1500);
+  //     }
+  //   } catch (error: any) {
+  //     setShowModal(true);
+  //     setErrorMessage(`کد یکبار مصرف مورد تایید نمی باشد
+  //   دوباره اقدام فرمایید.`);
+  //     setOTP("");
+  //     // console.log(error);
+  //   }
+  // };
 
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await validateOTP(PhoneNumber, OTP);
+    await dispatch<any>(fetchUserInOTPValidation({ PhoneNumber, OTP }));
   };
 
   return (
     <div>
-      {/*  lg:grid lg:grid-cols-2 */}
       <div
         className="mx-auto grid grid-cols-1 font-YekanBakh rounded-3xl overflow-hidden shadow-2xl shadow-[13px_0_61px_-24px_rgba(0, 0, 0, 0.15)]"
         dir="rtl"
@@ -202,7 +161,6 @@ const RegisterUser = ({ setSteps }: RegisterUserProps) => {
               />
               {errorMessage !== "" && showModal && (
                 <Modal
-                  setShowModal={setShowModal}
                   showModal={showModal}
                   buttonText="ارسال مجدد کد"
                   mainButtonText="تغییر شماره همراه"
@@ -212,17 +170,17 @@ const RegisterUser = ({ setSteps }: RegisterUserProps) => {
                   setCounter={setCounter}
                   changeNumber={true}
                   setSteps={setSteps}
-                  isLoggedIn={true}
                 />
               )}
               {successMessage !== "" && showModal && (
                 <Modal
-                  setShowModal={setShowModal}
                   showModal={showModal}
                   buttonText="متوجه شدم"
                   text={successMessage}
                   data=""
-                  redirect={true}
+                  redirect={userInfoOnLogin}
+                  isLoggedIn={userInfoOnLogin}
+                  setSteps={setSteps}
                 />
               )}
               <span
@@ -263,9 +221,6 @@ const RegisterUser = ({ setSteps }: RegisterUserProps) => {
             </div>
           </form>
         </div>
-        {/* <div className="lg:block hidden bg-[#4866CF]"> */}
-        {/* <FormSlider /> */}
-        {/* </div> */}
       </div>
     </div>
   );

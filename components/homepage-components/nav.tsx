@@ -20,7 +20,7 @@ const Nav = () => {
 
   const dispatch = useDispatch();
   const { localToken, userProfile } = useSelector(
-    (state: any) => state.userRole
+    (state: any) => state.userData
   );
 
   // useEffect(() => {
