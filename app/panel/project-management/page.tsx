@@ -1,4 +1,8 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
+import ProjectDetail from "./project-detail";
+import AllProjects from "./all-projects";
+import { IoArrowBack } from "react-icons/io5";
 const ProjectsData = [
   {
     id: 1,
@@ -17,30 +21,24 @@ const ProjectsData = [
     title4: "پروژه یک",
   },
 ];
+
 function ProjectManagement() {
+  const [step, setStep] = useState(1);
+  const renderSteps = () => {
+    switch (step) {
+      case 1:
+        return <AllProjects AllProjectsData={ProjectsData} setStep={setStep} />;
+      case 2:
+        return <ProjectDetail setStep={setStep}/>;
+    }
+  };
   return (
-    <div className="bg-white p-[3%] shadow mx-auto rounded-2xl">
-      <div className="flex flex-col gap-5">
-        <div className="grid grid-cols-5 text-center">
-          <p>ردیف</p>
-          <p>عنوان پروژه</p>
-          <p>وضعیت پیشرفت پروژه</p>
-          <p>وضعیت مالی پروژه</p>
-          <p>درخواست فاکتور</p>
-        </div>
-        {ProjectsData.map((item) => (
-          <div
-            key={item.id}
-            className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px]"
-          >
-            <p>{item.title}</p>
-            <p>{item.title1}</p>
-            <p>{item.title2}</p>
-            <p>{item.title3}</p>
-            <p>{item.title4}</p>
-          </div>
-        ))}
-      </div>
+    <div
+      className={`bg-white shadow mx-auto rounded-2xl ${
+        step === 1 ? "py-[3%] px-[3%]" : "py-0 px-0"
+      }`}
+    >
+      {renderSteps()}
     </div>
   );
 }
