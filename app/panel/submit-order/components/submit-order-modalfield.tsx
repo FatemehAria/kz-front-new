@@ -1,17 +1,17 @@
 import React from "react";
-import dropdownbutton from "../../../../public/Panel/dropdownbutton.svg";
+import plus from "../../../../public/Panel/plus.svg";
 import Image from "next/image";
 type SubmitOrderDropdownProps = {
-  dropDownTitle: string;
+  modalFieldTitle: string;
 };
-function SubmitOrderModalfield({ dropDownTitle }: SubmitOrderDropdownProps) {
+function SubmitOrderModalfield({ modalFieldTitle }: SubmitOrderDropdownProps) {
   return (
     <div className="flex flex-col gap-3">
-      <p>{dropDownTitle}</p>
+      <p>{modalFieldTitle}</p>
       <div className="p-[2%] bg-[#EAEFF6] rounded-[4xl] relative">
         <Image
-          src={dropdownbutton}
-          alt="drop"
+          src={plus}
+          alt="plus"
           className="absolute left-0 top-1/2 -translate-y-1/2 pl-1"
         />
       </div>

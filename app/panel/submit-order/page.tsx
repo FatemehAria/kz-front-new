@@ -10,7 +10,7 @@ function SubmitOrder() {
       <SubmitOrderDropdown dropDownTitle="نوع پروژه:" />
       <SubmitOrderDropdown dropDownTitle="پلن انتخابی:" />
       <PanelFields label="بودجه مورد نظر:" />
-      <SubmitOrderModalfield dropDownTitle="سایت مشابه مورد نظر شماست:" />
+      <SubmitOrderModalfield modalFieldTitle="سایت مشابه مورد نظر شماست:" />
     </div>
   );
 }
