@@ -16,10 +16,10 @@ const PanelSidebar = ({ sideOptions }: { sideOptions: SideOptionsProps[] }) => {
   const pathname = usePathname();
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col">
       <div
         className="w-[260px] font-YekanBakh py-6 border-l relative h-full"
-        style={{ boxShadow: "-9px 0px 61px 0px rgba(0, 0, 0, 0.07)" }}
+        // style={{ boxShadow: "-9px 0px 61px 0px rgba(0, 0, 0, 0.07)" }}
       >
         <div className="flex justify-center">
           <Logo />
