@@ -2,6 +2,7 @@ import React from "react";
 import PanelFields from "../components/panel-fileds";
 import SubmitOrderDropdown from "./components/submit-order-dropdown";
 import SubmitOrderModalfield from "./components/submit-order-modalfield";
+import SubmitOrderDescription from "./components/submit-order-description";
 
 function SubmitOrder() {
   return (
@@ -11,6 +12,7 @@ function SubmitOrder() {
       <SubmitOrderDropdown dropDownTitle="پلن انتخابی:" />
       <PanelFields label="بودجه مورد نظر:" />
       <SubmitOrderModalfield modalFieldTitle="سایت مشابه مورد نظر شماست:" />
+      <SubmitOrderDescription />
     </div>
   );
 }
