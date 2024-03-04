@@ -1,11 +1,11 @@
 import React from "react";
-import company from "../../public/Intro/company.png";
-import agreement from "../../public/Intro/agreement.png";
+import company from "../../public/Intro/company.svg";
+import agreement from "../../public/Intro/agreement.svg";
 import IntroStatisticsAtom from "./intro-statistics-atom";
 function IntroStatistics() {
   return (
     <div
-      className="flex flex-row items-center gap-[5%] justify-center text-[#68707A]"
+      className="flex flex-row items-center gap-5 justify-center text-[#68707A]"
       dir="rtl"
     >
       <IntroStatisticsAtom

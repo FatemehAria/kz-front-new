@@ -11,12 +11,14 @@ function IntroStatisticsAtom({
   imgSrc,
 }: IntroStatisticsAtomProps) {
   return (
-    <div className="flex flex-row text-center items-center">
+    <div className="flex flex-row text-center items-center gap-2">
       <div className="flex flex-col">
         <p className="font-faNum font-semibold text-[30px]">{amount}</p>
         <p className="font-normal text-[16px]">{jobDone}</p>
       </div>
-      <Image src={imgSrc} alt={jobDone} />
+      <div className="bg-[#D0DBEC] rounded-full w-[70px] h-[70px] flex justify-center items-center" >
+        <Image src={imgSrc} alt={jobDone} />
+      </div>
     </div>
   );
 }
