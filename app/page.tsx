@@ -8,6 +8,7 @@ import Support from "@/components/homepage-components/support";
 import Technologie from "@/components/homepage-components/technologie";
 import Intro from "@/components/new-home-components/intro";
 import IntroStatistics from "@/components/new-home-components/intro-statistics";
+import News from "@/components/new-home-components/news";
 import Order from "@/components/new-home-components/order";
 import OrderProgress from "@/components/new-home-components/order-progress";
 import Plans from "@/components/new-home-components/plans";
@@ -27,6 +28,7 @@ export default function Home() {
           <Plans />
           <Reason />
           <Order />
+          <News />
           {/* <SliderOne />
           <SliderTwo />
           <Technologie />
