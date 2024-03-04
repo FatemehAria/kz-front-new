@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import PersonalInfoHeader from "./components/personal-info-header";
-import PersonalInfoFields from "./components/personal-info-fileds";
 import PersonalInfoFileupload from "./components/personal-info-fileupload";
+import PanelFields from "../components/panel-fileds";
 
 function PersonalInfo() {
   const [userType, setUserType] = useState("حقیقی");
@@ -15,26 +15,26 @@ function PersonalInfo() {
         {userType === "حقیقی" && (
           <div className="grid grid-cols-2 gap-[5%]">
             <div className="flex flex-col justify-between">
-              <PersonalInfoFields label="نام و نام خانوادگی:" />
-              <PersonalInfoFields label="شماره موبایل:" />
-              <PersonalInfoFields label="ایمیل:" />
+              <PanelFields label="نام و نام خانوادگی:" />
+              <PanelFields label="شماره موبایل:" />
+              <PanelFields label="ایمیل:" />
             </div>
             <div className="flex flex-col gap-5">
               <PersonalInfoFileupload />
-              <PersonalInfoFields label="کد ملی:" />
+              <PanelFields label="کد ملی:" />
             </div>
           </div>
         )}
         {userType === "حقوقی" && (
           <div className="grid grid-cols-2 gap-[5%]">
             <div className="flex flex-col justify-between">
-              <PersonalInfoFields label="نام و نام خانوادگی:" />
-              <PersonalInfoFields label="شماره موبایل:" />
-              <PersonalInfoFields label="ایمیل:" />
+              <PanelFields label="نام و نام خانوادگی:" />
+              <PanelFields label="شماره موبایل:" />
+              <PanelFields label="ایمیل:" />
             </div>
             <div className="flex flex-col gap-5">
               <PersonalInfoFileupload />
-              <PersonalInfoFields label="کد ملی:" />
+              <PanelFields label="کد ملی:" />
             </div>
           </div>
         )}

@@ -1,9 +1,9 @@
 import React from "react";
-import { string } from "yup";
-type PersonalInfoFieldsProps = {
+
+type  PanelFieldsProps = {
   label: string;
 };
-function PersonalInfoFields({ label }: PersonalInfoFieldsProps) {
+function PanelFields({ label }: PanelFieldsProps) {
   return (
     <div className="flex flex-col gap-3">
       <label htmlFor="">{label}</label>
@@ -12,4 +12,4 @@ function PersonalInfoFields({ label }: PersonalInfoFieldsProps) {
   );
 }
 
-export default PersonalInfoFields;
+export default PanelFields;

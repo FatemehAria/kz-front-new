@@ -69,13 +69,13 @@ export const userSidebarOptions = [
     text: "مشخصات فردی",
     imgSrc: "/Panel/personalinfo.svg",
     address: "/panel/personal-info",
-    path: "/profile",
+    path: "/personal-info",
   },
   {
     text: "مدیریت پروژه ها",
     imgSrc: "/Panel/projectsmanagement.svg",
     address: "/panel/project-management",
-    path: "/boost",
+    path: "/project-management",
   },
   {
     text: "پشتیبانی",
@@ -86,8 +86,8 @@ export const userSidebarOptions = [
   {
     text: "ثبت سفارش",
     imgSrc: "/Panel/orders.svg",
-    address: "/panel/job",
-    path: "/job",
+    address: "/panel/submit-order",
+    path: "/submit-order",
   },
   {
     text: "وضعیت مالی",
