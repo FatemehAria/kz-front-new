@@ -1,8 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import styles from "./order.module.css";
-function OrderProgress() {
-  const [currentStep, setCurrentStep] = useState(0);
+type OrderProgressProps = {
+  currentStep: number;
+  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+};
+function OrderProgress({ currentStep, setCurrentStep }: OrderProgressProps) {
   const dotPositions = ["0%", "25%", "50%", "75%", "100%"];
   const stepTexts = [
     "ثبت سفارش",
@@ -28,7 +31,6 @@ function OrderProgress() {
             currentStep === index ? styles.activeDot : ""
           }`}
           style={{ left: position }}
-          onClick={() => handleDotClick(index)}
         >
           <span className="whitespace-nowrap absolute -bottom-10 left-1/2 -translate-x-1/2 text-[#4866CF]">
             {stepTexts[index]}

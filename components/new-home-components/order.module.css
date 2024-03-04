@@ -35,7 +35,6 @@
     background-color: white;
     z-index: 10;
     transform: translate(70%, 20%);
-    /* Change active dot color to white */
 }
 
 .square {
