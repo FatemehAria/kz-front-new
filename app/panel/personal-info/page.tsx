@@ -9,6 +9,7 @@ import {
   getTokenFromLocal,
   readPhoneNumberFromLocalStroage,
 } from "@/redux/features/user/userSlice";
+import axios from "axios";
 
 function PersonalInfo() {
   const [step, setStep] = useState(1);
@@ -24,7 +25,13 @@ function PersonalInfo() {
   const renderSteps = () => {
     switch (step) {
       case 1:
-        return <Genuine />;
+        return (
+          <Genuine
+            PhoneNumber={PhoneNumber}
+            userId={userId}
+            token={localToken}
+          />
+        );
       case 2:
         return (
           <Legal PhoneNumber={PhoneNumber} userId={userId} token={localToken} />

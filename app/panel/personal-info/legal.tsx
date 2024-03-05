@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+"use client";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import PanelFields from "../components/panel-fileds";
 import PersonalInfoFileupload from "./components/personal-info-fileupload";
 import axios from "axios";
-import {
-  verifyIranianNationalId,
-} from "@persian-tools/persian-tools";
+import { verifyIranianNationalId } from "@persian-tools/persian-tools";
 import { useFormik } from "formik";
 const initialValues = {
   National_ID: "",
@@ -18,11 +17,34 @@ type LegalProps = {
   token: string;
 };
 function Legal({ PhoneNumber, userId, token }: LegalProps) {
-  const [validNationalID, setValidNationalId] = useState<
-    boolean | null | undefined
-  >(false);
   const [invalidNationalIdMessage, setInvalidNationalIdMessage] = useState("");
+  const [selectedFile, setSelectedFile] = useState<any>(null);
 
+  const handleFileChange = (file: File) => {
+    setSelectedFile(file);
+  };
+
+  const handleAvatar = async () => {
+    const formData = new FormData();
+    formData.append("Image", selectedFile);
+    // console.log(formData);
+    try {
+      const { data } = await axios.put(
+        `https://keykavoos.liara.run/Client/UploadAvatar/${userId}`,
+        formData,
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // console.log(selectedFile);
+      console.log(formData);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const LegalSubmission = async (
     National_ID: string,
     type: string,
@@ -51,21 +73,35 @@ function Legal({ PhoneNumber, userId, token }: LegalProps) {
   };
 
   const handleSubmission = async () => {
-    setValidNationalId(verifyIranianNationalId(values.National_ID));
-    if (validNationalID) {
-      console.log(validNationalID);
-      await LegalSubmission(
-        values.National_ID,
-        values.type,
-        values.name_of_Organization,
-        values.registration_Number
-      );
-      console.log(values.type);
+    const isValidNationalId = verifyIranianNationalId(values.National_ID);
+    if (isValidNationalId) {
+      try {
+        (async () => {
+          const [legalSubmissionResponse, avatarResponse] = await Promise.all([
+            LegalSubmission(
+              values.National_ID,
+              values.type,
+              values.name_of_Organization,
+              values.registration_Number
+            ),
+            handleAvatar(),
+          ]);
+
+          // Handle legalSubmissionResponse and avatarResponse here
+          console.log("Legal Submission response:", legalSubmissionResponse);
+          console.log("Avatar response:", avatarResponse);
+        })();
+        console.log("in the handlesubmission if when nationalid is valid");
+      } catch (error) {
+        // Error handling code
+      }
     } else {
-      console.log(invalidNationalIdMessage);
-      setInvalidNationalIdMessage("کدملی صحیح نمی باشد.");
+     setInvalidNationalIdMessage("کدملی صحیح نمی باشد.")
     }
+
+    return isValidNationalId;
   };
+
   const { handleChange, values, handleSubmit } = useFormik({
     initialValues,
     onSubmit: handleSubmission,
@@ -103,7 +139,10 @@ function Legal({ PhoneNumber, userId, token }: LegalProps) {
           </div>
         </div>
         <div className="flex flex-col gap-5">
-          <PersonalInfoFileupload />
+          <PersonalInfoFileupload
+            handleChange={handleFileChange}
+            selectedFile={selectedFile}
+          />
           <PanelFields
             label="شماره ثبت:"
             onChange={handleChange}
