@@ -1,43 +1,46 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PersonalInfoHeader from "./components/personal-info-header";
-import PersonalInfoFileupload from "./components/personal-info-fileupload";
-import PanelFields from "../components/panel-fileds";
+import { useDispatch, useSelector } from "react-redux";
+import Genuine from "./genuine";
+import Legal from "./legal";
+import {
+  getIdFromLocal,
+  getTokenFromLocal,
+  readPhoneNumberFromLocalStroage,
+} from "@/redux/features/user/userSlice";
 
 function PersonalInfo() {
-  const [userType, setUserType] = useState("حقیقی");
+  const [step, setStep] = useState(1);
+  const { userId, PhoneNumber, localToken } = useSelector(
+    (state: any) => state.userData
+  );
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(readPhoneNumberFromLocalStroage());
+    dispatch(getTokenFromLocal());
+    dispatch(getIdFromLocal());
+  }, []);
+  const renderSteps = () => {
+    switch (step) {
+      case 1:
+        return <Genuine />;
+      case 2:
+        return (
+          <Legal PhoneNumber={PhoneNumber} userId={userId} token={localToken} />
+        );
+      default:
+        break;
+    }
+  };
+
   return (
     <React.Fragment>
       <div className="py-[5%] w-[90%] shadow mx-auto bg-white rounded-2xl px-[3%]">
         <div className="pb-[5%] pt-0">
-          <PersonalInfoHeader userType={userType} />
+          <PersonalInfoHeader step={step} setStep={setStep} />
         </div>
-        {userType === "حقیقی" && (
-          <div className="grid grid-cols-2 gap-[5%]">
-            <div className="flex flex-col justify-between">
-              <PanelFields label="نام و نام خانوادگی:" />
-              <PanelFields label="شماره موبایل:" />
-              <PanelFields label="ایمیل:" />
-            </div>
-            <div className="flex flex-col gap-5">
-              <PersonalInfoFileupload />
-              <PanelFields label="کد ملی:" />
-            </div>
-          </div>
-        )}
-        {userType === "حقوقی" && (
-          <div className="grid grid-cols-2 gap-[5%]">
-            <div className="flex flex-col justify-between">
-              <PanelFields label="نام و نام خانوادگی:" />
-              <PanelFields label="شماره موبایل:" />
-              <PanelFields label="ایمیل:" />
-            </div>
-            <div className="flex flex-col gap-5">
-              <PersonalInfoFileupload />
-              <PanelFields label="کد ملی:" />
-            </div>
-          </div>
-        )}
+        {renderSteps()}
       </div>
     </React.Fragment>
   );

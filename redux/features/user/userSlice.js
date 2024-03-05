@@ -14,13 +14,14 @@ const initialState = {
   changePhoneNumber: false,
   loadscript: false,
   localToken: "",
-  birthDate: "",
+  PhoneNumber: "",
   email: "",
   PhoneNumberInput: true,
   showModal: false,
   autoFocus: true,
   isLoggedIn: false,
   welcomeMessage: "",
+  userId: "",
 };
 
 const fetchUserInOTPValidation = createAsyncThunk(
@@ -43,6 +44,7 @@ const fetchUserInOTPValidation = createAsyncThunk(
         LastName: data.User?.LastName,
         isLoggedIn: data.isLogin,
         welcomeMessage: data.welcome,
+        userId: data.User?._id,
       };
     } catch (error) {
       console.log(error);
@@ -97,11 +99,17 @@ const userSlice = createSlice({
       state.changePhoneNumber = true;
       localStorage.removeItem("PhoneNumber");
     },
+    readPhoneNumberFromLocalStroage: (state) => {
+      state.PhoneNumber = localStorage.getItem("PhoneNumber");
+    },
     loadScript: (state) => {
       state.loadscript = true;
     },
     getTokenFromLocal: (state) => {
       state.localToken = getCookie("token");
+    },
+    getIdFromLocal: (state) => {
+      state.userId = getCookie("userId");
     },
     changeUserInfo: (state, action) => {
       state.FirstName = action.payload;
@@ -130,6 +138,11 @@ const userSlice = createSlice({
       state.FirstName = action.payload.FirstName;
       state.LastName = action.payload.LastName;
       state.welcomeMessage = action.payload.welcomeMessage;
+      state.userId = action.payload.userId;
+      setCookie("userId", state.userId, {
+        path: "/",
+        secure: true,
+      });
       if (!state.userInfoOnLogin) {
         state.successMessage = "لطفا اطلاعات خود را تکمیل کنید.";
       } else {
@@ -173,5 +186,7 @@ export const {
   updateInputDisability,
   closeModal,
   handleAutoFocus,
+  readPhoneNumberFromLocalStroage,
+  getIdFromLocal
 } = userSlice.actions;
 export { fetchUserProfile, fetchUserInOTPValidation };

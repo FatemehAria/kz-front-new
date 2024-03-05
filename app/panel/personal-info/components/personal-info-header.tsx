@@ -1,8 +1,9 @@
 import React from "react";
 type PersonalInfoHeaderProps = {
-  userType: string;
+  step: number;
+  setStep: React.Dispatch<React.SetStateAction<number>>;
 };
-function PersonalInfoHeader({ userType }: PersonalInfoHeaderProps) {
+function PersonalInfoHeader({ step, setStep }: PersonalInfoHeaderProps) {
   return (
     <div className="relative whitespace-nowrap">
       <div
@@ -34,19 +35,21 @@ function PersonalInfoHeader({ userType }: PersonalInfoHeaderProps) {
       <div className="text-center absolute -top-5 left-1/2 text-[20px] -translate-x-1/2 bg-transparent flex flex-row gap-5">
         <button
           className={`rounded-[4px] py-[3%] px-[8%] ${
-            userType === "حقیقی"
+            step === 1
               ? "bg-[#4866CF] text-white"
               : "bg-[#EAEFF6] text-[#4866CF]"
           }`}
+          onClick={() => setStep(1)}
         >
           حقیقی
         </button>
         <button
           className={`rounded-[4px] py-[3%] px-[8%] ${
-            userType === "حقوقی"
+            step === 2
               ? "bg-[#4866CF] text-white"
               : "bg-[#EAEFF6] text-[#4866CF]"
           }`}
+          onClick={() => setStep(2)}
         >
           حقوقی
         </button>

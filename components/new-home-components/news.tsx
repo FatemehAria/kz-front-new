@@ -1,7 +1,7 @@
 import React from "react";
 function News() {
   return (
-    <div className="bg-[#D0DBEC] h-[400px] my-[5%] flex flex-col justify-center items-center">
+    <div className="bg-[#D0DBEC] h-[400px] mt-[5%] flex flex-col justify-center items-center gap-3 rounded-xl">
       <p className="text-[#334052] text-[40px] max-w-lg text-center">
         با عضویت در خبرنامه شرکت بین المللی کیکاووس زمان از تخفیفات باخبر شوید
       </p>
