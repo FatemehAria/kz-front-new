@@ -315,7 +315,7 @@ export const mainAdminSidebarOptions = [
   {
     text: "جستجو کاربر",
     imgSrc: "/Panel/searchuserssidebar.svg",
-    address: "/panel/main-admin/finance",
+    address: "/panel/admin/search-user",
     path: [
       "/panel/main-admin/finance",
       "/panel/main-admin/finance/costs",

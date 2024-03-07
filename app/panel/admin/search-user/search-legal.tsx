@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import vieweye from "../../../../public/ViewUsers/vieweye.svg";
-const LegalUsersData = [
+const SearchLegalData = [
   {
     id: 1,
     title: "پروژه یک",
@@ -20,7 +20,7 @@ const LegalUsersData = [
   },
 ];
 
-function LegalUsers() {
+function SearchLegal() {
   return (
     <div className="flex flex-col gap-5">
       <div className="grid grid-cols-5 text-center">
@@ -30,7 +30,7 @@ function LegalUsers() {
         <p>ایمیل</p>
         <p>مشاهده</p>
       </div>
-      {LegalUsersData.map((item) => (
+      {SearchLegalData.map((item) => (
         <div
           key={item.id}
           className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
@@ -49,4 +49,4 @@ function LegalUsers() {
   );
 }
 
-export default LegalUsers;
+export default SearchLegal;

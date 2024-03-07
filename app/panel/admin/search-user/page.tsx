@@ -1,17 +1,17 @@
 "use client";
 import React, { useState } from "react";
 import PersonalInfoHeader from "../../personal-info/components/personal-info-header";
-import LegalUsers from "./legal-users";
-import GenuineUsers from "./genuine-users";
+import SearchLegal from "./search-legal";
+import SearchGenuine from "./search-genuine";
 
-function ViewUsers() {
+function SearchUser() {
   const [step, setStep] = useState(1);
   const renderSteps = () => {
     switch (step) {
       case 1:
-        return <LegalUsers />;
+        return <SearchLegal />;
       case 2:
-        return <GenuineUsers />;
+        return <SearchGenuine />;
       default:
         return;
     }
@@ -26,4 +26,4 @@ function ViewUsers() {
   );
 }
 
-export default ViewUsers;
+export default SearchUser;
