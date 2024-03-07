@@ -307,14 +307,14 @@ export const activeAds = [
 ];
 export const mainAdminSidebarOptions = [
   {
-    text: "پروفایل",
-    imgSrc: "/mainadminpanel/profile.svg",
-    address: "/panel/main-admin/profile",
+    text: "مشاهده کاربران",
+    imgSrc: "/Panel/dashboard.svg",
+    address: "/panel/admin/view-users",
     path: "/profile",
   },
   {
-    text: "امور مالی",
-    imgSrc: "/mainadminpanel/maali.svg",
+    text: "جستجو کاربر",
+    imgSrc: "/Panel/searchuserssidebar.svg",
     address: "/panel/main-admin/finance",
     path: [
       "/panel/main-admin/finance",
@@ -324,74 +324,16 @@ export const mainAdminSidebarOptions = [
     ],
   },
   {
-    text: "امور اداری",
-    imgSrc: "/mainadminpanel/edari.svg",
+    text: "مدیریت پروژه ها",
+    imgSrc: "/Panel/projectsmanagement.svg",
     address: "/panel/main-admin/adminstrative",
     path: "/adminstrative",
   },
   {
     text: "کارآموزی",
-    imgSrc: "/mainadminpanel/karamozi.svg",
+    imgSrc: "/Panel/searchprojectssidebar.svg",
     address: "/panel/main-admin/internship",
     path: "/internship",
-  },
-  {
-    text: "کارمندی",
-    imgSrc: "/mainadminpanel/karmandi.svg",
-    address: "/panel/main-admin/employees",
-    path: "/employees",
-  },
-  {
-    text: "پروژه ها",
-    imgSrc: "/mainadminpanel/projects.svg",
-    address: "/panel/main-admin/projects",
-    path: "/projects",
-  },
-  {
-    text: "کارفرمایان",
-    imgSrc: "/mainadminpanel/karfarma.svg",
-    address: "/panel/main-admin/employers",
-    path: "/employers",
-  },
-  {
-    text: "دانش پذیران",
-    imgSrc: "/mainadminpanel/daneshpazir.svg",
-    address: "/panel/main-admin/students",
-    path: "/students",
-  },
-  {
-    text: "مدیریت",
-    imgSrc: "/mainadminpanel/modiriat.svg",
-    address: "/panel/main-admin/management",
-    path: "/management",
-  },
-  // {
-  //   text: "اساتید",
-  //   imgSrc: "/mainadminpanel/asatid.svg",
-  //   address: "/panel/main-admin/teachers",
-  //   path: "/teachers",
-  // },
-  {
-    text: "تغییر سایت",
-    imgSrc: "/mainadminpanel/sitechange.svg",
-    address: "/panel/main-admin/change-site",
-    path: [
-      "/change-site",
-      "/panel/main-admin/change-site/change-home",
-      "/panel/main-admin/change-site/change-contactus",
-      "/panel/main-admin/change-site/change-courses",
-      "/panel/main-admin/change-site/change-certificates",
-      "/panel/main-admin/change-site/change-home/support",
-      "/panel/main-admin/change-site/change-home/home-slider",
-      "/panel/main-admin/change-site/change-home/partner-logo",
-      "/panel/main-admin/change-site/change-home/technology",
-      "/panel/main-admin/change-site/change-home/comments",
-      "/panel/main-admin/change-site/change-courses/front-end",
-      "/panel/main-admin/change-site/change-courses/back-end",
-      "/panel/main-admin/change-site/change-courses/digital-marketing",
-      "/panel/main-admin/change-site/change-courses/accounting",
-      "/panel/main-admin/change-site/change-certificates/certificate-one",
-    ],
   },
 ];
 export const AdminSidebarOptions = [

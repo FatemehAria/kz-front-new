@@ -14,6 +14,7 @@ const initialState = {
   changePhoneNumber: false,
   loadscript: false,
   localToken: "",
+  localUserId:"",
   PhoneNumber: "",
   email: "",
   PhoneNumberInput: true,
@@ -52,12 +53,13 @@ const fetchUserInOTPValidation = createAsyncThunk(
     }
   }
 );
+
 const fetchUserProfile = createAsyncThunk(
   "userRole/fetchUserProfile",
   async (_, { getState, rejectWithValue }) => {
     try {
       const { data } = await axios.get(
-        `https://keykavoos.liara.run/Client/User/${getState().userData.userId}`,
+        `https://keykavoos.liara.run/Client/User/${getState().userData.localUserId}`,
         {
           headers: {
             authorization: `Bearer ${getState().userData.localToken}`,
@@ -66,10 +68,10 @@ const fetchUserProfile = createAsyncThunk(
       );
       console.log(data);
       return {
-        data,
-        FirstName: data.FirstName,
-        LastName: data.LastName,
-        email: data.email,
+        data: data.data,
+        FirstName: data.data.FirstName,
+        LastName: data.data.LastName,
+        email: data.data.email,
       };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -110,7 +112,7 @@ const userSlice = createSlice({
       state.localToken = getCookie("token");
     },
     getIdFromLocal: (state) => {
-      state.userId = getCookie("userId");
+      state.localUserId = getCookie("userId");
     },
     changeUserInfo: (state, action) => {
       state.FirstName = action.payload;
@@ -189,5 +191,6 @@ export const {
   handleAutoFocus,
   readPhoneNumberFromLocalStroage,
   getIdFromLocal,
+  deleteDataFromCookie
 } = userSlice.actions;
 export { fetchUserProfile, fetchUserInOTPValidation };

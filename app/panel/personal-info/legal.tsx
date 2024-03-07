@@ -4,6 +4,7 @@ import PersonalInfoFileupload from "./components/personal-info-fileupload";
 import axios from "axios";
 import { verifyIranianNationalId } from "@persian-tools/persian-tools";
 import { useFormik } from "formik";
+import { Bounce, toast } from "react-toastify";
 const initialValues = {
   National_ID: "",
   type: "Legal",
@@ -18,6 +19,7 @@ type LegalProps = {
 function Legal({ PhoneNumber, userId, token }: LegalProps) {
   const [invalidNationalIdMessage, setInvalidNationalIdMessage] = useState("");
   const [selectedFile, setSelectedFile] = useState<any>(null);
+  const [avatarError, setAvatarError] = useState(false);
 
   const handleFileChange = (file: File) => {
     setSelectedFile(file);
@@ -40,7 +42,32 @@ function Legal({ PhoneNumber, userId, token }: LegalProps) {
       // console.log(selectedFile);
       console.log(formData);
       console.log(data);
+      toast.success("آپلود فایل موفق بود.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
     } catch (error) {
+      setAvatarError(true);
+      toast.error("خطا در آپلود فایل، لطفا مجدد آپلود کنید.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
       console.log(error);
     }
   };
@@ -65,8 +92,32 @@ function Legal({ PhoneNumber, userId, token }: LegalProps) {
           },
         }
       );
+      toast.success("ثبت اطلاعات موفق بود.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
       console.log(data);
     } catch (error) {
+      toast.error("خطا در ثبت اطلاعات.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
       console.log(error);
     }
   };
@@ -87,15 +138,15 @@ function Legal({ PhoneNumber, userId, token }: LegalProps) {
           ]);
 
           // Handle legalSubmissionResponse and avatarResponse here
-          console.log("Legal Submission response:", legalSubmissionResponse);
-          console.log("Avatar response:", avatarResponse);
+          // console.log("Legal Submission response:", legalSubmissionResponse);
+          // console.log("Avatar response:", avatarResponse);
         })();
         console.log("in the handlesubmission if when nationalid is valid");
       } catch (error) {
-        // Error handling code
+        console.log(error);
       }
     } else {
-     setInvalidNationalIdMessage("کدملی صحیح نمی باشد.")
+      setInvalidNationalIdMessage("کدملی صحیح نمی باشد.");
     }
 
     return isValidNationalId;

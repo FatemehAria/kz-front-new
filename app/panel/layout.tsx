@@ -14,6 +14,7 @@ import PanelNavSmall from "@/components/panel/panel-nav-small";
 import PanelSidebarSmall from "@/components/panel/panel-sidebar-small";
 import {
   fetchUserProfile,
+  getIdFromLocal,
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
 import { redirect, useRouter } from "next/navigation";
@@ -21,7 +22,9 @@ import { getCookie } from "cookies-next";
 import Loading from "../loading";
 
 const PanelLayout = ({ children }: { children: React.ReactNode }) => {
-  const { localToken , userId} = useSelector((store: any) => store.userData);
+  const { localToken, userId, userProfile } = useSelector(
+    (store: any) => store.userData
+  );
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 4;
@@ -42,17 +45,18 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   console.log(userId);
   // const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const token = getCookie("token");
-  //   if (token) {
-  //     dispatch(getTokenFromLocal());
-  //     dispatch<any>(fetchUserProfile());
-  //     setLoading(false);
-  //   } else {
-  //     setLoading(true);
-  //     router.replace("/");
-  //   }
-  // }, []);
+  useEffect(() => {
+    // const token = getCookie("token");
+    // if (token) {
+    dispatch(getTokenFromLocal());
+    dispatch(getIdFromLocal());
+    dispatch<any>(fetchUserProfile());
+    // setLoading(false);
+    // } else {
+    //   setLoading(true);
+    //   router.replace("/");
+    // }
+  }, []);
 
   // if (loading) {
   //   return Loading();
@@ -66,22 +70,18 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
       dir="rtl"
     >
       {/* {localToken && ( */}
-        <>
+      <>
+        <div className="hidden lg:block">
+          {/* <PanelSidebar sideOptions={userSidebarOptions} /> */}
+          <PanelSidebar sideOptions={mainAdminSidebarOptions} />
+        </div>
+        <div className="w-full lg:overflow-hidden">
           <div className="hidden lg:block">
-            <PanelSidebar sideOptions={userSidebarOptions} />
+            <PanelNav userProfile={userProfile} />
           </div>
-          <div className="w-full lg:overflow-hidden">
-            <div className="hidden lg:block">
-              <PanelNav
-                userRole={"userProfile.UserType"}
-                userFirstName={"userProfile.FirstName"}
-                userLastName={"userProfile.LastName"}
-                userGender={"userProfile.gender"}
-              />
-            </div>
-            <div className="bg-[#EAEFF6] h-full p-[5%]">{children}</div>
-          </div>
-        </>
+          <div className="bg-[#EAEFF6] h-full p-[5%]">{children}</div>
+        </div>
+      </>
       {/* )} */}
     </div>
   );

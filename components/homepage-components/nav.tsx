@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchUserProfile,
+  getIdFromLocal,
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
 import Skeleton from "react-loading-skeleton";
@@ -19,10 +20,10 @@ const Nav = () => {
   const [activeColorChange, setActiveColorChange] = useState(false);
 
   const dispatch = useDispatch();
-  const { localToken, userProfile } = useSelector(
+  const { localToken, FirstName, LastName, userProfile, userId , localUserId} = useSelector(
     (state: any) => state.userData
   );
-
+  console.log(localUserId);
   // useEffect(() => {
   //   window.addEventListener("scroll", () => {
   //     window.scrollY > 60
@@ -33,6 +34,7 @@ const Nav = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       dispatch(getTokenFromLocal());
+      dispatch(getIdFromLocal());
       dispatch<any>(fetchUserProfile());
     }
   }, []);
@@ -68,26 +70,27 @@ const Nav = () => {
         {/* Large Screen */}
         <Link
           href={
-            !localToken
+            !localToken || !localUserId
               ? "/auth"
-              : userProfile.UserType === "Admin" ||
-                userProfile.UserType === "GeneralAdmin"
-              ? "/panel/main-admin/profile"
-              : userProfile.UserType === "User"
-              ? "/panel"
-              : userProfile.UserType === "Employer"
-              ? "/panel/employer-panel"
-              : ""
+              : // : userProfile.UserType === "Admin" ||
+                //   userProfile.UserType === "GeneralAdmin"
+                // ? "/panel/main-admin/profile"
+                // : userProfile.UserType === "User"
+                // ? "/panel"
+                // : userProfile.UserType === "Employer"
+                // ? "/panel/employer-panel"
+                "/panel"
           }
         >
           <button className="hidden lg:inline-block font-semibold bg-[#4866CF] text-white rounded-[4px] py-1 px-5 text-base">
-            {!localToken && "ثبت نام / ورود"}
-            {!userProfile?.FirstName &&
-              !userProfile?.LastName &&
-              localToken && <Skeleton width={100} baseColor="#4866CF" />}
-            {userProfile?.FirstName &&
-              userProfile?.LastName &&
+            {(!localToken || !localUserId) && "ثبت نام / ورود"}
+            {!FirstName && !LastName && localToken && localUserId && (
+              <Skeleton width={100} baseColor="#4866CF" />
+            )}
+            {userProfile.FirstName &&
+              userProfile.LastName &&
               localToken &&
+              localUserId &&
               `${userProfile.FirstName} ${userProfile.LastName}`}
           </button>
         </Link>
@@ -226,7 +229,7 @@ const Nav = () => {
                     <Link href="/courses">
                       <li className="text-sm pt-1 font-semibold">آموزش</li>
                     </Link>
-                    <Link href="/in-hand">
+                    <Link href="/moshavere">
                       <li className="text-sm  font-semibold">مشاوره</li>
                     </Link>
                     <Link href="/in-hand">

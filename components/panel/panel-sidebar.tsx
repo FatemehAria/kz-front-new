@@ -25,7 +25,7 @@ const PanelSidebar = ({ sideOptions }: { sideOptions: SideOptionsProps[] }) => {
           <Logo />
         </div>
         <Image src={sidebarpicbg} alt="sidebarbg" height={605} />
-        <div className="absolute bottom-20 flex flex-col gap-10 pr-2 w-full">
+        <div className="absolute top-40 flex flex-col gap-10 pr-2 w-full">
           {sideOptions.map((item) => (
             <Link
               href={item.address}

@@ -2,7 +2,10 @@ import Image from "next/image";
 import PanelnavPointer from "./panelnav-pointer";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { deleteToken } from "@/redux/features/user/userSlice";
+import {
+  deleteDataFromCookie,
+  deleteToken,
+} from "@/redux/features/user/userSlice";
 import { useRouter } from "next/navigation";
 import Skeleton from "react-loading-skeleton";
 import Link from "next/link";
@@ -10,22 +13,14 @@ import notification from "../../public/Panel/notif.svg";
 import malegender from "../../public/Panel/malegender.svg";
 import exit from "../../public/Panel/exit.svg";
 type NavProps = {
-  userRole: string;
-  userFirstName: string;
-  userLastName: string;
-  userGender: string;
+  userProfile: any;
 };
 
-const PanelNav = ({
-  userRole,
-  userFirstName,
-  userLastName,
-  userGender,
-}: NavProps) => {
+const PanelNav = ({ userProfile }: NavProps) => {
   const [showDropdownItems, setShowDropDownItems] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
-
+  // console.log(userProfile.avatar.path);
   return (
     <div
       className="flex flex-col items-end relative justify-center"
@@ -41,10 +36,25 @@ const PanelNav = ({
           </Link>
           <div className="flex flex-row justify-between items-center gap-6">
             <div className="flex justify-center items-center gap-4">
-              <Image alt="profile" src={malegender} />
+              {/* <div className="w-[65px] h-[65px] bg-[#EAEFF6] flex justify-center items-center rounded-full p-1"> */}
+              {userProfile.avatar?.path ? (
+                <Image
+                  alt="profile"
+                  src={userProfile.avatar?.path}
+                  width={75}
+                  height={75}
+                  // className="rounded-full"
+                />
+              ) : (
+                <Skeleton width={100} baseColor="#4866CF" />
+              )}
+              {/* </div> */}
+              {/* <img src={userProfile.avatar?.path} alt="avatar" /> */}
               <div
-                className="rounded-full bg-[#EAEFF6] flex justify-center items-center p-2"
-                onClick={() => dispatch(deleteToken())}
+                className="rounded-full bg-[#EAEFF6] flex justify-center items-center p-2 cursor-pointer"
+                onClick={() => (
+                  dispatch(deleteDataFromCookie()), router.replace("/")
+                )}
               >
                 <Image src={exit} alt="exit" />
               </div>
@@ -52,48 +62,6 @@ const PanelNav = ({
           </div>
         </div>
       </div>
-      {userRole === "User" && showDropdownItems && (
-        <div className="bg-white border-b-indigo-500 border-b-8 rounded-lg absolute z-[999] w-[110px] top-[75%] left-[4%] drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
-          <ul className="flex flex-col gap-3 py-2 pr-2">
-            <li className="cursor-pointer">
-              <Link href="/panel/profile">تنظیمات</Link>
-            </li>
-            <li className="cursor-pointer">رتبه بندی</li>
-            <li className="cursor-pointer">کیف پول</li>
-            <li
-              className="cursor-pointer"
-              onClick={() => (dispatch(deleteToken()), router.replace("/"))}
-            >
-              خروج
-            </li>
-          </ul>
-        </div>
-      )}
-      {(userRole === "Admin" || userRole === "GeneralAdmin") &&
-        showDropdownItems && (
-          <div className="bg-white border-b-indigo-500 border-b-8 rounded-lg absolute z-[999] w-[110px] top-[75%] left-[4%] drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
-            <ul className="flex flex-col gap-3 py-2 pr-2">
-              <li
-                className="cursor-pointer"
-                onClick={() => (dispatch(deleteToken()), router.replace("/"))}
-              >
-                خروج
-              </li>
-            </ul>
-          </div>
-        )}
-      {userRole === "Employer" && showDropdownItems && (
-        <div className="bg-white border-b-indigo-500 border-b-8 rounded-lg absolute z-[999] w-[110px] top-[75%] left-[4%] drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
-          <ul className="flex flex-col gap-3 py-2 pr-2">
-            <li
-              className="cursor-pointer"
-              onClick={() => (dispatch(deleteToken()), router.replace("/"))}
-            >
-              خروج
-            </li>
-          </ul>
-        </div>
-      )}
     </div>
   );
 };

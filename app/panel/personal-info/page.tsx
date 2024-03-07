@@ -13,7 +13,7 @@ import axios from "axios";
 
 function PersonalInfo() {
   const [step, setStep] = useState(1);
-  const { userId, PhoneNumber, localToken } = useSelector(
+  const { userId, PhoneNumber, localToken,localUserId } = useSelector(
     (state: any) => state.userData
   );
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ function PersonalInfo() {
         );
       case 2:
         return (
-          <Legal PhoneNumber={PhoneNumber} userId={userId} token={localToken} />
+          <Legal PhoneNumber={PhoneNumber} userId={localUserId} token={localToken} />
         );
       default:
         break;
