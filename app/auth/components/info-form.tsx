@@ -28,14 +28,14 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
       setPhoneNumber(number || "");
     }
   }, []);
-  // useEffect(() => {
-  //   const timeout = setTimeout(() => {
-  //     setSteps(1);
-  //     // console.log("first");
-  //   }, 5 * 60 * 1000); // 5 minutes in milliseconds
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setSteps(1);
+      // console.log("first");
+    }, 5 * 60 * 1000); // 5 minutes in milliseconds
 
-  //   return () => clearTimeout(timeout);
-  // }, []);
+    return () => clearTimeout(timeout);
+  }, []);
 
   const sendInfo = async (
     FirstName: string,

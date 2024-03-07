@@ -1,16 +1,21 @@
 import Image from "next/image";
 import React from "react";
-import dropdownbutton from "../../../../public/Panel/dropdownbutton.svg";
 type SubmitOrderDropdownProps = {
   dropDownTitle: string;
+  dropdownItems: string[];
 };
-function SubmitOrderDropdown({ dropDownTitle }: SubmitOrderDropdownProps) {
+function SubmitOrderDropdown({
+  dropDownTitle,
+  dropdownItems,
+}: SubmitOrderDropdownProps) {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 relative">
       <p>{dropDownTitle}</p>
-      <div className="py-5 bg-[#EAEFF6] rounded-[4xl] relative">
-        <Image src={dropdownbutton} alt="drop" className="absolute left-0 top-1/2 -translate-y-1/2 pl-1" />
-      </div>
+      <select name="" id="" className="bg-[#EAEFF6] h-full rounded-[4px]">
+        {dropdownItems.map((item) => (
+          <option key={item}>{item}</option>
+        ))}
+      </select>
     </div>
   );
 }

@@ -1,21 +1,52 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import PanelFields from "../components/panel-fileds";
 import SubmitOrderDropdown from "./components/submit-order-dropdown";
 import SubmitOrderModalfield from "./components/submit-order-modalfield";
 import SubmitOrderDescription from "./components/submit-order-description";
-import PersonalInfoFileupload from "../personal-info/components/personal-info-fileupload";
 import FileUpload from "./components/file-upload";
 
 function SubmitOrder() {
+  const [projectFields, setProjectFields] = useState({
+    title: "",
+    type: "",
+    plan: "",
+    budget: "",
+    Similar_Site: "",
+    Description: "",
+    Templates: "",
+    Colors: "",
+  });
+  const [showDropdown, setShowDropdown] = useState(false);
   return (
     <div className="py-[3%] w-[90%] shadow mx-auto bg-white rounded-2xl px-[3%] grid grid-cols-1 gap-5">
       <div className="grid grid-cols-2 gap-3">
-        <PanelFields label="عنوان پروژه:" />
-        <SubmitOrderDropdown dropDownTitle="نوع پروژه:" />
+        <PanelFields
+          label="عنوان پروژه:"
+          onChange={(e) =>
+            setProjectFields((last) => ({ ...last, title: e.target.value }))
+          }
+          value={projectFields.title}
+          name="title"
+        />
+        <SubmitOrderDropdown
+          dropDownTitle="نوع پروژه:"
+          dropdownItems={["فروشگاهی", "شرکتی ", "پنل سازمانی"]}
+        />
       </div>
       <div className="grid grid-cols-2 gap-3">
-        <SubmitOrderDropdown dropDownTitle="پلن انتخابی:" />
-        <PanelFields label="بودجه مورد نظر:" />
+        <SubmitOrderDropdown
+          dropDownTitle="پلن انتخابی:"
+          dropdownItems={["وردپرس ", "برنامه نویسی اختصاصی "]}
+        />
+        <PanelFields
+          label="بودجه مورد نظر:"
+          onChange={(e) =>
+            setProjectFields((last) => ({ ...last, budget: e.target.value }))
+          }
+          value={projectFields.budget}
+          name="budget"
+        />
       </div>
       <SubmitOrderModalfield modalFieldTitle="سایت مشابه مورد نظر شماست:" />
       <SubmitOrderDescription />

@@ -1,4 +1,3 @@
-"use client";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import PanelFields from "../components/panel-fileds";
 import PersonalInfoFileupload from "./components/personal-info-fileupload";

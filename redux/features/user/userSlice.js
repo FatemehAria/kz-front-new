@@ -57,10 +57,10 @@ const fetchUserProfile = createAsyncThunk(
   async (_, { getState, rejectWithValue }) => {
     try {
       const { data } = await axios.get(
-        "https://keykavoos.liara.run/User/getProfile",
+        `https://keykavoos.liara.run/Client/User/${getState().userData.userId}`,
         {
           headers: {
-            authorization: `Bearer ${getState().userRole.localToken}`,
+            authorization: `Bearer ${getState().userData.localToken}`,
           },
         }
       );
@@ -69,7 +69,6 @@ const fetchUserProfile = createAsyncThunk(
         data,
         FirstName: data.FirstName,
         LastName: data.LastName,
-        birthDate: data.Date_of_birth,
         email: data.email,
       };
     } catch (error) {
@@ -91,9 +90,11 @@ const userSlice = createSlice({
     handleAutoFocus: (state, action) => {
       state.autoFocus = action.payload;
     },
-    deleteToken: (state) => {
+    deleteDataFromCookie: (state) => {
       state.token = "";
+      state.userId = "";
       deleteCookie("token");
+      deleteCookie("userId");
     },
     changePhoneNumber: (state) => {
       state.changePhoneNumber = true;
@@ -187,6 +188,6 @@ export const {
   closeModal,
   handleAutoFocus,
   readPhoneNumberFromLocalStroage,
-  getIdFromLocal
+  getIdFromLocal,
 } = userSlice.actions;
 export { fetchUserProfile, fetchUserInOTPValidation };

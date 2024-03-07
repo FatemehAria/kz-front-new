@@ -21,9 +21,7 @@ import { getCookie } from "cookies-next";
 import Loading from "../loading";
 
 const PanelLayout = ({ children }: { children: React.ReactNode }) => {
-  // const { token } = useSelector(
-  //   (store: any) => store.userData
-  // );
+  const { localToken , userId} = useSelector((store: any) => store.userData);
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 4;
@@ -41,7 +39,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   const handlePrevClick = () => {
     setCurrentPage((prevPage) => (prevPage > 0 ? prevPage - 1 : prevPage));
   };
-
+  console.log(userId);
   // const [loading, setLoading] = useState(true);
 
   // useEffect(() => {
@@ -68,22 +66,22 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
       dir="rtl"
     >
       {/* {localToken && ( */}
-      <>
-        <div className="hidden lg:block">
-          <PanelSidebar sideOptions={userSidebarOptions} />
-        </div>
-        <div className="w-full lg:overflow-hidden">
+        <>
           <div className="hidden lg:block">
-            <PanelNav
-              userRole={"userProfile.UserType"}
-              userFirstName={"userProfile.FirstName"}
-              userLastName={"userProfile.LastName"}
-              userGender={"userProfile.gender"}
-            />
+            <PanelSidebar sideOptions={userSidebarOptions} />
           </div>
-          <div className="bg-[#EAEFF6] h-full p-[5%]">{children}</div>
-        </div>
-      </>
+          <div className="w-full lg:overflow-hidden">
+            <div className="hidden lg:block">
+              <PanelNav
+                userRole={"userProfile.UserType"}
+                userFirstName={"userProfile.FirstName"}
+                userLastName={"userProfile.LastName"}
+                userGender={"userProfile.gender"}
+              />
+            </div>
+            <div className="bg-[#EAEFF6] h-full p-[5%]">{children}</div>
+          </div>
+        </>
       {/* )} */}
     </div>
   );

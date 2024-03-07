@@ -42,7 +42,10 @@ const PanelNav = ({
           <div className="flex flex-row justify-between items-center gap-6">
             <div className="flex justify-center items-center gap-4">
               <Image alt="profile" src={malegender} />
-              <div className="rounded-full bg-[#EAEFF6] flex justify-center items-center p-2">
+              <div
+                className="rounded-full bg-[#EAEFF6] flex justify-center items-center p-2"
+                onClick={() => dispatch(deleteToken())}
+              >
                 <Image src={exit} alt="exit" />
               </div>
             </div>

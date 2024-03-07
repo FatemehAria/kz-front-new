@@ -55,7 +55,7 @@ function Intro() {
         <div className="flex items-center justify-center text-[#68707A] text-[45px]">
           <div>
             شرکت بین المللی <span className="font-extrabold">کیکاووس زمان</span>{" "}
-            پیشرو در زمینه <p>برنامه نویسی</p>
+            تجربه ای متفاوت در <p>دنیای دیجیتال</p>
           </div>
         </div>
         <p className="text-[#939393] max-w-sm text-[16px]">
