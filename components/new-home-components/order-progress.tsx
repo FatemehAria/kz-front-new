@@ -23,7 +23,7 @@ function OrderProgress({ currentStep, setCurrentStep }: OrderProgressProps) {
   };
 
   return (
-    <div className={styles.progressContainer}>
+    <div className={`${styles.progressContainer} w-[80%] mx-auto`}>
       {dotPositions.map((position, index) => (
         <div
           key={index}
@@ -32,7 +32,7 @@ function OrderProgress({ currentStep, setCurrentStep }: OrderProgressProps) {
           }`}
           style={{ left: position }}
         >
-          <span className="whitespace-nowrap absolute -bottom-10 left-1/2 -translate-x-1/2 text-[#4866CF]">
+          <span className="whitespace-nowrap text-[12px] absolute -bottom-10 left-1/2 -translate-x-1/2 text-[#4866CF]">
             {stepTexts[index]}
           </span>
         </div>

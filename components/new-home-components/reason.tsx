@@ -37,13 +37,13 @@ const ReasonData = [
 ];
 function Reason() {
   return (
-    <div>
+    <div className="flex flex-col">
       <SectionHeader
         mainTitle="چرا کیکاووس زمان را انتخاب کنیم؟"
         subTitle="دلایل انتخاب کیکاووس زمان چه چیزهایی است؟"
-        width="27%"
+        width="24%"
       />
-      <div className="flex flex-row-reverse justify-between mt-[5%]">
+      <div className="lg:flex lg:flex-row-reverse lg:justify-between grid grid-cols-2 gap-[5%] lg:gap-0">
         {ReasonData.map((item) => (
           <div key={item.id}>
             <ReasonCard data={item} />

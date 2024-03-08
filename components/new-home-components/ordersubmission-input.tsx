@@ -5,11 +5,11 @@ type OrdersubmissionInputProps = {
 };
 function OrdersubmissionInput({ placeholder }: OrdersubmissionInputProps) {
   return (
-    <div>
+    <div className="w-full">
       <input
         type="text"
         placeholder={placeholder}
-        className="outline-none border-2 border-[#D0DBEC] rounded-[8px] p-3"
+        className="outline-none border-2 border-[#D0DBEC] rounded-[8px] p-3 w-full"
         dir="rtl"
       />
     </div>

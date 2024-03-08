@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="4xl:w-[60%] 4xxl:w-[55%] 4xxxl:max-5xl:w-[55%] 5xl:w-[50%] 6xl:w-[50%] 3xl:w-[70%] mx-auto 7xl:w-[40%] 8xl:w-[25%] font-YekanBakh">
+      <body className="4xl:w-[60%] 4xxl:w-[55%] 4xxxl:max-5xl:w-[55%] 5xl:w-[50%] 6xl:w-[50%] 3xl:w-[70%] mx-auto 7xl:w-[45%] 8xl:w-[25%] font-YekanBakh">
         <ToastProvider>
           <Providers>
             <div>{children}</div>

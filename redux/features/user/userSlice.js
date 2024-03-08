@@ -14,7 +14,7 @@ const initialState = {
   changePhoneNumber: false,
   loadscript: false,
   localToken: "",
-  localUserId:"",
+  localUserId: "",
   PhoneNumber: "",
   email: "",
   PhoneNumberInput: true,
@@ -59,7 +59,9 @@ const fetchUserProfile = createAsyncThunk(
   async (_, { getState, rejectWithValue }) => {
     try {
       const { data } = await axios.get(
-        `https://keykavoos.liara.run/Client/User/${getState().userData.localUserId}`,
+        `https://keykavoos.liara.run/Client/User/${
+          getState().userData.localUserId
+        }`,
         {
           headers: {
             authorization: `Bearer ${getState().userData.localToken}`,
@@ -134,7 +136,7 @@ const userSlice = createSlice({
       state.token = action.payload.token;
       setCookie("token", state.token, {
         path: "/",
-        maxAge: 24 * 60 * 60,
+        maxAge: 60 * 60,
         secure: true,
       });
       state.userInfoOnLogin = action.payload.userInfoOnLogin;
@@ -145,6 +147,7 @@ const userSlice = createSlice({
       setCookie("userId", state.userId, {
         path: "/",
         secure: true,
+        maxAge: 60 * 60,
       });
       if (!state.userInfoOnLogin) {
         state.successMessage = "لطفا اطلاعات خود را تکمیل کنید.";
@@ -191,6 +194,6 @@ export const {
   handleAutoFocus,
   readPhoneNumberFromLocalStroage,
   getIdFromLocal,
-  deleteDataFromCookie
+  deleteDataFromCookie,
 } = userSlice.actions;
 export { fetchUserProfile, fetchUserInOTPValidation };

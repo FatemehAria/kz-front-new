@@ -4,10 +4,21 @@ type SectionHeaderProps = {
   mainTitle: string;
   subTitle: string;
   width: string;
+  marginBottom?: string;
+  marginTop?: string;
 };
-function SectionHeader({ mainTitle, subTitle, width }: SectionHeaderProps) {
+function SectionHeader({
+  mainTitle,
+  subTitle,
+  width,
+  marginBottom,
+  marginTop,
+}: SectionHeaderProps) {
   return (
-    <div className="relative whitespace-nowrap">
+    <div
+      className="relative whitespace-nowrap sm:mt-24 sm:mb-20 mt-20 mb-10"
+      // style={{ marginBottom: marginBottom, marginTop: marginTop }}
+    >
       <div
         style={{
           position: "absolute",
@@ -20,6 +31,7 @@ function SectionHeader({ mainTitle, subTitle, width }: SectionHeaderProps) {
           borderImage:
             "linear-gradient(to left, rgba(72, 102, 207, 1) -5%, rgba(234, 239, 246, 1) 100%) 1",
         }}
+        className="hidden lg:inline"
       ></div>
       <div
         style={{
@@ -33,10 +45,15 @@ function SectionHeader({ mainTitle, subTitle, width }: SectionHeaderProps) {
           borderImage:
             "linear-gradient(to left, rgba(234, 239, 246, 1) -5%, rgba(72, 102, 207, 1) 100%) 1",
         }}
+        className="hidden lg:inline"
       ></div>
       <div className="text-center absolute -top-14 left-1/2 -translate-x-1/2 bg-transparent">
-        <p className="text-[#68707A] text-[37px] font-bold">{mainTitle}</p>
-        <p className="text-[#4866CF] text-[24px]">{subTitle}</p>
+        <p className="text-[#68707A] sm:text-[32px] font-bold text-[6vmin]">
+          {mainTitle}
+        </p>
+        <p className="text-[#4866CF] sm:text-[24px] text-[4.5vmin]">
+          {subTitle}
+        </p>
       </div>
     </div>
   );

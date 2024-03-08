@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -25,13 +25,13 @@ function ReasonCard({ data }: ReasonCardProps) {
 
   return (
     <div
-      className="bg-white w-[200px] h-[200px] rounded-2xl flex flex-col items-center text-center gap-2 p-[5%] shadow cursor-pointer"
-      style={{
-        backgroundColor: isHovered ? "#4866CF" : "white",
-        color: isHovered ? "white" : "black",
-      }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      className="bg-white lg:w-[200px] lg:h-[200px] rounded-2xl flex flex-col items-center text-center gap-2 p-[5%] shadow cursor-pointer"
+      // style={{
+      //   backgroundColor: isHovered ? "#4866CF" : "white",
+      //   color: isHovered ? "white" : "black",
+      // }}
+      // onMouseEnter={handleMouseEnter}
+      // onMouseLeave={handleMouseLeave}
     >
       <p
         className="text-[20px] font-semibold"

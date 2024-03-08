@@ -23,14 +23,14 @@ const Nav = () => {
   const { localToken, FirstName, LastName, userProfile, userId , localUserId} = useSelector(
     (state: any) => state.userData
   );
-  console.log(localUserId);
-  // useEffect(() => {
-  //   window.addEventListener("scroll", () => {
-  //     window.scrollY > 60
-  //       ? setActiveColorChange(true)
-  //       : setActiveColorChange(false);
-  //   });
-  // });
+  // console.log(localUserId);
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      window.scrollY > 60
+        ? setActiveColorChange(true)
+        : setActiveColorChange(false);
+    });
+  });
   useEffect(() => {
     if (typeof window !== "undefined") {
       dispatch(getTokenFromLocal());
@@ -41,7 +41,7 @@ const Nav = () => {
 
   return (
     <div
-      className={`w-full mx-auto top-0 z-[999] font-YekanBakh transition-all mb-3 lg:${
+      className={`w-full mx-auto top-0 z-[999] font-YekanBakh transition-all sticky mb-3 lg:${
         activeColorChange && "shadow-md bg-slate-50"
       }`}
       onMouseLeave={() => (

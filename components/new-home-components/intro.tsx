@@ -6,64 +6,64 @@ import Image from "next/image";
 
 function Intro() {
   return (
-    <div className="grid grid-cols-2 text-right relative">
-      <div
-        style={{
-          backgroundColor: "#F6FCFA",
-          width: "420px",
-          height: "400px",
-          position: "absolute",
-          borderRadius: "100%",
-          top: "1rem",
-        }}
-      ></div>
-      <div
-        style={{
-          width: "420px",
-          maxWidth: "450px",
-          height: "420px",
-          background: "radial-gradient(circle at bottom,#F6FCFA 0%,#0000)",
-          borderRadius: "50% 50% 50% 50%",
-          overflow: "hidden",
-          display: "flex",
-          justifyContent: "center",
-          zIndex: "10",
-        }}
-      >
-        <Image src={tower} alt="tower" />
-        <div className="bg-[#FFFFFF] w-[100px] h-[100px] rounded-[5px] absolute left-0 top-14 flex flex-col items-center py-3 gap-1 shadow">
-          <Image
-            src={support}
-            alt="support"
-            width={25}
-            height={25}
-            className="bg-[#C9D6E9DE] p-[3%] rounded-full"
-          />
-          <p className="text-[12px] text-[#4C6487]">پشتیبانی یک ساله</p>
-          <p className="text-[10px] text-[#4C6487] text-center">
-            یک سال در کنارتان هستیم
-          </p>
-        </div>
+    <div className="grid md:grid-cols-2 grid-cols-1 text-right relative">
+      <div className="flex justify-center lg:justify-normal relative">
+        <div
+          style={{
+            backgroundColor: "#F6FCFA",
+            // backgroundColor: "yellow",
+            borderRadius: "100%",
+          }}
+          className="lg:w-[430px] lg:h-[430px] max-w-[430px] w-[300px] h-[285px] absolute top-[1rem] lg:left-0 lg:translate-x-0"
+        ></div>
+        <div
+          style={{
+            background: "radial-gradient(circle at bottom,#F6FCFA 0%,#0000)",
+            borderRadius: "50% 50% 50% 50%",
+            overflow: "hidden",
+            display: "flex",
+            justifyContent: "center",
+            zIndex: "10",
+          }}
+          className="lg:w-[420px] lg:max-w-[450px] lg:h-[450px] w-[300px] h-[300px]"
+        >
+          <Image src={tower} alt="tower" className="z-20" />
+          <div className="bg-[#FFFFFF] lg:w-[100px] lg:h-[100px] w-[90px] h-[90px] lg:rounded-[5px] absolute lg:left-0 -left-5 top-14 flex flex-col items-center py-3 gap-1 shadow z-30 rounded-full">
+            <Image
+              src={support}
+              alt="support"
+              width={25}
+              height={25}
+              className="bg-[#C9D6E9DE] p-[3%] rounded-full"
+            />
+            <p className="lg:text-[12px] text-[#4C6487] text-sm text-center">
+              پشتیبانی یک ساله
+            </p>
+            <p className="lg:text-[10px] text-[#4C6487] text-center hidden lg:inline">
+              یک سال در کنارتان هستیم
+            </p>
+          </div>
 
-        <div className="w-[30px] h-[30px] absolute left-12 bg-[#C9D6E9] rounded-full"></div>
-        <div className="w-[18px] h-[18px] absolute left-[28rem] top-12 bg-[#C9D6E9] rounded-full"></div>
-        <div className="w-[22px] h-[22px] absolute bottom-5 left-2 bg-[#C9D6E9] rounded-full"></div>
-        <div className="w-[8px] h-[8px] absolute bottom-11 right-80 bg-[#C9D6E9] rounded-full"></div>
+          <div className="w-[30px] h-[30px] absolute left-12 bg-[#C9D6E9] rounded-full hidden lg:block"></div>
+          <div className="w-[18px] h-[18px] absolute left-[28rem] top-12 bg-[#C9D6E9] rounded-full hidden lg:block"></div>
+          <div className="w-[22px] h-[22px] absolute bottom-5 left-2 bg-[#C9D6E9] rounded-full hidden lg:block"></div>
+          <div className="w-[8px] h-[8px] absolute bottom-11 right-80 bg-[#C9D6E9] rounded-full hidden lg:block"></div>
+        </div>
       </div>
 
       <div className="flex flex-col justify-center items-end gap-5">
-        <div className="flex items-center justify-center text-[#68707A] text-[45px]">
+        <div className="flex items-center justify-center text-center md:text-right md:text-[30px] text-[#68707A] text-[35px] 6xl:max-7xl:text-[43px] 7xl:text-[40px] 8xl:text-[45px] 5xl:max-6xl:text-[43px] 2xl:max-3xl:text-[50px] 3xl:max-5xl:text-[35px] 3xl:max-5xl:max-w-md lg:max-2xl:text-[45px] lg:max-2lg:text-[34px] 2lg:max-xl:text-[38px] xl:max-2xl:text-[44px]">
           <div>
             شرکت بین المللی <span className="font-extrabold">کیکاووس زمان</span>{" "}
             تجربه ای متفاوت در <p>دنیای دیجیتال</p>
           </div>
         </div>
-        <p className="text-[#939393] max-w-sm text-[16px]">
+        <p className="text-[#939393] md:max-w-sm text-[16px]">
           لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده
           از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و
           سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز
         </p>
-        <div className="flex justify-end gap-3">
+        <div className="flex md:justify-end justify-center w-full gap-3">
           <button className="flex flex-row items-center h-[40px] w-[145px] rounded-[4px] text-[#597193]">
             <Image src={play} alt="play" width={40} height={40} />
             <span>تماشا ویدیو</span>
@@ -78,9 +78,3 @@ function Intro() {
 }
 
 export default Intro;
-{
-  /* <div className="flex justify-center items-end bg-blue-100">
-        <div className="w-[500px] h-[500px] bg-white rounded-full"></div>
-        <Image src={tower} alt="tower" className="relative -left-[50%]" />
-      </div> */
-}
