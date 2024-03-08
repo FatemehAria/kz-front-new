@@ -25,9 +25,9 @@ const Auth = () => {
     }
   };
   return (
-    <React.Fragment>
+    <div>
       {(!localToken || !userId) && <div dir="rtl">{renderSteps()}</div>}
-    </React.Fragment>
+    </div>
   );
 };
 export default Auth;

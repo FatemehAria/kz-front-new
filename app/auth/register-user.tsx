@@ -33,7 +33,7 @@ const RegisterUser = ({ setSteps }: RegisterUserProps) => {
     status,
     welcomeMessage,
     isLoggedIn,
-    showModal
+    showModal,
   } = useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
   const [PhoneNumber, setPhoneNumber] = useState("");
@@ -55,7 +55,7 @@ const RegisterUser = ({ setSteps }: RegisterUserProps) => {
 
     return () => clearTimeout(timeout);
   }, [counter]);
-console.log(userInfoOnLogin);
+  console.log(userInfoOnLogin);
   useEffect(() => {
     if (typeof window !== "undefined" && PhoneNumberInput === true) {
       const number = window.localStorage.getItem("PhoneNumber");
@@ -116,7 +116,7 @@ console.log(userInfoOnLogin);
             onSubmit={(e) => handleSubmission(e)}
             className="flex flex-col gap-5"
           >
-            <label className="whitespace-nowrap">
+            <label className="md:whitespace-nowrap">
               <p className="font-bold text-[24px] pt-[3%] pb-1">
                 ثبت نام در کیکاووس زمان
               </p>
@@ -184,20 +184,21 @@ console.log(userInfoOnLogin);
                 />
               )}
               <span
-                className={`flex w-full items-center text-[20px] gap-2 ${
+                className={`w-full text-[20px] ${
                   counter === 0 && "text-blue-700 cursor-pointer "
                 }`}
               >
-                <Image src={sms} alt="sms" />
                 {counter === 0 ? (
-                  <div className="flex flex-row w-full items-center gap-5 whitespace-nowrap">
+                  <div className="flex flex-row flex-wrap lg:flex-nowrap w-full  items-center gap-10 whitespace-nowrap">
                     <p
+                      className="flex items-center gap-2"
                       onClick={async () =>
                         counter === 0 &&
                         (await getNewOTP(PhoneNumber), setCounter(90))
                       }
                     >
-                      ارسال مجدد
+                      <Image src={sms} alt="sms" />
+                      <span>ارسال مجدد</span>
                     </p>
                     <p className="text-black">یا</p>
                     <p className="flex w-full items-center gap-2">
@@ -213,11 +214,19 @@ console.log(userInfoOnLogin);
                     </p>
                   </div>
                 ) : (
-                  `${counter} ثانیه تا ارسال مجدد کد از طریق پیامک
-                `
+                  <div className="flex flex-row gap-2 items-center">
+                    <Image src={sms} alt="sms" />
+                    <span className="whitespace-nowrap sm:text-xl text-sm xsm:text-lg">
+                      {counter} ثانیه تا ارسال مجدد کد از طریق پیامک
+                    </span>
+                  </div>
                 )}
               </span>
-              <SubmissionBtn text="تایید رمز یکبارمصرف" validation={true} />
+              <SubmissionBtn
+                text="تایید رمز یکبارمصرف"
+                validation={true}
+                type={showModal ? "button" : "submit"}
+              />
             </div>
           </form>
         </div>

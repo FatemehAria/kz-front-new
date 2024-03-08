@@ -197,7 +197,7 @@ const Login = ({ setSteps }: LoginProps) => {
                   )}
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-[8%]">
+              <div className="grid grid-cols-2 md:gap-[8%] gap-[5%]">
                 <FormInput
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     setAnswer(e.target.value)
@@ -216,6 +216,7 @@ const Login = ({ setSteps }: LoginProps) => {
                 validation={
                   formik.isValid && parseInt(answer) === correctAnswer
                 }
+                type={showModal ? "button" : "submit"}
               />
             </form>
             <LoginVia />

@@ -6,13 +6,14 @@ import News from "@/components/new-home-components/news";
 import Order from "@/components/new-home-components/order";
 import Plans from "@/components/new-home-components/plans";
 import Reason from "@/components/new-home-components/reason";
+import ShowNavachat from "@/navachat/ShowNavachat";
 import Script from "next/script";
 
 export default function Home() {
   return (
     // className=" bg-blue-100"
     <div className="bg-[#EAEFF6]">
-      <Script src="/navachat.js" async />
+      {/* <Script src="/navachat.js" async /> */}
       <Nav />
       <main className="flex flex-col w-[80%] mx-auto my-[3%]">
         <Intro />
