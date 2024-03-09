@@ -13,7 +13,7 @@ export default function Home() {
   return (
     // className=" bg-blue-100"
     <div className="bg-[#EAEFF6]">
-      {/* <Script src="/navachat.js" async /> */}
+      <Script src="/navachat.js" async />
       <Nav />
       <main className="flex flex-col w-[80%] mx-auto my-[3%]">
         <Intro />

@@ -98,8 +98,8 @@ export const userSidebarOptions = [
   {
     text: "تنظیمات",
     imgSrc: "/Panel/settings.svg",
-    address: "/panel/game",
-    path: "/game",
+    address: "/panel/settings",
+    path: "/settings",
   }
 ];
 export const employerSidebarOptions = [

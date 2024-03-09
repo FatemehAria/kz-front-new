@@ -6,8 +6,7 @@ function ShowNavachat() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname === "/") {
-      console.log("in /");
+    if (pathname === "/" && typeof window !== "undefined") {
       window.NAVACHAT_TOKEN = "01HHYAC9AS8483G16T443H8ZGD";
       const script = document.createElement("script");
       script.src = "https://cdn.navatel.ir/webchat/widget.js";
