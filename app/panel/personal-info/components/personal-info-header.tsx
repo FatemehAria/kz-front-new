@@ -1,7 +1,7 @@
 import React from "react";
 type PersonalInfoHeaderProps = {
-  step: number;
-  setStep: React.Dispatch<React.SetStateAction<number>>;
+  step: string;
+  setStep?: React.Dispatch<React.SetStateAction<number>>;
 };
 function PersonalInfoHeader({ step, setStep }: PersonalInfoHeaderProps) {
   return (
@@ -35,21 +35,21 @@ function PersonalInfoHeader({ step, setStep }: PersonalInfoHeaderProps) {
       <div className="text-center absolute -top-5 left-1/2 text-[20px] -translate-x-1/2 bg-transparent flex flex-row gap-5">
         <button
           className={`rounded-[4px] py-[3%] px-[8%] ${
-            step === 1
-              ? "bg-[#4866CF] text-white"
-              : "bg-[#EAEFF6] text-[#4866CF]"
+            step === "Genuine"
+              ? "bg-[#4866CF] text-white cursor-pointer"
+              : "bg-[#EAEFF6] text-[#4866CF] cursor-default"
           }`}
-          onClick={() => setStep(1)}
+          onClick={() => setStep && setStep(1)}
         >
           حقیقی
         </button>
         <button
           className={`rounded-[4px] py-[3%] px-[8%] ${
-            step === 2
-              ? "bg-[#4866CF] text-white"
-              : "bg-[#EAEFF6] text-[#4866CF]"
+            step === "Legal"
+              ? "bg-[#4866CF] text-white cursor-pointer"
+              : "bg-[#EAEFF6] text-[#4866CF] cursor-default"
           }`}
-          onClick={() => setStep(2)}
+          onClick={() => setStep && setStep(2)}
         >
           حقوقی
         </button>

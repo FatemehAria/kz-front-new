@@ -24,6 +24,7 @@ const initialState = {
   welcomeMessage: "",
   userId: "",
   userType: "",
+  type: "",
 };
 
 const fetchUserInOTPValidation = createAsyncThunk(
@@ -48,6 +49,7 @@ const fetchUserInOTPValidation = createAsyncThunk(
         welcomeMessage: data.welcome,
         userId: data.User?._id,
         userType: data.User?.UserType,
+        type: data.User?.type,
       };
     } catch (error) {
       console.log(error);
@@ -76,6 +78,7 @@ const fetchUserProfile = createAsyncThunk(
         FirstName: data.data.FirstName,
         LastName: data.data.LastName,
         email: data.data.email,
+        type: data.data.type,
       };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -177,6 +180,7 @@ const userSlice = createSlice({
       state.LastName = action.payload.LastName;
       state.welcomeMessage = action.payload.welcomeMessage;
       state.userType = action.payload.userType;
+      state.type = action.payload.type;
       state.userId = action.payload.userId;
       setCookie("userId", state.userId, {
         path: "/",
@@ -205,6 +209,7 @@ const userSlice = createSlice({
       state.userProfile = action.payload.data;
       state.FirstName = action.payload.FirstName;
       state.LastName = action.payload.LastName;
+      state.type = action.payload.type
       state.error = "";
     });
     builder.addCase(fetchUserProfile.rejected, (state, action) => {

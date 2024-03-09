@@ -1,9 +1,8 @@
-import React, { ChangeEvent } from "react";
-// : React.ChangeEvent<HTMLInputElement>
+import React from "react";
 type PanelFieldsProps = {
   label: string;
   value: string;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
   disable?: boolean;
   name?: string;
 };
@@ -19,7 +18,7 @@ function PanelFields({
       <label htmlFor="">{label}</label>
       <input
         className={`${
-          disable ? "bg-[#EAEFF6] text-slate-500" : "bg-[#EAEFF6]"
+          disable ? "bg-[#EAEFF6] text-slate-500 px-3" : "bg-[#EAEFF6]"
         } outline-none border-none py-2 rounded-[4px]`}
         onChange={onChange}
         value={value}

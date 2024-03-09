@@ -43,10 +43,12 @@ const PanelNav = ({ userProfile }: NavProps) => {
                   src={userProfile.avatar?.path}
                   width={75}
                   height={75}
-                  // className="rounded-full"
+                  className="rounded-full"
                 />
               ) : (
-                <Skeleton width={100} baseColor="#4866CF" />
+                // <Skeleton width={100} baseColor="#4866CF" /> || (
+                <Image src={malegender} alt="default-pic" />
+                // )
               )}
               {/* </div> */}
               {/* <img src={userProfile.avatar?.path} alt="avatar" /> */}

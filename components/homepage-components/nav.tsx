@@ -20,10 +20,15 @@ const Nav = () => {
   const [activeColorChange, setActiveColorChange] = useState(false);
 
   const dispatch = useDispatch();
-  const { localToken, FirstName, LastName, userProfile, userId , localUserId} = useSelector(
-    (state: any) => state.userData
-  );
-  // console.log(localUserId);
+  const {
+    localToken,
+    FirstName,
+    LastName,
+    userProfile,
+    userType,
+    localUserId,
+  } = useSelector((state: any) => state.userData);
+  console.log(userType);
   useEffect(() => {
     window.addEventListener("scroll", () => {
       window.scrollY > 60
@@ -72,14 +77,18 @@ const Nav = () => {
           href={
             !localToken || !localUserId
               ? "/auth"
-              : // : userProfile.UserType === "Admin" ||
-                //   userProfile.UserType === "GeneralAdmin"
-                // ? "/panel/main-admin/profile"
-                // : userProfile.UserType === "User"
-                // ? "/panel"
-                // : userProfile.UserType === "Employer"
-                // ? "/panel/employer-panel"
-                "/panel"
+              : userType === "User"
+              ? "/panel"
+              : userType === "Admin"
+              ? "/panel/admin"
+              : "" // : userProfile.UserType === "Admin" ||
+            //   userProfile.UserType === "GeneralAdmin"
+            // ? "/panel/main-admin/profile"
+            // : userProfile.UserType === "User"
+            // ? "/panel"
+            // : userProfile.UserType === "Employer"
+            // ? "/panel/employer-panel"
+            // "/panel"
           }
         >
           <button className="hidden lg:inline-block font-semibold bg-[#4866CF] text-white rounded-[4px] py-1 px-5 text-base">

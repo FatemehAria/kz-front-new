@@ -22,9 +22,10 @@ import { getCookie } from "cookies-next";
 import Loading from "../loading";
 
 const PanelLayout = ({ children }: { children: React.ReactNode }) => {
-  const { localToken, userId, userProfile } = useSelector(
+  const { localToken, userId, userProfile, userType } = useSelector(
     (store: any) => store.userData
   );
+  // console.log(userType);
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 4;
@@ -76,10 +77,13 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
           {/* <PanelSidebar sideOptions={mainAdminSidebarOptions} /> */}
         </div>
         <div className="w-full lg:overflow-hidden">
-          <div className="hidden lg:block">
+          <div className="hidden md:block">
             <PanelNav userProfile={userProfile} />
           </div>
           <div className="bg-[#EAEFF6] h-full p-[5%]">{children}</div>
+          <div>
+            <PanelSidebarSmall sideOptions={userSidebarOptions}/>
+          </div>
         </div>
       </>
       {/* )} */}
