@@ -170,6 +170,7 @@ const RegisterUser = ({ setSteps }: RegisterUserProps) => {
                   setCounter={setCounter}
                   changeNumber={true}
                   setSteps={setSteps}
+                  isLoggedIn={userInfoOnLogin}
                 />
               )}
               {successMessage !== "" && showModal && (

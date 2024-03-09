@@ -6,7 +6,7 @@ import {
 } from "@/redux/features/user/userSlice";
 import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 type ModalProps = {
   showModal: boolean;
@@ -36,6 +36,7 @@ function Modal({
   isLoggedIn,
   redirect,
 }: ModalProps) {
+  const { userType } = useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
   const router = useRouter();
   return (
@@ -84,7 +85,10 @@ function Modal({
                     executeFunction && executeFunction() && setCounter(90);
                     !isLoggedIn && setSteps?.(3);
                     dispatch(handleAutoFocus(true));
-                    redirect && router.push("/panel");
+                    redirect &&
+                      (userType === "User"
+                        ? router.replace("/panel")
+                        : router.replace("/panel/admin"));
                   }}
                   type="button"
                   className={`md:py-2.5 md:px-5 ms-3 px-5 text-sm font-medium focus:outline-none rounded-lg border border-[#4866CF] ${

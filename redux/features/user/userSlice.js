@@ -23,6 +23,7 @@ const initialState = {
   isLoggedIn: false,
   welcomeMessage: "",
   userId: "",
+  userType: "",
 };
 
 const fetchUserInOTPValidation = createAsyncThunk(
@@ -46,6 +47,7 @@ const fetchUserInOTPValidation = createAsyncThunk(
         isLoggedIn: data.isLogin,
         welcomeMessage: data.welcome,
         userId: data.User?._id,
+        userType: data.User?.UserType,
       };
     } catch (error) {
       console.log(error);
@@ -55,7 +57,7 @@ const fetchUserInOTPValidation = createAsyncThunk(
 );
 
 const fetchUserProfile = createAsyncThunk(
-  "userRole/fetchUserProfile",
+  "userData/fetchUserProfile",
   async (_, { getState, rejectWithValue }) => {
     try {
       const { data } = await axios.get(
@@ -76,6 +78,37 @@ const fetchUserProfile = createAsyncThunk(
         email: data.data.email,
       };
     } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+const fetchUserDataInRegistration = createAsyncThunk(
+  "userData/fetchUserDataInRegistration",
+  async (payload, { rejectWithValue }) => {
+    const { FirstName, LastName, email, PhoneNumber } = payload;
+    try {
+      const { data } = await axios.post(
+        "https://keykavoos.liara.run/Client/SignUp_Form",
+        {
+          FirstName,
+          LastName,
+          email,
+          PhoneNumber,
+        }
+      );
+      console.log(data);
+      console.log(payload);
+      return {
+        token: data.User?.token,
+        userInfoOnLogin: data.User,
+        FirstName: data.User?.FirstName,
+        LastName: data.User?.LastName,
+        userId: data.User?._id,
+        userType: data.User?.userType,
+      };
+    } catch (error) {
+      console.log(payload);
       return rejectWithValue(error.message);
     }
   }
@@ -143,6 +176,7 @@ const userSlice = createSlice({
       state.FirstName = action.payload.FirstName;
       state.LastName = action.payload.LastName;
       state.welcomeMessage = action.payload.welcomeMessage;
+      state.userType = action.payload.userType;
       state.userId = action.payload.userId;
       setCookie("userId", state.userId, {
         path: "/",
@@ -177,6 +211,35 @@ const userSlice = createSlice({
       state.status = "failed";
       state.error = action.payload;
     });
+    builder.addCase(fetchUserDataInRegistration.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(fetchUserDataInRegistration.fulfilled, (state, action) => {
+      state.showModal = true;
+      state.status = "success";
+      state.token = action.payload.token;
+      setCookie("token", state.token, {
+        path: "/",
+        maxAge: 60 * 60,
+        secure: true,
+      });
+      state.userInfoOnLogin = action.payload.userInfoOnLogin;
+      state.FirstName = action.payload.FirstName;
+      state.LastName = action.payload.LastName;
+      state.userType = action.payload.userType;
+      state.userId = action.payload.userId;
+      setCookie("userId", state.userId, {
+        path: "/",
+        secure: true,
+        maxAge: 60 * 60,
+      });
+      state.successMessage = `${state.FirstName} ${state.LastName} عزیز با موفقیت وارد پنل کاربری خود شدید.`;
+      state.errorMessage = "";
+    });
+    builder.addCase(fetchUserDataInRegistration.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.payload;
+    });
   },
 });
 
@@ -196,4 +259,8 @@ export const {
   getIdFromLocal,
   deleteDataFromCookie,
 } = userSlice.actions;
-export { fetchUserProfile, fetchUserInOTPValidation };
+export {
+  fetchUserProfile,
+  fetchUserInOTPValidation,
+  fetchUserDataInRegistration,
+};

@@ -7,6 +7,8 @@ import { UserPanelPersonalSchema } from "@/schemas/userpanel-profile-schema";
 import FormInput from "@/app/contact-us/components/form/form-inputs";
 import Modal from "@/components/modal";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { fetchUserDataInRegistration } from "@/redux/features/user/userSlice";
 
 type infoFormProps = {
   setSteps: Dispatch<SetStateAction<number>>;
@@ -18,10 +20,10 @@ const initialValues = {
 };
 
 const InfoForm = ({ setSteps }: infoFormProps) => {
+  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [PhoneNumber, setPhoneNumber] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const router = useRouter();
   useEffect(() => {
     if (typeof window !== "undefined") {
       let number = window.localStorage.getItem("PhoneNumber");
@@ -37,40 +39,12 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
     return () => clearTimeout(timeout);
   }, []);
 
-  const sendInfo = async (
-    FirstName: string,
-    LastName: string,
-    email: string,
-    PhoneNumber: string
-  ) => {
-    try {
-      const { data } = await axios.post(
-        "https://keykavoos.liara.run/Client/SignUp_Form",
-        {
-          FirstName,
-          LastName,
-          email,
-          PhoneNumber,
-        }
-      );
-      setShowModal(true);
-      setSuccessMessage(
-        `${data.User.FirstName} ${data.User.LastName} عزیز با موفقیت وارد پنل کاربری خود شدید.`
-      );
-      router.push("/panel");
-      // console.log(data);
-    } catch (error: any) {
-      setShowModal(false);
-      // console.log(error);
-    }
-  };
-
   const handleSubmission = async () => {
-    await sendInfo(
-      formik.values.FirstName,
-      formik.values.LastName,
-      formik.values.email,
-      PhoneNumber
+    const FirstName = formik.values.FirstName;
+    const LastName = formik.values.LastName;
+    const email = formik.values.email;
+    await dispatch<any>(
+      fetchUserDataInRegistration({ FirstName, LastName, email, PhoneNumber })
     );
   };
 
@@ -89,6 +63,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
           text={successMessage}
           buttonText="متوجه شدم"
           data=""
+          redirect={true}
         />
       )}
       <label>
@@ -138,17 +113,16 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
               type="text"
             />
             <span className="absolute -top-7 right-36 text-[#4866CF]">*</span>
-            {/* <div className="relative">
-              {formik.errors.email && (
-                <p className="text-red-500 absolute left-1/2 -translate-x-1/2 w-full z-20">{`${formik.errors.email}`}</p>
-              )}
-            </div> */}
           </div>
         </div>
 
         <div className="grid grid-cols-1 gap-x-[3%] items-center">
           <div className="text-left">
-            <SubmissionBtn text="تایید اطلاعات" validation={formik.isValid} />
+            <SubmissionBtn
+              text="تایید اطلاعات"
+              validation={formik.isValid}
+              type="submit"
+            />
           </div>
         </div>
       </div>

@@ -232,7 +232,7 @@ const Nav = () => {
                     <Link href="/moshavere">
                       <li className="text-sm  font-semibold">مشاوره</li>
                     </Link>
-                    <Link href="/in-hand">
+                    <Link href="/pay/get_redirect/?trans_id=1234567&id_get=12345678">
                       <li className="text-sm  font-semibold">خدمات وب</li>
                     </Link>
                     <Link href="/in-hand">
