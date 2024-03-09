@@ -5,6 +5,8 @@ import axios from "axios";
 import { verifyIranianNationalId } from "@persian-tools/persian-tools";
 import { useFormik } from "formik";
 import { Bounce, toast } from "react-toastify";
+import Image from "next/image";
+import malegender from "../../../public/Panel/malegender.svg";
 const initialValues = {
   National_ID: "",
   type: "Legal",
@@ -189,10 +191,10 @@ function Legal({ PhoneNumber, userId, token }: LegalProps) {
           </div>
         </div>
         <div className="flex flex-col gap-5">
-          <PersonalInfoFileupload
-            handleChange={handleFileChange}
-            selectedFile={selectedFile}
-          />
+          {/* profile photo */}
+          <div className="self-center">
+            <Image src={malegender} alt="profile" width={200}/>
+          </div>
           <PanelFields
             label="شماره ثبت:"
             onChange={handleChange}
@@ -206,7 +208,7 @@ function Legal({ PhoneNumber, userId, token }: LegalProps) {
           className="bg-[#4866CF] text-white px-3 py-1 rounded-lg"
           type="submit"
         >
-          تایید
+          ویرایش حساب کاربری
         </button>
       </div>
     </form>

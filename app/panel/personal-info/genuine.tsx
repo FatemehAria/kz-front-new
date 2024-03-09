@@ -1,9 +1,10 @@
 "use client";
 import React, { ChangeEvent, useState } from "react";
 import PanelFields from "../components/panel-fileds";
-import PersonalInfoFileupload from "./components/personal-info-fileupload";
 import axios from "axios";
 import { useFormik } from "formik";
+import Image from "next/image";
+import malegender from "../../../public/Panel/malegender.svg";
 
 const initialValues = {
   FullName: "",
@@ -79,7 +80,9 @@ function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
           />
         </div>
         <div className="flex flex-col gap-5">
-          <PersonalInfoFileupload handleChange={handleChange} selectedFile={selectedFile} />
+          <div className="self-center">
+            <Image src={malegender} alt="profile" width={200} />
+          </div>
           <PanelFields
             label="کد ملی:"
             onChange={handleChange}
@@ -87,6 +90,14 @@ function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
             name="National_ID"
           />
         </div>
+      </div>
+      <div className="flex justify-end">
+        <button
+          className="bg-[#4866CF] text-white px-3 py-1 rounded-lg"
+          type="submit"
+        >
+          ویرایش حساب کاربری
+        </button>
       </div>
     </form>
   );
