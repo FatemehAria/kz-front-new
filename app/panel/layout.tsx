@@ -72,8 +72,8 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
       {/* {localToken && ( */}
       <>
         <div className="hidden lg:block">
-          {/* <PanelSidebar sideOptions={userSidebarOptions} /> */}
-          <PanelSidebar sideOptions={mainAdminSidebarOptions} />
+          <PanelSidebar sideOptions={userSidebarOptions} />
+          {/* <PanelSidebar sideOptions={mainAdminSidebarOptions} /> */}
         </div>
         <div className="w-full lg:overflow-hidden">
           <div className="hidden lg:block">

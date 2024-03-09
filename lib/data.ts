@@ -92,8 +92,8 @@ export const userSidebarOptions = [
   {
     text: "وضعیت مالی",
     imgSrc: "/Panel/financialstatus.svg",
-    address: "/panel/excercise",
-    path: "/excercise",
+    address: "/panel/finance",
+    path: "/finance",
   },
   {
     text: "تنظیمات",
