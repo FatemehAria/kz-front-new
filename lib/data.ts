@@ -317,10 +317,7 @@ export const mainAdminSidebarOptions = [
     text: "مشاهده کاربران",
     imgSrc: "/Panel/dashboard.svg",
     address: "/panel/admin/view-users",
-    path: [
-      "/panel/admin/view-users",
-      "/panel/admin/view-users/user-detail",
-    ],
+    path: ["/panel/admin/view-users", "/panel/admin/view-users/user-detail"],
   },
   {
     text: "جستجو کاربر",
@@ -346,7 +343,20 @@ export const mainAdminSidebarOptions = [
     text: "جستجو پروژه",
     imgSrc: "/Panel/searchprojectssidebar.svg",
     address: "/panel/admin/search-project",
-    path: "/internship",
+    path: [
+      "/panel/admin/search-project",
+      "/panel/admin/search-project/project-detail",
+    ],
+  },
+  {
+    text: "پشتیبانی",
+    imgSrc: "/Panel/support.svg",
+    address: "/panel/admin/support",
+    path: [
+      "/panel/admin/support",
+      "/panel/admin/support/add-new-placard",
+      "/panel/admin/support/ticket-detail",
+    ],
   },
 ];
 export const AdminSidebarOptions = [
