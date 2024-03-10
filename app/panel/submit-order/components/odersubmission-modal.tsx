@@ -23,6 +23,7 @@ function OrdersubmissionModal({
     }
     setModalInputValue("");
   };
+  console.log(data);
   return (
     <div
       id="default-modal"
@@ -30,9 +31,9 @@ function OrdersubmissionModal({
       aria-hidden="true"
       className={`${
         showModal ? "block" : "hidden"
-      }  absolute w-full text-center z-50 backdrop-blur-sm h-full`}
+      }  absolute w-full text-center z-50 h-full backdrop-blur-sm`}
     >
-      <div className="p-4 w-full flex justify-center h-full items-center">
+      <div className="p-4 w-full flex justify-center">
         <div className="relative p-8 w-full max-w-2xl max-h-full">
           <div className="bg-white rounded-[25px] shadow border">
             <div className="md:p-5 text-black font-semibold">
@@ -43,6 +44,11 @@ function OrdersubmissionModal({
                 value={modalInputValue}
                 onChange={(e) => setModalInputValue(e.target.value)}
               />
+              <div className="flex flex-row-reverse">
+                {data.map((item) => (
+                  <p key={item}>{item}</p>
+                ))}
+              </div>
             </div>
 
             <div className="flex items-center justify-between p-4 md:p-5 rounded-b">
@@ -64,7 +70,7 @@ function OrdersubmissionModal({
                   type="button"
                   className={`md:py-2.5 md:px-5 ms-3 px-5 text-sm font-medium focus:outline-none rounded-lg border border-[#4866CF]  bg-white text-[#4866CF]`}
                 >
-                  انصراف
+                  بستن
                 </button>
               </div>
             </div>
