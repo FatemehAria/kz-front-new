@@ -64,9 +64,9 @@ function AllProjects() {
           <p>{item.title}</p>
           <p>{item.budget}</p>
           <p>{item.type}</p>
-          <p>{item.Financial_Situation}</p>
+          <p>{item.isConfirmationProject ? "تایید شده" : "تایید نشده"}</p>
           <Link
-            href={`/panel/admin/project-detail?id=${item._id}`}
+            href={`/panel/admin/project-management/project-detail?id=${item._id}`}
             className="flex justify-center"
           >
             <Image src={vieweye} alt="مشاهده" width={20} height={20} />

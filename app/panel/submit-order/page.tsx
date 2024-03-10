@@ -171,6 +171,7 @@ function SubmitOrder() {
       <SubmitOrderModalfield
         modalFieldTitle="سایت مشابه مورد نظر شماست:"
         setShowModal={setShowSimilarModal}
+        data={similarSiteData}
       />
       <SubmitOrderDescription
         value={projectFields.Description}
@@ -181,10 +182,12 @@ function SubmitOrder() {
       <SubmitOrderModalfield
         modalFieldTitle="قالب و افزونه های مورد نیاز:"
         setShowModal={setShowTemplatesModal}
+        data={templatesData}
       />
       <SubmitOrderModalfield
         modalFieldTitle="رنگ سازمانی:"
         setShowModal={setShowColorsModal}
+        data={colorsData}
       />
       <div className="flex justify-between">
         <FileUpload />

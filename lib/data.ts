@@ -337,7 +337,10 @@ export const mainAdminSidebarOptions = [
     text: "مدیریت پروژه ها",
     imgSrc: "/Panel/projectsmanagement.svg",
     address: "/panel/admin/project-management",
-    path: "/project-management",
+    path: [
+      "/panel/admin/project-management",
+      "/panel/admin/project-management/project-detail",
+    ],
   },
   {
     text: "جستجو پروژه",
