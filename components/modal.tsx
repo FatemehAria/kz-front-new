@@ -88,7 +88,7 @@ function Modal({
                     redirect &&
                       (userType === "User"
                         ? router.replace("/panel")
-                        : router.replace("/panel/admin"));
+                        : router.replace("/panel/admin/view-users"));
                   }}
                   type="button"
                   className={`md:py-2.5 md:px-5 ms-3 px-5 text-sm font-medium focus:outline-none rounded-lg border border-[#4866CF] ${

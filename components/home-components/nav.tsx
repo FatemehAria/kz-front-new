@@ -79,7 +79,7 @@ const Nav = () => {
               : userType === "User"
               ? "/panel"
               : userType === "Admin"
-              ? "/panel/admin"
+              ? "/panel/admin/view-users"
               : "/panel"
           }
         >
