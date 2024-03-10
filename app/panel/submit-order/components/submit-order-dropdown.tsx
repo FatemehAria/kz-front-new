@@ -3,17 +3,29 @@ import React from "react";
 type SubmitOrderDropdownProps = {
   dropDownTitle: string;
   dropdownItems: string[];
+  value: string;
+  onChange: any;
 };
 function SubmitOrderDropdown({
   dropDownTitle,
   dropdownItems,
+  value,
+  onChange,
 }: SubmitOrderDropdownProps) {
   return (
     <div className="flex flex-col gap-3 relative">
       <p>{dropDownTitle}</p>
-      <select name="" id="" className="bg-[#EAEFF6] h-full rounded-[4px]">
+      <select
+        name={dropDownTitle}
+        id={dropDownTitle}
+        className="bg-[#EAEFF6] h-full rounded-[4px]"
+        value={value}
+        onChange={onChange}
+      >
         {dropdownItems.map((item) => (
-          <option key={item}>{item}</option>
+          <option key={item} value={item}>
+            {item}
+          </option>
         ))}
       </select>
     </div>

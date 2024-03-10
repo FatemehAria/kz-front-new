@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import PanelFields from "../components/panel-fileds";
 import SubmitOrderDropdown from "./components/submit-order-dropdown";
 import SubmitOrderModalfield from "./components/submit-order-modalfield";
@@ -32,12 +32,20 @@ function SubmitOrder() {
         <SubmitOrderDropdown
           dropDownTitle="نوع پروژه:"
           dropdownItems={["فروشگاهی", "شرکتی ", "پنل سازمانی"]}
+          value={projectFields.type}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+            setProjectFields((last) => ({ ...last, type: e.target.value }))
+          }
         />
       </div>
       <div className="grid grid-cols-2 gap-3">
         <SubmitOrderDropdown
           dropDownTitle="پلن انتخابی:"
           dropdownItems={["وردپرس ", "برنامه نویسی اختصاصی "]}
+          value={projectFields.plan}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+            setProjectFields((last) => ({ ...last, plan: e.target.value }))
+          }
         />
         <PanelFields
           label="بودجه مورد نظر:"

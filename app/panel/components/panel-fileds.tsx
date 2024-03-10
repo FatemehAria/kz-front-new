@@ -18,7 +18,7 @@ function PanelFields({
       <label htmlFor="">{label}</label>
       <input
         className={`${
-          disable ? "bg-[#EAEFF6] text-slate-500 px-3" : "bg-[#EAEFF6]"
+          disable ? "bg-[#EAEFF6] text-slate-500 px-3" : "bg-[#EAEFF6] px-2"
         } outline-none border-none py-2 rounded-[4px]`}
         onChange={onChange}
         value={value}
