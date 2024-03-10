@@ -317,7 +317,10 @@ export const mainAdminSidebarOptions = [
     text: "مشاهده کاربران",
     imgSrc: "/Panel/dashboard.svg",
     address: "/panel/admin/view-users",
-    path: "/view-users",
+    path: [
+      "/panel/admin/view-users",
+      "/panel/admin/view-users/user-detail",
+    ],
   },
   {
     text: "جستجو کاربر",

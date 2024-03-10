@@ -208,7 +208,7 @@ const userSlice = createSlice({
       state.LastName = action.payload.LastName;
       state.type = action.payload.type;
       state.error = "";
-      // state.userType = action.payload.userType;
+      state.userType = action.payload.userType;
     });
     builder.addCase(fetchUserProfile.rejected, (state, action) => {
       state.status = "failed";

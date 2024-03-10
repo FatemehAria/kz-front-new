@@ -21,8 +21,9 @@ function ViewUsers() {
     dispatch(getIdFromLocal());
     dispatch<any>(fetchUserProfile());
   }, []);
-  const [type, setType] = useState("");
-  const [AllUsersData, setAllUsersData] = useState([]);
+
+  const [type, setType] = useState("Genuine");
+  const [AllUsersData, setAllUsersData] = useState<any>([]);
   const [legalUsers, setLegalUsers] = useState([]);
   const [genuineUsers, setGenuineUsers] = useState([]);
 
@@ -43,26 +44,16 @@ function ViewUsers() {
     }
   };
 
-  const renderLegalUsers = async () => {
-    // try {
-    let legal = await AllUsersData.filter((item) => item.type === "Legal");
+  const renderLegalUsers = () => {
+    let legal = AllUsersData.filter((item: any) => item.type === "Legal");
     setLegalUsers(legal);
-    if (legal.length > 0) {
-      setType("Legal");
-    }
     console.log("legalUsers", legalUsers);
-    // } catch (error) {}
   };
 
-  const renderGenuineUsers = async () => {
-    // try {
-    let genuine = await AllUsersData.filter((item) => item.type === "Genuine");
+  const renderGenuineUsers = () => {
+    let genuine = AllUsersData.filter((item: any) => item.type === "Genuine");
     setGenuineUsers(genuine);
-    if (genuine.length > 0) {
-      setType("Genuine");
-    }
     console.log("genuine", genuine);
-    // } catch (error) {}
   };
 
   useEffect(() => {
@@ -87,7 +78,7 @@ function ViewUsers() {
   return (
     <div className="grid grid-cols-1 gap-10 w-full">
       <PersonalInfoHeader step={type} setStep={setType} />
-      <div className={`bg-white shadow mx-auto rounded-2xl w-full p-[3%]`}>
+      <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%]">
         {renderSteps()}
       </div>
     </div>

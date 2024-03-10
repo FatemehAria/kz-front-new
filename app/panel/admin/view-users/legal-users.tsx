@@ -17,7 +17,7 @@ function LegalUsers({ LegalUsersData }: LegalUsersProps) {
       </div>
       {LegalUsersData.map((item, index) => (
         <div
-          key={item.id}
+          key={item._id}
           className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
         >
           <p>{index + 1}</p>

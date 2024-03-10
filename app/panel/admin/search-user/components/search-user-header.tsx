@@ -1,9 +1,9 @@
 import React from "react";
-type PersonalInfoHeaderProps = {
-  step: string;
-  setStep?: React.Dispatch<React.SetStateAction<string>>;
+type SearchUserHeaderProps = {
+  step: number;
+  setStep: React.Dispatch<React.SetStateAction<number>>;
 };
-function PersonalInfoHeader({ step, setStep }: PersonalInfoHeaderProps) {
+function SearchUserHeader({ step, setStep }: SearchUserHeaderProps) {
   return (
     <div className="relative whitespace-nowrap">
       <div
@@ -34,28 +34,28 @@ function PersonalInfoHeader({ step, setStep }: PersonalInfoHeaderProps) {
       ></div>
       <div className="text-center absolute -top-5 left-1/2 text-[20px] -translate-x-1/2 bg-transparent flex flex-row gap-5">
         <button
-          className={`rounded-[4px] py-[3%] px-[8%] cursor-pointer ${
-            step === "Genuine"
-              ? "bg-[#4866CF] text-white cursor-default"
-              : "bg-[#EAEFF6] text-[#4866CF]"
+          className={`rounded-[4px] py-[3%] px-[8%] ${
+            step === 2
+              ? "bg-[#4866CF] text-white cursor-pointer"
+              : "bg-[#EAEFF6] text-[#4866CF] cursor-default"
           }`}
-          onClick={() => setStep && setStep("Genuine")}
+          onClick={() => setStep(2)}
         >
-          حقیقی
+          حقوقی
         </button>
         <button
           className={`rounded-[4px] py-[3%] px-[8%] ${
-            step === "Legal"
-              ? "bg-[#4866CF] text-white cursor-default"
-              : "bg-[#EAEFF6] text-[#4866CF]"
+            step === 1
+              ? "bg-[#4866CF] text-white cursor-pointer"
+              : "bg-[#EAEFF6] text-[#4866CF] cursor-default"
           }`}
-          onClick={() => setStep && setStep("Legal")}
+          onClick={() => setStep(1)}
         >
-          حقوقی
+          حقیقی
         </button>
       </div>
     </div>
   );
 }
 
-export default PersonalInfoHeader;
+export default SearchUserHeader;
