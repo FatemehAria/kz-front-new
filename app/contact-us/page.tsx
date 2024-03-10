@@ -1,5 +1,5 @@
-import Footer from "@/components/homepage-components/footer";
-import Nav from "@/components/homepage-components/nav";
+import Footer from "@/components/home-components/footer";
+import Nav from "@/components/home-components/nav";
 import React from "react";
 import ContactHeading from "./components/contact-heading";
 import Options from "./components/options/options";

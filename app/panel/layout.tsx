@@ -22,7 +22,7 @@ import { getCookie } from "cookies-next";
 import Loading from "../loading";
 
 const PanelLayout = ({ children }: { children: React.ReactNode }) => {
-  const { localToken, userId, userProfile, userType } = useSelector(
+  const { localToken, userId, userProfile, userType, status } = useSelector(
     (store: any) => store.userData
   );
   // console.log(userType);
@@ -78,11 +78,11 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
         <div className="w-full lg:overflow-hidden">
           <div className="hidden md:block">
-            <PanelNav userProfile={userProfile} />
+            <PanelNav userProfile={userProfile} status={status} />
           </div>
           <div className="bg-[#EAEFF6] h-full p-[5%]">{children}</div>
           <div>
-            <PanelSidebarSmall sideOptions={userSidebarOptions}/>
+            <PanelSidebarSmall sideOptions={userSidebarOptions} />
           </div>
         </div>
       </>

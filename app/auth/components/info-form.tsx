@@ -83,7 +83,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
               onChange={formik.handleChange}
               name="FirstName"
               label="نام"
-              error={formik.errors.FirstName && !formik.touched.FirstName}
+              error={formik.errors.FirstName && formik.touched.FirstName}
               onBlur={formik.handleBlur}
               type="text"
               autoFocus={true}

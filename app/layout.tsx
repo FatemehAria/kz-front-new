@@ -28,7 +28,7 @@ export default function RootLayout({
             {/* <WebVitals /> */}
             <Metrics />
             <GoogleAnalytics
-              gaId={`${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+              gaId={`${process.env.GOOGLE_ANALYTICS}`}
             />
           </Providers>
         </ToastProvider>

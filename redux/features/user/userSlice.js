@@ -12,7 +12,6 @@ const initialState = {
   errorMessage: "",
   successMessage: "",
   changePhoneNumber: false,
-  loadscript: false,
   localToken: "",
   localUserId: "",
   PhoneNumber: "",
@@ -142,9 +141,6 @@ const userSlice = createSlice({
     },
     readPhoneNumberFromLocalStroage: (state) => {
       state.PhoneNumber = localStorage.getItem("PhoneNumber");
-    },
-    loadScript: (state) => {
-      state.loadscript = true;
     },
     getTokenFromLocal: (state) => {
       state.localToken = getCookie("token");

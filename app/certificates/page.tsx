@@ -1,5 +1,5 @@
-import Footer from "@/components/homepage-components/footer";
-import Nav from "@/components/homepage-components/nav";
+import Footer from "@/components/home-components/footer";
+import Nav from "@/components/home-components/nav";
 import Image from "next/image";
 import React from "react";
 import CertHeader from "./components/cert-header";

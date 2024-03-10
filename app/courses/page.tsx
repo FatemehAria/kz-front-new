@@ -1,5 +1,5 @@
-import Footer from "@/components/homepage-components/footer";
-import Nav from "@/components/homepage-components/nav";
+import Footer from "@/components/home-components/footer";
+import Nav from "@/components/home-components/nav";
 import React from "react";
 import MobileCard from "./components/mobile-cards/mobile-card";
 import CoursesCard from "./components/courses-card";

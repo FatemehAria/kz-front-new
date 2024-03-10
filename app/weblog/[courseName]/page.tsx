@@ -1,6 +1,6 @@
 "use client";
-import Footer from "@/components/homepage-components/footer";
-import Nav from "@/components/homepage-components/nav";
+import Footer from "@/components/home-components/footer";
+import Nav from "@/components/home-components/nav";
 import React, { useState } from "react";
 import InfoCard from "./components/info-card";
 import InfoParagraphs from "./components/info-paragraphs";
