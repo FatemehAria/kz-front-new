@@ -10,6 +10,7 @@ type ReasonInfo = {
   reasonTitle: string;
   reasonText: string;
   imgSrc: string;
+  hoveredImgSrc: string;
 };
 
 function ReasonCard({ data }: ReasonCardProps) {
@@ -26,12 +27,12 @@ function ReasonCard({ data }: ReasonCardProps) {
   return (
     <div
       className="bg-white lg:w-[200px] lg:h-[200px] rounded-2xl flex flex-col items-center text-center gap-2 p-[5%] shadow cursor-pointer"
-      // style={{
-      //   backgroundColor: isHovered ? "#4866CF" : "white",
-      //   color: isHovered ? "white" : "black",
-      // }}
-      // onMouseEnter={handleMouseEnter}
-      // onMouseLeave={handleMouseLeave}
+      style={{
+        backgroundColor: isHovered ? "#4866CF" : "white",
+        color: isHovered ? "white" : "black",
+      }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <p
         className="text-[20px] font-semibold"
@@ -39,7 +40,7 @@ function ReasonCard({ data }: ReasonCardProps) {
       >
         {data.reasonTitle}
       </p>
-      <Image src={data.imgSrc} alt={data.reasonTitle} />
+      <Image src={isHovered ? data.hoveredImgSrc : data.imgSrc} alt={data.reasonTitle} />
       <p
         className="text-[16px] leading-6"
         style={{ color: isHovered ? "white" : "black" }}
