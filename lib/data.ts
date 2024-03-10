@@ -75,7 +75,10 @@ export const userSidebarOptions = [
     text: "مدیریت پروژه ها",
     imgSrc: "/Panel/projectsmanagement.svg",
     address: "/panel/project-management",
-    path: "/project-management",
+    path: [
+      "/panel/project-management",
+      "/panel/project-management/project-detail",
+    ],
   },
   {
     text: "پشتیبانی",
@@ -100,7 +103,7 @@ export const userSidebarOptions = [
     imgSrc: "/Panel/settings.svg",
     address: "/panel/settings",
     path: "/settings",
-  }
+  },
 ];
 export const employerSidebarOptions = [
   {

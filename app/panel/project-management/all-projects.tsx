@@ -1,7 +1,9 @@
-import React from "react";
+"use client";
+import Link from "next/link";
+import React, { useEffect } from "react";
 type AllProjectsProps = {
   AllProjectsData: SingleProjectInfo[];
-  setStep: React.Dispatch<React.SetStateAction<number>>
+  getAllProjects: () => Promise<void>;
 };
 type SingleProjectInfo = {
   id: number;
@@ -11,7 +13,10 @@ type SingleProjectInfo = {
   title3: string;
   title4: string;
 };
-function AllProjects({ AllProjectsData , setStep}: AllProjectsProps) {
+function AllProjects({ AllProjectsData, getAllProjects }: AllProjectsProps) {
+  useEffect(() => {
+    getAllProjects();
+  }, []);
   return (
     <div className="flex flex-col gap-5">
       <div className="grid grid-cols-5 text-center">
@@ -22,17 +27,17 @@ function AllProjects({ AllProjectsData , setStep}: AllProjectsProps) {
         <p>درخواست فاکتور</p>
       </div>
       {AllProjectsData.map((item) => (
-        <div
+        <Link
           key={item.id}
           className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
-          onClick={() => setStep(2)}
+          href={`/panel/project-management/project-detail?id=${item.id}`}
         >
           <p>{item.title}</p>
           <p>{item.title1}</p>
           <p>{item.title2}</p>
           <p>{item.title3}</p>
           <p>{item.title4}</p>
-        </div>
+        </Link>
       ))}
     </div>
   );
