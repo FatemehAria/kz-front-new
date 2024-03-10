@@ -79,6 +79,7 @@ const fetchUserProfile = createAsyncThunk(
         email: data.data.email,
         type: data.data.type,
         userType: data.data.UserType,
+        userId: data.data._id,
       };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -209,6 +210,12 @@ const userSlice = createSlice({
       state.type = action.payload.type;
       state.error = "";
       state.userType = action.payload.userType;
+      state.userId = action.payload.userId;
+      setCookie("userId", state.userId, {
+        path: "/",
+        secure: true,
+        maxAge: 60 * 60,
+      });
     });
     builder.addCase(fetchUserProfile.rejected, (state, action) => {
       state.status = "failed";

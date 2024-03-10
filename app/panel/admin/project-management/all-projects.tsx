@@ -9,11 +9,9 @@ import {
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
 import axios from "axios";
+import Link from "next/link";
 
-type AllProjectsProps = {
-  setStep: React.Dispatch<React.SetStateAction<number>>;
-};
-function AllProjects({ setStep }: AllProjectsProps) {
+function AllProjects() {
   const { localToken, localUserId } = useSelector(
     (state: any) => state.userData
   );
@@ -41,8 +39,10 @@ function AllProjects({ setStep }: AllProjectsProps) {
     }
   };
   useEffect(() => {
-    AllProjects();
-  }, []);
+    if (localUserId) {
+      AllProjects();
+    }
+  }, [localUserId]);
   return (
     <div className="flex flex-col gap-5">
       <div className="grid grid-cols-7 text-center">
@@ -54,11 +54,10 @@ function AllProjects({ setStep }: AllProjectsProps) {
         <p>وضعیت</p>
         <p>مشاهده</p>
       </div>
-      {projectMangementData.map((item, index) => (
+      {projectMangementData.map((item: any, index) => (
         <div
           key={item._id}
-          className="grid grid-cols-7 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
-          //   onClick={() => setStep(2)}
+          className="grid grid-cols-7 text-center py-1 bg-[#EAEFF6] rounded-[4px]"
         >
           <p>{index + 1}</p>
           <p>{item.Serial}</p>
@@ -66,9 +65,12 @@ function AllProjects({ setStep }: AllProjectsProps) {
           <p>{item.budget}</p>
           <p>{item.type}</p>
           <p>{item.Financial_Situation}</p>
-          <div className="flex justify-center" onClick={() => setStep(2)}>
+          <Link
+            href={`/panel/admin/project-detail?id=${item._id}`}
+            className="flex justify-center"
+          >
             <Image src={vieweye} alt="مشاهده" width={20} height={20} />
-          </div>
+          </Link>
         </div>
       ))}
     </div>

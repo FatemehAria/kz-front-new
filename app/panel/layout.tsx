@@ -25,7 +25,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   const { localToken, userId, userProfile, userType, status } = useSelector(
     (store: any) => store.userData
   );
-  console.log(userType);
+  // console.log(userType);
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 4;

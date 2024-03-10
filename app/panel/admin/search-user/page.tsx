@@ -26,7 +26,7 @@ function SearchUser() {
     dispatch(getIdFromLocal());
     dispatch<any>(fetchUserProfile());
   }, []);
-  const [AllUsersData, setAllUsersData] = useState([]);
+  const [AllUsersData, setAllUsersData] = useState<any>([]);
 
   const AllUsers = async () => {
     try {
@@ -46,12 +46,12 @@ function SearchUser() {
   };
 
   const renderLegalUsers = () => {
-    let legal = AllUsersData.filter((item) => item.type === "Legal");
+    let legal = AllUsersData.filter((item: any) => item.type === "Legal");
     setLegalUsers(legal);
     console.log("legalUsers", legalUsers);
   };
   const renderGenuineUsers = () => {
-    let genuine = AllUsersData.filter((item) => item.type === "Genuine");
+    let genuine = AllUsersData.filter((item: any) => item.type === "Genuine");
     setGenuineUsers(genuine);
     console.log("genuine", genuine);
   };

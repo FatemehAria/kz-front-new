@@ -36,8 +36,8 @@ function SearchUserHeader({ step, setStep }: SearchUserHeaderProps) {
         <button
           className={`rounded-[4px] py-[3%] px-[8%] ${
             step === 2
-              ? "bg-[#4866CF] text-white cursor-pointer"
-              : "bg-[#EAEFF6] text-[#4866CF] cursor-default"
+              ? "bg-[#4866CF] text-white cursor-default"
+              : "bg-[#EAEFF6] text-[#4866CF] cursor-pointer"
           }`}
           onClick={() => setStep(2)}
         >
@@ -46,8 +46,8 @@ function SearchUserHeader({ step, setStep }: SearchUserHeaderProps) {
         <button
           className={`rounded-[4px] py-[3%] px-[8%] ${
             step === 1
-              ? "bg-[#4866CF] text-white cursor-pointer"
-              : "bg-[#EAEFF6] text-[#4866CF] cursor-default"
+              ? "bg-[#4866CF] text-white cursor-default"
+              : "bg-[#EAEFF6] text-[#4866CF] cursor-pointer"
           }`}
           onClick={() => setStep(1)}
         >

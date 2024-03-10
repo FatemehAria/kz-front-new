@@ -1,27 +1,50 @@
-import React from "react";
-import { ImBackward, ImBackward2 } from "react-icons/im";
+"use client";
+import FileUpload from "@/app/panel/submit-order/components/file-upload";
+import {
+  fetchUserProfile,
+  getIdFromLocal,
+  getTokenFromLocal,
+} from "@/redux/features/user/userSlice";
+import axios from "axios";
+import { useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { IoArrowBack } from "react-icons/io5";
-import FileUpload from "../../submit-order/components/file-upload";
-const ProjectDetailNav = [
-  "ثبت سفارش",
-  "تهیه زیرساخت",
-  "طراحی UI",
-  "Front",
-  "Back",
-  "دیپلوی",
-  "تحویل موقت",
-  "پشتیبانی",
-];
-type ProjectDetailProps = {
-  setStep: React.Dispatch<React.SetStateAction<number>>;
-};
-function ProjectDetail({ setStep }: ProjectDetailProps) {
+import { useDispatch, useSelector } from "react-redux";
+
+function ProjectDetail() {
+  const params = useSearchParams();
+  const id = params.get("id");
+  const { localToken, localUserId } = useSelector(
+    (state: any) => state.userData
+  );
+  const dispatch = useDispatch();
+  const [projectDetail, setProjectDetail] = useState([]);
+  useEffect(() => {
+    dispatch(getTokenFromLocal());
+    dispatch(getIdFromLocal());
+    dispatch<any>(fetchUserProfile());
+  }, []);
+  const getProjectDetail = async () => {
+    try {
+      const { data } = await axios(
+        `https://keykavoos.liara.run/Admin/AllProject/${localUserId}/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localToken}`,
+          },
+        }
+      );
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getProjectDetail();
+  }, []);
   return (
     <div className="relative w-full">
-      <div
-        className="flex justify-end text-xl cursor-pointer absolute -top-20 -left-10"
-        onClick={() => setStep(1)}
-      >
+      <div className="flex justify-end text-xl cursor-pointer absolute -top-20 -left-10">
         <div className="bg-white rounded-full p-2">
           <IoArrowBack />
         </div>
@@ -29,8 +52,8 @@ function ProjectDetail({ setStep }: ProjectDetailProps) {
       <div className="grid grid-cols-1 gap-5">
         <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col gap-3">
-            <label htmlFor="">عنوان پروژه:</label>
-            <input className={"bg-[#EAEFF6]"} />
+            <p>عنوان پروژه:</p>
+            <div className="bg-[#EAEFF6]"></div>
           </div>
           <div className="flex flex-col gap-3">
             <label htmlFor="">نوع پروژه:</label>
@@ -80,8 +103,13 @@ function ProjectDetail({ setStep }: ProjectDetailProps) {
           </div>
         </div>
         <div className="relative">
-          <textarea className="p-[2%] bg-[#EAEFF6] rounded-[4xl] w-full" rows={4}></textarea>
-          <button className="bg-[#4866CE] text-white absolute left-2 bottom-5 rounded-[4px] p-2">تایید و ارسال به کارفرما</button>
+          <textarea
+            className="p-[2%] bg-[#EAEFF6] rounded-[4xl] w-full"
+            rows={4}
+          ></textarea>
+          <button className="bg-[#4866CE] text-white absolute left-2 bottom-5 rounded-[4px] p-2">
+            تایید و ارسال به کارفرما
+          </button>
         </div>
       </div>
     </div>
