@@ -83,8 +83,12 @@ export const userSidebarOptions = [
   {
     text: "پشتیبانی",
     imgSrc: "/Panel/support.svg",
-    address: "/panel/resume-generator",
-    path: "/resume-generator",
+    address: "/panel/support",
+    path: [
+      "/panel/support",
+      "/panel/support/add-new-ticket",
+      "/panel/support/ticket-detail",
+    ],
   },
   {
     text: "ثبت سفارش",

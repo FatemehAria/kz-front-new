@@ -78,6 +78,7 @@ const fetchUserProfile = createAsyncThunk(
         LastName: data.data.LastName,
         email: data.data.email,
         type: data.data.type,
+        userType: data.data.UserType,
       };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -100,14 +101,14 @@ const fetchUserDataInRegistration = createAsyncThunk(
         }
       );
       console.log(data);
-      console.log(payload);
+      // console.log(payload);
       return {
         token: data.User?.token,
         userInfoOnLogin: data.User,
         FirstName: data.User?.FirstName,
         LastName: data.User?.LastName,
         userId: data.User?._id,
-        userType: data.User?.userType,
+        userType: data.User?.UserType,
       };
     } catch (error) {
       console.log(payload);
@@ -205,8 +206,9 @@ const userSlice = createSlice({
       state.userProfile = action.payload.data;
       state.FirstName = action.payload.FirstName;
       state.LastName = action.payload.LastName;
-      state.type = action.payload.type
+      state.type = action.payload.type;
       state.error = "";
+      // state.userType = action.payload.userType;
     });
     builder.addCase(fetchUserProfile.rejected, (state, action) => {
       state.status = "failed";

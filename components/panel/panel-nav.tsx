@@ -48,7 +48,7 @@ const PanelNav = ({ userProfile, status }: NavProps) => {
                 <Image src={malegender} alt="default-pic" />
               )}
               <div
-                className="rounded-full bg-[#EAEFF6] flex justify-center items-center p-2 cursor-pointer"
+                className="rounded-full bg-[#EAEFF6] flex justify-center items-center p-3 cursor-pointer"
                 onClick={() => (
                   dispatch(deleteDataFromCookie()), router.replace("/")
                 )}

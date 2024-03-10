@@ -1,26 +1,11 @@
 import Image from "next/image";
 import React from "react";
 import vieweye from "../../../../public/ViewUsers/vieweye.svg";
-const LegalUsersData = [
-  {
-    id: 1,
-    title: "پروژه یک",
-    title1: "پروژه یک",
-    title2: "پروژه یک",
-    title3: "پروژه یک",
-    imgSrc: vieweye,
-  },
-  {
-    id: 2,
-    title: "پروژه یک",
-    title1: "پروژه یک",
-    title2: "پروژه یک",
-    title3: "پروژه یک",
-    imgSrc: vieweye,
-  },
-];
-
-function LegalUsers() {
+import Link from "next/link";
+type LegalUsersProps = {
+  LegalUsersData: any[];
+};
+function LegalUsers({ LegalUsersData }: LegalUsersProps) {
   return (
     <div className="flex flex-col gap-5">
       <div className="grid grid-cols-5 text-center">
@@ -30,19 +15,23 @@ function LegalUsers() {
         <p>ایمیل</p>
         <p>مشاهده</p>
       </div>
-      {LegalUsersData.map((item) => (
+      {LegalUsersData.map((item, index) => (
         <div
           key={item.id}
           className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
-          //   onClick={() => setStep(2)}
         >
-          <p>{item.title}</p>
-          <p>{item.title1}</p>
-          <p>{item.title2}</p>
-          <p>{item.title3}</p>
-          <div className="flex justify-center">
-            <Image src={item.imgSrc} alt="مشاهده" width={20} height={20} />
-          </div>
+          <p>{index + 1}</p>
+          <p>{item.PhoneNumber}</p>
+          <p>
+            {item.FirstName} {item.LastName}
+          </p>
+          <p>{item.email}</p>
+          <Link
+            href={`/panel/admin/view-users/user-detail?id=${item._id}`}
+            className="flex justify-center"
+          >
+            <Image src={vieweye} alt="مشاهده" width={20} height={20} />
+          </Link>
         </div>
       ))}
     </div>

@@ -6,8 +6,7 @@ import { useFormik } from "formik";
 import { UserPanelPersonalSchema } from "@/schemas/userpanel-profile-schema";
 import FormInput from "@/app/contact-us/components/form/form-inputs";
 import Modal from "@/components/modal";
-import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchUserDataInRegistration } from "@/redux/features/user/userSlice";
 
 type infoFormProps = {
@@ -21,9 +20,10 @@ const initialValues = {
 
 const InfoForm = ({ setSteps }: infoFormProps) => {
   const dispatch = useDispatch();
-  const [showModal, setShowModal] = useState(false);
+  const { showModal, successMessage } = useSelector(
+    (state: any) => state.userData
+  );
   const [PhoneNumber, setPhoneNumber] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
   useEffect(() => {
     if (typeof window !== "undefined") {
       let number = window.localStorage.getItem("PhoneNumber");

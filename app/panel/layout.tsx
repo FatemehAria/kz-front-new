@@ -25,7 +25,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   const { localToken, userId, userProfile, userType, status } = useSelector(
     (store: any) => store.userData
   );
-  // console.log(userType);
+  console.log(userType);
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 4;
@@ -43,7 +43,6 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   const handlePrevClick = () => {
     setCurrentPage((prevPage) => (prevPage > 0 ? prevPage - 1 : prevPage));
   };
-  console.log(userId);
   // const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -73,8 +72,12 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
       {/* {localToken && ( */}
       <>
         <div className="hidden lg:block">
-          <PanelSidebar sideOptions={userSidebarOptions} />
-          {/* <PanelSidebar sideOptions={mainAdminSidebarOptions} /> */}
+          {userType === "User" && (
+            <PanelSidebar sideOptions={userSidebarOptions} />
+          )}
+          {userType === "Admin" && (
+            <PanelSidebar sideOptions={mainAdminSidebarOptions} />
+          )}
         </div>
         <div className="w-full lg:overflow-hidden">
           <div className="hidden md:block">
@@ -82,7 +85,12 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
           </div>
           <div className="bg-[#EAEFF6] h-full p-[5%]">{children}</div>
           <div>
-            <PanelSidebarSmall sideOptions={userSidebarOptions} />
+            {userType === "User" && (
+              <PanelSidebarSmall sideOptions={userSidebarOptions} />
+            )}
+            {userType === "Admin" && (
+              <PanelSidebarSmall sideOptions={mainAdminSidebarOptions} />
+            )}
           </div>
         </div>
       </>
