@@ -49,8 +49,10 @@ function ProjectDetail() {
     }
   };
   useEffect(() => {
-    getProjectDetail();
-  }, []);
+    if (localUserId) {
+      getProjectDetail();
+    }
+  }, [localUserId]);
   return (
     <div className="relative">
       <Link

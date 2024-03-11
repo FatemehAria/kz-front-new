@@ -11,14 +11,16 @@ import {
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
 import checkmark from "../../../public/Panel/checkmark.svg";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import vieweye from "../../../public/ViewUsers/vieweye.svg";
+import CloseTicketModal from "./components/close-ticket-modal";
+
 const moment = require("moment-jalaali");
 const Support = () => {
-  const router = useRouter();
+  const [showModal, setShowModal] = useState(false);
   const [allTickets, setAllTickets] = useState([]);
-  const params = useSearchParams();
-  const id = params.get("id");
-  console.log(id);
+  const [closeTicketId, setCloseTicketId] = useState("");
+
   const { localToken, localUserId } = useSelector(
     (state: any) => state.userData
   );
@@ -28,6 +30,7 @@ const Support = () => {
     dispatch(getTokenFromLocal());
     dispatch<any>(fetchUserProfile());
   }, []);
+
   const getAllTheTickets = async () => {
     try {
       const { data } = await axios(
@@ -45,29 +48,6 @@ const Support = () => {
     }
   };
 
-  const handleCloseTicket = async (ticketId: any) => {
-    try {
-      const { data } = await axios(
-        `https://keykavoos.liara.run/Client/CloseTicket/${localUserId}/${ticketId}`,
-        {
-          headers: {
-            authorization: `Bearer ${localToken}`,
-          },
-        }
-      );
-      console.log(data);
-
-      // Remove the id parameter from the URL
-      const urlWithoutId = window.location.origin + window.location.pathname;
-      window.history.replaceState(null, "", urlWithoutId);
-
-      // Update the state to reflect the changes
-      setAllTickets(allTickets.filter((item) => item._id !== ticketId));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     if (localUserId) {
       getAllTheTickets();
@@ -75,6 +55,15 @@ const Support = () => {
   }, [localUserId]);
   return (
     <div className="flex flex-col gap-3">
+      {showModal && (
+        <CloseTicketModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          text={`آیا از بستن تیکت مطمئنید؟`}
+          setAllTickets={setAllTickets}
+          closeTicketId={closeTicketId}
+        />
+      )}
       <Link
         href="/panel/support/add-new-ticket"
         className="flex flex-row gap-2 bg-[#4866CE] text-white p-2 rounded-[4px] w-[120px]"
@@ -92,29 +81,47 @@ const Support = () => {
             <p>عملیات</p>
           </div>
           {allTickets.map((item: any, index) => (
-            <Link
+            <div
               key={item._id}
               className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
-              href={`/panel/support/ticket-detail?id=${item._id}`}
             >
               <p>{index + 1}</p>
               <p>{item.Title}</p>
-              <p>{item.Blocked}</p>
+              <p>
+                {item.Blocked === "true" ? (
+                  <p>
+                    بسته{" "}
+                    <span className="text-emerald-600 font-semibold">شده</span>
+                  </p>
+                ) : (
+                  <p>
+                    بسته{" "}
+                    <span className="text-red-400 font-semibold">نشده</span>
+                  </p>
+                )}
+              </p>
               <p>
                 {moment(item.updatedAt, "YYYY-MM-DDTHH:mm:ss.SSSZ").format(
                   "jYYYY/jM/jD"
                 )}
               </p>
-              <Link href={`/panel/support?id=${item._id}`}>
-                <div
-                  className="flex flex-row justify-center gap-2"
-                  onClick={() => handleCloseTicket(item._id)}
-                >
-                  <Image src={checkmark} alt="" width={20} />
-                  <span>بستن</span>
-                </div>
-              </Link>
-            </Link>
+              <div className="flex justify-center items-center gap-5">
+                {item.Blocked !== "true" && (
+                  <div>
+                    <div
+                      onClick={() => (
+                        setShowModal(true), setCloseTicketId(item._id)
+                      )}
+                    >
+                      <Image src={checkmark} alt="بستن" width={20} />
+                    </div>
+                  </div>
+                )}
+                <Link href={`/panel/support/ticket-detail?id=${item._id}`}>
+                  <Image src={vieweye} alt="مشاهده" width={20} />
+                </Link>
+              </div>
+            </div>
           ))}
         </div>
       </div>
