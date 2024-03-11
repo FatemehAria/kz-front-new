@@ -195,7 +195,7 @@ const userSlice = createSlice({
     builder.addCase(fetchUserInOTPValidation.rejected, (state) => {
       state.showModal = true;
       state.status = "failed";
-      state.errorMessage = `      کد یکبار مصرف مورد تایید نمی باشد
+      state.errorMessage = ` کد یکبار مصرف مورد تایید نمی باشد
       دوباره اقدام فرمایید.`;
     });
 

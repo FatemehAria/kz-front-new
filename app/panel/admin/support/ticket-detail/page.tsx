@@ -1,5 +1,6 @@
 import React from "react";
-import TicketFields from "../add-new-ticket/components/ticket-fields";
+import TicketFields from "../add-new-placard/components/ticket-fields";
+
 
 function TicketDetail() {
   return (

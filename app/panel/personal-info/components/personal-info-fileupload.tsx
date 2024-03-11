@@ -10,6 +10,7 @@ function PersonalInfoFileupload({
   handleChange,
   selectedFile,
 }: PersonalInfoFileuploadProps) {
+  
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {

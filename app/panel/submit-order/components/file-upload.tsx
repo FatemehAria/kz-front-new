@@ -1,18 +1,33 @@
 import Image from "next/image";
-import React from "react";
+import React, { ChangeEvent } from "react";
 import uploadFile from "../../../../public/Panel/uploadfile.svg";
-function FileUpload() {
+type FileUploadProps = {
+  handleChange: any;
+  File: any;
+};
+function FileUpload({ handleChange, File }: FileUploadProps) {
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      handleChange(file);
+    }
+  };
   return (
     <div>
       <div className="flex flex-row items-center gap-[5%] whitespace-nowrap">
         <label>فایل انتخابی:</label>
-        <input id="fileInput" type="file" style={{ display: "none" }} />
+        <input
+          id="fileInput"
+          type="file"
+          style={{ display: "none" }}
+          onChange={handleFileChange}
+        />
         <label
           htmlFor="fileInput"
           style={{ cursor: "pointer" }}
-          className="bg-[#EDF0FB] rounded-lg flex flex-col items-center w-[70px] py-2"
+          className="bg-[#EDF0FB] rounded-lg flex flex-col items-center px-2 py-2"
         >
-          <Image src={uploadFile} alt="انتخاب فایل" />
+          {File ? File.name : <Image src={uploadFile} alt="انتخاب فایل" />}
         </label>
       </div>
     </div>
