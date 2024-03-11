@@ -10,9 +10,15 @@ import {
   getIdFromLocal,
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
+import checkmark from "../../../public/Panel/checkmark.svg";
+import { useRouter, useSearchParams } from "next/navigation";
 const moment = require("moment-jalaali");
 const Support = () => {
+  const router = useRouter();
   const [allTickets, setAllTickets] = useState([]);
+  const params = useSearchParams();
+  const id = params.get("id");
+  console.log(id);
   const { localToken, localUserId } = useSelector(
     (state: any) => state.userData
   );
@@ -34,6 +40,29 @@ const Support = () => {
       );
       setAllTickets(data.data);
       console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleCloseTicket = async (ticketId: any) => {
+    try {
+      const { data } = await axios(
+        `https://keykavoos.liara.run/Client/CloseTicket/${localUserId}/${ticketId}`,
+        {
+          headers: {
+            authorization: `Bearer ${localToken}`,
+          },
+        }
+      );
+      console.log(data);
+
+      // Remove the id parameter from the URL
+      const urlWithoutId = window.location.origin + window.location.pathname;
+      window.history.replaceState(null, "", urlWithoutId);
+
+      // Update the state to reflect the changes
+      setAllTickets(allTickets.filter((item) => item._id !== ticketId));
     } catch (error) {
       console.log(error);
     }
@@ -76,7 +105,15 @@ const Support = () => {
                   "jYYYY/jM/jD"
                 )}
               </p>
-              <p>بستن</p>
+              <Link href={`/panel/support?id=${item._id}`}>
+                <div
+                  className="flex flex-row justify-center gap-2"
+                  onClick={() => handleCloseTicket(item._id)}
+                >
+                  <Image src={checkmark} alt="" width={20} />
+                  <span>بستن</span>
+                </div>
+              </Link>
             </Link>
           ))}
         </div>

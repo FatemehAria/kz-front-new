@@ -20,9 +20,9 @@ function Legal({
   path,
 }: LegalProps) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-5">
       <div className="grid grid-cols-2 gap-[5%]">
-        <div className="flex flex-col justify-between">
+        <div className="flex flex-col justify-between gap-3">
           <PanelFields
             label="نام سازمان:"
             value={name_of_Organization}
@@ -41,14 +41,13 @@ function Legal({
             disable={true}
           />
         </div>
-        <div className="flex flex-col gap-5">
-          {/* profile photo */}
+        <div className="flex flex-col justify-between">
           <div className="self-center">
             <Image
               src={path ? path : malegender}
               alt="profile"
-              width={200}
-              height={200}
+              width={250}
+              height={250}
             />
           </div>
           <PanelFields

@@ -31,7 +31,7 @@ function AddNewTicket() {
     formData.append("File", File);
     // console.log(formData);
     try {
-      const { data } = await axios.put(
+      const { data } = await axios.post(
         `https://keykavoos.liara.run/Client/UploadFileTicket/${localUserId}`,
         formData,
         {
@@ -109,14 +109,14 @@ function AddNewTicket() {
 
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // await handleFileUpload()
-    await SubmitTicket(
-      ticket.RelevantUnit,
-      ticket.Title,
-      ticket.text,
-      ticket.Priority,
-      JSON.stringify(File)
-    );
+    await handleFileUpload()
+    // await SubmitTicket(
+    //   ticket.RelevantUnit,
+    //   ticket.Title,
+    //   ticket.text,
+    //   ticket.Priority,
+    //   JSON.stringify(File)
+    // );
     // Promise.all([
     //   await handleFileUpload(),
     //   await SubmitTicket(

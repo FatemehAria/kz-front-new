@@ -1,18 +1,48 @@
+"use client";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import add from "../../../../public/Panel/addticket.svg";
 import Link from "next/link";
-const AllProjectsData = [
-  {
-    id: 1,
-    title: "title",
-    title1: "title1",
-    title2: "title2",
-    title3: "title3",
-    title4: "title4",
-  },
-];
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import {
+  fetchUserProfile,
+  getIdFromLocal,
+  getTokenFromLocal,
+} from "@/redux/features/user/userSlice";
+import checkmark from "../../../../public/Panel/checkmark.svg";
 const Support = () => {
+  const dispatch = useDispatch();
+  const { localUserId, localToken } = useSelector(
+    (state: any) => state.userData
+  );
+  useEffect(() => {
+    dispatch(getIdFromLocal());
+    dispatch(getTokenFromLocal());
+    dispatch<any>(fetchUserProfile());
+  }, []);
+  const [allTickets, setAllTickets] = useState([]);
+  const getAllTickets = async () => {
+    try {
+      const { data } = await axios(
+        `https://keykavoos.liara.run/Admin/AllTickets/${localUserId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localToken}`,
+          },
+        }
+      );
+      setAllTickets(data.data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    if (localUserId) {
+      getAllTickets();
+    }
+  }, [localUserId]);
   return (
     <div className="flex flex-col gap-3">
       <Link
@@ -31,17 +61,20 @@ const Support = () => {
             <p>تاریخ بروزرسانی</p>
             <p>عملیات</p>
           </div>
-          {AllProjectsData.map((item) => (
+          {allTickets.map((item: any, index) => (
             <Link
-              key={item.id}
+              key={item._id}
               className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
-              href={`/panel/support/ticket-detail?id=${item.id}`}
+              href={`/panel/admin/support/ticket-detail?id=${item._id}`}
             >
-              <p>{item.title}</p>
-              <p>{item.title1}</p>
-              <p>{item.title2}</p>
-              <p>{item.title3}</p>
-              <p>{item.title4}</p>
+              <p>{index + 1}</p>
+              <p>{item.Title}</p>
+              <p>{item.Blocked ? "بسته شده" : "بسته نشده"}</p>
+              <p>*</p>
+              <div className="flex flex-row justify-center gap-2">
+                <Image src={checkmark} alt="" width={20} />
+                <span>بستن</span>
+              </div>
             </Link>
           ))}
         </div>
