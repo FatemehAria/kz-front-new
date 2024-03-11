@@ -25,33 +25,22 @@ function Chat({
   handleFileUpload,
   sendResponseTicket,
 }: ChatProps) {
-  const handleSendMessage = () => {
-    if (textInput.trim() !== "") {
-      setTextInput(""); // Clear the text input field after sending
-    }
-  };
-
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // await handleFileUpload();
     console.log(textInput);
-    // await sendResponseTicket(textInput)
+    await sendResponseTicket(textInput)
   };
   return (
     <div className="flex flex-col">
-      <div className={`${styles.chatBubble} ${styles.sender}`}>
+      <div>
         {senderText.map((item: any, index: number) => (
-          <p key={index}>{item.content}</p>
+          <p key={index} className={`${styles.chatBubble} ${styles.sender}`}>{item.content}</p>
         ))}
       </div>
-      <div className={`${styles.chatBubble} ${styles.receiver}`}>
+      {/* <div className={`${styles.chatBubble} ${styles.receiver}`}>
         {recieverText}
-      </div>
-      {textInput && (
-        <div className={`${styles.chatBubble} ${styles.sender}`}>
-          <p>{textInput}</p>
-        </div>
-      )}
+      </div> */}
       <form
         onSubmit={(e) => handleSubmission(e)}
         className="bg-[#4866CE] rounded-[4px] flex"
@@ -70,8 +59,7 @@ function Chat({
         <div className="grid grid-cols-1 justify-center items-center w-[15%] px-3">
           <button
             className="text-[#4866CE] bg-[#EAEFF6] p-2 rounded-[4px]"
-            onClick={handleSendMessage}
-            type="submit" // Call the function to send the message
+            type="submit"
           >
             ارسال پیام
           </button>

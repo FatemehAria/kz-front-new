@@ -83,7 +83,7 @@ const Support = () => {
           {allTickets.map((item: any, index) => (
             <div
               key={item._id}
-              className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
+              className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px]"
             >
               <p>{index + 1}</p>
               <p>{item.Title}</p>
@@ -112,6 +112,7 @@ const Support = () => {
                       onClick={() => (
                         setShowModal(true), setCloseTicketId(item._id)
                       )}
+                      className="cursor-pointer"
                     >
                       <Image src={checkmark} alt="بستن" width={20} />
                     </div>

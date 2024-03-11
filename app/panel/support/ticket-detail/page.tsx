@@ -8,10 +8,12 @@ import {
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
 import axios from "axios";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import TicketInfoField from "./components/ticket-info-filed";
 import Chat from "./components/chat";
 import { Bounce, toast } from "react-toastify";
+import Link from "next/link";
+import { IoArrowBack } from "react-icons/io5";
 const moment = require("moment-jalaali");
 function TicketDetail() {
   const [ticketDetail, setTicketDetail] = useState({
@@ -22,6 +24,7 @@ function TicketDetail() {
     DateSend: "",
     DateAnswered: "",
     SenderText: [],
+    Blocked: "",
   });
   const [textInput, setTextInput] = useState("");
   const { localToken, localUserId } = useSelector(
@@ -35,6 +38,7 @@ function TicketDetail() {
   }, []);
   const params = useSearchParams();
   const id = params.get("id");
+  const router = useRouter();
   const getTicketInfo = async () => {
     try {
       const { data } = await axios(
@@ -53,6 +57,7 @@ function TicketDetail() {
         DateSend: data.data.createdAt,
         DateAnswered: data.data.RelevantUnit,
         SenderText: data.data.text,
+        Blocked: data.data.Blocked,
       });
       console.log(data);
     } catch (error) {
@@ -64,7 +69,6 @@ function TicketDetail() {
       getTicketInfo();
     }
   }, [localUserId]);
-  // console.log(ticketDetail.SenderText);
 
   const [File, setFile] = useState<any>(null);
   const handleFileChange = (file: File) => {
@@ -83,6 +87,11 @@ function TicketDetail() {
           },
         }
       );
+      const updatedSenderText = updateSenderBox(textInput);
+      setTicketDetail((prevTicketDetail: any) => ({
+        ...prevTicketDetail,
+        SenderText: updatedSenderText,
+      }));
       console.log(data);
     } catch (error) {
       console.log(error);
@@ -93,7 +102,7 @@ function TicketDetail() {
     formData.append("File", File);
     // console.log(formData);
     try {
-      const { data } = await axios.put(
+      const { data } = await axios.post(
         `https://keykavoos.liara.run/Client/UploadFileResponseTicket/${localUserId}`,
         formData,
         {
@@ -141,47 +150,59 @@ function TicketDetail() {
     return updatedSenderText;
   };
   return (
-    <div className="bg-white shadow mx-auto rounded-2xl py-[3%] px-[3%] w-full relative">
-      <div className="grid grid-cols-2 gap-5">
-        <TicketInfoField label="عنوان تیکت:" text={ticketDetail.Title} />
-        <TicketInfoField
-          label="مسئول پاسخگویی:"
-          text={ticketDetail.Responser}
-        />
-        <TicketInfoField
-          label="واحد مربوطه تیکت:"
-          text={ticketDetail.RelavantUnit}
-        />
-        <TicketInfoField label="فرستنده تیکت:" text={ticketDetail.Sender} />
-        <TicketInfoField
-          label="تاریخ ارسال تیکت:"
-          text={moment(ticketDetail.DateSend).format("jYYYY/jMM/jDD")}
-        />
-        <TicketInfoField
-          label="تاریخ پاسخگویی:"
-          text={ticketDetail.DateAnswered}
-        />
-      </div>
+    <div className="relative">
       <div
-        style={{
-          border: "none",
-          borderTop: "3px solid",
-          borderImage:
-            "linear-gradient(to right, #FFFFFF 0%, #4866CE 45% ,#4866CE 55% , #FFFFFF 100%) 1",
-          margin: "5% 0",
-        }}
-      ></div>
-      <Chat
-        senderText={ticketDetail.SenderText}
-        recieverText={"this is the reciever text"}
-        textInput={textInput}
-        setTextInput={setTextInput}
-        updateSenderText={updateSenderBox}
-        File={File}
-        handleFileChange={handleFileChange}
-        handleFileUpload={handleFileUpload}
-        sendResponseTicket={sendResponseTicket}
-      />
+        className="flex justify-end w-full text-xl cursor-pointer absolute -top-12"
+        onClick={() => router.back()}
+      >
+        <div className="rounded-full p-2 bg-white">
+          <IoArrowBack />
+        </div>
+      </div>
+      <div className="bg-white shadow mx-auto rounded-2xl py-[3%] px-[3%] w-full relative">
+        <div className="grid grid-cols-2 gap-5">
+          <TicketInfoField label="عنوان تیکت:" text={ticketDetail.Title} />
+          <TicketInfoField
+            label="مسئول پاسخگویی:"
+            text={ticketDetail.Responser}
+          />
+          <TicketInfoField
+            label="واحد مربوطه تیکت:"
+            text={ticketDetail.RelavantUnit}
+          />
+          <TicketInfoField label="فرستنده تیکت:" text={ticketDetail.Sender} />
+          <TicketInfoField
+            label="تاریخ ارسال تیکت:"
+            text={moment(ticketDetail.DateSend).format("jYYYY/jMM/jDD")}
+          />
+          <TicketInfoField
+            label="تاریخ پاسخگویی:"
+            text={ticketDetail.DateAnswered}
+          />
+        </div>
+        <div
+          style={{
+            border: "none",
+            borderTop: "3px solid",
+            borderImage:
+              "linear-gradient(to right, #FFFFFF 0%, #4866CE 45% ,#4866CE 55% , #FFFFFF 100%) 1",
+            margin: "5% 0",
+          }}
+        ></div>
+        {ticketDetail.Blocked === "false" && (
+          <Chat
+            senderText={ticketDetail.SenderText}
+            recieverText={"this is the reciever text"}
+            textInput={textInput}
+            setTextInput={setTextInput}
+            updateSenderText={updateSenderBox}
+            File={File}
+            handleFileChange={handleFileChange}
+            handleFileUpload={handleFileUpload}
+            sendResponseTicket={sendResponseTicket}
+          />
+        )}
+      </div>
     </div>
   );
 }
