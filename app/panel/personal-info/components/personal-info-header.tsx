@@ -36,8 +36,8 @@ function PersonalInfoHeader({ step, setStep }: PersonalInfoHeaderProps) {
         <button
           className={`rounded-[4px] py-[3%] px-[8%] ${
             step === "Genuine"
-              ? "bg-[#4866CF] text-white cursor-default"
-              : "bg-[#EAEFF6] text-[#4866CF] cursor-pointer"
+              ? "bg-[#4866CF] text-white"
+              : "bg-[#EAEFF6] text-[#4866CF] cursor-default"
           }`}
           onClick={() => setStep && setStep("Genuine")}
         >
@@ -46,8 +46,8 @@ function PersonalInfoHeader({ step, setStep }: PersonalInfoHeaderProps) {
         <button
           className={`rounded-[4px] py-[3%] px-[8%] ${
             step === "Legal"
-              ? "bg-[#4866CF] text-white cursor-default"
-              : "bg-[#EAEFF6] text-[#4866CF] cursor-pointer"
+              ? "bg-[#4866CF] text-white"
+              : "bg-[#EAEFF6] text-[#4866CF] cursor-default"
           }`}
           onClick={() => setStep && setStep("Legal")}
         >

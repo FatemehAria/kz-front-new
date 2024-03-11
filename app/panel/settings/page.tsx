@@ -12,9 +12,8 @@ import SettingsHeader from "./components/settings-header";
 
 function PersonalInfo() {
   const [step, setStep] = useState(1);
-  const { userId, PhoneNumber, localToken,localUserId } = useSelector(
-    (state: any) => state.userData
-  );
+  const { userId, PhoneNumber, localToken, localUserId, userProfile } =
+    useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(readPhoneNumberFromLocalStroage());
@@ -33,7 +32,12 @@ function PersonalInfo() {
         );
       case 2:
         return (
-          <Legal PhoneNumber={PhoneNumber} userId={localUserId} token={localToken} />
+          <Legal
+            PhoneNumber={PhoneNumber}
+            userId={localUserId}
+            token={localToken}
+            userProfile={userProfile}
+          />
         );
       default:
         break;

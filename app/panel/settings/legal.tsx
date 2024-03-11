@@ -5,6 +5,8 @@ import { verifyIranianNationalId } from "@persian-tools/persian-tools";
 import { useFormik } from "formik";
 import { Bounce, toast } from "react-toastify";
 import SettingsFileupload from "./components/settings-fileupload";
+import { useDispatch } from "react-redux";
+import { updateUserProfile } from "@/redux/features/user/userSlice";
 const initialValues = {
   National_ID: "",
   type: "Legal",
@@ -15,12 +17,12 @@ type LegalProps = {
   PhoneNumber: string;
   userId: string;
   token: string;
+  userProfile: any;
 };
-function Legal({ PhoneNumber, userId, token }: LegalProps) {
+function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
   const [invalidNationalIdMessage, setInvalidNationalIdMessage] = useState("");
   const [selectedFile, setSelectedFile] = useState<any>(null);
-  const [avatarError, setAvatarError] = useState(false);
-
+  const dispatch = useDispatch();
   const handleFileChange = (file: File) => {
     setSelectedFile(file);
   };
@@ -55,7 +57,6 @@ function Legal({ PhoneNumber, userId, token }: LegalProps) {
         rtl: true,
       });
     } catch (error) {
-      setAvatarError(true);
       toast.error("خطا در آپلود فایل، لطفا مجدد آپلود کنید.", {
         position: "top-right",
         autoClose: 3000,
@@ -91,6 +92,15 @@ function Legal({ PhoneNumber, userId, token }: LegalProps) {
             Authorization: `Bearer ${token}`,
           },
         }
+      );
+      dispatch(
+        updateUserProfile({
+          ...userProfile,
+          National_ID,
+          type,
+          name_of_Organization,
+          registration_Number,
+        })
       );
       toast.success("ثبت اطلاعات موفق بود.", {
         position: "top-right",
