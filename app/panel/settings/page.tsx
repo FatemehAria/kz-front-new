@@ -12,7 +12,7 @@ import SettingsHeader from "./components/settings-header";
 
 function PersonalInfo() {
   const [step, setStep] = useState(1);
-  const { userId, PhoneNumber, localToken, localUserId, userProfile } =
+  const { PhoneNumber, localToken, localUserId, userProfile } =
     useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -26,7 +26,7 @@ function PersonalInfo() {
         return (
           <Genuine
             PhoneNumber={PhoneNumber}
-            userId={userId}
+            userId={localUserId}
             token={localToken}
           />
         );

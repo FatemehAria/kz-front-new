@@ -1,22 +1,46 @@
 "use client";
+import {
+  fetchUserProfile,
+  getIdFromLocal,
+  getTokenFromLocal,
+} from "@/redux/features/user/userSlice";
+import axios from "axios";
 import Link from "next/link";
-import React, { useEffect } from "react";
-type AllProjectsProps = {
-  AllProjectsData: SingleProjectInfo[];
-  getAllProjects: () => Promise<void>;
-};
-type SingleProjectInfo = {
-  id: number;
-  title: string;
-  title1: string;
-  title2: string;
-  title3: string;
-  title4: string;
-};
-function AllProjects({ AllProjectsData, getAllProjects }: AllProjectsProps) {
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+function AllProjects() {
+  const [allProjects, setAllProjects] = useState([]);
+  const { localToken, localUserId } = useSelector(
+    (state: any) => state.userData
+  );
+  const dispatch = useDispatch();
   useEffect(() => {
-    getAllProjects();
+    dispatch(getTokenFromLocal());
+    dispatch(getIdFromLocal());
+    dispatch<any>(fetchUserProfile());
   }, []);
+  const getAllProjects = async () => {
+    try {
+      const { data } = await axios(
+        `https://keykavoos.liara.run/Client/AllProject/${localUserId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localToken}`,
+          },
+        }
+      );
+      setAllProjects(data.data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    if (localUserId) {
+      getAllProjects();
+    }
+  }, [localUserId]);
   return (
     <div className="flex flex-col gap-5">
       <div className="grid grid-cols-5 text-center">
@@ -26,17 +50,16 @@ function AllProjects({ AllProjectsData, getAllProjects }: AllProjectsProps) {
         <p>وضعیت مالی پروژه</p>
         <p>درخواست فاکتور</p>
       </div>
-      {AllProjectsData.map((item) => (
+      {allProjects.map((item: any,index) => (
         <Link
-          key={item.id}
+          key={item._id}
           className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
-          href={`/panel/project-management/project-detail?id=${item.id}`}
+          href={`/panel/project-management/project-detail?id=${item._id}`}
         >
+          <p>{index + 1}</p>
           <p>{item.title}</p>
-          <p>{item.title1}</p>
-          <p>{item.title2}</p>
-          <p>{item.title3}</p>
-          <p>{item.title4}</p>
+          <p>{item.Development === "Not Started" ? "شروع نشده" : ""}</p>
+          <p>{item.Financial_Situation === "unknown" ? "نامعلوم" : ""}</p>
         </Link>
       ))}
     </div>
