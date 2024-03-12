@@ -26,9 +26,13 @@ function ViewUsers() {
   const [AllUsersData, setAllUsersData] = useState<any>([]);
   const [legalUsers, setLegalUsers] = useState([]);
   const [genuineUsers, setGenuineUsers] = useState([]);
-
+  const [legalUsersStatus, setLegalUsersStatus] = useState({
+    error: "",
+    loading: false,
+  });
   const AllUsers = async () => {
     try {
+      setLegalUsersStatus((last) => ({ ...last, loading: true }));
       const { data } = await axios(
         `https://keykavoos.liara.run/Admin/AllUser/${localUserId}`,
         {
@@ -38,9 +42,14 @@ function ViewUsers() {
         }
       );
       setAllUsersData(JSON.parse(JSON.stringify(data.data)));
-      console.log(data);
+      setLegalUsersStatus((last) => ({ ...last, loading: false }));
+      // console.log(data);
     } catch (error) {
-      console.log(error);
+      setLegalUsersStatus({
+        error: "خطا در نمایش اطلاعات",
+        loading: false,
+      });
+      // console.log(error);
     }
   };
 
@@ -68,7 +77,12 @@ function ViewUsers() {
   const renderSteps = () => {
     switch (type) {
       case "Legal":
-        return <LegalUsers LegalUsersData={legalUsers} />;
+        return (
+          <LegalUsers
+            LegalUsersData={legalUsers}
+            legalUsersStatus={legalUsersStatus}
+          />
+        );
       case "Genuine":
         return <GenuineUsers GenuineUsersData={genuineUsers} />;
       default:

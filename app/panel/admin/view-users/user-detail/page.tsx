@@ -17,8 +17,6 @@ function UserDetail() {
   );
   const params = useSearchParams();
   const id = params.get("id");
-  console.log("id", id);
-  console.log("userId", localUserId);
   const [userDetail, setUserDetail] = useState([]);
   const getUserDetail = async () => {
     try {

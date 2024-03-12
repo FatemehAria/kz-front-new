@@ -39,8 +39,8 @@ function SearchLegal({ LegalUsers, value, onChange }: SearchLegalProps) {
               className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
               //   onClick={() => setStep(2)}
             >
-              <p>{index + 1}</p>
-              <p>{item.PhoneNumber}</p>
+              <p className="font-faNum">{index + 1}</p>
+              <p className="font-faNum">{item.PhoneNumber}</p>
               <p>
                 {item.FirstName} {item.LastName}
               </p>

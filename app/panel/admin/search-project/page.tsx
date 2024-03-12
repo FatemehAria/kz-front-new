@@ -11,6 +11,7 @@ import {
 } from "@/redux/features/user/userSlice";
 import axios from "axios";
 import Link from "next/link";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 function SearchProject() {
   const [searchProject, setSearchProject] = useState("");
   const { localToken, localUserId } = useSelector(
@@ -23,8 +24,13 @@ function SearchProject() {
     dispatch(getIdFromLocal());
     dispatch<any>(fetchUserProfile());
   }, []);
+  const [allProjectsStatus, setAllProjectsStatus] = useState({
+    error: "",
+    loading: false,
+  });
   const AllProjects = async () => {
     try {
+      setAllProjectsStatus((last) => ({ ...last, loading: true }));
       const { data } = await axios(
         `https://keykavoos.liara.run/Admin/AllProject/${localUserId}`,
         {
@@ -34,8 +40,10 @@ function SearchProject() {
         }
       );
       setSearchProjectData(data.data);
+      setAllProjectsStatus((last) => ({ ...last, loading: false }));
       console.log(data);
     } catch (error) {
+      setAllProjectsStatus({ error: "خطا در دریافت اطلاعات", loading: false });
       console.log(error);
     }
   };
@@ -68,27 +76,33 @@ function SearchProject() {
         <p>وضعیت</p>
         <p>مشاهده</p>
       </div>
-      {SearchProjectData.filter((item: any) =>
-        item.Serial.includes(searchProject)
-      ).map((item: any) => (
-        <div
-          key={item._id}
-          className="grid grid-cols-6 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
-          //   onClick={() => setStep(2)}
-        >
-          <p>{item.Serial}</p>
-          <p>{item.title}</p>
-          <p>{item.budget}</p>
-          <p>{item.type}</p>
-          <p>{item.isConfirmationProject ? "تایید شده" : "تایید نشده"}</p>
-          <Link
-            href={`/panel/admin/search-project/project-detail?id=${item._id}`}
-            className="flex justify-center"
+      {allProjectsStatus.loading ? (
+        <SkeletonTheme>
+          <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
+        </SkeletonTheme>
+      ) : (
+        SearchProjectData.filter((item: any) =>
+          item.Serial.includes(searchProject)
+        ).map((item: any) => (
+          <div
+            key={item._id}
+            className="grid grid-cols-6 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
+            //   onClick={() => setStep(2)}
           >
-            <Image src={vieweye} alt="مشاهده" width={20} height={20} />
-          </Link>
-        </div>
-      ))}
+            <p className="font-faNum">{item.Serial}</p>
+            <p>{item.title}</p>
+            <p className="font-faNum">{Number(item.budget).toLocaleString()}</p>
+            <p>{item.type}</p>
+            <p>{item.isConfirmationProject ? "تایید شده" : "تایید نشده"}</p>
+            <Link
+              href={`/panel/admin/search-project/project-detail?id=${item._id}`}
+              className="flex justify-center"
+            >
+              <Image src={vieweye} alt="مشاهده" width={20} height={20} />
+            </Link>
+          </div>
+        ))
+      )}
     </div>
   );
 }

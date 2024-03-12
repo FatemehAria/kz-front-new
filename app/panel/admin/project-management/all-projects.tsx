@@ -10,6 +10,7 @@ import {
 } from "@/redux/features/user/userSlice";
 import axios from "axios";
 import Link from "next/link";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 function AllProjects() {
   const { localToken, localUserId } = useSelector(
@@ -17,6 +18,10 @@ function AllProjects() {
   );
   const dispatch = useDispatch();
   const [projectMangementData, setProjectMangementData] = useState([]);
+  const [allProjectsStatus, setAllProjectsStatus] = useState({
+    error: "",
+    loading: false,
+  });
   useEffect(() => {
     dispatch(getTokenFromLocal());
     dispatch(getIdFromLocal());
@@ -24,6 +29,7 @@ function AllProjects() {
   }, []);
   const AllProjects = async () => {
     try {
+      setAllProjectsStatus((last) => ({ ...last, loading: true }));
       const { data } = await axios(
         `https://keykavoos.liara.run/Admin/AllProject/${localUserId}`,
         {
@@ -33,9 +39,11 @@ function AllProjects() {
         }
       );
       setProjectMangementData(data.data);
-      console.log(data);
+      setAllProjectsStatus((last) => ({ ...last, loading: false }));
+      // console.log(data);
     } catch (error) {
-      console.log(error);
+      setAllProjectsStatus({ error: "خطا در دریافت اطلاعات", loading: false });
+      // console.log(error);
     }
   };
   useEffect(() => {
@@ -54,25 +62,31 @@ function AllProjects() {
         <p>وضعیت</p>
         <p>مشاهده</p>
       </div>
-      {projectMangementData.map((item: any, index) => (
-        <div
-          key={item._id}
-          className="grid grid-cols-7 text-center py-1 bg-[#EAEFF6] rounded-[4px]"
-        >
-          <p>{index + 1}</p>
-          <p>{item.Serial}</p>
-          <p>{item.title}</p>
-          <p>{item.budget}</p>
-          <p>{item.type}</p>
-          <p>{item.isConfirmationProject ? "تایید شده" : "تایید نشده"}</p>
-          <Link
-            href={`/panel/admin/project-management/project-detail?id=${item._id}`}
-            className="flex justify-center"
+      {allProjectsStatus.loading ? (
+        <SkeletonTheme>
+          <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
+        </SkeletonTheme>
+      ) : (
+        projectMangementData.map((item: any, index) => (
+          <div
+            key={item._id}
+            className="grid grid-cols-7 text-center py-1 bg-[#EAEFF6] rounded-[4px]"
           >
-            <Image src={vieweye} alt="مشاهده" width={20} height={20} />
-          </Link>
-        </div>
-      ))}
+            <p className="font-faNum">{index + 1}</p>
+            <p className="font-faNum">{item.Serial}</p>
+            <p>{item.title}</p>
+            <p className="font-faNum">{Number(item.budget).toLocaleString()}</p>
+            <p>{item.type}</p>
+            <p>{item.isConfirmationProject ? "تایید شده" : "تایید نشده"}</p>
+            <Link
+              href={`/panel/admin/project-management/project-detail?id=${item._id}`}
+              className="flex justify-center"
+            >
+              <Image src={vieweye} alt="مشاهده" width={20} height={20} />
+            </Link>
+          </div>
+        ))
+      )}
     </div>
   );
 }
