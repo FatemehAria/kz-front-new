@@ -25,10 +25,10 @@ function ProjectDetail() {
     type: "",
     plan: "",
     budget: "",
-    Similar_Site: "",
+    Similar_Site: [],
     Description: "",
-    Templates: "",
-    Colors: "",
+    Templates: [],
+    Colors: [],
     Serial: "",
   });
   useEffect(() => {
@@ -52,10 +52,10 @@ function ProjectDetail() {
         type: data.data.type,
         plan: data.data.plan,
         budget: data.data.budget,
-        Similar_Site: data.data.Similar_Site,
+        Similar_Site: JSON.parse(data.data.Similar_Site),
         Description: data.data.Description,
-        Templates: data.data.Templates,
-        Colors: data.data.Colors,
+        Templates: JSON.parse(data.data.Templates),
+        Colors: JSON.parse(data.data.Colors),
         Serial: data.data.Serial,
       });
     } catch (error) {
@@ -118,7 +118,11 @@ function ProjectDetail() {
         </div>
         <div className="flex flex-col gap-3">
           <label htmlFor="">سایت مشابه مورد نظر شماست:</label>
-          <div className="bg-[#EAEFF6]">{projectDetail.Similar_Site}</div>
+          <div className="bg-[#EAEFF6]">
+            {projectDetail.Similar_Site.map((item, index) => (
+              <p key={index}>{item}</p>
+            ))}
+          </div>
         </div>
         <div>
           <div className="flex flex-col gap-3">
@@ -128,11 +132,19 @@ function ProjectDetail() {
         </div>
         <div className="flex flex-col gap-3">
           <label htmlFor="">قالب و افزونه های مورد نیاز:</label>
-          <div className="bg-[#EAEFF6]">{projectDetail.Templates}</div>
+          <div className="bg-[#EAEFF6]">
+            {projectDetail.Templates.map((item, index) => (
+              <p key={index}>{item}</p>
+            ))}
+          </div>
         </div>
         <div className="flex flex-col gap-3">
           <label htmlFor="">رنگ سازمانی:</label>
-          <div className="bg-[#EAEFF6]">{projectDetail.Colors}</div>
+          <div className="bg-[#EAEFF6]">
+            {projectDetail.Colors.map((item, index) => (
+              <p key={index}>{item}</p>
+            ))}
+          </div>
         </div>
         <div className="grid grid-cols-3">
           <FileUpload />

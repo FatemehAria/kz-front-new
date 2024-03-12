@@ -44,9 +44,11 @@ function OrdersubmissionModal({
                 value={modalInputValue}
                 onChange={(e) => setModalInputValue(e.target.value)}
               />
-              <div className="flex flex-row-reverse">
+              <div className="flex flex-row-reverse gap-3 mt-3">
                 {data.map((item) => (
-                  <p key={item}>{item}</p>
+                  <p key={item} className="bg-[#EAEFF6] rounded-[4px] px-2">
+                    {item}
+                  </p>
                 ))}
               </div>
             </div>

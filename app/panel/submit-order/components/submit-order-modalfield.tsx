@@ -28,12 +28,18 @@ SubmitOrderDropdownProps) {
         <Image
           src={plus}
           alt="plus"
-          className="absolute left-0 top-1/2 -translate-y-1/2 pl-1"
+          className="absolute left-0 top-1/2 -translate-y-1/2 pl-1 cursor-pointer"
           onClick={() => setShowModal(true)}
         />
-        {data.map((item) => (
-          <p key={item}>{item}</p>
-        ))}
+        <div className="flex justify-end gap-3 mx-2">
+          {data.map((item) => (
+            <div key={item}>
+              <span className="bg-[#4866CE] text-white p-1 rounded-[4px]">
+                {item}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
