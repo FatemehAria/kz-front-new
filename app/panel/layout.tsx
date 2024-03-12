@@ -22,10 +22,12 @@ import { getCookie } from "cookies-next";
 import Loading from "../loading";
 
 const PanelLayout = ({ children }: { children: React.ReactNode }) => {
-  const { localToken, userId, userProfile, userType, status } = useSelector(
+  const { userProfile, userType, status, numberOfAnnouncements } = useSelector(
     (store: any) => store.userData
   );
-  // console.log(userType);
+  const [showAnnouncementDropdown, setShowAnnouncementDropdown] =
+    useState(false);
+  console.log(status);
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 4;
@@ -72,18 +74,32 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
       {/* {localToken && ( */}
       <>
         <div className="hidden lg:block">
-          {userType === "User" && (
-            <PanelSidebar sideOptions={userSidebarOptions} />
-          )}
-          {userType === "Admin" && (
-            <PanelSidebar sideOptions={mainAdminSidebarOptions} />
-          )}
+          <PanelSidebar
+            sideOptions={
+              userType === "User"
+                ? userSidebarOptions
+                : mainAdminSidebarOptions
+            }
+            status={status}
+          />
         </div>
         <div className="w-full lg:overflow-hidden">
           <div className="hidden md:block">
-            <PanelNav userProfile={userProfile} status={status} />
+            <PanelNav
+              userProfile={userProfile}
+              status={status}
+              userType={userType}
+              numberOfAnnouncements={numberOfAnnouncements}
+              setShowAnnouncementDropdown={setShowAnnouncementDropdown}
+              showAnnouncementDropdown={showAnnouncementDropdown}
+            />
           </div>
-          <div className="bg-[#EAEFF6] h-full p-[5%]">{children}</div>
+          <div
+            className="bg-[#EAEFF6] h-full p-[5%]"
+            onMouseEnter={() => setShowAnnouncementDropdown(false)}
+          >
+            {children}
+          </div>
           <div>
             {userType === "User" && (
               <PanelSidebarSmall sideOptions={userSidebarOptions} />

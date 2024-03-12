@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   deleteDataFromCookie,
@@ -14,19 +14,52 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 type NavProps = {
   userProfile: any;
   status: string;
+  userType: string;
+  numberOfAnnouncements: number;
+  setShowAnnouncementDropdown: Dispatch<SetStateAction<boolean>>;
+  showAnnouncementDropdown: boolean;
 };
 
-const PanelNav = ({ userProfile, status }: NavProps) => {
+const PanelNav = ({
+  userProfile,
+  status,
+  userType,
+  numberOfAnnouncements,
+  setShowAnnouncementDropdown,
+  showAnnouncementDropdown,
+}: NavProps) => {
   const dispatch = useDispatch();
   const router = useRouter();
   return (
-    <div className="flex flex-col items-end relative justify-center" dir="rtl">
+    <div
+      className="flex flex-col items-end relative justify-center"
+      dir="rtl"
+      onMouseLeave={() => setShowAnnouncementDropdown(false)}
+    >
       <div className="flex justify-end items-center font-YekanBakh font-bold w-full p-3 px-9 border-b-2 border-r-2 overflow-hidden rounded-lt-lg ">
         <div className="flex flex-row gap-3 items-center py-1">
-          <Link href="/panel/notifications">
-            <div className="rounded-full bg-[#EAEFF6] flex justify-center items-center p-2">
+          <Link
+            href={`${
+              userType === "Admin"
+                ? "/panel/admin/support"
+                : userType === "User" && "/panel/support"
+            }`}
+            onMouseEnter={() => setShowAnnouncementDropdown(true)}
+          >
+            <div className="rounded-full bg-[#EAEFF6] flex justify-center items-center p-2 relative">
               <Image src={notification} alt="notification-bell" />
+              <p className="bg-[#4866CF] font-faNum text-white p-2 rounded-full flex items-center justify-center w-[20px] h-[20px] absolute top-0 right-0">
+                <span>{numberOfAnnouncements}</span>
+              </p>
             </div>
+            {showAnnouncementDropdown && (
+              <div
+                className="absolute -bottom-[1.43rem] bg-white w-[200px] rounded-[4px]"
+                onMouseLeave={() => setShowAnnouncementDropdown(false)}
+              >
+                {numberOfAnnouncements === 0 && "اعلانی وجود ندارد."}
+              </div>
+            )}
           </Link>
           <div className="flex flex-row justify-between items-center gap-6">
             <div className="flex justify-center items-center gap-4">

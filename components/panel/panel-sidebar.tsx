@@ -4,7 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import sidebarpicbg from "../../public/Panel/sidebarpicbg.svg";
 import Logo from "@/app/auth/components/logo";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
+type PanelSidebarProps = {
+  status: string;
+  sideOptions: SideOptionsProps[];
+};
 type SideOptionsProps = {
   text: string;
   imgSrc: string;
@@ -12,9 +17,13 @@ type SideOptionsProps = {
   path: string | string[];
 };
 
-const PanelSidebar = ({ sideOptions }: { sideOptions: SideOptionsProps[] }) => {
+const PanelSidebar = ({ sideOptions, status }: PanelSidebarProps) => {
   const pathname = usePathname();
-
+  {
+    /* <SkeletonTheme>
+            <Skeleton width={260} className="h-full" baseColor="#EAEFF6" />
+          </SkeletonTheme> */
+  }
   return (
     <div className="flex flex-col">
       <div
@@ -40,7 +49,13 @@ const PanelSidebar = ({ sideOptions }: { sideOptions: SideOptionsProps[] }) => {
                     : " text-[#68707A]"
                 }`}
               >
-                {item.text}
+                {status !== "success" ? (
+                  <SkeletonTheme>
+                    <Skeleton count={1} width={150} baseColor="#EAEFF6" />
+                  </SkeletonTheme>
+                ) : (
+                  item.text
+                )}
               </p>
             </Link>
           ))}

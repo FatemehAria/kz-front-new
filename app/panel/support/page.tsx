@@ -87,7 +87,7 @@ const Support = () => {
             >
               <p>{index + 1}</p>
               <p>{item.Title}</p>
-              <p>
+              <div>
                 {item.Blocked === "true" ? (
                   <p>
                     بسته{" "}
@@ -99,7 +99,7 @@ const Support = () => {
                     <span className="text-red-400 font-semibold">نشده</span>
                   </p>
                 )}
-              </p>
+              </div>
               <p>
                 {moment(item.updatedAt, "YYYY-MM-DDTHH:mm:ss.SSSZ").format(
                   "jYYYY/jM/jD"
