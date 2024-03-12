@@ -27,7 +27,7 @@ const config: Config = {
     extend: {
       backgroundImage: {
         inHandSmall: "url('../public/in-hand/small.svg')",
-        inHandLarge: "url('../public/in-hand/inhand.svg')",
+        inHandLarge: "url('../public/in-hand/new-bg.svg')",
         techBg: "url('../public/tech-bg/bg.png')",
         supportBg: "url('../public/support/supportBg.png')",
         chatBg: "url('../public/support/supportBg.png')",

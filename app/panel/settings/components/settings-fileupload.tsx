@@ -10,7 +10,7 @@ type SettingsFileuploadProps = {
 function SettingsFileupload({
   handleChange,
   selectedFile,
-  label
+  label,
 }: SettingsFileuploadProps) {
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -47,7 +47,16 @@ function SettingsFileupload({
           </p>
         </div>
         <div>
-          <Image src={malegender} alt="عکس انتخاب شده" width={600} />
+          <Image
+            src={
+              selectedFile && selectedFile.type.startsWith("image/")
+                ? URL.createObjectURL(selectedFile)
+                : malegender
+            }
+            alt="عکس انتخاب شده"
+            width={600}
+            height={200}
+          />
         </div>
       </div>
     </div>
