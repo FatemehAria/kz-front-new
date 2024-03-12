@@ -14,6 +14,7 @@ import Chat from "./components/chat";
 import { Bounce, toast } from "react-toastify";
 import Link from "next/link";
 import { IoArrowBack } from "react-icons/io5";
+import Skeleton from "react-loading-skeleton";
 const moment = require("moment-jalaali");
 function TicketDetail() {
   const [ticketDetail, setTicketDetail] = useState({
@@ -25,6 +26,10 @@ function TicketDetail() {
     DateAnswered: "",
     SenderText: [],
     Blocked: "",
+  });
+  const [ticketDetailStatus, setTicketDetailStatus] = useState({
+    error: "",
+    loading: false,
   });
   const [textInput, setTextInput] = useState("");
   const { localToken, localUserId } = useSelector(
@@ -41,6 +46,7 @@ function TicketDetail() {
   const router = useRouter();
   const getTicketInfo = async () => {
     try {
+      setTicketDetailStatus((prevStatus) => ({ ...prevStatus, loading: true }));
       const { data } = await axios(
         `https://keykavoos.liara.run/Client/OneTicket/${localUserId}/${id}`,
         {
@@ -54,14 +60,23 @@ function TicketDetail() {
         RelavantUnit: data.data.RelevantUnit,
         Responser: data.data.text.receiver,
         Sender: data.data.PhoneNumber,
-        DateSend: data.data.createdAt,
+        DateSend: moment(
+          data.data.createdAt,
+          "YYYY-MM-DDTHH:mm:ss.SSSZ"
+        ).format("jYYYY/jM/jD"),
         DateAnswered: data.data.RelevantUnit,
         SenderText: data.data.text,
         Blocked: data.data.Blocked,
       });
+      setTicketDetailStatus((prevStatus) => ({
+        ...prevStatus,
+        loading: false,
+      }));
+      console.log(data.data.createdAt);
       console.log(data);
     } catch (error) {
-      console.log(error);
+      setTicketDetailStatus({ error: "", loading: false });
+      // console.log(error);
     }
   };
   useEffect(() => {
@@ -161,23 +176,35 @@ function TicketDetail() {
       </div>
       <div className="bg-white shadow mx-auto rounded-2xl py-[3%] px-[3%] w-full relative">
         <div className="grid grid-cols-2 gap-5">
-          <TicketInfoField label="عنوان تیکت:" text={ticketDetail.Title} />
+          <TicketInfoField
+            label="عنوان تیکت:"
+            text={ticketDetail.Title}
+            ticketDetailStatus={ticketDetailStatus.loading}
+          />
           <TicketInfoField
             label="مسئول پاسخگویی:"
             text={ticketDetail.Responser}
+            ticketDetailStatus={ticketDetailStatus.loading}
           />
           <TicketInfoField
             label="واحد مربوطه تیکت:"
             text={ticketDetail.RelavantUnit}
+            ticketDetailStatus={ticketDetailStatus.loading}
           />
-          <TicketInfoField label="فرستنده تیکت:" text={ticketDetail.Sender} />
+          <TicketInfoField
+            label="فرستنده تیکت:"
+            text={ticketDetail.Sender}
+            ticketDetailStatus={ticketDetailStatus.loading}
+          />
           <TicketInfoField
             label="تاریخ ارسال تیکت:"
-            text={moment(ticketDetail.DateSend).format("jYYYY/jMM/jDD")}
+            text={ticketDetail.DateSend}
+            ticketDetailStatus={ticketDetailStatus.loading}
           />
           <TicketInfoField
             label="تاریخ پاسخگویی:"
             text={ticketDetail.DateAnswered}
+            ticketDetailStatus={ticketDetailStatus.loading}
           />
         </div>
         <div

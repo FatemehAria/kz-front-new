@@ -11,16 +11,19 @@ import {
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
 import checkmark from "../../../public/Panel/checkmark.svg";
-import { useSearchParams } from "next/navigation";
 import vieweye from "../../../public/ViewUsers/vieweye.svg";
 import CloseTicketModal from "./components/close-ticket-modal";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 const moment = require("moment-jalaali");
 
 const Support = () => {
   const [showModal, setShowModal] = useState(false);
   const [allTickets, setAllTickets] = useState([]);
   const [closeTicketId, setCloseTicketId] = useState("");
-
+  const [supportStatus, setSupportStatus] = useState({
+    error: "",
+    loading: false,
+  });
   const { localToken, localUserId } = useSelector(
     (state: any) => state.userData
   );
@@ -33,6 +36,7 @@ const Support = () => {
 
   const getAllTheTickets = async () => {
     try {
+      setSupportStatus((prevStatus) => ({ ...prevStatus, loading: true }));
       const { data } = await axios(
         `https://keykavoos.liara.run/Client/AllTicket/${localUserId}`,
         {
@@ -42,9 +46,11 @@ const Support = () => {
         }
       );
       setAllTickets(data.data);
-      console.log(data);
+      setSupportStatus((prevStatus) => ({ ...prevStatus, loading: false }));
+      // console.log(data);
     } catch (error) {
-      console.log(error);
+      setSupportStatus({ error: "خطا در خواندن اطلاعات.", loading: false });
+      // console.log(error);
     }
   };
 
@@ -80,50 +86,58 @@ const Support = () => {
             <p>تاریخ بروزرسانی</p>
             <p>عملیات</p>
           </div>
-          {allTickets.map((item: any, index) => (
-            <div
-              key={item._id}
-              className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px]"
-            >
-              <p>{index + 1}</p>
-              <p>{item.Title}</p>
-              <div>
-                {item.Blocked === "true" ? (
-                  <p>
-                    بسته{" "}
-                    <span className="text-emerald-600 font-semibold">شده</span>
-                  </p>
-                ) : (
-                  <p>
-                    بسته{" "}
-                    <span className="text-red-400 font-semibold">نشده</span>
-                  </p>
-                )}
-              </div>
-              <p>
-                {moment(item.updatedAt, "YYYY-MM-DDTHH:mm:ss.SSSZ").format(
-                  "jYYYY/jM/jD"
-                )}
-              </p>
-              <div className="flex justify-center items-center gap-5">
-                {item.Blocked !== "true" && (
-                  <div>
-                    <div
-                      onClick={() => (
-                        setShowModal(true), setCloseTicketId(item._id)
-                      )}
-                      className="cursor-pointer"
-                    >
-                      <Image src={checkmark} alt="بستن" width={20} />
+          {supportStatus.loading ? (
+            <SkeletonTheme>
+              <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
+            </SkeletonTheme>
+          ) : (
+            allTickets.map((item: any, index) => (
+              <div
+                key={item._id}
+                className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px]"
+              >
+                <p className="font-faNum">{index + 1}</p>
+                <p className="font-faNum">{item.Title}</p>
+                <div>
+                  {item.Blocked === "true" ? (
+                    <p>
+                      بسته{" "}
+                      <span className="text-emerald-600 font-semibold">
+                        شده
+                      </span>
+                    </p>
+                  ) : (
+                    <p>
+                      بسته{" "}
+                      <span className="text-red-400 font-semibold">نشده</span>
+                    </p>
+                  )}
+                </div>
+                <p className="font-faNum">
+                  {moment(item.updatedAt, "YYYY-MM-DDTHH:mm:ss.SSSZ").format(
+                    "jYYYY/jM/jD"
+                  )}
+                </p>
+                <div className="flex justify-center items-center gap-5">
+                  {item.Blocked !== "true" && (
+                    <div>
+                      <div
+                        onClick={() => (
+                          setShowModal(true), setCloseTicketId(item._id)
+                        )}
+                        className="cursor-pointer"
+                      >
+                        <Image src={checkmark} alt="بستن" width={20} />
+                      </div>
                     </div>
-                  </div>
-                )}
-                <Link href={`/panel/support/ticket-detail?id=${item._id}`}>
-                  <Image src={vieweye} alt="مشاهده" width={20} />
-                </Link>
+                  )}
+                  <Link href={`/panel/support/ticket-detail?id=${item._id}`}>
+                    <Image src={vieweye} alt="مشاهده" width={20} />
+                  </Link>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </div>
