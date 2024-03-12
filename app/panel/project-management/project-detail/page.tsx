@@ -5,7 +5,7 @@ import {
 } from "@/redux/features/user/userSlice";
 import axios from "axios";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
 import { ImBackward, ImBackward2 } from "react-icons/im";
 import { IoArrowBack } from "react-icons/io5";
@@ -21,6 +21,7 @@ const ProjectDetailNav = [
   "پشتیبانی",
 ];
 function ProjectDetail() {
+  const router = useRouter();
   const { localToken, localUserId } = useSelector(
     (state: any) => state.userData
   );
@@ -55,14 +56,14 @@ function ProjectDetail() {
   }, [localUserId]);
   return (
     <div className="relative">
-      <Link
+      <div
         className="flex justify-end w-full text-xl cursor-pointer absolute -top-12"
-        href="/panel/project-management"
+        onClick={() => router.back()}
       >
         <div className="bg-white rounded-full p-2">
           <IoArrowBack />
         </div>
-      </Link>
+      </div>
       <ul className="grid grid-cols-8 justify-between bg-[#4866CE] text-white text-center rounded-t-2xl overflow-hidden">
         {ProjectDetailNav.map((item, index) => (
           <li

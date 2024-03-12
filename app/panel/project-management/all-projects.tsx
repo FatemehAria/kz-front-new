@@ -7,10 +7,15 @@ import {
 import axios from "axios";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useDispatch, useSelector } from "react-redux";
 
 function AllProjects() {
   const [allProjects, setAllProjects] = useState([]);
+  const [projectStatus, setProjectStatus] = useState({
+    error: "",
+    loading: false,
+  });
   const { localToken, localUserId } = useSelector(
     (state: any) => state.userData
   );
@@ -22,6 +27,7 @@ function AllProjects() {
   }, []);
   const getAllProjects = async () => {
     try {
+      setProjectStatus((prevStatus) => ({ ...prevStatus, loading: true }));
       const { data } = await axios(
         `https://keykavoos.liara.run/Client/AllProject/${localUserId}`,
         {
@@ -31,9 +37,11 @@ function AllProjects() {
         }
       );
       setAllProjects(data.data);
-      console.log(data);
+      setProjectStatus((prevStatus) => ({ ...prevStatus, loading: false }));
+      // console.log(data);
     } catch (error) {
-      console.log(error);
+      setProjectStatus({ error: "خطا در خواندن اطلاعات.", loading: false });
+      // console.log(error);
     }
   };
   useEffect(() => {
@@ -50,18 +58,24 @@ function AllProjects() {
         <p>وضعیت مالی پروژه</p>
         <p>درخواست فاکتور</p>
       </div>
-      {allProjects.map((item: any,index) => (
-        <Link
-          key={item._id}
-          className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
-          href={`/panel/project-management/project-detail?id=${item._id}`}
-        >
-          <p>{index + 1}</p>
-          <p>{item.title}</p>
-          <p>{item.Development === "Not Started" ? "شروع نشده" : ""}</p>
-          <p>{item.Financial_Situation === "unknown" ? "نامعلوم" : ""}</p>
-        </Link>
-      ))}
+      {projectStatus.loading ? (
+        <SkeletonTheme>
+          <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
+        </SkeletonTheme>
+      ) : (
+        allProjects.map((item: any, index) => (
+          <Link
+            key={item._id}
+            className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
+            href={`/panel/project-management/project-detail?id=${item._id}`}
+          >
+            <p>{index + 1}</p>
+            <p>{item.title}</p>
+            <p>{item.Development === "Not Started" ? "شروع نشده" : ""}</p>
+            <p>{item.Financial_Situation === "unknown" ? "نامعلوم" : ""}</p>
+          </Link>
+        ))
+      )}
     </div>
   );
 }

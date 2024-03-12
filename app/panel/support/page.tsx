@@ -14,8 +14,8 @@ import checkmark from "../../../public/Panel/checkmark.svg";
 import { useSearchParams } from "next/navigation";
 import vieweye from "../../../public/ViewUsers/vieweye.svg";
 import CloseTicketModal from "./components/close-ticket-modal";
-
 const moment = require("moment-jalaali");
+
 const Support = () => {
   const [showModal, setShowModal] = useState(false);
   const [allTickets, setAllTickets] = useState([]);

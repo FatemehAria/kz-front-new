@@ -27,7 +27,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   );
   const [showAnnouncementDropdown, setShowAnnouncementDropdown] =
     useState(false);
-  console.log(status);
+  // console.log(status);
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 4;
