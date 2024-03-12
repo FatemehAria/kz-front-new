@@ -67,7 +67,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     // w-[100%] lg:w-[90%] border overflow-auto mx-auto rounded-3xl lg:my-[2%]
     <div
-      className="font-YekanBakh flex w-full h-full flex-row relative"
+      className="font-YekanBakh flex w-full flex-row relative"
       style={{ boxShadow: "0px 0px 90px 2px rgba(0, 0, 0, 0.25)" }}
       dir="rtl"
     >
@@ -76,9 +76,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
         <div className="hidden lg:block">
           <PanelSidebar
             sideOptions={
-              userType === "User"
-                ? userSidebarOptions
-                : mainAdminSidebarOptions
+              userType === "User" ? userSidebarOptions : mainAdminSidebarOptions
             }
             status={status}
           />

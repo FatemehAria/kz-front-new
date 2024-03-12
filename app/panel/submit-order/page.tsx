@@ -24,13 +24,6 @@ function SubmitOrder() {
     dispatch(getTokenFromLocal());
   }, []);
 
-  // const parseJSON = (jsonString: any) => {
-  //   try {
-  //     return JSON.parse(jsonString);
-  //   } catch (error) {
-  //     return {};
-  //   }
-  // };
   const [File, setFile] = useState<any>(null);
   const [similarSiteData, setSimilarSiteData] = useState<string[]>([]);
   const [templatesData, setTemplatesData] = useState<string[]>([]);
@@ -49,9 +42,6 @@ function SubmitOrder() {
     Templates: templatesData,
     Colors: colorsData,
   });
-  // console.log("similarSiteData:", similarSiteData);
-  // console.log("templatesData", templatesData);
-  // console.log("colorsData", colorsData);
 
   const SubmitProject = async (
     title: string,
@@ -63,7 +53,6 @@ function SubmitOrder() {
     Templates: string,
     Colors: string
   ) => {
-    console.log(Similar_Site);
     try {
       const { data } = await axios.post(
         `https://keykavoos.liara.run/Client/SubmitProject/${localUserId}`,
@@ -226,6 +215,7 @@ function SubmitOrder() {
         modalFieldTitle="سایت مشابه مورد نظر شماست:"
         setShowModal={setShowSimilarModal}
         data={similarSiteData}
+        setData={setSimilarSiteData}
       />
       <SubmitOrderDescription
         value={projectFields.Description}
@@ -237,11 +227,13 @@ function SubmitOrder() {
         modalFieldTitle="قالب و افزونه های مورد نیاز:"
         setShowModal={setShowTemplatesModal}
         data={templatesData}
+        setData={setTemplatesData}
       />
       <SubmitOrderModalfield
         modalFieldTitle="رنگ سازمانی:"
         setShowModal={setShowColorsModal}
         data={colorsData}
+        setData={setColorsData}
       />
       <div className="flex justify-between">
         <FileUpload File={File} handleChange={handleFileChange} />

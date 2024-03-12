@@ -23,7 +23,7 @@ function OrdersubmissionModal({
     }
     setModalInputValue("");
   };
-  console.log(data);
+  // console.log(data);
   return (
     <div
       id="default-modal"

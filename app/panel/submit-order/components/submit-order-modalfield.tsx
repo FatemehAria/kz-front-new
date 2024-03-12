@@ -2,13 +2,14 @@
 import React, { useEffect, useState } from "react";
 import plus from "../../../../public/Panel/plus.svg";
 import Image from "next/image";
+import { MdDelete } from "react-icons/md";
 import OrdersubmissionModal from "./odersubmission-modal";
 type SubmitOrderDropdownProps = {
   modalFieldTitle: string;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   // showModal: boolean;
   data: string[];
-  // setData: React.Dispatch<React.SetStateAction<string[]>>;
+  setData: React.Dispatch<React.SetStateAction<string[]>>;
   // modalInputValue: string;
   // setModalInputValue: React.Dispatch<React.SetStateAction<string>>;
 };
@@ -16,11 +17,16 @@ function SubmitOrderModalfield({
   modalFieldTitle,
   setShowModal,
   // showModal,
+  setData,
   data,
-}: // setData,
-// modalInputValue,
+}: // modalInputValue,
 // setModalInputValue,
 SubmitOrderDropdownProps) {
+  const deleteItem = (index: number) => {
+    const newData = [...data];
+    newData.splice(index, 1);
+    setData(newData);
+  };
   return (
     <div className="flex flex-col gap-3 relative">
       <label>{modalFieldTitle}</label>
@@ -32,11 +38,17 @@ SubmitOrderDropdownProps) {
           onClick={() => setShowModal(true)}
         />
         <div className="flex justify-end gap-3 mx-2">
-          {data.map((item) => (
+          {data.map((item, index) => (
             <div key={item}>
-              <span className="bg-[#4866CE] text-white p-1 rounded-[4px]">
-                {item}
-              </span>
+              <div className="flex items-center bg-[#4866CE] text-white p-1 rounded-[4px]">
+                <span>{item}</span>
+                <span
+                  className="text-red-600 cursor-pointer"
+                  onClick={() => deleteItem(index)}
+                >
+                  <MdDelete />
+                </span>
+              </div>
             </div>
           ))}
         </div>
