@@ -77,7 +77,7 @@ const NavMobile = ({
             <Link
               href={
                 !localToken
-                  ? "/auth"
+                  ? "/authorization"
                   : userProfile.UserType === "Admin" ||
                     userProfile.UserType === "GeneralAdmin"
                   ? "/panel/main-admin/profile"

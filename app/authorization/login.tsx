@@ -7,9 +7,9 @@ import React, {
   useState,
 } from "react";
 import axios from "axios";
-import SubmissionBtn from "../auth/components/submission-btn";
-import Logo from "../auth/components/logo";
-import FormSlider from "../auth/components/form-slider";
+import SubmissionBtn from "../authorization/components/submission-btn";
+import Logo from "../authorization/components/logo";
+import FormSlider from "../authorization/components/form-slider";
 import FormInput from "../contact-us/components/form/form-inputs";
 import { useFormik } from "formik";
 import { LoginSchema } from "@/schemas/userpanel-profile-schema";
@@ -21,6 +21,7 @@ import MathProblemComponent from "./components/math-problem-component";
 import { login2 } from "@/utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "@/redux/features/user/userSlice";
+import { useRouter } from "next/navigation";
 
 type LoginProps = {
   setSteps: Dispatch<SetStateAction<number>>;
@@ -31,6 +32,7 @@ const initialValues = {
 };
 
 const Login = ({ setSteps }: LoginProps) => {
+  const router = useRouter();
   const { showModal } = useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
   const { executeRecaptcha } = useGoogleReCaptcha();

@@ -5,11 +5,11 @@ import React, { useState } from "react";
 import RegisterUser from "./register-user";
 import { useSelector } from "react-redux";
 import UserLoginViaOTP from "./user-login-via-otp";
-
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 const Auth = () => {
   const [steps, setSteps] = useState(1);
   const { localToken, userId } = useSelector((state: any) => state.userData);
-
   const renderSteps = () => {
     switch (steps) {
       case 1:
@@ -24,6 +24,12 @@ const Auth = () => {
         return;
     }
   };
+  const { status } = useSession();
+  const router = useRouter();
+  if (status === "authenticated") {
+    router.replace("/");
+  }
+  console.log(status);
   return (
     <div>
       {(!localToken || !userId) && <div dir="rtl">{renderSteps()}</div>}

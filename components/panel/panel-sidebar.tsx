@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import sidebarpicbg from "../../public/Panel/sidebarpicbg.svg";
-import Logo from "@/app/auth/components/logo";
+import Logo from "@/app/authorization/components/logo";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 type PanelSidebarProps = {

@@ -11,6 +11,7 @@ import notification from "../../public/Panel/notif.svg";
 import malegender from "../../public/Panel/malegender.svg";
 import exit from "../../public/Panel/exit.svg";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import { signOut, useSession } from "next-auth/react";
 type NavProps = {
   userProfile: any;
   status: string;
@@ -30,6 +31,15 @@ const PanelNav = ({
 }: NavProps) => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const { data } = useSession();
+  const handleExit = () => {
+    if (data?.user) {
+      signOut({ callbackUrl: "http://localhost:3000/" });
+      data.expires = JSON.stringify(Date.now());
+    }
+    dispatch(deleteDataFromCookie());
+    router.replace("/");
+  };
   return (
     <div
       className="flex flex-col items-end relative justify-center"
@@ -82,9 +92,7 @@ const PanelNav = ({
               )}
               <div
                 className="rounded-full bg-[#EAEFF6] flex justify-center items-center p-3 cursor-pointer"
-                onClick={() => (
-                  dispatch(deleteDataFromCookie()), router.replace("/")
-                )}
+                onClick={handleExit}
               >
                 <Image src={exit} alt="exit" />
               </div>

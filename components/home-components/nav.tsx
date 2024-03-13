@@ -10,8 +10,10 @@ import {
 } from "@/redux/features/user/userSlice";
 import Skeleton from "react-loading-skeleton";
 import NavMobile from "./nav-mobile";
+import { useSession } from "next-auth/react";
 
 const Nav = () => {
+  const { data, status } = useSession();
   const [active, setActive] = useState(false);
   const [showOne, setShowOne] = useState(false);
   const [showTwo, setShowTwo] = useState(false);
@@ -74,9 +76,11 @@ const Nav = () => {
         {/* Large Screen */}
         <Link
           href={
-            !localToken || !localUserId
-              ? "/auth"
-              : userType === "User"
+            !localToken && !localUserId && status === "unauthenticated"
+              ? "/authorization"
+              : localToken === "" || localUserId === ""
+              ? "/authorization"
+              : userType === "User" || status === "authenticated"
               ? "/panel"
               : userType === "Admin"
               ? "/panel/admin/view-users"
@@ -84,7 +88,8 @@ const Nav = () => {
           }
         >
           <button className="hidden lg:inline-block font-semibold bg-[#4866CF] text-white rounded-[4px] py-1 px-5 text-base">
-            {(!localToken || !localUserId) && "ثبت نام / ورود"}
+            {localToken === "" || localUserId === "" && "ثبت نام / ورود"}
+            {!localToken && !localUserId && status === "unauthenticated" && "ثبت نام / ورود"}
             {!FirstName && !LastName && localToken && localUserId && (
               <Skeleton width={100} baseColor="#4866CF" />
             )}
@@ -93,6 +98,7 @@ const Nav = () => {
               localToken &&
               localUserId &&
               `${userProfile.FirstName} ${userProfile.LastName}`}
+              {status === "authenticated" && data.user?.name}
           </button>
         </Link>
         <div className="lg:flex gap-6 hidden">
