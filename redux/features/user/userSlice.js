@@ -137,7 +137,7 @@ const userSlice = createSlice({
       state.token = "";
       state.userId = "";
       deleteCookie("token");
-      deleteCookie("userId");
+      sessionStorage.removeItem("userId");
     },
     changePhoneNumber: (state) => {
       state.changePhoneNumber = true;
@@ -150,7 +150,7 @@ const userSlice = createSlice({
       state.localToken = getCookie("token");
     },
     getIdFromLocal: (state) => {
-      state.localUserId = getCookie("userId");
+      state.localUserId = sessionStorage.getItem("userId");
     },
     changeUserInfo: (state, action) => {
       state.FirstName = action.payload;
@@ -160,7 +160,7 @@ const userSlice = createSlice({
     },
     updateInputDisability: (state, action) => {
       state.PhoneNumberInput = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchUserInOTPValidation.pending, (state) => {
@@ -182,11 +182,7 @@ const userSlice = createSlice({
       state.userType = action.payload.userType;
       state.type = action.payload.type;
       state.userId = action.payload.userId;
-      setCookie("userId", state.userId, {
-        path: "/",
-        secure: true,
-        maxAge: 60 * 60,
-      });
+      sessionStorage.setItem("userId", state.userId);
       if (!state.userInfoOnLogin) {
         state.successMessage = "لطفا اطلاعات خود را تکمیل کنید.";
       } else {
@@ -214,11 +210,7 @@ const userSlice = createSlice({
       state.numberOfAnnouncements = action.payload.numberOfAnnouncements;
       state.userType = action.payload.userType;
       state.userId = action.payload.userId;
-      setCookie("userId", state.userId, {
-        path: "/",
-        secure: true,
-        maxAge: 60 * 60,
-      });
+      sessionStorage.setItem("userId", state.userId);
     });
     builder.addCase(fetchUserProfile.rejected, (state, action) => {
       state.status = "failed";
@@ -241,11 +233,7 @@ const userSlice = createSlice({
       state.LastName = action.payload.LastName;
       state.userType = action.payload.userType;
       state.userId = action.payload.userId;
-      setCookie("userId", state.userId, {
-        path: "/",
-        secure: true,
-        maxAge: 60 * 60,
-      });
+      sessionStorage.setItem("userId", state.userId);
       state.successMessage = `${state.FirstName} ${state.LastName} عزیز با موفقیت وارد پنل کاربری خود شدید.`;
       state.errorMessage = "";
     });

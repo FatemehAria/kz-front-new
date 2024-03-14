@@ -76,29 +76,29 @@ const Nav = () => {
         {/* Large Screen */}
         <Link
           href={
-            !localToken && !localUserId && status === "unauthenticated"
+            !localToken && status === "unauthenticated"
               ? "/authorization"
-              : localToken === "" || localUserId === ""
+              : !localUserId
               ? "/authorization"
               : userType === "User" || status === "authenticated"
               ? "/panel"
               : userType === "Admin"
               ? "/panel/admin/view-users"
-              : "/panel"
+              : "/authorization"
           }
         >
           <button className="hidden lg:inline-block font-semibold bg-[#4866CF] text-white rounded-[4px] py-1 px-5 text-base">
-            {(localToken === "" || localUserId === "") && "ثبت نام / ورود"}
-            {(!localToken && !localUserId && status === "unauthenticated") && "ثبت نام / ورود"}
-            {!FirstName && !LastName && localToken && localUserId && (
-              <Skeleton width={100} baseColor="#4866CF" />
-            )}
+            {!localUserId && "ثبت نام / ورود"}
+            {!localToken && status === "unauthenticated" && localUserId && "ثبت نام / ورود"}
             {userProfile.FirstName &&
               userProfile.LastName &&
               localToken &&
               localUserId &&
               `${userProfile.FirstName} ${userProfile.LastName}`}
-              {status === "authenticated" && data.user?.name}
+            {status === "authenticated" && data.user?.name}
+            {!FirstName && !LastName && localToken && localUserId && (
+              <Skeleton width={100} baseColor="#4866CF" />
+            )}
           </button>
         </Link>
         <div className="lg:flex gap-6 hidden">

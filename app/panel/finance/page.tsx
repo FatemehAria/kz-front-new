@@ -47,15 +47,16 @@ function Finance() {
       className="py-[3%] w-[90%] shadow mx-auto bg-white rounded-2xl px-[3%] flex flex-col gap-5"
     >
       <div className="grid grid-cols-2 gap-5">
-        <FinanceInput label="مبلغ پروژه:" />
-        <FinanceInput label="نوع باقی مانده:" />
-        <FinanceInput label="مبلغ پرداخت شده:" />
+        <FinanceInput label="مبلغ پروژه:" disable={true} />
+        <FinanceInput label="نوع باقی مانده:" disable={true} />
+        <FinanceInput label="مبلغ پرداخت شده:" disable={true} />
         <FinanceInput
           label="مبلغ پرداختی شما:"
           value={amount}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setAmount(e.target.value)
           }
+          setToBlue={true}
         />
       </div>
       <div className="w-full flex justify-center">

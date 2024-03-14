@@ -35,6 +35,7 @@ function TicketDetail() {
   const { localToken, localUserId } = useSelector(
     (state: any) => state.userData
   );
+  const [path, setPath] = useState("");
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getIdFromLocal());
@@ -58,13 +59,13 @@ function TicketDetail() {
       setTicketDetail({
         Title: data.data.Title,
         RelavantUnit: data.data.RelevantUnit,
-        Responser: data.data.text.receiver,
+        Responser: "ادمین",
         Sender: data.data.PhoneNumber,
         DateSend: moment(
           data.data.createdAt,
           "YYYY-MM-DDTHH:mm:ss.SSSZ"
         ).format("jYYYY/jM/jD"),
-        DateAnswered: data.data.RelevantUnit,
+        DateAnswered: "-",
         SenderText: data.data.text,
         Blocked: data.data.Blocked,
       });
@@ -95,6 +96,7 @@ function TicketDetail() {
         `https://keykavoos.liara.run/Client/ResponseTicket/${localUserId}/${id}`,
         {
           text: textInput,
+          path,
         },
         {
           headers: {
@@ -127,6 +129,7 @@ function TicketDetail() {
         }
       );
       // console.log(selectedFile);
+      setPath(data.data);
       console.log(formData);
       console.log(data);
       toast.success("آپلود فایل موفق بود.", {
@@ -141,6 +144,7 @@ function TicketDetail() {
         transition: Bounce,
         rtl: true,
       });
+      setFile("")
     } catch (error) {
       toast.error("خطا در آپلود فایل، لطفا مجدد آپلود کنید.", {
         position: "top-right",

@@ -114,24 +114,16 @@ function AddNewTicket() {
 
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await handleFileUpload();
-    // await SubmitTicket(
-    //   ticket.RelevantUnit,
-    //   ticket.Title,
-    //   ticket.text,
-    //   ticket.Priority,
-    //   JSON.stringify(File)
-    // );
-    // Promise.all([
-    //   await handleFileUpload(),
-    //   await SubmitTicket(
-    //     ticket.RelevantUnit,
-    //     ticket.Title,
-    //     ticket.text,
-    //     ticket.Priority,
-    //     File
-    //   ),
-    // ]);
+    Promise.all([
+      await handleFileUpload(),
+      await SubmitTicket(
+        ticket.RelevantUnit,
+        ticket.Title,
+        ticket.text,
+        ticket.Priority,
+        JSON.stringify(File)
+      ),
+    ]);
   };
   return (
     <div className="relative">
