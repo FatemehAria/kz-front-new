@@ -88,8 +88,8 @@ const Nav = () => {
           }
         >
           <button className="hidden lg:inline-block font-semibold bg-[#4866CF] text-white rounded-[4px] py-1 px-5 text-base">
-            {localToken === "" || localUserId === "" && "ثبت نام / ورود"}
-            {!localToken && !localUserId && status === "unauthenticated" && "ثبت نام / ورود"}
+            {(localToken === "" || localUserId === "") && "ثبت نام / ورود"}
+            {(!localToken && !localUserId && status === "unauthenticated") && "ثبت نام / ورود"}
             {!FirstName && !LastName && localToken && localUserId && (
               <Skeleton width={100} baseColor="#4866CF" />
             )}

@@ -15,11 +15,12 @@ export const authOptions = {
           prompt: "consent",
           access_type: "offline",
           response_type: "code",
+          redirect_uri: "http://localhost:3000/api/auth/callback/google",
         },
       },
     }),
   ],
-  secret: "62d67d70ec48144ff98e8fedc1b0c9c8311f4baee190853a29a2bff7fcd69add",
+  secret: process.env.NEXTAUTH_SECRET,
   debug: true,
 };
 const handler = NextAuth(authOptions);

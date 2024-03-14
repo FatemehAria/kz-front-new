@@ -9,13 +9,13 @@ import {
 } from "@/redux/features/user/userSlice";
 import axios from "axios";
 import { headers } from "next/headers";
+import { useRouter } from "next/navigation";
 
 function Finance() {
   const [amount, setAmount] = useState<string | number>("");
   const dispatch = useDispatch();
-  const { localUserId, localToken } = useSelector(
-    (state: any) => state.userData
-  );
+  const router = useRouter();
+  const { localToken } = useSelector((state: any) => state.userData);
   useEffect(() => {
     dispatch(getTokenFromLocal());
     dispatch(getIdFromLocal());
@@ -23,25 +23,23 @@ function Finance() {
   }, []);
   const sendAmount = async (amount: number) => {
     try {
-      const { data } = await axios.post(
-        `https://keykavoos.liara.run/Client/req_Financial/${localUserId}`,
-        {
-          amount,
-        },
+      const { data } = await axios(
+        `https://keykavoos.liara.run/pay/${amount}`,
         {
           headers: {
             Authorization: `Bearer ${localToken}`,
           },
         }
       );
-      console.log(data);
+      router.push(data);
+      // console.log(data);
     } catch (error) {
       console.log(error);
     }
   };
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // await sendAmount(Number(amount));
+    await sendAmount(Number(amount));
   };
   return (
     <form

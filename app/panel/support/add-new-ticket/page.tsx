@@ -32,9 +32,10 @@ function AddNewTicket() {
   const handleFileUpload = async () => {
     const formData = new FormData();
     formData.append("File", File);
-    // console.log(formData);
     console.log("Uploading File Name:", File.name);
     console.log("Uploading File Type:", File.type);
+    console.log("Uploading File Type:", typeof File);
+    console.log(formData);
     try {
       const { data } = await axios.post(
         `https://keykavoos.liara.run/Client/UploadFileTicket/${localUserId}`,
@@ -42,11 +43,10 @@ function AddNewTicket() {
         {
           headers: {
             authorization: `Bearer ${localToken}`,
+            // "Content-Type": "application/multipart",
           },
         }
       );
-      // console.log(selectedFile);
-      console.log(formData);
       console.log(data);
       toast.success("آپلود فایل موفق بود.", {
         position: "top-right",
@@ -114,14 +114,14 @@ function AddNewTicket() {
 
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // await handleFileUpload();
-    await SubmitTicket(
-      ticket.RelevantUnit,
-      ticket.Title,
-      ticket.text,
-      ticket.Priority,
-      JSON.stringify(File)
-    );
+    await handleFileUpload();
+    // await SubmitTicket(
+    //   ticket.RelevantUnit,
+    //   ticket.Title,
+    //   ticket.text,
+    //   ticket.Priority,
+    //   JSON.stringify(File)
+    // );
     // Promise.all([
     //   await handleFileUpload(),
     //   await SubmitTicket(

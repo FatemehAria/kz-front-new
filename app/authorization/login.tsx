@@ -221,7 +221,7 @@ const Login = ({ setSteps }: LoginProps) => {
                 type={showModal ? "button" : "submit"}
               />
             </form>
-            <LoginVia />
+            {/* <LoginVia /> */}
             <div className="text-[16px] flex flex-row gap-1 justify-center items-center">
               <p>حساب کاربری ندارید؟</p>
               <span>
