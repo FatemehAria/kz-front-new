@@ -46,7 +46,7 @@ const PanelNav = ({
       dir="rtl"
       onMouseLeave={() => setShowAnnouncementDropdown(false)}
     >
-      <div className="flex justify-end items-center font-YekanBakh font-bold w-full p-3 px-9 border-b-2 border-r-2 overflow-hidden rounded-lt-lg ">
+      <div className="flex justify-end items-center font-YekanBakh font-bold w-full p-3 px-9 border-b-2 border-r-[0.3px] overflow-hidden rounded-lt-lg ">
         <div className="flex flex-row gap-3 items-center py-1">
           <Link
             href={`${
@@ -57,7 +57,7 @@ const PanelNav = ({
             onMouseEnter={() => setShowAnnouncementDropdown(true)}
           >
             <div className="rounded-full bg-[#EAEFF6] flex justify-center items-center p-2 relative">
-              <Image src={notification} alt="notification-bell" />
+              <Image src={notification} alt="notification-bell" width={45} />
               <p className="bg-[#4866CF] font-faNum text-white p-2 rounded-full flex items-center justify-center w-[20px] h-[20px] absolute top-0 right-0">
                 <span>{numberOfAnnouncements}</span>
               </p>
@@ -82,8 +82,8 @@ const PanelNav = ({
                   <Image
                     alt="profile"
                     src={userProfile.avatar?.path}
-                    width={75}
-                    height={75}
+                    width={45}
+                    height={45}
                     className="rounded-full"
                   />
                 </div>
@@ -94,7 +94,7 @@ const PanelNav = ({
                 className="rounded-full bg-[#EAEFF6] flex justify-center items-center p-3 cursor-pointer"
                 onClick={handleExit}
               >
-                <Image src={exit} alt="exit" />
+                <Image src={exit} alt="exit" width={35}/>
               </div>
             </div>
           </div>

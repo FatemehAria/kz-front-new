@@ -42,8 +42,15 @@ const ImageLinks = [
     info: "سیستم مدیریت یکپارچه (IMS) ترکیبی از استانداردهای سیستم مدیریت چندگانه که در سازمان آن ثبت شده است، میباشد. سیستم های مدیریتی از طریق یک سیستم با فرایندهایی که نیازهای هر استاندارد را و شرکت بین اللمللی کیکاووس زمان در سال .......  با ارائه مستندات کافی مفتخر به در یافت این استاندارد از مرجع TQS گردید",
   },
 ];
-
-const CertificatesImageslider = () => {
+type CertificatesImagesliderProps = {
+  currentSlideIndex: number;
+  setCurrentSlideIndex: React.Dispatch<React.SetStateAction<number>>
+};
+const CertificatesImageslider = ({
+  currentSlideIndex,
+  setCurrentSlideIndex
+}: CertificatesImagesliderProps) => {
+  // console.log("image slider",currentSlideIndex);
   return (
     <div className="flex justify-center items-center text-center lg:w-[80%] w-full mx-auto z-[999]">
       <Swiper
@@ -53,7 +60,6 @@ const CertificatesImageslider = () => {
         autoplay={{
           delay: 3500,
           disableOnInteraction: true,
-          //   reverseDirection: true,
         }}
         slidesPerView={3}
         breakpoints={{
@@ -72,24 +78,22 @@ const CertificatesImageslider = () => {
               stretch: 90,
               depth: 900,
               modifier: 1,
-              // modifier: 3,
               slideShadows: false,
             },
             slidesPerView: 3,
           },
         }}
-        // dir="rtl"
         effect="coverflow"
         coverflowEffect={{
           rotate: 0,
           stretch: 90,
           depth: 900,
           modifier: 1,
-          // modifier: 3,
           slideShadows: false,
         }}
         centeredSlides={true}
         preventInteractionOnTransition={true}
+        onSlideChange={(swiper) => setCurrentSlideIndex(swiper.activeIndex)}
       >
         {ImageLinks.map((link, index) => (
           <SwiperSlide key={link.id}>

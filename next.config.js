@@ -6,9 +6,9 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  images : { 
-    domains : ['keykavoos.liara.run'] 
-  }
+  images: {
+    domains: ["keykavoos.liara.run", "localhost"],
+  },
 };
 
 module.exports = nextConfig;

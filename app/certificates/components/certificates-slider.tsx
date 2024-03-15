@@ -2,9 +2,15 @@ import Image from "next/image";
 import React from "react";
 import CertificatesSliderCards from "./certificates-slidercards";
 import styles from "../certificates.module.css";
-import CertificatesImageslider from "./certificate-imageslider";
 const { conatinerFive } = styles;
-const CertificatesSlider = () => {
+type CertificatesSliderProps = {
+  currentSlideIndex: number;
+  setCurrentSlideIndex: React.Dispatch<React.SetStateAction<number>>;
+};
+const CertificatesSlider = ({
+  currentSlideIndex,
+  setCurrentSlideIndex,
+}: CertificatesSliderProps) => {
   return (
     <div className={`w-full pb-[5%]`}>
       <div
@@ -24,7 +30,10 @@ const CertificatesSlider = () => {
           height={324}
           className="h-[170px] w-[8px] rotate-90 lg:rotate-0"
         />
-        <CertificatesSliderCards />
+        <CertificatesSliderCards
+          currentSlideIndex={currentSlideIndex}
+          setCurrentSlideIndex={setCurrentSlideIndex}
+        />
         <Image
           src="/certificates/vector2.png"
           alt="vector"

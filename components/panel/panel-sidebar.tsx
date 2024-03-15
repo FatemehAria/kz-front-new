@@ -27,7 +27,7 @@ const PanelSidebar = ({ sideOptions, status }: PanelSidebarProps) => {
   return (
     <div className="flex flex-col">
       <div
-        className="w-[260px] font-YekanBakh py-6 border-l relative h-full"
+        className="w-[260px] font-YekanBakh py-6 border-l-[0.3px] relative h-full"
         // style={{ boxShadow: "-9px 0px 61px 0px rgba(0, 0, 0, 0.07)" }}
       >
         <div className="flex justify-center">

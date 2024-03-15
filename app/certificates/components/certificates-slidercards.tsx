@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import Image from "next/image";
 
 const ImageLinks = [
   {
@@ -42,8 +43,15 @@ const ImageLinks = [
     info: "سیستم مدیریت یکپارچه (IMS) ترکیبی از استانداردهای سیستم مدیریت چندگانه که در سازمان آن ثبت شده است، میباشد. سیستم های مدیریتی از طریق یک سیستم با فرایندهایی که نیازهای هر استاندارد را و شرکت بین اللمللی کیکاووس زمان در سال .......  با ارائه مستندات کافی مفتخر به در یافت این استاندارد از مرجع TQS گردید",
   },
 ];
-
-const CertificatesSliderCards = () => {
+type CertificatesSliderCardsProps = {
+  currentSlideIndex: number;
+  setCurrentSlideIndex: React.Dispatch<React.SetStateAction<number>>;
+};
+const CertificatesSliderCards = ({
+  currentSlideIndex,
+  setCurrentSlideIndex,
+}: CertificatesSliderCardsProps) => {
+  // console.log("text slider",currentSlideIndex);
   return (
     <>
       <div className="flex justify-center items-center text-center lg:w-[55%] lg:h-[200px] w-[90%]">
@@ -54,18 +62,19 @@ const CertificatesSliderCards = () => {
           autoplay={{
             delay: 3500,
             disableOnInteraction: false,
-            // reverseDirection: true,
           }}
           slidesPerView={1}
           centeredSlides={true}
           preventInteractionOnTransition={true}
           allowTouchMove={false}
+          onSlideChange={(swiper) => setCurrentSlideIndex(swiper.activeIndex)}
         >
           {ImageLinks.map((link) => (
-            <SwiperSlide key={link.id} className="lg:leading-6 lg:text-sm lg:pt-[5%] mx-auto h-full flex justify-center items-center lg:h-[50%]">
-              <p>
-                {link.info}
-              </p>
+            <SwiperSlide
+              key={link.id}
+              className="lg:leading-6 lg:text-sm lg:pt-[5%] mx-auto h-full flex justify-center items-center lg:h-[50%]"
+            >
+              <p>{link.info}</p>
             </SwiperSlide>
           ))}
         </Swiper>
