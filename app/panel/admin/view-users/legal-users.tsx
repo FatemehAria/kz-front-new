@@ -24,7 +24,7 @@ function LegalUsers({ LegalUsersData, legalUsersStatus }: LegalUsersProps) {
         <SkeletonTheme>
           <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
         </SkeletonTheme>
-      ) : (
+      ) : LegalUsersData.length > 0 ? (
         LegalUsersData.map((item, index) => (
           <div
             key={item._id}
@@ -44,6 +44,10 @@ function LegalUsers({ LegalUsersData, legalUsersStatus }: LegalUsersProps) {
             </Link>
           </div>
         ))
+      ) : (
+        <p className="text-center font-bold text-red-700">
+          کاربری یافت نشد.
+        </p>
       )}
     </div>
   );

@@ -57,7 +57,7 @@ function SearchProject() {
       <div className="relative mb-3 w-[50%]">
         <input
           type="text"
-          placeholder="جستجو بر اساس شماره درخواست"
+          placeholder="جستجو بر اساس شماره درخواست و شماره موبایل"
           className="w-full outline-none border border-[#4866CF] rounded-[8px] p-2"
           value={searchProject}
           onChange={(e) => setSearchProject(e.target.value)}
@@ -81,8 +81,10 @@ function SearchProject() {
           <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
         </SkeletonTheme>
       ) : (
-        SearchProjectData.filter((item: any) =>
-          item.Serial.includes(searchProject)
+        SearchProjectData.filter(
+          (item: any) =>
+            item.Serial.includes(searchProject) ||
+            item.PhoneNumber.includes(searchProject)
         ).map((item: any) => (
           <div
             key={item._id}

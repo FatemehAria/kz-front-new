@@ -16,7 +16,6 @@ type ChatProps = {
 
 function Chat({
   senderText,
-  recieverText,
   textInput,
   setTextInput,
   updateSenderText,
@@ -27,12 +26,12 @@ function Chat({
 }: ChatProps) {
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    Promise.all([
-      await handleFileUpload(),
-      await sendResponseTicket(textInput),
-    ]);
+    // Promise.all([
+    //   await handleFileUpload(),
+    //   await sendResponseTicket(textInput),
+    // ]);
     // console.log(textInput);
-    // await sendResponseTicket(textInput)
+    await sendResponseTicket(textInput)
   };
   const timestampConversion = (timestamp: number | Date | undefined) => {
     return new Intl.DateTimeFormat("fa-IR", {
@@ -41,21 +40,41 @@ function Chat({
       day: "2-digit",
     }).format(timestamp);
   };
+
   return (
     <div className="flex flex-col">
       <div>
-        {senderText.map((item: any, index: number) => (
-          <div key={index} className={`${styles.chatBubble} ${styles.sender}`}>
-            <p>{item.content}</p>
-            <span className="flex justify-end">
-              {timestampConversion(item.timestamp)}
-            </span>
-          </div>
-        ))}
+        {senderText.map(
+          (item: any, index: number) =>
+            item.sender !== "Admin" && (
+              <div
+                key={index}
+                className={`${styles.chatBubble} ${styles.sender}`}
+              >
+                <p>{item.content}</p>
+                <span className="flex justify-end">
+                  {timestampConversion(item.timestamp)}
+                </span>
+              </div>
+            )
+        )}
       </div>
-      {/* <div className={`${styles.chatBubble} ${styles.receiver}`}>
-        {recieverText}
-      </div> */}
+      <div className="flex items-end flex-col">
+        {senderText.map(
+          (item: any, index: number) =>
+            item.sender === "Admin" && (
+              <div
+                key={index}
+                className={`${styles.chatBubble} ${styles.receiver}`}
+              >
+                <p>{item.content}</p>
+                <span className="flex justify-end">
+                  {timestampConversion(item.timestamp)}
+                </span>
+              </div>
+            )
+        )}
+      </div>
       <form
         onSubmit={(e) => handleSubmission(e)}
         className="bg-[#4866CE] rounded-[4px] flex"
@@ -71,7 +90,9 @@ function Chat({
           value={textInput}
           onChange={(e) => setTextInput(e.target.value)}
         ></textarea>
-        <span className="font-faNum flex flex-col self-end p-2 text-[#EAEFF6A1]">0/150</span>
+        <span className="font-faNum flex flex-col self-end p-2 text-[#EAEFF6A1]">
+          0/150
+        </span>
         <div className="grid grid-cols-1 justify-center items-center w-[15%] px-3">
           <button
             className="text-[#4866CE] bg-[#EAEFF6] p-2 rounded-[4px]"

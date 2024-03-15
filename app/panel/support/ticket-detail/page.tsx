@@ -12,9 +12,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import TicketInfoField from "./components/ticket-info-filed";
 import Chat from "./components/chat";
 import { Bounce, toast } from "react-toastify";
-import Link from "next/link";
 import { IoArrowBack } from "react-icons/io5";
-import Skeleton from "react-loading-skeleton";
 const moment = require("moment-jalaali");
 function TicketDetail() {
   const [ticketDetail, setTicketDetail] = useState({
@@ -73,7 +71,6 @@ function TicketDetail() {
         ...prevStatus,
         loading: false,
       }));
-      console.log(data.data.createdAt);
       console.log(data);
     } catch (error) {
       setTicketDetailStatus({ error: "", loading: false });
@@ -144,7 +141,7 @@ function TicketDetail() {
         transition: Bounce,
         rtl: true,
       });
-      setFile("")
+      setFile("");
     } catch (error) {
       toast.error("خطا در آپلود فایل، لطفا مجدد آپلود کنید.", {
         position: "top-right",
@@ -164,7 +161,7 @@ function TicketDetail() {
   const updateSenderBox = (newText: string) => {
     const updatedSenderText = [
       ...ticketDetail.SenderText,
-      { content: newText },
+      { content: newText, sender: "user" },
     ];
     return updatedSenderText;
   };

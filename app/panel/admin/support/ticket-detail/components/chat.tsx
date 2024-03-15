@@ -7,39 +7,70 @@ type ChatProps = {
   recieverText?: any;
   textInput: string;
   setTextInput: React.Dispatch<React.SetStateAction<string>>;
-  // updateSenderText?: (newMessage: string) => void;
+  updateSenderText?: (newMessage: string) => void;
   File?: any;
   handleFileChange?: any;
-  // handleFileUpload?: any;
+  handleFileUpload?: any;
   sendResponseTicket: any;
 };
 
 function Chat({
   senderText,
-  recieverText,
   textInput,
   setTextInput,
-  // updateSenderText,
-  File,
-  handleFileChange,
-  // handleFileUpload,
   sendResponseTicket,
+  handleFileChange,
+  handleFileUpload,
+  File,
+  updateSenderText,
 }: ChatProps) {
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // await handleFileUpload();
-    console.log(textInput);
-    await sendResponseTicket(textInput)
+    console.log(senderText);
+    await sendResponseTicket(textInput);
+  };
+  const timestampConversion = (timestamp: number | Date | undefined) => {
+    return new Intl.DateTimeFormat("fa-IR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(timestamp);
   };
   return (
     <div className="flex flex-col">
-      <div>
-        {senderText.map((item: any, index: number) => (
-          <p key={index} className={`${styles.chatBubble} ${styles.sender}`}>{item.content}</p>
-        ))}
+      <div className="flex flex-col">
+        {senderText.map(
+          (item: any, index: number) =>
+            item.sender !== "Admin" && (
+              <div
+                key={index}
+                className={`${styles.chatBubble} ${styles.sender}`}
+              >
+                <p>{item.content}</p>
+                <span className="flex justify-end">
+                  {timestampConversion(item.timestamp)}
+                </span>
+              </div>
+            )
+        )}
       </div>
-      <div className={`${styles.chatBubble} ${styles.receiver}`}>
-        {recieverText}
+
+      <div className="flex items-start flex-col">
+        {senderText.map(
+          (item: any, index: number) =>
+            item.sender === "Admin" && (
+              <div
+                key={index}
+                className={`${styles.chatBubble} ${styles.receiver}`}
+              >
+                <p>{item.content}</p>
+                <span className="flex justify-end">
+                  {timestampConversion(item.timestamp)}
+                </span>
+              </div>
+            )
+        )}
       </div>
       <form
         onSubmit={(e) => handleSubmission(e)}
@@ -50,7 +81,7 @@ function Chat({
           id=""
           cols={30}
           rows={4}
-          className="p-[1%] text-white w-[85%] placeholder:text-white"
+          className="p-[1%] text-white w-[85%] placeholder:text-[#EAEFF6A1]"
           maxLength={150}
           placeholder="متن مورد نظر خود را تایپ کنید"
           value={textInput}

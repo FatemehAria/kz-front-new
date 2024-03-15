@@ -11,7 +11,9 @@ import {
 import axios from "axios";
 import { IoArrowBack } from "react-icons/io5";
 import Chat from "./components/chat";
+import { Bounce, toast } from "react-toastify";
 const moment = require("moment-jalaali");
+
 function TicketDetail() {
   const [ticketDetail, setTicketDetail] = useState({
     Title: "",
@@ -21,11 +23,14 @@ function TicketDetail() {
     RespondDate: "",
     SenderText: [],
   });
+  const [ticketDetailStatus, setTicketDetailStatus] = useState({
+    error: "",
+    loading: false,
+  });
+  const [textInput, setTextInput] = useState("");
   const { localUserId, localToken } = useSelector(
     (state: any) => state.userData
   );
-  const params = useSearchParams();
-  const id = params.get("id");
   const router = useRouter();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -33,11 +38,13 @@ function TicketDetail() {
     dispatch(getTokenFromLocal());
     dispatch<any>(fetchUserProfile());
   }, []);
-  const [ticketDetailStatus, setTicketDetailStatus] = useState({
-    error: "",
-    loading: false,
-  });
-  const [textInput, setTextInput] = useState("");
+  const [path, setPath] = useState("");
+  const params = useSearchParams();
+  const id = params.get("id");
+  const [File, setFile] = useState<any>(null);
+  const handleFileChange = (file: File) => {
+    setFile(file);
+  };
   const getTicketDetail = async () => {
     try {
       setTicketDetailStatus((last) => ({ ...last, loading: true }));
@@ -52,8 +59,8 @@ function TicketDetail() {
       setTicketDetail({
         Title: data.data.Title,
         RelativeUnit: data.data.RelevantUnit,
-        RespondDate: "",
-        Responsor: "",
+        RespondDate: "-",
+        Responsor: "ادمین",
         SentDate: moment(
           data.data.createdAt,
           "YYYY-MM-DDTHH:mm:ss.SSSZ"
@@ -67,12 +74,58 @@ function TicketDetail() {
       console.log(error);
     }
   };
-  const updateSenderBox = (newText: string) => {
-    const updatedSenderText = [
-      ...ticketDetail.SenderText,
-      { content: newText },
-    ];
-    return updatedSenderText;
+  useEffect(() => {
+    if (localUserId) {
+      getTicketDetail();
+    }
+  }, [localUserId]);
+
+  const handleFileUpload = async () => {
+    const formData = new FormData();
+    formData.append("File", File);
+    // console.log(formData);
+    try {
+      const { data } = await axios.post(
+        `https://keykavoos.liara.run/Client/UploadFileResponseTicket/${localUserId}`,
+        formData,
+        {
+          headers: {
+            authorization: `Bearer ${localToken}`,
+          },
+        }
+      );
+      // console.log(selectedFile);
+      console.log(formData);
+      console.log(data);
+      setPath(data.data);
+      toast.success("آپلود فایل موفق بود.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
+      setFile("");
+    } catch (error) {
+      toast.error("خطا در آپلود فایل، لطفا مجدد آپلود کنید.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
+      console.log(error);
+    }
   };
   const sendResponseTicket = async (textInput: string) => {
     try {
@@ -80,6 +133,7 @@ function TicketDetail() {
         `https://keykavoos.liara.run/Admin/ResponseTicket/${localUserId}/${id}`,
         {
           text: textInput,
+          path,
         },
         {
           headers: {
@@ -97,11 +151,14 @@ function TicketDetail() {
       console.log(error);
     }
   };
-  useEffect(() => {
-    if (localUserId) {
-      getTicketDetail();
-    }
-  }, [localUserId]);
+  const updateSenderBox = (newText: string) => {
+    const updatedSenderText = [
+      ...ticketDetail.SenderText,
+      { content: newText, sender: "Admin" },
+    ];
+    return updatedSenderText;
+  };
+
   return (
     <div>
       <div
@@ -155,6 +212,10 @@ function TicketDetail() {
           textInput={textInput}
           setTextInput={setTextInput}
           sendResponseTicket={sendResponseTicket}
+          handleFileChange={handleFileChange}
+          handleFileUpload={handleFileUpload}
+          File={File}
+          updateSenderText={updateSenderBox}
         />
       </div>
     </div>

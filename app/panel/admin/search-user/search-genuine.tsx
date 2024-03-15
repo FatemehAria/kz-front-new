@@ -34,23 +34,27 @@ function SearchGenuine({ GenuineUsers, value, onChange }: SearchGenuineProps) {
           <p>شماره ثبت</p>
           <p>مشاهده</p>
         </div>
-        {GenuineUsers.filter((item) => item.PhoneNumber.includes(value)).map(
-          (item, index) => (
-            <div
-              key={item._id}
-              className="grid grid-cols-6 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
-              // onClick={() => setStep(2)}
-            >
-              <p>{index + 1}</p>
-              <p>{item.name_of_Organization}</p>
-              <p>{item.National_ID}</p>
-              <p>{item.PhoneNumber}</p>
-              <p>{item.registration_Number}</p>
-              <div className="flex justify-center">
-                <Image src={vieweye} alt="مشاهده" width={20} height={20} />
+        {GenuineUsers.length > 0 ? (
+          GenuineUsers.filter((item) => item.PhoneNumber.includes(value)).map(
+            (item, index) => (
+              <div
+                key={item._id}
+                className="grid grid-cols-6 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
+                // onClick={() => setStep(2)}
+              >
+                <p>{index + 1}</p>
+                <p>{item.name_of_Organization}</p>
+                <p>{item.National_ID}</p>
+                <p>{item.PhoneNumber}</p>
+                <p>{item.registration_Number}</p>
+                <div className="flex justify-center">
+                  <Image src={vieweye} alt="مشاهده" width={20} height={20} />
+                </div>
               </div>
-            </div>
+            )
           )
+        ) : (
+          <p className="text-center font-bold text-red-700">کاربری یافت نشد.</p>
         )}
       </div>
     </div>

@@ -11,7 +11,6 @@ import {
 } from "@/redux/features/user/userSlice";
 import { Bounce, toast } from "react-toastify";
 import { IoArrowBack } from "react-icons/io5";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 function AddNewTicket() {

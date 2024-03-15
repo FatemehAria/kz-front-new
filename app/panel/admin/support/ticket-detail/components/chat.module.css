@@ -10,14 +10,14 @@
     /* clear: both; */
 }
 
-.sender {
+.receiver {
     background-color: #4866CE;
     width: 50%;
     color: white;
     /* float: right; */
 }
 
-.receiver {
+.sender {
     background-color: #EAEFF6;
     /* float: left; */
     width: 50%;
@@ -25,7 +25,7 @@
     text-align: left;
 }
 
-.sender::after {
+.receiver::after {
     content: "";
     position: absolute;
     bottom: 0;
@@ -36,7 +36,7 @@
     border-bottom-color: #4866CE;
 }
 
-.receiver::after {
+.sender::after {
     content: "";
     position: absolute;
     bottom: 0;
