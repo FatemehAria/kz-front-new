@@ -8,7 +8,7 @@ import {
   getIdFromLocal,
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
-import Skeleton from "react-loading-skeleton";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import NavMobile from "./nav-mobile";
 import { useSession } from "next-auth/react";
 
@@ -29,7 +29,7 @@ const Nav = () => {
     userType,
     localUserId,
   } = useSelector((state: any) => state.userData);
-
+  console.log(status);
   useEffect(() => {
     window.addEventListener("scroll", () => {
       window.scrollY > 60
@@ -44,7 +44,6 @@ const Nav = () => {
       dispatch<any>(fetchUserProfile());
     }
   }, []);
-
   return (
     <div
       className={`w-full mx-auto top-0 z-[999] font-YekanBakh transition-all sticky mb-3 lg:${
@@ -76,30 +75,39 @@ const Nav = () => {
         {/* Large Screen */}
         <Link
           href={
-            !localToken && status === "unauthenticated"
-              ? "/authorization"
-              : !localUserId
-              ? "/authorization"
-              : userType === "User" || status === "authenticated"
+            status === "authenticated" && !localToken && !localUserId
+              ? "/social-authorization"
+              : localToken && localUserId && userType === "User"
               ? "/panel"
-              : userType === "Admin"
+              : localToken && localUserId && userType === "Admin"
               ? "/panel/admin/view-users"
-              : "/authorization"
+              : !localUserId && status === "unauthenticated" && !localToken
+              ? "/authorization"
+              : "/"
           }
         >
-          <button className="hidden lg:inline-block font-semibold bg-[#4866CF] text-white rounded-[4px] py-1 px-5 text-base">
-            {!localUserId && "ثبت نام / ورود"}
-            {!localToken && status === "unauthenticated" && localUserId && "ثبت نام / ورود"}
-            {userProfile.FirstName &&
-              userProfile.LastName &&
-              localToken &&
-              localUserId &&
-              `${userProfile.FirstName} ${userProfile.LastName}`}
-            {status === "authenticated" && data.user?.name}
-            {!FirstName && !LastName && localToken && localUserId && (
-              <Skeleton width={100} baseColor="#4866CF" />
-            )}
-          </button>
+          {status === "loading" ? (
+            <SkeletonTheme width={140}>
+              <Skeleton count={1} className="p-2" baseColor="#4866CF" />
+            </SkeletonTheme>
+          ) : (
+            <button className="hidden lg:inline-block font-semibold bg-[#4866CF] text-white rounded-[4px] py-1 px-5 text-base">
+              {!localUserId && status === "unauthenticated" && "ثبت نام / ورود"}
+              {!localToken &&
+                status === "unauthenticated" &&
+                localUserId &&
+                "ثبت نام / ورود"}
+              {userProfile.FirstName &&
+                userProfile.LastName &&
+                localToken &&
+                localUserId &&
+                `${userProfile.FirstName} ${userProfile.LastName}`}
+              {status === "authenticated" && !localUserId && data.user?.name}
+              {!FirstName && !LastName && localToken && localUserId && (
+                <Skeleton width={100} baseColor="#4866CF" />
+              )}
+            </button>
+          )}
         </Link>
         <div className="lg:flex gap-6 hidden">
           <ul className="hidden lg:flex justify-center items-center gap-8 z-10">

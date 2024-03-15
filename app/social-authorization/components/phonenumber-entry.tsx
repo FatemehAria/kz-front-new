@@ -1,28 +1,16 @@
 "use client";
-import React, {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
-import axios from "axios";
-import SubmissionBtn from "../authorization/components/submission-btn";
-import Logo from "../authorization/components/logo";
-import FormSlider from "../authorization/components/form-slider";
-import FormInput from "../contact-us/components/form/form-inputs";
-import { useFormik } from "formik";
-import { LoginSchema } from "@/schemas/userpanel-profile-schema";
-import LoginVia from "./components/login-via";
+import Logo from "@/app/authorization/components/logo";
+import SubmissionBtn from "@/app/authorization/components/submission-btn";
+import FormInput from "@/app/contact-us/components/form/form-inputs";
 import Modal from "@/components/modal";
-import { Bounce, toast } from "react-toastify";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import MathProblemComponent from "./components/math-problem-component";
+import { LoginSchema } from "@/schemas/userpanel-profile-schema";
 import { login2 } from "@/utils/utils";
+import axios from "axios";
+import { useFormik } from "formik";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useDispatch, useSelector } from "react-redux";
-import { closeModal } from "@/redux/features/user/userSlice";
-import { useRouter } from "next/navigation";
-
+import { Bounce, toast } from "react-toastify";
 type LoginProps = {
   setSteps: Dispatch<SetStateAction<number>>;
 };
@@ -30,23 +18,9 @@ type LoginProps = {
 const initialValues = {
   PhoneNumber: "",
 };
-
-const Login = ({ setSteps }: LoginProps) => {
-  const router = useRouter();
+function PhonenumberEntry({ setSteps }: LoginProps) {
   const { showModal } = useSelector((state: any) => state.userData);
-  const dispatch = useDispatch();
   const { executeRecaptcha } = useGoogleReCaptcha();
-  const [answer, setAnswer] = useState("");
-  const [mathProblem, setMathProblem] = useState("");
-  const [wrongAnswerMessage, setWrongAnswerMessage] = useState("");
-  const [firstNumber, setFirstNumber] = useState(
-    Math.floor(Math.random() * 10) + 1
-  );
-  const [secondNumber, setSecondNumber] = useState(
-    Math.floor(Math.random() * 10) + 1
-  );
-  let correctAnswer = firstNumber + secondNumber;
-
   const login = async (PhoneNumber: string) => {
     try {
       const { data } = await axios.post(
@@ -85,9 +59,7 @@ const Login = ({ setSteps }: LoginProps) => {
   };
 
   const handleSubmission = async () => {
-    if (parseInt(answer) === correctAnswer) {
-      await login(formik.values.PhoneNumber);
-    }
+    await login(formik.values.PhoneNumber);
     if (!executeRecaptcha) {
       console.log("Recaptcha not available");
       return;
@@ -106,12 +78,6 @@ const Login = ({ setSteps }: LoginProps) => {
         "Content-Type": "application/json",
       },
     });
-
-    // if (response?.data?.success === true) {
-    //   console.log(`Success with score: ${response?.data?.score}`);
-    // } else {
-    //   console.log(`Failure with score: ${response?.data?.score}`);
-    // }
   };
 
   const formik = useFormik({
@@ -120,21 +86,6 @@ const Login = ({ setSteps }: LoginProps) => {
     validationSchema: LoginSchema,
     validateOnMount: true,
   });
-
-  useEffect(() => {
-    setMathProblem(`${firstNumber} + ${secondNumber}`);
-
-    if (answer === "") {
-      setWrongAnswerMessage("");
-    } else if (
-      parseInt(answer) !== correctAnswer &&
-      formik.values.PhoneNumber
-    ) {
-      setWrongAnswerMessage("پاسخ صحیح نیست.");
-    } else if (parseInt(answer) === correctAnswer) {
-      setWrongAnswerMessage("");
-    }
-  }, [answer, formik.values.PhoneNumber]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -173,13 +124,8 @@ const Login = ({ setSteps }: LoginProps) => {
               onSubmit={formik.handleSubmit}
             >
               <label htmlFor="PhoneNumber">
-                <p className="font-bold text-[24px] pt-[3%] pb-1">
-                  به خانواده ما خوش آمدید
-                </p>
-                <p className="lg:w-[90%] text-[16px] leading-6">
-                  دوست عزیز سلام ! <br />
-                  از این که شما را در جمع خود می بینیم بسیار خوشحالیم.
-                  <br /> لطفا شماره تماس خود را وارد کنید.
+                <p className="lg:w-[90%] text-[16px] leading-6 py-2">
+                  لطفا شماره موبایل خود را وارد کنید.
                 </p>
               </label>
 
@@ -199,45 +145,17 @@ const Login = ({ setSteps }: LoginProps) => {
                   )}
                 </div>
               </div>
-              <div className="grid grid-cols-2 md:gap-[8%] gap-[5%]">
-                <FormInput
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    setAnswer(e.target.value)
-                  }
-                  value={answer}
-                  label="جواب سوال"
-                  name="answer"
-                />
-                <MathProblemComponent
-                  mathProblem={mathProblem}
-                  wrongAnswerMessage={wrongAnswerMessage}
-                />
-              </div>
               <SubmissionBtn
                 text="ورود"
-                validation={
-                  formik.isValid && parseInt(answer) === correctAnswer
-                }
+                validation={formik.isValid}
                 type={showModal ? "button" : "submit"}
               />
             </form>
-            <LoginVia />
-            <div className="text-[16px] flex flex-row gap-1 justify-center items-center">
-              <p>حساب کاربری ندارید؟</p>
-              <span>
-                <span
-                  onClick={() => dispatch(closeModal(true))}
-                  className="text-[#4866CF] cursor-pointer"
-                >
-                  ثبت نام
-                </span>{" "}
-                کنید.
-              </span>
-            </div>
           </div>
         </div>
       </div>
     </React.Fragment>
   );
-};
-export default Login;
+}
+
+export default PhonenumberEntry;

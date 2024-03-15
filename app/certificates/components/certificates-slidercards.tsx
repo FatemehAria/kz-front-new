@@ -1,10 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import Image from "next/image";
 
 const ImageLinks = [
   {
@@ -66,7 +65,6 @@ const CertificatesSliderCards = ({
           slidesPerView={1}
           centeredSlides={true}
           preventInteractionOnTransition={true}
-          allowTouchMove={false}
           onSlideChange={(swiper) => setCurrentSlideIndex(swiper.activeIndex)}
         >
           {ImageLinks.map((link) => (
