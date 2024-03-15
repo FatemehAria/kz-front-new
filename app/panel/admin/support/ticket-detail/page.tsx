@@ -83,7 +83,6 @@ function TicketDetail() {
   const handleFileUpload = async () => {
     const formData = new FormData();
     formData.append("File", File);
-    // console.log(formData);
     try {
       const { data } = await axios.post(
         `https://keykavoos.liara.run/Client/UploadFileResponseTicket/${localUserId}`,
@@ -94,9 +93,6 @@ function TicketDetail() {
           },
         }
       );
-      // console.log(selectedFile);
-      console.log(formData);
-      console.log(data);
       setPath(data.data);
       toast.success("آپلود فایل موفق بود.", {
         position: "top-right",
@@ -146,15 +142,39 @@ function TicketDetail() {
         ...prevTicketDetail,
         SenderText: updatedSenderText,
       }));
+      toast.success("تیکت با موفقیت آپدیت شد.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
       console.log(data);
     } catch (error) {
+      toast.error("خطا در آپدیت تیکت.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
       console.log(error);
     }
   };
   const updateSenderBox = (newText: string) => {
     const updatedSenderText = [
       ...ticketDetail.SenderText,
-      { content: newText, sender: "Admin" },
+      { content: newText, sender: "Admin", timestamp: new Date().getTime() },
     ];
     return updatedSenderText;
   };

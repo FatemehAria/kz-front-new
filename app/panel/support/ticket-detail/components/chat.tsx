@@ -7,7 +7,6 @@ type ChatProps = {
   recieverText: any;
   textInput: string;
   setTextInput: React.Dispatch<React.SetStateAction<string>>;
-  updateSenderText: (newMessage: string) => void;
   File: any;
   handleFileChange: any;
   handleFileUpload: any;
@@ -18,20 +17,25 @@ function Chat({
   senderText,
   textInput,
   setTextInput,
-  updateSenderText,
   File,
   handleFileChange,
   handleFileUpload,
   sendResponseTicket,
 }: ChatProps) {
+  const userMessages = senderText.filter(
+    (item: any) => item.sender !== "Admin"
+  );
+  const adminMessages = senderText.filter(
+    (item: any) => item.sender === "Admin"
+  );
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Promise.all([
-    //   await handleFileUpload(),
-    //   await sendResponseTicket(textInput),
-    // ]);
-    // console.log(textInput);
-    await sendResponseTicket(textInput)
+    Promise.all([
+      await handleFileUpload(),
+      await sendResponseTicket(textInput),
+    ]);
+    // await handleFileUpload();
+    // await sendResponseTicket(textInput);
   };
   const timestampConversion = (timestamp: number | Date | undefined) => {
     return new Intl.DateTimeFormat("fa-IR", {
@@ -40,39 +44,27 @@ function Chat({
       day: "2-digit",
     }).format(timestamp);
   };
-
+  const combinedMessages = [...userMessages, ...adminMessages];
+  const sortedMessages = combinedMessages.sort(
+    (a, b) => a.timestamp - b.timestamp
+  );
   return (
     <div className="flex flex-col">
       <div>
-        {senderText.map(
-          (item: any, index: number) =>
-            item.sender !== "Admin" && (
-              <div
-                key={index}
-                className={`${styles.chatBubble} ${styles.sender}`}
-              >
-                <p>{item.content}</p>
-                <span className="flex justify-end">
-                  {timestampConversion(item.timestamp)}
-                </span>
-              </div>
-            )
-        )}
-      </div>
-      <div className="flex items-end flex-col">
-        {senderText.map(
-          (item: any, index: number) =>
-            item.sender === "Admin" && (
-              <div
-                key={index}
-                className={`${styles.chatBubble} ${styles.receiver}`}
-              >
-                <p>{item.content}</p>
-                <span className="flex justify-end">
-                  {timestampConversion(item.timestamp)}
-                </span>
-              </div>
-            )
+        {sortedMessages.map(
+          (item: any, index: number) => (
+            <div
+              key={index}
+              className={`${styles.chatBubble} ${
+                item.sender !== "Admin" ? styles.sender : styles.receiver
+              }`}
+            >
+              <p>{item.content}</p>
+              <span className={`flex ${item.sender === "Admin" ? "justify-start" : "justify-end"} `}>
+                {timestampConversion(item.timestamp)}
+              </span>
+            </div>
+          )
         )}
       </div>
       <form

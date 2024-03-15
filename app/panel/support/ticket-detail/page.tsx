@@ -74,7 +74,6 @@ function TicketDetail() {
       console.log(data);
     } catch (error) {
       setTicketDetailStatus({ error: "", loading: false });
-      // console.log(error);
     }
   };
   useEffect(() => {
@@ -106,15 +105,38 @@ function TicketDetail() {
         ...prevTicketDetail,
         SenderText: updatedSenderText,
       }));
+      toast.success("تیکت با موفقیت آپدیت شد.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
       console.log(data);
     } catch (error) {
+      toast.error("خطا در آپدیت تیکت.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
       console.log(error);
     }
   };
   const handleFileUpload = async () => {
     const formData = new FormData();
     formData.append("File", File);
-    // console.log(formData);
     try {
       const { data } = await axios.post(
         `https://keykavoos.liara.run/Client/UploadFileResponseTicket/${localUserId}`,
@@ -125,10 +147,7 @@ function TicketDetail() {
           },
         }
       );
-      // console.log(selectedFile);
       setPath(data.data);
-      console.log(formData);
-      console.log(data);
       toast.success("آپلود فایل موفق بود.", {
         position: "top-right",
         autoClose: 3000,
@@ -142,6 +161,7 @@ function TicketDetail() {
         rtl: true,
       });
       setFile("");
+      console.log("upload file response ticket", data);
     } catch (error) {
       toast.error("خطا در آپلود فایل، لطفا مجدد آپلود کنید.", {
         position: "top-right",
@@ -158,10 +178,11 @@ function TicketDetail() {
       console.log(error);
     }
   };
+
   const updateSenderBox = (newText: string) => {
     const updatedSenderText = [
       ...ticketDetail.SenderText,
-      { content: newText, sender: "user" },
+      { content: newText, sender: "user", timestamp: new Date().getTime() },
     ];
     return updatedSenderText;
   };
@@ -223,7 +244,6 @@ function TicketDetail() {
             recieverText={"this is the reciever text"}
             textInput={textInput}
             setTextInput={setTextInput}
-            updateSenderText={updateSenderBox}
             File={File}
             handleFileChange={handleFileChange}
             handleFileUpload={handleFileUpload}

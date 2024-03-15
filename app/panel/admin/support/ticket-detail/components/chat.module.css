@@ -7,22 +7,22 @@
     top: -3rem;
     /* display: flex; */
     /* justify-content: space-between; */
-    /* clear: both; */
+    clear: both;
 }
 
 .receiver {
     background-color: #4866CE;
     width: 50%;
     color: white;
-    /* float: right; */
+    float: right;
 }
 
 .sender {
     background-color: #EAEFF6;
-    /* float: left; */
+    float: left;
     width: 50%;
     align-self: flex-end;
-    text-align: left;
+    text-align: right;
 }
 
 .receiver::after {
