@@ -1,16 +1,13 @@
-"use client";
 import Footer from "@/components/home-components/footer";
 import Nav from "@/components/home-components/nav";
-import React, { useState } from "react";
+import React from "react";
 import Informatik from "./components/informatik";
 import FinanceCert from "./components/finance-cert";
 import FianaceAuthorizationCert from "./components/finance-authorization-cert";
 import SenfiCert from "./components/senfi-cert";
-import CertificatesSlider from "./components/certificates-slider";
 import styles from "./certificates.module.css";
-import CertificatesImageslider from "./components/certificate-imageslider";
+import CertificatesSlider from "./components/certificate-slider";
 const Certificates = () => {
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   return (
     <div>
       <Nav />
@@ -52,14 +49,7 @@ const Certificates = () => {
           />
         </div>
         <div className={`${styles.container}`}>
-          <CertificatesImageslider
-            currentSlideIndex={currentSlideIndex}
-            setCurrentSlideIndex={setCurrentSlideIndex}
-          />
-          <CertificatesSlider
-            currentSlideIndex={currentSlideIndex}
-            setCurrentSlideIndex={setCurrentSlideIndex}
-          />
+          <CertificatesSlider />
         </div>
       </div>
       <Footer />

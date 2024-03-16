@@ -29,7 +29,8 @@ const Nav = () => {
     userType,
     localUserId,
   } = useSelector((state: any) => state.userData);
-  console.log(status);
+  console.log("next-auth status", status);
+  console.log("next-auth data", data);
   useEffect(() => {
     window.addEventListener("scroll", () => {
       window.scrollY > 60

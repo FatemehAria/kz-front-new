@@ -20,12 +20,12 @@ function LoginVia() {
           onClick={() => signIn("github")}
           className="cursor-pointer"
         />
-        {/* <Image
+        <Image
           src={google}
           alt="google"
           onClick={() => signIn("google")}
           className="cursor-pointer"
-        /> */}
+        />
         {/* <Image src={microsoft} alt="microsoft" /> */}
       </div>
     </div>

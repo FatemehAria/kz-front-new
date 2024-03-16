@@ -15,7 +15,7 @@ export const authOptions = {
           prompt: "consent",
           access_type: "offline",
           response_type: "code",
-          redirect_uri: "http://localhost:3000/api/auth/callback/google",
+          redirect_uri: "https://www.keykavoos.co/",
         },
       },
     }),

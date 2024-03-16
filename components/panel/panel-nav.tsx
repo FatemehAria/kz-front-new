@@ -79,12 +79,10 @@ const PanelNav = ({
                 </SkeletonTheme>
               ) : userProfile.avatar?.path ? (
                 <div className="bg-[#EAEFF6] p-2 rounded-full">
-                  <Image
+                  <img
                     alt="profile"
                     src={userProfile.avatar?.path}
-                    width={45}
-                    height={45}
-                    className="rounded-full"
+                    className="rounded-full w-[45px] h-[45px]"
                   />
                 </div>
               ) : (
@@ -94,7 +92,7 @@ const PanelNav = ({
                 className="rounded-full bg-[#EAEFF6] flex justify-center items-center p-3 cursor-pointer"
                 onClick={handleExit}
               >
-                <Image src={exit} alt="exit" width={35}/>
+                <Image src={exit} alt="exit" width={35} />
               </div>
             </div>
           </div>
