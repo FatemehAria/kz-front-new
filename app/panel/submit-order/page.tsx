@@ -83,12 +83,9 @@ function SubmitOrder() {
   const handleFileUpload = async () => {
     const formData = new FormData();
     formData.append("File", File);
-    // console.log(formData);
-    console.log("Uploading File Name:", File.name);
-    console.log("Uploading File Type:", File.type);
     try {
       const { data } = await axios.post(
-        `https://keykavoos.liara.run/Client/UploadFileTicket/${localUserId}`,
+        `https://keykavoos.liara.run/Client/UploadFileSubmit/${localUserId}`,
         formData,
         {
           headers: {
@@ -96,9 +93,6 @@ function SubmitOrder() {
           },
         }
       );
-      // console.log(selectedFile);
-      console.log(formData);
-      console.log(data);
       toast.success("آپلود فایل موفق بود.", {
         position: "top-right",
         autoClose: 3000,
@@ -129,16 +123,19 @@ function SubmitOrder() {
   };
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await SubmitProject(
-      projectFields.title,
-      projectFields.type,
-      projectFields.plan,
-      projectFields.budget,
-      JSON.stringify(similarSiteData),
-      projectFields.Description,
-      JSON.stringify(templatesData),
-      JSON.stringify(colorsData)
-    );
+    Promise.all([
+      await SubmitProject(
+        projectFields.title,
+        projectFields.type,
+        projectFields.plan,
+        projectFields.budget,
+        JSON.stringify(similarSiteData),
+        projectFields.Description,
+        JSON.stringify(templatesData),
+        JSON.stringify(colorsData)
+      ),
+      await handleFileUpload(),
+    ]);
   };
   return (
     <form
@@ -208,6 +205,7 @@ function SubmitOrder() {
             setProjectFields((last) => ({ ...last, budget: e.target.value }))
           }
           value={projectFields.budget}
+          // .replace(/(\d{3}(?!,))/g, "$1,")
           name="budget"
         />
       </div>

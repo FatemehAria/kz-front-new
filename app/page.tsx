@@ -6,12 +6,10 @@ import News from "@/components/home-components/news";
 import Order from "@/components/home-components/order";
 import Plans from "@/components/home-components/plans";
 import Reason from "@/components/home-components/reason";
-import ShowNavachat from "@/navachat/ShowNavachat";
 import Script from "next/script";
 
 export default function Home() {
   return (
-    // className=" bg-blue-100"
     <div className="bg-[#EAEFF6]">
       <Script src="/navachat.js" async />
       <Nav />

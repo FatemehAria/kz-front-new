@@ -1,7 +1,7 @@
 import React from "react";
 type PanelFieldsProps = {
   label: string;
-  value: string;
+  value: string | undefined;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   disable?: boolean;
   name?: string;
