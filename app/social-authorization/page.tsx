@@ -12,9 +12,8 @@ import {
 
 function Page() {
   const [steps, setSteps] = useState(1);
-  const { localUserId } = useSelector(
-    (state: any) => state.userData
-  );
+  const [googleName, setGoogleName] = useState<string | null>("");
+  const { localUserId } = useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
   const { status } = useSession();
   const renderSteps = () => {
@@ -32,11 +31,15 @@ function Page() {
       dispatch(getTokenFromLocal());
       dispatch(getIdFromLocal());
       dispatch<any>(fetchUserProfile());
+      const name = sessionStorage.getItem("name");
+      setGoogleName(name);
     }
   }, []);
   return (
     <div className="w-[30%] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-      {status === "authenticated" && !localUserId && renderSteps()}
+      {(status === "authenticated" || googleName) &&
+        !localUserId &&
+        renderSteps()}
     </div>
   );
 }

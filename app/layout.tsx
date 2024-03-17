@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 import { GoogleAnalytics } from "@next/third-parties/google";
 import ShowNavachat from "@/navachat/ShowNavachat";
 import NextAuthProviderWrapper from "@/next-auth-provider/NextAuthProviderWrapper";
+import GoogleOAuthWrapper from "@/oauth-provider/GoogleOAuthWarpper";
 export default function RootLayout({
   children,
 }: {
@@ -22,17 +23,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="4xl:w-[60%] 4xxl:w-[55%] 4xxxl:max-5xl:w-[55%] 5xl:w-[50%] 6xl:w-[50%] 3xl:w-[70%] mx-auto 7xl:w-[45%] 8xl:w-[25%] font-YekanBakh">
-        <NextAuthProviderWrapper>
-          <ToastProvider>
-            <Providers>
-              <ShowNavachat />
-              <div>{children}</div>
-              {/* <WebVitals /> */}
-              <Metrics />
-              <GoogleAnalytics gaId={`${process.env.GOOGLE_ANALYTICS}`} />
-            </Providers>
-          </ToastProvider>
-        </NextAuthProviderWrapper>
+        <GoogleOAuthWrapper>
+          <NextAuthProviderWrapper>
+            <ToastProvider>
+              <Providers>
+                <ShowNavachat />
+                <div>{children}</div>
+                {/* <WebVitals /> */}
+                <Metrics />
+                <GoogleAnalytics gaId={`${process.env.GOOGLE_ANALYTICS}`} />
+              </Providers>
+            </ToastProvider>
+          </NextAuthProviderWrapper>
+        </GoogleOAuthWrapper>
       </body>
     </html>
   );
