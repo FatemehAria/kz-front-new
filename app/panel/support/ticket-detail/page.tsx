@@ -229,15 +229,17 @@ function TicketDetail() {
             ticketDetailStatus={ticketDetailStatus.loading}
           />
         </div>
-        <div
-          style={{
-            border: "none",
-            borderTop: "3px solid",
-            borderImage:
-              "linear-gradient(to right, #FFFFFF 0%, #4866CE 45% ,#4866CE 55% , #FFFFFF 100%) 1",
-            margin: "5% 0",
-          }}
-        ></div>
+        {ticketDetail.Blocked === "false" && (
+          <div
+            style={{
+              border: "none",
+              borderTop: "3px solid",
+              borderImage:
+                "linear-gradient(to right, #FFFFFF 0%, #4866CE 45% ,#4866CE 55% , #FFFFFF 100%) 1",
+              margin: "5% 0",
+            }}
+          ></div>
+        )}
         {ticketDetail.Blocked === "false" && (
           <Chat
             senderText={ticketDetail.SenderText}
