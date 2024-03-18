@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 const Auth = () => {
   const [steps, setSteps] = useState(1);
-  const { localToken, userId } = useSelector((state: any) => state.userData);
+  const { localToken, localUserId } = useSelector((state: any) => state.userData);
   const renderSteps = () => {
     switch (steps) {
       case 1:
@@ -32,7 +32,7 @@ const Auth = () => {
   console.log(status);
   return (
     <div>
-      {(!localToken || !userId) && <div dir="rtl">{renderSteps()}</div>}
+      {(!localToken || !localUserId) && <div dir="rtl">{renderSteps()}</div>}
     </div>
   );
 };
