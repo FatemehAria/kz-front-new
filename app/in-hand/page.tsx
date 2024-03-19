@@ -11,17 +11,31 @@ const InHand = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [heightReached, setHeightReached] = useState(false);
   const [timeLeft, setTimeLeft] = useState(30);
-  const {
-    totalSeconds,
-    seconds,
-    minutes,
-    hours,
-    days,
-    isRunning,
-    start,
-    pause,
-    reset,
-  } = useStopwatch({ autoStart: true });
+  const [time, setTime] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const targetDate = new Date("2024-03-27").getTime(); // Set your target date here
+      const distance = targetDate - now;
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      setTime({ days, hours, minutes, seconds });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
   const stopAnimation = () => {
     setIsAnimating(false);
   };
@@ -30,13 +44,13 @@ const InHand = () => {
     setTimeout(() => {
       setIsAnimating(true);
     }, 1000); // Start animation after 1 second delay
-  }, []); // Run only on component mount
+  }, []);
 
   useEffect(() => {
     setIsAnimating(true);
     setHeightReached(false);
     setTimeLeft(30);
-  }, []); // Run only on component mount
+  }, []);
 
   const hookSpring = useSpring({
     from: { y: 0 },
@@ -101,13 +115,13 @@ const InHand = () => {
           >
             <div className="relative">
               <Image src={board} alt="board" />
-              <span className="font-bold absolute top-[8rem] left-8 text-[20px]">
+              <span className="font-bold absolute top-[8rem] left-12 text-[18px]">
                 به زودی حاضر میشه
               </span>
               <div className="absolute top-[10rem] left-1/2 -translate-x-1/2">
-                <div className="text-[25px] font-bold flex">
+                <div className="text-[18px] font-bold flex">
                   <span className="px-1 rounded-sm text-yellow-600 flex gap-1">
-                    {String(days)
+                    {String(time.days)
                       .split("")
                       .map((digit, index) => (
                         <span
@@ -120,7 +134,7 @@ const InHand = () => {
                   </span>
                   :
                   <span className="px-1 rounded-sm text-yellow-600 flex gap-1">
-                    {String(hours)
+                    {String(time.hours)
                       .split("")
                       .map((digit, index) => (
                         <span
@@ -133,7 +147,7 @@ const InHand = () => {
                   </span>
                   :
                   <span className="px-1 rounded-sm text-yellow-600 flex gap-1">
-                    {String(minutes)
+                    {String(time.minutes)
                       .split("")
                       .map((digit, index) => (
                         <span
@@ -146,7 +160,7 @@ const InHand = () => {
                   </span>
                   :
                   <span className="px-1 rounded-sm text-yellow-600 flex gap-1">
-                    {String(seconds)
+                    {String(time.seconds)
                       .split("")
                       .map((digit, index) => (
                         <span
