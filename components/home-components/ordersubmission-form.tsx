@@ -5,25 +5,30 @@ import Image from "next/image";
 import uploadfile from "../../public/Panel/uploadfile.svg";
 import { Bounce, toast } from "react-toastify";
 import axios from "axios";
+import { useFormik } from "formik";
+import { HomeFormSubmissionSchema } from "@/schemas/userpanel-profile-schema";
 type OrdersubmissionFormProps = {
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
 };
+const initialValues = {
+  FullName: "",
+  PhoneNumber: "",
+  email: "",
+  Description: "",
+};
 function OrdersubmissionForm({ setCurrentStep }: OrdersubmissionFormProps) {
-  const [formFileds, setFormFields] = useState({
-    FullName: "",
-    PhoneNumber: "",
-    email: "",
-    Description: "",
-    _id: "",
-  });
+  const [fileId, setFileId] = useState("");
+
   const [File, setFile] = useState<any>(null);
-  const handleChange = (file: File) => {
+  const [fileSelected, setFileSelected] = useState(false);
+  const handleChangingFile = (file: File) => {
     setFile(file);
+    setFileSelected(true);
   };
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      handleChange(file);
+      handleChangingFile(file);
     }
   };
   const handleFileUpload = async () => {
@@ -34,7 +39,7 @@ function OrdersubmissionForm({ setCurrentStep }: OrdersubmissionFormProps) {
         `https://keykavoos.liara.run/Client/UploadFile_req`,
         formData
       );
-      setFormFields((last) => ({ ...last, _id: data.data }));
+      setFileId(data.data);
       toast.success("آپلود فایل موفق بود.", {
         position: "top-right",
         autoClose: 3000,
@@ -107,22 +112,35 @@ function OrdersubmissionForm({ setCurrentStep }: OrdersubmissionFormProps) {
       });
     }
   };
-  const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmission = async () => {
     Promise.all([
       await handleFileUpload(),
       await handleFormReq(
-        formFileds.FullName,
-        formFileds.PhoneNumber,
-        formFileds.email,
-        formFileds.Description,
-        formFileds._id
+        values.FullName,
+        values.PhoneNumber,
+        values.email,
+        values.Description,
+        fileId
       ),
     ]);
   };
+  const {
+    handleSubmit,
+    values,
+    handleChange,
+    errors,
+    touched,
+    handleBlur,
+    isValid,
+  } = useFormik({
+    initialValues,
+    onSubmit: handleSubmission,
+    validationSchema: HomeFormSubmissionSchema,
+    validateOnMount: true,
+  });
   return (
     <form
-      onSubmit={(e) => handleSubmission(e)}
+      onSubmit={handleSubmit}
       className="bg-[#F8FAFC] rounded-2xl grid grid-cols-1 gap-3 px-[5%] py-[2%] w-full"
     >
       <label className="text-[#4866CF] flex justify-center sm:text-[36px] text-[30px]">
@@ -131,35 +149,41 @@ function OrdersubmissionForm({ setCurrentStep }: OrdersubmissionFormProps) {
       <div className="flex flex-row-reverse gap-3 flex-wrap md:flex-nowrap">
         <OrdersubmissionInput
           placeholder="نام و نام خانوادگی"
-          value={formFileds.FullName}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setFormFields((last) => ({ ...last, FullName: e.target.value }))
-          }
+          value={values.FullName}
+          onChange={handleChange}
+          name="FullName"
+          error={errors.FullName && touched.FullName}
+          onBlur={handleBlur}
         />
         <OrdersubmissionInput
           placeholder="پست الکترونیکی"
-          value={formFileds.email}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setFormFields((last) => ({ ...last, email: e.target.value }))
-          }
+          value={values.email}
+          onChange={handleChange}
+          name="email"
+          error={errors.email && touched.email}
+          onBlur={handleBlur}
         />
         <OrdersubmissionInput
           placeholder="شماره تماس"
-          value={formFileds.PhoneNumber}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setFormFields((last) => ({ ...last, PhoneNumber: e.target.value }))
-          }
+          value={values.PhoneNumber}
+          onChange={handleChange}
+          name="PhoneNumber"
+          error={errors.PhoneNumber && touched.PhoneNumber}
+          onBlur={handleBlur}
         />
       </div>
       <div className="flex flex-row-reverse justify-between gap-3 flex-wrap sm:flex-nowrap">
         <textarea
-          className="outline-none bg-white border-[#D0DBEC] border-2 rounded-[8px] h-[100px] w-full sm:w-[50%] p-3"
+          className={`${
+            errors.Description && touched.Description
+              ? "border-indigo-400"
+              : " border-[#D0DBEC]"
+          } outline-none bg-white border-2 rounded-[8px] h-[100px] w-full sm:w-[50%] p-3`}
           placeholder="توضیحات تکمیلی"
           dir="rtl"
-          value={formFileds.Description}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-            setFormFields((last) => ({ ...last, Description: e.target.value }))
-          }
+          value={values.Description}
+          onChange={handleChange}
+          name="Description"
         ></textarea>
         <div className="flex flex-col bg-white border-[#D0DBEC] border-2 rounded-[8px] items-center justify-center sm:w-[50%] w-full">
           <div className="flex flex-col items-center gap-[5%] whitespace-nowrap">
@@ -177,10 +201,17 @@ function OrdersubmissionForm({ setCurrentStep }: OrdersubmissionFormProps) {
             >
               {File ? File.name : <Image src={uploadfile} alt="انتخاب فایل" />}
             </label>
+            <span dir="rtl" className="text-[#4f647e] text-[0.5rem]">
+              فرمت های مورد قبول: zip, rar
+            </span>
           </div>
         </div>
       </div>
-      <button className="bg-[#4866CF] text-white w-[100px] py-2 rounded-lg">
+      <button
+        className="bg-[#4866CF] text-white w-[100px] py-2 rounded-lg"
+        type="submit"
+        disabled={isValid === false || fileSelected === false ? true : false}
+      >
         ثبت درخواست
       </button>
     </form>

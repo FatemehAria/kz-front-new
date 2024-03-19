@@ -13,7 +13,7 @@ type ModalProps = {
   text: string;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   setAllTickets: any;
-  closeTicketId: string;
+  closeTicketId: string | null;
 };
 function CloseTicketModal({
   showModal,

@@ -19,11 +19,6 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
     dispatch<any>(fetchUserProfile());
   }, []);
 
-  useEffect(() => {
-    if (userType !== "Admin") {
-      router.replace("/panel");
-    }
-  }, []);
   return <div dir="rtl">{userType === "Admin" && children}</div>;
 };
 export default AdminLayout;

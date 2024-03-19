@@ -15,6 +15,7 @@ import { Bounce, toast } from "react-toastify";
 
 function ProjectDetail() {
   const [showRejectionReason, setShowRejectionReason] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [File, setFile] = useState<any>(null);
   const params = useSearchParams();
   const id = params.get("id");
@@ -161,6 +162,46 @@ function ProjectDetail() {
       // console.log(error);
     }
   };
+  const RejectProject = async () => {
+    try {
+      const { data } = await axios.post(
+        `https://keykavoos.liara.run/Admin/NotconfirmationProject/${localUserId}/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localToken}`,
+          },
+        }
+      );
+      toast.success("پروژه با موفقیت رد شد.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
+      console.log(data);
+    } catch (error) {
+      toast.error("خطا در رد پروژه.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
+      // console.log(error);
+    }
+  };
   return (
     <div>
       <div className="w-[210px] z-10">
@@ -253,10 +294,15 @@ function ProjectDetail() {
           <div className="grid grid-cols-3">
             <FileUpload File={File} handleChange={handleFileChange} />
             <div className="bg-[#4866CE] text-white rounded-lg p-1 flex justify-start items-center gap-2">
-              <label className="">
+              <label className="whitespace-nowrap">
                 {showRejectionReason ? "شماره درخواست:" : "مبلغ نهایی:"}
               </label>
-              <input className="font-faNum bg-[#4866CE] text-white outline-none" />
+              {showRejectionReason && (
+                <div className="font-faNum bg-[#4866CE] text-white">
+                  {projectDetail.Serial}
+                </div>
+              )}
+              {!showRejectionReason && <input className="font-faNum bg-[#4866CE] text-white outline-none" />}
             </div>
             <div className="w-full flex justify-end items-center gap-3">
               <button
@@ -280,7 +326,10 @@ function ProjectDetail() {
                 rows={4}
                 placeholder="علت رد پروژه"
               ></textarea>
-              <button className="bg-[#4866CE] text-white absolute left-2 bottom-5 rounded-[4px] p-2">
+              <button
+                className="bg-[#4866CE] text-white absolute left-2 bottom-5 rounded-[4px] p-2"
+                onClick={() => RejectProject()}
+              >
                 تایید و ارسال به کارفرما
               </button>
             </div>
