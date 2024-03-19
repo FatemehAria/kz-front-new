@@ -21,7 +21,7 @@ const InHand = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date().getTime();
-      const targetDate = new Date("2024-03-27").getTime(); // Set your target date here
+      const targetDate = new Date("2024-03-27").getTime();
       const distance = targetDate - now;
 
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));

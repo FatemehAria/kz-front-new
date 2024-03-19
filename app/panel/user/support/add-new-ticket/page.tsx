@@ -18,6 +18,7 @@ function AddNewTicket() {
     (state: any) => state.userData
   );
   const [File, setFile] = useState<any>(null);
+  const [fileSelected, setFileSelected] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getIdFromLocal());
@@ -27,14 +28,11 @@ function AddNewTicket() {
   const router = useRouter();
   const handleFileChange = (file: File) => {
     setFile(file);
+    setFileSelected(true);
   };
   const handleFileUpload = async () => {
     const formData = new FormData();
     formData.append("File", File);
-    console.log("Uploading File Name:", File.name);
-    console.log("Uploading File Type:", File.type);
-    console.log("Uploading File Type:", typeof File);
-    console.log(formData);
     try {
       const { data } = await axios.post(
         `https://keykavoos.liara.run/Client/UploadFileTicket/${localUserId}`,
@@ -42,7 +40,6 @@ function AddNewTicket() {
         {
           headers: {
             authorization: `Bearer ${localToken}`,
-            // "Content-Type": "application/multipart",
           },
         }
       );
@@ -105,8 +102,31 @@ function AddNewTicket() {
           },
         }
       );
-      console.log(data);
+      toast.success("تیکت با موفقیت ارسال شد.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
     } catch (error) {
+      toast.error("خطا در ارسال تیکت.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
       console.log(error);
     }
   };
@@ -189,7 +209,12 @@ function AddNewTicket() {
           <FileUpload handleChange={handleFileChange} File={File} />
         </div>
         <div className="flex justify-end">
-          <button className="bg-[#4866CE] text-white p-2 rounded-[4px]">
+          <button
+            className={`${
+              fileSelected ? "bg-[#4866CE]" : "bg-indigo-200"
+            } text-white p-2 rounded-[4px]`}
+            disabled={fileSelected === true ? false : true}
+          >
             ارسال تیکت
           </button>
         </div>

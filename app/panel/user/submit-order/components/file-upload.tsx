@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React, { ChangeEvent } from "react";
-import uploadFile from "../../../../public/Panel/uploadfile.svg";
+import uploadFile from "../../../../../public/Panel/uploadfile.svg";
+// import uploadFile from "../../../../public/Panel/uploadfile.svg";
 type FileUploadProps = {
   handleChange: any;
   File: any;

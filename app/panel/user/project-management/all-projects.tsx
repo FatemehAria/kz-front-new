@@ -67,7 +67,7 @@ function AllProjects() {
           <Link
             key={item._id}
             className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
-            href={`/panel/project-management/project-detail?id=${item._id}`}
+            href={`/panel/user/project-management/project-detail?id=${item._id}`}
           >
             <p>{index + 1}</p>
             <p>{item.title}</p>

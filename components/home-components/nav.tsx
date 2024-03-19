@@ -79,7 +79,7 @@ const Nav = () => {
             status === "authenticated" && !localToken && !localUserId
               ? "/social-authorization"
               : localToken && localUserId && userType === "User"
-              ? "/panel"
+              ? "/panel/user/dashboard"
               : localToken && localUserId && userType === "Admin"
               ? "/panel/admin/view-users"
               : !localUserId && status === "unauthenticated" && !localToken

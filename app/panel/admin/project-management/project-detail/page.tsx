@@ -1,5 +1,5 @@
 "use client";
-import FileUpload from "@/app/panel/submit-order/components/file-upload";
+import FileUpload from "@/app/panel/user/submit-order/components/file-upload";
 import {
   fetchUserProfile,
   getIdFromLocal,

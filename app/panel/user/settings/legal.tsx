@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import PanelFields from "../components/panel-fileds";
+import PanelFields from "../../components/panel-fileds";
 import axios from "axios";
 import { verifyIranianNationalId } from "@persian-tools/persian-tools";
 import { useFormik } from "formik";

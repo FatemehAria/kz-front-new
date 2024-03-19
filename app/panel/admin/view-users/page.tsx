@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import PersonalInfoHeader from "../../personal-info/components/personal-info-header";
+import PersonalInfoHeader from "../../user/personal-info/components/personal-info-header";
 import LegalUsers from "./legal-users";
 import GenuineUsers from "./genuine-users";
 import axios from "axios";

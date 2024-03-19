@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import add from "../../../public/Panel/addticket.svg";
+import add from "../../../../public/Panel/addticket.svg";
 import Link from "next/link";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,8 +10,8 @@ import {
   getIdFromLocal,
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
-import checkmark from "../../../public/Panel/checkmark.svg";
-import vieweye from "../../../public/ViewUsers/vieweye.svg";
+import checkmark from "../../../../public/Panel/checkmark.svg";
+import vieweye from "../../../../public/ViewUsers/vieweye.svg";
 import CloseTicketModal from "./components/close-ticket-modal";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 const moment = require("moment-jalaali");
@@ -71,7 +71,7 @@ const Support = () => {
         />
       )}
       <Link
-        href="/panel/support/add-new-ticket"
+        href="/panel/user/support/add-new-ticket"
         className="flex flex-row gap-2 bg-[#4866CE] text-white p-2 rounded-[4px] w-[120px]"
       >
         <span>تیکت جدید</span>
@@ -131,7 +131,9 @@ const Support = () => {
                       </div>
                     </div>
                   )}
-                  <Link href={`/panel/support/ticket-detail?id=${item._id}`}>
+                  <Link
+                    href={`/panel/user/support/ticket-detail?id=${item._id}`}
+                  >
                     <Image src={vieweye} alt="مشاهده" width={20} />
                   </Link>
                 </div>

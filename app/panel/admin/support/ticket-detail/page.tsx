@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import TicketInfoField from "@/app/panel/support/ticket-detail/components/ticket-info-filed";
+import TicketInfoField from "@/app/panel/user/support/ticket-detail/components/ticket-info-filed";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import {

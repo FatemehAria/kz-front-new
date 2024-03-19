@@ -11,7 +11,7 @@ function ChatFileUpload({ handleChange, File }: FileUploadProps) {
     }
   };
   return (
-    <div>
+    <div className="flex flex-col gap-1">
       <div className="text-[#4866CE] bg-[#EAEFF6] p-2 rounded-[4px]">
         <input
           id="fileInput"
@@ -27,6 +27,12 @@ function ChatFileUpload({ handleChange, File }: FileUploadProps) {
           {File ? File.name : "انتخاب فایل"}
         </label>
       </div>
+      <span
+        dir="rtl"
+        className="text-[0.5rem] text-[#EDF0FB] flex justify-center"
+      >
+        فرمت مورد قبول: zip,rar
+      </span>
     </div>
   );
 }

@@ -29,6 +29,7 @@ function TicketDetail() {
     error: "",
     loading: false,
   });
+  const [fileSelected, setFileSelected] = useState(false);
   const [textInput, setTextInput] = useState("");
   const { localToken, localUserId } = useSelector(
     (state: any) => state.userData
@@ -85,6 +86,7 @@ function TicketDetail() {
   const [File, setFile] = useState<any>(null);
   const handleFileChange = (file: File) => {
     setFile(file);
+    setFileSelected(true);
   };
   const sendResponseTicket = async (textInput: string) => {
     try {
@@ -250,6 +252,7 @@ function TicketDetail() {
             handleFileChange={handleFileChange}
             handleFileUpload={handleFileUpload}
             sendResponseTicket={sendResponseTicket}
+            fileSelected={fileSelected}
           />
         )}
       </div>

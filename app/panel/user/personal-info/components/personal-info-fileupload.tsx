@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React, { ChangeEvent } from "react";
-import uploadFile from "../../../../public/Panel/uploadfile.svg";
-import malegender from "../../../../public/Panel/malegender.svg";
+import uploadFile from "../../../../../public/Panel/uploadfile.svg";
+import malegender from "../../../../../public/Panel/malegender.svg";
 type PersonalInfoFileuploadProps = {
   handleChange: any;
   selectedFile: any;
@@ -10,7 +10,6 @@ function PersonalInfoFileupload({
   handleChange,
   selectedFile,
 }: PersonalInfoFileuploadProps) {
-  
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {

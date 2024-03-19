@@ -87,7 +87,7 @@ function Modal({
                     dispatch(handleAutoFocus(true));
                     redirect &&
                       (userType === "User"
-                        ? router.replace("/panel")
+                        ? router.replace("/panel/user/dashboard")
                         : router.replace("/panel/admin/view-users"));
                   }}
                   type="button"

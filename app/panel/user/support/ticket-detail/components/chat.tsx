@@ -11,6 +11,7 @@ type ChatProps = {
   handleFileChange: any;
   handleFileUpload: any;
   sendResponseTicket: any;
+  fileSelected: boolean;
 };
 
 function Chat({
@@ -21,6 +22,7 @@ function Chat({
   handleFileChange,
   handleFileUpload,
   sendResponseTicket,
+  fileSelected,
 }: ChatProps) {
   const userMessages = senderText.filter(
     (item: any) => item.sender !== "Admin"
@@ -51,21 +53,23 @@ function Chat({
   return (
     <div className="flex flex-col">
       <div>
-        {sortedMessages.map(
-          (item: any, index: number) => (
-            <div
-              key={index}
-              className={`${styles.chatBubble} ${
-                item.sender !== "Admin" ? styles.sender : styles.receiver
-              }`}
+        {sortedMessages.map((item: any, index: number) => (
+          <div
+            key={index}
+            className={`${styles.chatBubble} ${
+              item.sender !== "Admin" ? styles.sender : styles.receiver
+            }`}
+          >
+            <p>{item.content}</p>
+            <span
+              className={`flex ${
+                item.sender === "Admin" ? "justify-start" : "justify-end"
+              } `}
             >
-              <p>{item.content}</p>
-              <span className={`flex ${item.sender === "Admin" ? "justify-start" : "justify-end"} `}>
-                {timestampConversion(item.timestamp)}
-              </span>
-            </div>
-          )
-        )}
+              {timestampConversion(item.timestamp)}
+            </span>
+          </div>
+        ))}
       </div>
       <form
         onSubmit={(e) => handleSubmission(e)}
@@ -82,13 +86,18 @@ function Chat({
           value={textInput}
           onChange={(e) => setTextInput(e.target.value)}
         ></textarea>
-        <span className="font-faNum flex flex-col self-end p-2 text-[#EAEFF6A1]">
+        <span className="font-faNum flex flex-col self-end p-4 text-[#EAEFF6A1]">
           0/150
         </span>
         <div className="grid grid-cols-1 justify-center items-center w-[15%] px-3">
           <button
-            className="text-[#4866CE] bg-[#EAEFF6] p-2 rounded-[4px]"
+            className={`p-2 rounded-[4px] ${
+              fileSelected === true
+                ? " text-[#4866CE] bg-[#EAEFF6]"
+                : "bg-[#d2d7dd] text-[#8c8f93]"
+            }`}
             type="submit"
+            disabled={fileSelected === true ? false : true}
           >
             ارسال پیام
           </button>

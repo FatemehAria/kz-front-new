@@ -1,7 +1,7 @@
 import React from "react";
-import PanelFields from "../components/panel-fileds";
+import PanelFields from "../../components/panel-fileds";
 import Image from "next/image";
-import malegender from "../../../public/Panel/malegender.svg";
+import malegender from "../../../../public/Panel/malegender.svg";
 import Link from "next/link";
 type LegalProps = {
   PhoneNumber: string;
@@ -61,7 +61,7 @@ function Legal({
       <div className="flex justify-end">
         <Link
           className="bg-[#4866CF] text-white px-3 py-1 rounded-lg"
-          href="/panel/settings"
+          href="/panel/user/settings"
         >
           ویرایش حساب کاربری
         </Link>
