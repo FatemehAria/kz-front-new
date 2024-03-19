@@ -1,8 +1,8 @@
 import React from "react";
 import tower from "../../public/Intro/tower.svg";
-import play from "../../public/Intro/play.svg";
 import support from "../../public/Intro/support.svg";
 import Image from "next/image";
+import IntroBtns from "./intro-btns";
 
 function Intro() {
   return (
@@ -11,7 +11,6 @@ function Intro() {
         <div
           style={{
             backgroundColor: "#F6FCFA",
-            // backgroundColor: "yellow",
             borderRadius: "100%",
           }}
           className="lg:w-[430px] lg:h-[430px] max-w-[430px] w-[300px] h-[285px] absolute top-[1rem] lg:left-0 lg:translate-x-0"
@@ -63,15 +62,7 @@ function Intro() {
           از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و
           سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز
         </p>
-        <div className="flex md:justify-end justify-center w-full gap-3">
-          <button className="flex flex-row items-center h-[40px] w-[145px] rounded-[4px] text-[#597193]">
-            <Image src={play} alt="play" width={40} height={40} />
-            <span>تماشا ویدیو</span>
-          </button>
-          <button className="bg-[#4866CF] text-white h-[40px] w-[135px] rounded-[4px]">
-            ثبت سفارش
-          </button>
-        </div>
+        <IntroBtns />
       </div>
     </div>
   );
