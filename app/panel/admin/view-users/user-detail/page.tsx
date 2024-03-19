@@ -6,8 +6,8 @@ import {
 } from "@/redux/features/user/userSlice";
 import axios from "axios";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect } from "react";
 import { IoArrowBack } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -17,7 +17,7 @@ function UserDetail() {
   );
   const params = useSearchParams();
   const id = params.get("id");
-  const [userDetail, setUserDetail] = useState([]);
+  const router = useRouter();
   const getUserDetail = async () => {
     try {
       const { data } = await axios(
@@ -47,14 +47,14 @@ function UserDetail() {
   }, []);
   return (
     <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] relative">
-      <Link
+      <div
         className="flex justify-end text-xl cursor-pointer absolute left-0 -top-12"
-        href="/panel/admin/view-users"
+        onClick={() => router.back()}
       >
         <div className="bg-white rounded-full p-2">
           <IoArrowBack />
         </div>
-      </Link>
+      </div>
       UserDetail
     </div>
   );

@@ -14,6 +14,7 @@ import checkmark from "../../../../public/Panel/checkmark.svg";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import vieweye from "../../../../public/ViewUsers/vieweye.svg";
 import CloseTicketModal from "./components/close-ticket-modal";
+const moment = require("moment-jalaali");
 const Support = () => {
   const dispatch = useDispatch();
   const { localUserId, localToken } = useSelector(
@@ -95,7 +96,11 @@ const Support = () => {
                 <p>{index + 1}</p>
                 <p>{item.Title}</p>
                 <p>{item.Blocked ? "بسته شده" : "بسته نشده"}</p>
-                <p>*</p>
+                <p>
+                  {moment(item.updatedAt, "YYYY-MM-DDTHH:mm:ss.SSSZ").format(
+                    "jYYYY/jM/jD"
+                  )}
+                </p>
                 <div className="flex flex-row justify-center gap-2">
                   {!item.Blocked && (
                     <Image

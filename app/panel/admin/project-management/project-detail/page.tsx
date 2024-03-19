@@ -302,7 +302,11 @@ function ProjectDetail() {
                   {projectDetail.Serial}
                 </div>
               )}
-              {!showRejectionReason && <input className="font-faNum bg-[#4866CE] text-white outline-none" />}
+              {!showRejectionReason && (
+                <div className="font-faNum bg-[#4866CE] text-white">
+                  {Number(projectDetail.budget).toLocaleString()}
+                </div>
+              )}
             </div>
             <div className="w-full flex justify-end items-center gap-3">
               <button

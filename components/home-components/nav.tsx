@@ -84,6 +84,8 @@ const Nav = () => {
               ? "/panel/admin/view-users"
               : !localUserId && status === "unauthenticated" && !localToken
               ? "/authorization"
+              : localToken && !localUserId
+              ? "/authorization"
               : "/"
           }
         >

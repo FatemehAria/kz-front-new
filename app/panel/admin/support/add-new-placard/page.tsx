@@ -1,56 +1,74 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import TicketFields from "./components/ticket-fields";
-import FileUpload from "@/app/panel/submit-order/components/file-upload";
+import SingleUser from "./single-user/page";
+import GroupedUsers from "./grouped-users/page";
+import NewPlacard from "./new-placard";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchUserProfile,
+  getIdFromLocal,
+  getTokenFromLocal,
+} from "@/redux/features/user/userSlice";
 
 function AddNewTicket() {
+  const [UsersStatus, setUsersStatus] = useState({
+    error: "",
+    loading: false,
+  });
+  const { localToken, localUserId } = useSelector(
+    (state: any) => state.userData
+  );
+  const [AllUsersData, setAllUsersData] = useState<any>([]);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getTokenFromLocal());
+    dispatch(getIdFromLocal());
+    dispatch<any>(fetchUserProfile());
+  }, []);
+
+  const [steps, setSteps] = useState(0);
+  const getAllUsers = async () => {
+    try {
+      setUsersStatus((last) => ({ ...last, loading: true }));
+      const { data } = await axios(
+        `https://keykavoos.liara.run/Admin/AllUser/${localUserId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localToken}`,
+          },
+        }
+      );
+      setUsersStatus((last) => ({ ...last, loading: false }));
+      setAllUsersData(data.data);
+      console.log(data);
+    } catch (error) {
+      setUsersStatus({
+        error: "خطا در نمایش اطلاعات",
+        loading: false,
+      });
+      // console.log(error);
+    }
+  };
+  useEffect(() => {
+    getAllUsers();
+  }, []);
+  const renderSteps = () => {
+    switch (steps) {
+      case 0:
+        return <NewPlacard setSteps={setSteps} />;
+      case 1:
+        return <SingleUser AllUsers={AllUsersData} UsersStatus={UsersStatus} />;
+      case 2:
+        return <GroupedUsers AllUsers={AllUsersData} />;
+      default:
+        break;
+    }
+  };
   return (
-    <div className="bg-white shadow mx-auto rounded-2xl py-[3%] px-[3%] w-full grid grid-cols-1 gap-3">
-      <div className="flex gap-3">
-        <p>ایجاد اعلان به:</p>
-        <div className="flex flex-row gap-3">
-          <button className="bg-[#EAEFF6] text-[#4866CE] p-2 rounded-[4px] border">
-            کاربر تکی
-          </button>
-          <button className="bg-[#4866CE] text-white p-2 rounded-[4px] border">
-            کاربر گروهی
-          </button>
-        </div>
-      </div>
-      <TicketFields label="واحد مربوطه:" width="30%" />
-      <div
-        style={{
-          border: "none",
-          borderTop: "3px solid",
-          borderImage:
-            "linear-gradient(to right, #FFFFFF 0%, #4866CE 45% ,#4866CE 55% , #FFFFFF 100%) 1",
-          margin: "3% 0",
-        }}
-      ></div>
-      <div className="flex flex-col gap-5">
-        <div className="flex flex-row gap-2">
-          <label htmlFor="">متن تیکت:</label>
-          <textarea
-            name=""
-            id=""
-            cols={30}
-            rows={10}
-            className="p-2 bg-[#EAEFF6] w-[30%] rounded-[4px]"
-          ></textarea>
-        </div>
-      </div>
-      <div className="flex items-center w-[37%] justify-between">
-        <div className="flex gap-3 items-center">
-          <input
-            type="checkbox"
-            className="appearance-none border-2 border-black rounded-sm w-4 h-4 checked:bg-[#4866CF]"
-            name="radio-button"
-          />
-          <label>قابلیت رد اعلان</label>
-        </div>
-        <button className="bg-[#4866CE] text-white p-2 rounded-[4px]">
-          ارسال اعلان
-        </button>
-      </div>
+    <div className="bg-white shadow mx-auto rounded-2xl py-[3%] px-[3%] w-full">
+      {renderSteps()}
     </div>
   );
 }
