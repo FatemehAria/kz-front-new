@@ -59,7 +59,7 @@ function AddNewTicket() {
       case 0:
         return <NewPlacard setSteps={setSteps} />;
       case 1:
-        return <SingleUser AllUsers={AllUsersData} UsersStatus={UsersStatus} />;
+        return <SingleUser AllUsers={AllUsersData} />;
       case 2:
         return <GroupedUsers AllUsers={AllUsersData} />;
       default:

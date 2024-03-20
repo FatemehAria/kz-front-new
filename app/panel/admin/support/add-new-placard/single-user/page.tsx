@@ -1,15 +1,10 @@
 import Link from "next/link";
 import React from "react";
 import { IoArrowBack } from "react-icons/io5";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 type SingleUserProps = {
   AllUsers: any;
-  UsersStatus: {
-    error: string;
-    loading: boolean;
-  };
 };
-function SingleUser({ AllUsers, UsersStatus }: SingleUserProps) {
+function SingleUser({ AllUsers }: SingleUserProps) {
   return (
     <div className="flex flex-col gap-5 relative">
       <Link
@@ -27,26 +22,27 @@ function SingleUser({ AllUsers, UsersStatus }: SingleUserProps) {
         <p>ایمیل</p>
         <p>انتخاب</p>
       </div>
-      {AllUsers.map((item: any, index: number) => (
-        <div
-          key={item._id}
-          className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
-        >
-          <p className="font-faNum">{index + 1}</p>
-          <p className="font-faNum">{item.PhoneNumber}</p>
-          <p>
-            {item.FirstName} {item.LastName}
-          </p>
-          <p>{item.email}</p>
-          <div className="flex gap-3 items-center justify-center">
-            <input
-              type="radio"
-              className="appearance-none border-2 border-black rounded-sm w-4 h-4 checked:bg-[#4866CF]"
-              name="radio-button"
-            />
+      {AllUsers &&
+        AllUsers.map((item: any, index: number) => (
+          <div
+            key={item._id}
+            className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
+          >
+            <p className="font-faNum">{index + 1}</p>
+            <p className="font-faNum">{item.PhoneNumber}</p>
+            <p>
+              {item.FirstName} {item.LastName}
+            </p>
+            <p>{item.email}</p>
+            <div className="flex gap-3 items-center justify-center">
+              <input
+                type="radio"
+                className="appearance-none border-2 border-black rounded-sm w-4 h-4 checked:bg-[#4866CF]"
+                name="radio-button"
+              />
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 }
