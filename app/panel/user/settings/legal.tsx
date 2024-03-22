@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import PanelFields from "../../components/panel-fileds";
 import axios from "axios";
 import { verifyIranianNationalId } from "@persian-tools/persian-tools";
@@ -30,7 +30,6 @@ function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
   const handleAvatar = async () => {
     const formData = new FormData();
     formData.append("Image", selectedFile);
-    // console.log(formData);
     try {
       const { data } = await axios.put(
         `https://keykavoos.liara.run/Client/UploadAvatar/${userId}`,
@@ -41,9 +40,6 @@ function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
           },
         }
       );
-      // console.log(selectedFile);
-      console.log(formData);
-      console.log(data);
       toast.success("آپلود فایل موفق بود.", {
         position: "top-right",
         autoClose: 3000,
@@ -146,10 +142,6 @@ function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
             ),
             handleAvatar(),
           ]);
-
-          // Handle legalSubmissionResponse and avatarResponse here
-          // console.log("Legal Submission response:", legalSubmissionResponse);
-          // console.log("Avatar response:", avatarResponse);
         })();
         console.log("in the handlesubmission if when nationalid is valid");
       } catch (error) {

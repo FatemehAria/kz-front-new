@@ -1,4 +1,5 @@
 "use client";
+import Loading from "@/app/loading";
 import {
   fetchUserProfile,
   getIdFromLocal,
@@ -22,7 +23,7 @@ function WebService() {
   const [transId, setTransId] = useState<string | null>("");
   const [idGet, setIdGet] = useState<string | null>("");
   const [payMessage, setPayMessage] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<boolean | null>();
   const getPayRedirect = async (
     transId: string | null,
     idGet: string | null
@@ -54,28 +55,36 @@ function WebService() {
     setTransId(trans_id);
     const id_get = params.get("id_get");
     setIdGet(id_get);
-    getPayRedirect(transId, idGet);
-  }, [transId, idGet]);
+    if (localToken) {
+      getPayRedirect(transId, idGet);
+    }
+  }, [localToken]);
   return (
-    <div
-      className={`absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[500px] h-[200px] flex items-center justify-center flex-col rounded-2xl gap-3 ${
-        error ? "bg-emerald-500" : "bg-red-700"
-      }`}
-    >
-      <div
-        dir="rtl"
-        className="flex justify-center items-center text-white text-2xl"
-      >
-        {payMessage}
-      </div>
-      <Link
-        href="/"
-        className={`flex justify-center items-center text-white p-2 rounded-lg ${
-          error ? "bg-indigo-500" : "bg-teal-600"
-        }`}
-      >
-        بازگشت به صفحه اصلی
-      </Link>
+    <div>
+      {payMessage ? (
+        <div
+          className={`absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[500px] h-[200px] flex items-center justify-center flex-col rounded-2xl gap-3 ${
+            error ? "bg-emerald-500" : "bg-red-700"
+          }`}
+        >
+          <div
+            dir="rtl"
+            className="flex justify-center items-center text-white text-2xl"
+          >
+            {payMessage}
+          </div>
+          <Link
+            href="/"
+            className={`flex justify-center items-center text-white p-2 rounded-lg ${
+              error ? "bg-indigo-500" : "bg-teal-600"
+            }`}
+          >
+            بازگشت به صفحه اصلی
+          </Link>
+        </div>
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 }

@@ -4,10 +4,12 @@ import PanelFields from "../../components/panel-fileds";
 import axios from "axios";
 import { useFormik } from "formik";
 import SettingsFileupload from "./components/settings-fileupload";
+import { Bounce, toast } from "react-toastify";
 
 const initialValues = {
-  FullName: "",
-  type: "حقیقی",
+  FirstName: "",
+  LastName: "",
+  type: "Genuine",
   email: "",
   National_ID: "",
 };
@@ -18,14 +20,56 @@ type GenuineProps = {
 };
 function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
   const [selectedFile, setSelectedFile] = useState<any>(null);
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+  const handleFileChange = (file: File) => {
     setSelectedFile(file);
+  };
+  const handleAvatar = async () => {
+    const formData = new FormData();
+    formData.append("Image", selectedFile);
+    try {
+      const { data } = await axios.put(
+        `https://keykavoos.liara.run/Client/UploadAvatar/${userId}`,
+        formData,
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(data);
+      toast.success("آپلود فایل موفق بود.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
+    } catch (error) {
+      toast.error("خطا در آپلود فایل، لطفا مجدد آپلود کنید.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
+      console.log(error);
+    }
   };
   const GenuineSubmission = async (
     National_ID: string,
     type: string,
-    FullName: string,
+    FirstName: string,
+    LastName: string,
     email: string
   ) => {
     try {
@@ -34,7 +78,8 @@ function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
         {
           National_ID,
           type,
-          FullName,
+          FirstName,
+          LastName,
           email,
         }
       );
@@ -43,12 +88,16 @@ function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
     }
   };
   const handleSubmission = async () => {
-    await GenuineSubmission(
-      values.FullName,
-      values.type,
-      values.National_ID,
-      values.email
-    );
+    Promise.all([
+      await GenuineSubmission(
+        values.FirstName,
+        values.LastName,
+        values.type,
+        values.National_ID,
+        values.email
+      ),
+      await handleAvatar(),
+    ]);
   };
   const { values, handleChange, handleSubmit } = useFormik({
     initialValues,
@@ -58,12 +107,18 @@ function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
   return (
     <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
       <div className="grid grid-cols-2 gap-[5%]">
-        <div className="flex flex-col justify-between">
+        <div className="flex flex-col justify-between gap-3">
           <PanelFields
-            label="نام و نام خانوادگی:"
+            label="نام:"
             onChange={handleChange}
-            value={values.FullName}
-            name="FullName"
+            value={values.FirstName}
+            name="FirstName"
+          />
+          <PanelFields
+            label="نام خانوادگی:"
+            onChange={handleChange}
+            value={values.LastName}
+            name="LastName"
           />
           <PanelFields
             label="شماره موبایل:"
@@ -78,9 +133,9 @@ function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
             name="email"
           />
         </div>
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-20">
           <SettingsFileupload
-            handleChange={handleChange}
+            handleChange={handleFileChange}
             selectedFile={selectedFile}
             label="عکس کاربری:"
           />
