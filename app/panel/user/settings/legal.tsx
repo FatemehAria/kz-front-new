@@ -129,7 +129,6 @@ function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
   };
 
   const handleSubmission = async () => {
-    const isValidNationalId = verifyIranianNationalId(values.National_ID);
     if (isValidNationalId) {
       try {
         (async () => {
@@ -154,11 +153,11 @@ function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
     return isValidNationalId;
   };
 
-  const { handleChange, values, handleSubmit } = useFormik({
+  const { handleChange, values, handleSubmit, isValid } = useFormik({
     initialValues,
     onSubmit: handleSubmission,
   });
-
+  const isValidNationalId = verifyIranianNationalId(values.National_ID);
   useEffect(() => {
     if (values.National_ID === "") {
       setInvalidNationalIdMessage("");
@@ -206,8 +205,11 @@ function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
       </div>
       <div className="flex justify-end">
         <button
-          className="bg-[#4866CF] text-white px-3 py-1 rounded-lg"
+          className={`text-white px-3 py-1 rounded-lg ${
+            !selectedFile ? "bg-indigo-400" : "bg-[#4866CF]"
+          }`}
           type="submit"
+          disabled={!selectedFile ? true : false}
         >
           تایید ویرایش
         </button>

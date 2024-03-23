@@ -9,41 +9,23 @@ export const authOptions = {
       clientSecret: process.env.GITHUB_SECRET_ID as string,
     }),
     AzureADProvider({
-      clientId: `${process.env.AZURE_AD_CLIENT_ID}`,
-      clientSecret: `${process.env.AZURE_AD_CLIENT_SECRET}`,
-      tenantId: `${process.env.AZURE_AD_TENANT_ID}`,
+      clientId: process.env.AZURE_AD_CLIENT_ID as string,
+      clientSecret: process.env.AZURE_AD_CLIENT_SECRET as string,
+      tenantId: process.env.AZURE_AD_TENANT_ID as string,
       authorization: {
-        params: { scope: "openid email profile User.Read offline_access" },
+        params: { scope: "openid email profile User.Read" },
       },
-      httpOptions: { timeout: 10000 },
     }),
   ],
-  // callbacks: {
-  //   async jwt({ token, user, account }) {
-  //     if (account && user) {
-  //       return {
-  //         accessToken: account.id_token,
-  //         accessTokenExpires: account?.expires_at
-  //           ? account.expires_at * 1000
-  //           : 0,
-  //         refreshToken: account.refresh_token,
-  //         user,
-  //       };
-  //     }
-
-  //     if (Date.now() < token.accessTokenExpires - 100000 || 0) {
-  //       return token;
-  //     }
-  //   },
-  //   async session({ session, token }) {
-  //     if (session) {
-  //       session.user = token.user;
-  //       session.error = token.error;
-  //       session.accessToken = token.accessToken;
-  //     }
-  //     return session;
-  //   },
-  // },
+  callbacks: {
+    async jwt({ token, account }) {
+      // IMPORTANT: Persist the access_token to the token right after sign in
+      if (account) {
+        token.idToken = account.id_token;
+      }
+      return token;
+    },
+  },
   secret: "62d67d70ec48144ff98e8fedc1b0c9c8311f4baee190853a29a2bff7fcd69add",
   debug: true,
 };

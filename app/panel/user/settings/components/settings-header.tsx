@@ -1,7 +1,7 @@
 import React from "react";
 type SettingsHeaderProps = {
-  step: number;
-  setStep: React.Dispatch<React.SetStateAction<number>>;
+  step: string;
+  setStep?: React.Dispatch<React.SetStateAction<string>>;
 };
 function SettingsHeader({ step, setStep }: SettingsHeaderProps) {
   return (
@@ -35,21 +35,21 @@ function SettingsHeader({ step, setStep }: SettingsHeaderProps) {
       <div className="text-center absolute -top-5 left-1/2 text-[20px] -translate-x-1/2 bg-transparent flex flex-row gap-5">
         <button
           className={`rounded-[4px] py-[3%] px-[8%] ${
-            step === 1
+            step === "Genuine"
               ? "bg-[#4866CF] text-white"
               : "bg-[#EAEFF6] text-[#4866CF]"
           }`}
-          onClick={() => setStep(1)}
+          onClick={() => setStep && setStep("Genuine")}
         >
           حقیقی
         </button>
         <button
           className={`rounded-[4px] py-[3%] px-[8%] ${
-            step === 2
+            step === "Legal"
               ? "bg-[#4866CF] text-white"
               : "bg-[#EAEFF6] text-[#4866CF]"
           }`}
-          onClick={() => setStep(2)}
+          onClick={() => setStep && setStep("Legal")}
         >
           حقوقی
         </button>

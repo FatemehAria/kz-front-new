@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Genuine from "./genuine";
 import Legal from "./legal";
 import {
+  fetchUserProfile,
   getIdFromLocal,
   getTokenFromLocal,
   readPhoneNumberFromLocalStroage,
@@ -11,18 +12,23 @@ import {
 import SettingsHeader from "./components/settings-header";
 
 function PersonalInfo() {
-  const [step, setStep] = useState(1);
-  const { PhoneNumber, localToken, localUserId, userProfile } =
+  const { PhoneNumber, localToken, localUserId, userProfile, type } =
     useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
+  const [step, setStep] = useState(type);
   useEffect(() => {
     dispatch(readPhoneNumberFromLocalStroage());
     dispatch(getTokenFromLocal());
     dispatch(getIdFromLocal());
+    dispatch<any>(fetchUserProfile());
   }, []);
+  useEffect(() => {
+    setStep(type);
+  }, [type]);
+
   const renderSteps = () => {
     switch (step) {
-      case 1:
+      case "Genuine":
         return (
           <Genuine
             PhoneNumber={PhoneNumber}
@@ -30,7 +36,7 @@ function PersonalInfo() {
             token={localToken}
           />
         );
-      case 2:
+      case "Legal":
         return (
           <Legal
             PhoneNumber={PhoneNumber}

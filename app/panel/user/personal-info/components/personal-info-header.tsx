@@ -39,7 +39,6 @@ function PersonalInfoHeader({ step, setStep }: PersonalInfoHeaderProps) {
               ? "bg-[#4866CF] text-white"
               : "bg-[#EAEFF6] text-[#4866CF] cursor-default"
           }`}
-          onClick={() => setStep && setStep("Genuine")}
         >
           حقیقی
         </button>
@@ -49,7 +48,6 @@ function PersonalInfoHeader({ step, setStep }: PersonalInfoHeaderProps) {
               ? "bg-[#4866CF] text-white"
               : "bg-[#EAEFF6] text-[#4866CF] cursor-default"
           }`}
-          onClick={() => setStep && setStep("Legal")}
         >
           حقوقی
         </button>
