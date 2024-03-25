@@ -42,7 +42,11 @@ function SubmitOrder() {
     Templates: templatesData,
     Colors: colorsData,
   });
-
+  const handleBudegtChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value.replace(/,/g, "");
+    const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    setProjectFields((last) => ({ ...last, budget: formattedValue }));
+  };
   const SubmitProject = async (
     title: string,
     type: string,
@@ -72,9 +76,31 @@ function SubmitOrder() {
           },
         }
       );
-      console.log(data);
+      toast.success("پروژه با موفقیت ثبت شد.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
     } catch (error) {
-      console.log(error);
+      toast.error("خطا در ثبت پروژه.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
     }
   };
   const handleFileChange = (file: File) => {
@@ -123,19 +149,32 @@ function SubmitOrder() {
   };
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    Promise.all([
+    if (File) {
+      Promise.all([
+        await SubmitProject(
+          projectFields.title,
+          projectFields.type,
+          projectFields.plan,
+          projectFields.budget.replaceAll(",", ""),
+          JSON.stringify(similarSiteData),
+          projectFields.Description,
+          JSON.stringify(templatesData),
+          JSON.stringify(colorsData)
+        ),
+        await handleFileUpload(),
+      ]);
+    } else {
       await SubmitProject(
         projectFields.title,
         projectFields.type,
         projectFields.plan,
-        projectFields.budget,
+        projectFields.budget.replaceAll(",", ""),
         JSON.stringify(similarSiteData),
         projectFields.Description,
         JSON.stringify(templatesData),
         JSON.stringify(colorsData)
-      ),
-      await handleFileUpload(),
-    ]);
+      );
+    }
   };
   return (
     <form
@@ -200,12 +239,9 @@ function SubmitOrder() {
           }
         />
         <PanelFields
-          label="بودجه مورد نظر:"
-          onChange={(e) =>
-            setProjectFields((last) => ({ ...last, budget: e.target.value }))
-          }
+          label="بودجه مورد نظر: (برحسب تومان)"
+          onChange={handleBudegtChange}
           value={projectFields.budget}
-          // .replace(/(\d{3}(?!,))/g, "$1,")
           name="budget"
         />
       </div>
@@ -236,11 +272,11 @@ function SubmitOrder() {
       <div className="flex justify-between">
         <FileUpload File={File} handleChange={handleFileChange} />
         <div className="flex gap-5">
-          <div className="bg-[#4866CE] text-white rounded-lg p-1 whitespace-nowrap">
-            درخواست مشاوره رایگان
+          <div className="bg-[#4866CE] text-white rounded-lg p-1 whitespace-nowrap flex justify-center items-center">
+            <span>درخواست مشاوره رایگان</span>
           </div>
-          <button className="bg-[#4866CE] text-white rounded-lg p-1 w-[80px]">
-            ثبت
+          <button className="bg-[#4866CE] text-white rounded-lg p-1 w-[80px] flex justify-center items-center">
+            <span>ثبت</span>
           </button>
         </div>
       </div>

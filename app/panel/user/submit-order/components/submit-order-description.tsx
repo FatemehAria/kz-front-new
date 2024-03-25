@@ -12,7 +12,7 @@ function SubmitOrderDescription({
       <div className="flex flex-col gap-3">
         <label>توضیحات پروژه:</label>
         <textarea
-          className="p-[2%] bg-[#EAEFF6] rounded-[4xl]"
+          className="p-[2%] bg-[#EAEFF6] rounded-[4px]"
           value={value}
           onChange={onChange}
         ></textarea>

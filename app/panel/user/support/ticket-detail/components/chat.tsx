@@ -32,12 +32,18 @@ function Chat({
   );
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    Promise.all([
-      await handleFileUpload(),
-      await sendResponseTicket(textInput),
-    ]);
-    // await handleFileUpload();
-    // await sendResponseTicket(textInput);
+    if (File && textInput) {
+      Promise.all([
+        await handleFileUpload(),
+        await sendResponseTicket(textInput),
+      ]);
+      setTextInput("");
+    } else if (textInput && !File) {
+      await sendResponseTicket(textInput);
+      setTextInput("");
+    } else if (!textInput && File) {
+      await handleFileUpload();
+    }
   };
   const timestampConversion = (timestamp: number | Date | undefined) => {
     return new Intl.DateTimeFormat("fa-IR", {
@@ -91,13 +97,8 @@ function Chat({
         </span>
         <div className="grid grid-cols-1 justify-center items-center w-[15%] px-3">
           <button
-            className={`p-2 rounded-[4px] ${
-              fileSelected === true
-                ? " text-[#4866CE] bg-[#EAEFF6]"
-                : "bg-[#d2d7dd] text-[#8c8f93]"
-            }`}
+            className="p-2 rounded-[4px] text-[#4866CE] bg-[#EAEFF6]"
             type="submit"
-            disabled={fileSelected === true ? false : true}
           >
             ارسال پیام
           </button>

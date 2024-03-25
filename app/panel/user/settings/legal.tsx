@@ -246,7 +246,6 @@ function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
             !selectedFile ? "bg-indigo-400" : "bg-[#4866CF]"
           }`}
           type="submit"
-          disabled={!selectedFile ? true : false}
         >
           تایید ویرایش
         </button>

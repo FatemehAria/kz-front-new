@@ -30,7 +30,7 @@ SubmitOrderDropdownProps) {
   return (
     <div className="flex flex-col gap-3 relative">
       <label>{modalFieldTitle}</label>
-      <div className="p-[2%] bg-[#EAEFF6] rounded-[4xl] relative">
+      <div className="p-[2%] bg-[#EAEFF6] rounded-[4px] relative">
         <Image
           src={plus}
           alt="plus"

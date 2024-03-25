@@ -52,7 +52,7 @@ const PanelNav = ({
             href={`${
               userType === "Admin"
                 ? "/panel/admin/support"
-                : userType === "User" && "/panel/support"
+                : userType === "User" && "/panel/user/support"
             }`}
             onMouseEnter={() => setShowAnnouncementDropdown(true)}
           >
