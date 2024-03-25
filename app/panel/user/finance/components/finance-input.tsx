@@ -11,7 +11,7 @@ function FinanceInput({
   value,
   onChange,
   setToBlue,
-  disable
+  disable,
 }: FinanceInputProps) {
   return (
     <div className="flex flex-col gap-3">
@@ -24,6 +24,7 @@ function FinanceInput({
         value={value}
         onChange={onChange}
         disabled={disable}
+        readOnly={disable === true ? true : false}
       />
     </div>
   );
