@@ -32,13 +32,18 @@ function Chat({
   );
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    Promise.all([
-      await handleFileUpload(),
-      await sendResponseTicket(textInput),
-    ]);
-    // await handleFileUpload();
-    // console.log(senderText);
-    // await sendResponseTicket(textInput);
+    if (textInput && !File) {
+      await sendResponseTicket(textInput);
+      setTextInput("");
+    } else if (!textInput && File) {
+      await handleFileUpload();
+    } else if (File && textInput) {
+      Promise.all([
+        await handleFileUpload(),
+        await sendResponseTicket(textInput),
+      ]);
+      setTextInput("");
+    }
   };
   const timestampConversion = (timestamp: number | Date | undefined) => {
     return new Intl.DateTimeFormat("fa-IR", {
@@ -53,23 +58,6 @@ function Chat({
   );
   return (
     <div className="flex flex-col">
-      {/* <div className="flex flex-col">
-        {senderText.map(
-          (item: any, index: number) =>
-            item.sender !== "Admin" && (
-              <div
-                key={index}
-                className={`${styles.chatBubble} ${styles.sender}`}
-              >
-                <p>{item.content}</p>
-                <span className="flex justify-end">
-                  {timestampConversion(item.timestamp)}
-                </span>
-              </div>
-            )
-        )}
-      </div> */}
-
       <div>
         {sortedMessages.map((item: any, index: number) => (
           <div
@@ -98,7 +86,7 @@ function Chat({
           id=""
           cols={30}
           rows={4}
-          className="p-[1%] text-white w-[85%] placeholder:text-[#EAEFF6A1]"
+          className="p-[1%] text-white w-[85%] placeholder:text-[#EAEFF6A1] outline-none"
           maxLength={150}
           placeholder="متن مورد نظر خود را تایپ کنید"
           value={textInput}

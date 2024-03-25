@@ -95,23 +95,38 @@ const Support = () => {
               >
                 <p>{index + 1}</p>
                 <p>{item.Title}</p>
-                <p>{item.Blocked ? "بسته شده" : "بسته نشده"}</p>
+                <div>
+                  {item.Blocked === "true" ? (
+                    <p>
+                      بسته{" "}
+                      <span className="text-emerald-600 font-semibold">
+                        شده
+                      </span>
+                    </p>
+                  ) : (
+                    <p>
+                      بسته{" "}
+                      <span className="text-red-400 font-semibold">نشده</span>
+                    </p>
+                  )}
+                </div>
                 <p>
                   {moment(item.updatedAt, "YYYY-MM-DDTHH:mm:ss.SSSZ").format(
                     "jYYYY/jM/jD"
                   )}
                 </p>
                 <div className="flex flex-row justify-center gap-2">
-                  {!item.Blocked && (
-                    <Image
-                      src={checkmark}
-                      alt="بستن"
-                      width={20}
-                      onClick={() => (
-                        setShowModal(true), setCloseTicketId(item._id)
-                      )}
-                      className="cursor-pointer"
-                    />
+                  {item.Blocked !== "true" && (
+                    <div>
+                      <div
+                        onClick={() => (
+                          setShowModal(true), setCloseTicketId(item._id)
+                        )}
+                        className="cursor-pointer"
+                      >
+                        <Image src={checkmark} alt="بستن" width={20} />
+                      </div>
+                    </div>
                   )}
                   <Link
                     href={`/panel/admin/support/ticket-detail?id=${item._id}`}

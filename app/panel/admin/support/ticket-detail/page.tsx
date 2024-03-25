@@ -182,7 +182,7 @@ function TicketDetail() {
   };
 
   return (
-    <div>
+    <div className="relative">
       <div
         className="flex justify-end w-full text-xl cursor-pointer absolute -top-12"
         onClick={() => router.back()}

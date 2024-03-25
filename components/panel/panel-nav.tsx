@@ -8,7 +8,7 @@ import {
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import notification from "../../public/Panel/notif.svg";
-import malegender from "../../public/Panel/malegender.svg";
+import maleicon from "../../public/maleicon.svg";
 import exit from "../../public/Panel/exit.svg";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { signOut, useSession } from "next-auth/react";
@@ -86,7 +86,7 @@ const PanelNav = ({
                   />
                 </div>
               ) : (
-                <Image src={malegender} alt="default-pic" />
+                <Image src={maleicon} alt="default-pic" />
               )}
               <div
                 className="rounded-full bg-[#EAEFF6] flex justify-center items-center p-3 cursor-pointer"
