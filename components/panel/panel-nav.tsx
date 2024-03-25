@@ -57,7 +57,7 @@ const PanelNav = ({
             onMouseEnter={() => setShowAnnouncementDropdown(true)}
           >
             <div className="rounded-full bg-[#EAEFF6] flex justify-center items-center p-2 relative">
-              <Image src={notification} alt="notification-bell" width={45} />
+              <Image src={notification} alt="notification-bell" width={42} />
               <p className="bg-[#4866CF] font-faNum text-white p-2 rounded-full flex items-center justify-center w-[20px] h-[20px] absolute top-0 right-0">
                 <span>{numberOfAnnouncements}</span>
               </p>
