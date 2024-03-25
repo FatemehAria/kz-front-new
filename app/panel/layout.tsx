@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PanelNavSmall from "@/components/panel/panel-nav-small";
 import PanelSidebarSmall from "@/components/panel/panel-sidebar-small";
 import {
+  deleteDataFromCookie,
   fetchUserProfile,
   getIdFromLocal,
   getTokenFromLocal,
@@ -47,6 +48,13 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
     dispatch(getIdFromLocal());
     dispatch<any>(fetchUserProfile());
   }, []);
+
+  useEffect(() => {
+    if (!localToken && localUserId) {
+      dispatch(deleteDataFromCookie());
+      router.push("/");
+    }
+  }, [localToken,localUserId]);
 
   return (
     <div

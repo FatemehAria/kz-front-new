@@ -1,15 +1,24 @@
 "use client";
 import Login from "./login";
 import Info from "./info";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import RegisterUser from "./register-user";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import UserLoginViaOTP from "./user-login-via-otp";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { fetchUserProfile, getIdFromLocal, getTokenFromLocal } from "@/redux/features/user/userSlice";
 const Auth = () => {
   const [steps, setSteps] = useState(1);
-  const { localToken, localUserId } = useSelector((state: any) => state.userData);
+  const { localToken, localUserId } = useSelector(
+    (state: any) => state.userData
+  );
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getTokenFromLocal());
+    dispatch(getIdFromLocal());
+    dispatch<any>(fetchUserProfile());
+  }, []);
   const renderSteps = () => {
     switch (steps) {
       case 1:

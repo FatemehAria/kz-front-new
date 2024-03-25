@@ -9,15 +9,21 @@ import {
 } from "@/redux/features/user/userSlice";
 import { getNewOTP, getOTPViaCall } from "@/utils/utils";
 import Image from "next/image";
-import React, { Dispatch, FormEvent, SetStateAction, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import OTPInput from "react-otp-input";
 import { useDispatch, useSelector } from "react-redux";
 import sms from "../../../public/Auth/sms.svg";
 import phone from "../../../public/Auth/phone.svg";
 type UserLoginViaOTPProps = {
-    setSteps: Dispatch<SetStateAction<number>>;
-    steps: number;
-  };
+  setSteps: Dispatch<SetStateAction<number>>;
+  steps: number;
+};
 function EnterOTP({ setSteps }: UserLoginViaOTPProps) {
   const {
     userInfoOnLogin,
@@ -79,7 +85,7 @@ function EnterOTP({ setSteps }: UserLoginViaOTPProps) {
             onSubmit={(e) => handleSubmission(e)}
             className="flex flex-col gap-5"
           >
-            <label className="md:whitespace-nowrap">
+            <label className="">
               <p className="lg:w-[90%] text-[16px] py-4">
                 لطفا کد 6 رقمی که به شماره همراه شما ارسال شده است را وارد کنید.
               </p>

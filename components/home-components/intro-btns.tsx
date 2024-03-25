@@ -28,7 +28,9 @@ function IntroBtns() {
       </button>
       <Link
         href={`${
-          localToken && localUserId ? "/panel/submit-order" : "/authorization"
+          localToken && localUserId
+            ? "/panel/user/submit-order"
+            : "/authorization"
         }`}
         className="bg-[#4866CF] flex justify-center items-center text-white h-[40px] w-[135px] rounded-[4px]"
       >

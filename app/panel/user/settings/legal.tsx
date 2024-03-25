@@ -55,13 +55,13 @@ function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
       // Dispatch an action to update the user profile with the new data
       dispatch(
         updateUserProfile({
-            ...userProfile,
-            avatar: {
-                ...userProfile.avatar,
-                path: data.data.avatar.path // Assuming the response contains the new avatar path
-            }
+          ...userProfile,
+          avatar: {
+            ...userProfile.avatar,
+            path: data.data.avatar.path, // Assuming the response contains the new avatar path
+          },
         })
-    );
+      );
       toast.success("آپلود فایل موفق بود.", {
         position: "top-right",
         autoClose: 3000,
@@ -186,7 +186,6 @@ function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
     } else {
       setInvalidNationalIdMessage("کدملی صحیح نمی باشد.");
     }
-
     return isValidNationalId;
   };
 
@@ -246,6 +245,7 @@ function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
             !selectedFile ? "bg-indigo-400" : "bg-[#4866CF]"
           }`}
           type="submit"
+          disabled={!selectedFile ? true : false}
         >
           تایید ویرایش
         </button>
