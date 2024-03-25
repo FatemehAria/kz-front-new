@@ -30,8 +30,9 @@ function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
   const handleAvatar = async () => {
     const formData = new FormData();
     formData.append("Image", selectedFile);
+
     try {
-      const { data } = await axios.put(
+      await axios.put(
         `https://keykavoos.liara.run/Client/UploadAvatar/${userId}`,
         formData,
         {
@@ -40,6 +41,27 @@ function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
           },
         }
       );
+
+      // After successful upload, fetch updated user profile
+      const { data } = await axios.get(
+        `https://keykavoos.liara.run/Client/User/${userId}`,
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // Dispatch an action to update the user profile with the new data
+      dispatch(
+        updateUserProfile({
+            ...userProfile,
+            avatar: {
+                ...userProfile.avatar,
+                path: data.data.avatar.path // Assuming the response contains the new avatar path
+            }
+        })
+    );
       toast.success("آپلود فایل موفق بود.", {
         position: "top-right",
         autoClose: 3000,
@@ -68,6 +90,7 @@ function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
       console.log(error);
     }
   };
+
   const LegalSubmission = async (
     National_ID: string,
     type: string,
@@ -129,7 +152,14 @@ function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
   };
 
   const handleSubmission = async () => {
-    if (isValidNationalId) {
+    if (isValidNationalId && !selectedFile) {
+      await LegalSubmission(
+        values.National_ID,
+        values.type,
+        values.name_of_Organization,
+        values.registration_Number
+      );
+    } else if (isValidNationalId && selectedFile) {
       try {
         (async () => {
           const [legalSubmissionResponse, avatarResponse] = await Promise.all([
@@ -146,6 +176,13 @@ function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
       } catch (error) {
         console.log(error);
       }
+    } else if (
+      selectedFile &&
+      (values.National_ID === "" ||
+        values.name_of_Organization === "" ||
+        values.registration_Number === "")
+    ) {
+      await handleAvatar();
     } else {
       setInvalidNationalIdMessage("کدملی صحیح نمی باشد.");
     }

@@ -78,7 +78,7 @@ function AllProjects() {
             <p className="font-faNum">{Number(item.budget).toLocaleString()}</p>
             <p>{item.type}</p>
             <p>
-              {item.isConfirmationProject === true
+              {item.isConfirmationProject === "true"
                 ? "تایید شده"
                 : item.isConfirmationProject === "unknown"
                 ? "نا معلوم"

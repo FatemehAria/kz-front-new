@@ -15,6 +15,7 @@ import { Bounce, toast } from "react-toastify";
 
 function ProjectDetail() {
   const [showRejectionReason, setShowRejectionReason] = useState(false);
+  const [Reason, setReason] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [File, setFile] = useState<any>(null);
   const params = useSearchParams();
@@ -33,6 +34,7 @@ function ProjectDetail() {
     Templates: [],
     Colors: [],
     Serial: "",
+    isConfirmationProject: "",
   });
   useEffect(() => {
     dispatch(getTokenFromLocal());
@@ -110,6 +112,7 @@ function ProjectDetail() {
         Templates: JSON.parse(data.data.Templates),
         Colors: JSON.parse(data.data.Colors),
         Serial: data.data.Serial,
+        isConfirmationProject: data.data.isConfirmationProject,
       });
     } catch (error) {
       console.log(error);
@@ -162,11 +165,11 @@ function ProjectDetail() {
       // console.log(error);
     }
   };
-  const RejectProject = async () => {
+  const RejectProject = async (Reason: string) => {
     try {
       const { data } = await axios.post(
         `https://keykavoos.liara.run/Admin/NotconfirmationProject/${localUserId}/${id}`,
-        {},
+        { Reason },
         {
           headers: {
             Authorization: `Bearer ${localToken}`,
@@ -291,48 +294,52 @@ function ProjectDetail() {
               ))}
             </div>
           </div>
-          <div className="grid grid-cols-3">
-            <FileUpload File={File} handleChange={handleFileChange} />
-            <div className="bg-[#4866CE] text-white rounded-lg p-1 flex justify-start items-center gap-2">
-              <label className="whitespace-nowrap">
-                {showRejectionReason ? "شماره درخواست:" : "مبلغ نهایی:"}
-              </label>
-              {showRejectionReason && (
-                <div className="font-faNum bg-[#4866CE] text-white">
-                  {projectDetail.Serial}
-                </div>
-              )}
-              {!showRejectionReason && (
-                <div className="font-faNum bg-[#4866CE] text-white">
-                  {Number(projectDetail.budget).toLocaleString()}
-                </div>
-              )}
+          {projectDetail.isConfirmationProject !== "true" && (
+            <div className="grid grid-cols-3">
+              <FileUpload File={File} handleChange={handleFileChange} />
+              <div className="bg-[#4866CE] text-white rounded-lg p-1 flex justify-start items-center gap-2">
+                <label className="whitespace-nowrap">
+                  {showRejectionReason ? "شماره درخواست:" : "مبلغ نهایی:"}
+                </label>
+                {showRejectionReason && (
+                  <div className="font-faNum bg-[#4866CE] text-white">
+                    {projectDetail.Serial}
+                  </div>
+                )}
+                {!showRejectionReason && (
+                  <div className="font-faNum bg-[#4866CE] text-white">
+                    {Number(projectDetail.budget).toLocaleString()}
+                  </div>
+                )}
+              </div>
+              <div className="w-full flex justify-end items-center gap-3">
+                <button
+                  className="bg-[#EAEFF6] text-[#4866CE] rounded-lg py-1 px-3"
+                  onClick={() => setShowRejectionReason(true)}
+                >
+                  رد پروژه
+                </button>
+                <button
+                  className="bg-[#4866CE] text-white rounded-lg p-1"
+                  onClick={() => ConfirmProject()}
+                >
+                  تایید پروژه
+                </button>
+              </div>
             </div>
-            <div className="w-full flex justify-end items-center gap-3">
-              <button
-                className="bg-[#EAEFF6] text-[#4866CE] rounded-lg py-1 px-3"
-                onClick={() => setShowRejectionReason(true)}
-              >
-                رد پروژه
-              </button>
-              <button
-                className="bg-[#4866CE] text-white rounded-lg p-1"
-                onClick={() => ConfirmProject()}
-              >
-                تایید پروژه
-              </button>
-            </div>
-          </div>
+          )}
           {showRejectionReason && (
             <div className="relative">
               <textarea
                 className="p-[1%] bg-[#EAEFF6] rounded-[4px] w-full placeholder:text-[#4866CE]"
                 rows={4}
                 placeholder="علت رد پروژه"
+                onChange={(e) => setReason(e.target.value)}
+                value={Reason}
               ></textarea>
               <button
                 className="bg-[#4866CE] text-white absolute left-2 bottom-5 rounded-[4px] p-2"
-                onClick={() => RejectProject()}
+                onClick={() => RejectProject(Reason)}
               >
                 تایید و ارسال به کارفرما
               </button>

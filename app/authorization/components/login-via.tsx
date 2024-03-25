@@ -64,14 +64,14 @@ function LoginVia() {
           onClick={() => login()}
           className="cursor-pointer"
         />
-        <Image
+        {/* <Image
           src={microsoft}
           alt="microsoft"
           onClick={() =>
             signIn("azure-ad", { callbackUrl: "/" }, { prompt: "login" })
           }
           className="cursor-pointer"
-        />
+        /> */}
       </div>
     </div>
   );

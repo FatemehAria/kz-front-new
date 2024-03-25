@@ -18,7 +18,7 @@ function SubmitOrderDropdown({
       <select
         name={dropDownTitle}
         id={dropDownTitle}
-        className="bg-[#EAEFF6] h-full rounded-[4px]"
+        className="bg-[#EAEFF6] h-full rounded-[4px] p-2"
         value={value}
         onChange={onChange}
       >

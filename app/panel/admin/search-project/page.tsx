@@ -95,7 +95,13 @@ function SearchProject() {
             <p>{item.title}</p>
             <p className="font-faNum">{Number(item.budget).toLocaleString()}</p>
             <p>{item.type}</p>
-            <p>{item.isConfirmationProject ? "تایید شده" : "تایید نشده"}</p>
+            <p>
+              {item.isConfirmationProject === "true"
+                ? "تایید شده"
+                : item.isConfirmationProject === "unknown"
+                ? "نا معلوم"
+                : "تایید نشده"}
+            </p>
             <Link
               href={`/panel/admin/search-project/project-detail?id=${item._id}`}
               className="flex justify-center"

@@ -12,6 +12,8 @@ import {
 import { Bounce, toast } from "react-toastify";
 import { IoArrowBack } from "react-icons/io5";
 import { useRouter } from "next/navigation";
+import AboutMeEducationDropdown from "@/app/panel/components/about-me-education-dropsown";
+import SubmitOrderDropdown from "../../submit-order/components/submit-order-dropdown";
 
 function AddNewTicket() {
   const { localToken, localUserId } = useSelector(
@@ -174,14 +176,16 @@ function AddNewTicket() {
             setTicket((last) => ({ ...last, RelevantUnit: e.target.value }))
           }
         />
-        <TicketFields
-          label="اولویت تیکت:"
-          width="30%"
-          value={ticket.Priority}
-          onChange={(e) =>
-            setTicket((last) => ({ ...last, Priority: e.target.value }))
-          }
-        />
+        <div className="w-[30%]">
+          <SubmitOrderDropdown
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setTicket((last) => ({ ...last, Priority: e.target.value }))
+            }
+            value={ticket.Priority}
+            dropDownTitle="اولویت تیکت:"
+            dropdownItems={["کم", "متوسط", "فوری"]}
+          />
+        </div>
         <div
           style={{
             border: "none",
@@ -210,10 +214,8 @@ function AddNewTicket() {
         </div>
         <div className="flex justify-end">
           <button
-            className={`${
-              fileSelected ? "bg-[#4866CE]" : "bg-indigo-200"
-            } text-white p-2 rounded-[4px]`}
-            disabled={fileSelected === true ? false : true}
+            className={`${"bg-[#4866CE]"} text-white p-2 rounded-[4px]`}
+            // disabled={fileSelected === true ? false : true}
           >
             ارسال تیکت
           </button>

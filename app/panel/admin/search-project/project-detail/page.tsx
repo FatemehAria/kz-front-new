@@ -33,6 +33,7 @@ function ProjectDetail() {
     Templates: [],
     Colors: [],
     Serial: "",
+    isConfirmationProject: "",
   });
   useEffect(() => {
     dispatch(getTokenFromLocal());
@@ -60,6 +61,7 @@ function ProjectDetail() {
         Templates: JSON.parse(data.data.Templates),
         Colors: JSON.parse(data.data.Colors),
         Serial: data.data.Serial,
+        isConfirmationProject: data.data.isConfirmationProject,
       });
     } catch (error) {
       console.log(error);
@@ -225,27 +227,29 @@ function ProjectDetail() {
             ))}
           </div>
         </div>
-        <div className="grid grid-cols-3">
-          <FileUpload File={File} handleChange={handleFileChange} />
-          <div className="bg-[#4866CE] text-white rounded-lg p-1 flex justify-start items-center">
-            <span>شماره درخواست:</span>
-            <p className="font-faNum">{projectDetail.Serial}</p>
+        {projectDetail.isConfirmationProject !== "true" && (
+          <div className="grid grid-cols-3">
+            <FileUpload File={File} handleChange={handleFileChange} />
+            <div className="bg-[#4866CE] text-white rounded-lg p-1 flex justify-start items-center">
+              <span>شماره درخواست:</span>
+              <p className="font-faNum">{projectDetail.Serial}</p>
+            </div>
+            <div className="w-full flex justify-end items-center gap-3">
+              <button
+                className="bg-[#EAEFF6] text-[#4866CE] rounded-lg py-1 px-3"
+                onClick={() => setShowRejectionReason(true)}
+              >
+                رد پروژه
+              </button>
+              <button
+                className="bg-[#4866CE] text-white rounded-lg p-1"
+                onClick={() => ConfirmProject()}
+              >
+                تایید پروژه
+              </button>
+            </div>
           </div>
-          <div className="w-full flex justify-end items-center gap-3">
-            <button
-              className="bg-[#EAEFF6] text-[#4866CE] rounded-lg py-1 px-3"
-              onClick={() => setShowRejectionReason(true)}
-            >
-              رد پروژه
-            </button>
-            <button
-              className="bg-[#4866CE] text-white rounded-lg p-1"
-              onClick={() => ConfirmProject()}
-            >
-              تایید پروژه
-            </button>
-          </div>
-        </div>
+        )}
         {showRejectionReason && (
           <div className="relative">
             <textarea
