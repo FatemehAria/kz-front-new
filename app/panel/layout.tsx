@@ -13,7 +13,9 @@ import {
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
 import { useRouter } from "next/navigation";
-
+import Image from "next/image";
+import nextarrow from "../../public/forwardarrow.svg";
+import prevarrow from "../../public/backarrow.svg";
 const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   const {
     localToken,
@@ -28,7 +30,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 4;
+  const itemsPerPage = 3;
   const startIndex = currentPage * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const displayedItems = userSidebarOptions.slice(startIndex, endIndex);
@@ -54,11 +56,11 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
       dispatch(deleteDataFromCookie());
       router.push("/");
     }
-  }, [localToken,localUserId]);
+  }, [localToken, localUserId]);
 
   return (
     <div
-      className="font-YekanBakh flex w-full flex-row relative"
+      className="font-YekanBakh flex w-full flex-row relative min-h-screen"
       style={{ boxShadow: "0px 0px 90px 2px rgba(0, 0, 0, 0.25)" }}
       dir="rtl"
     >
@@ -75,7 +77,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
             />
           </div>
           <div className="w-full lg:overflow-hidden">
-            <div className="hidden md:block">
+            <div>
               <PanelNav
                 userProfile={userProfile}
                 status={status}
@@ -91,13 +93,10 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
             >
               {children}
             </div>
-            <div>
-              {userType === "User" && (
-                <PanelSidebarSmall sideOptions={userSidebarOptions} />
-              )}
-              {userType === "Admin" && (
-                <PanelSidebarSmall sideOptions={mainAdminSidebarOptions} />
-              )}
+            <div className="md:hidden flex flex-row bg-[#4866CF] h-20 transition-all rounded-md w-full">
+              <Image src={prevarrow} alt="" onClick={() => handlePrevClick()} />
+              <PanelSidebarSmall sideOptions={displayedItems} />
+              <Image src={nextarrow} alt="" onClick={() => handleNextClick()} />
             </div>
           </div>
         </>

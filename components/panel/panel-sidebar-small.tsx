@@ -18,28 +18,17 @@ const PanelSidebarSmall = ({
   const dispatch = useDispatch();
   const pathname = usePathname();
   return (
-    <div className="flex justify-between w-full px-[3%]">
-      <ul className="flex flex-row justify-between w-full">
+    <div className="flex justify-between w-full">
+      <ul className="flex flex-row justify-between w-full whitespace-nowrap p-[3%] gap-3">
         {sideOptions.map((item, index) => (
-          <li
-            key={index}
-            className="font-bold text-lg"
-          >
-            <div className="flex flex-col justify-around items-center">
-              <span>
-                <Image
-                  src={item.imgSrc}
-                  alt={`${item}`}
-                  width={40}
-                  height={40}
-                />
-              </span>
+          <li key={index} className="font-bold text-lg">
+            <div className="flex flex-col justify-around items-center gap-2">
+              <Image src={item.imgSrc} alt={`${item}`} width={40} height={40} />
               <Link
-                href={`${item.text === "خروج" ? "/" : item.address}`}
-                className={`${
-                  item.address === pathname ? "text-[#4866CF]" : "text-black"
+                href={`${item.address}`}
+                className={`text-sm ${
+                  item.address === pathname ? "text-white" : "text-black"
                 }`}
-                onClick={() => item.text === "خروج" && dispatch(deleteToken())}
               >
                 {item.text}
               </Link>
