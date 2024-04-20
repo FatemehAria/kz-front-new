@@ -31,8 +31,13 @@ function OrderProgress({ currentStep, setCurrentStep }: OrderProgressProps) {
             currentStep === index ? styles.activeDot : ""
           }`}
           style={{ left: position }}
+          onClick={() => handleDotClick(index)}
         >
-          <span className="whitespace-nowrap text-[12px] absolute -bottom-10 left-1/2 -translate-x-1/2 text-[#4866CF]">
+          <span
+            className={`whitespace-nowrap absolute -bottom-8 left-1/2 -translate-x-1/2 text-[#4866CF] self-end ${
+              currentStep === index ? "text-[15px] font-bold" : "text-[12px]"
+            }`}
+          >
             {stepTexts[index]}
           </span>
         </div>

@@ -4,6 +4,10 @@
     margin: 50px auto;
     height: 2px;
     background-color: #ffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .progressBar {
@@ -11,7 +15,6 @@
     top: 0;
     left: 0;
     height: 100%;
-    background-color: #fff;
     transition: width 0.5s;
 }
 
@@ -24,17 +27,12 @@
     top: -4px;
     cursor: pointer;
     transition: background-color 0.5s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 10px;
-    justify-content: flex-end;
 }
 
 .activeDot {
     background-color: white;
     z-index: 10;
-    transform: translate(70%, 20%);
+    transform: translate(73%, 15%);
 }
 
 .square {

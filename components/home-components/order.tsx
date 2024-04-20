@@ -9,6 +9,16 @@ function Order() {
     switch (currentStep) {
       case 0:
         return <OrdersubmissionForm setCurrentStep={setCurrentStep} />;
+      case 1:
+        return <OrdersubmissionForm setCurrentStep={setCurrentStep} />;
+      case 2:
+        return <OrdersubmissionForm setCurrentStep={setCurrentStep} />;
+      case 3:
+        return <OrdersubmissionForm setCurrentStep={setCurrentStep} />;
+      case 4:
+        return <OrdersubmissionForm setCurrentStep={setCurrentStep} />;
+      default:
+        return;
     }
   };
   return (
