@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import options from "../../public/Plans/options.svg";
+import Link from "next/link";
 type PlanCardProps = {
   data: CardInfo;
 };
@@ -11,6 +12,7 @@ type CardInfo = {
   planInfo: string[];
   price: string;
   imgSrc: string;
+  route: string;
 };
 function PlanCard({ data }: PlanCardProps) {
   return (
@@ -40,9 +42,11 @@ function PlanCard({ data }: PlanCardProps) {
                   <span>تومان</span>
                 </p>
               </div>
-              <button className="text-white bg-[#4866CF] flex justify-center w-full rounded-lg py-[1%]">
-                توضیحات بیشتر
-              </button>
+              <Link href={`/${data.route}`}>
+                <button className="text-white bg-[#4866CF] flex justify-center w-full rounded-lg py-[1%]">
+                  توضیحات بیشتر
+                </button>
+              </Link>
             </div>
           </div>
         </div>

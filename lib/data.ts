@@ -1,24 +1,8 @@
-export const thirdSliderData = [
-  {
-    text: "ما از شرکت کیکاووس زمان برای طراحی سایت تهران یونی استفاده کردیم که این پروژه رو تو سریع ترین زمان ممکن و با سلیقه ما طراحی کردن و به ما تحویل دادن.",
-    title1: "آقای ملتی",
-    title2: "مسئول آموزش آزاد دانشگاه تهران",
-    id: 2,
-  },
-  {
-    text: "به نظرم شرکت کیکاووس در حوزه طراحی و ساخت وب اپلیکیشن ها خیلی قوی داره عمل می کنه، واقعا تیم حرفه ای دارن و بسیار وقت شناسن",
-    title1: "سید حسین میرهاشمی",
-    title2: "مدیرعامل لیان صنعت آرمان",
-    id: 1,
-  },
-  {
-    text: "شرکت کیکاووس زمان تو بحث آموزش های سازمانی واقعا قوی عمل کرده، امیدوارم که همیشه این کیفیت ماندگار بمونه. ",
-    title1: "خانم رضوی",
-    title2: " فراز سازه ایکاد",
-    id: 0,
-  },
-];
-
+import corporate from "../public/site-type/sherkati.svg";
+import ecommerce from "../public/site-type/foroshgahi.svg";
+import medical from "../public/site-type/pezeshki.svg";
+import tourism from "../public/site-type/gardeshgari.svg";
+import news from "../public/Plans/news.svg";
 export const CertificateSlider = [
   {
     id: 0,
@@ -56,45 +40,97 @@ export const CertificateSlider = [
     info: "سیستم مدیریت یکپارچه (IMS) ترکیبی از استانداردهای سیستم مدیریت چندگانه که در سازمان آن ثبت شده است، میباشد. سیستم های مدیریتی از طریق یک سیستم با فرایندهایی که نیازهای هر استاندارد را و شرکت بین اللمللی کیکاووس زمان در سال .......  با ارائه مستندات کافی مفتخر به در یافت این استاندارد از مرجع TQS گردید",
   },
 ];
-export const studentSidebarOptions = [
+export const PlanData = [
   {
-    text: "داشبورد",
-    imgSrc: "/sidebar/1.svg",
-    address: "/panel/student-panel",
-    path: "/student-panel",
+    id: 1,
+    type: "شرکتی",
+    title: "لورم ایپسوم متن ساختگی",
+    planInfo: [
+      "لورم ایپسوم متن ساختگی",
+      "لورم ایپسوم متن ساختگی",
+      "لورم ایپسوم متن ساختگی",
+      "لورم ایپسوم متن ساختگی",
+    ],
+    price: "10",
+    imgSrc: news,
+    route: "corporate",
   },
   {
-    text: "پروفایل",
-    imgSrc: "/sidebar/2.svg",
-    address: "/panel/student-panel/profile",
-    path: "/student-panel/profile",
+    id: 2,
+    type: "فروشگاهی",
+    title: "لورم ایپسوم متن ساختگی",
+    planInfo: [
+      "لورم ایپسوم متن ساختگی",
+      "لورم ایپسوم متن ساختگی",
+      "لورم ایپسوم متن ساختگی",
+      "لورم ایپسوم متن ساختگی",
+    ],
+    price: "10",
+    imgSrc: news,
+    route: "ecommerce",
   },
   {
-    text: "دوره ها",
-    imgSrc: "/sidebar/3.svg",
-    address: "/panel/student-panel/courses",
-    path: "/student-panel/courses",
+    id: 3,
+    type: "گردشگری",
+    title: "لورم ایپسوم متن ساختگی",
+    planInfo: [
+      "لورم ایپسوم متن ساختگی",
+      "لورم ایپسوم متن ساختگی",
+      "لورم ایپسوم متن ساختگی",
+      "لورم ایپسوم متن ساختگی",
+    ],
+    price: "10",
+    imgSrc: news,
+    route: "tourism",
   },
   {
-    text: "پشتیبانی",
-    imgSrc: "/sidebar/4.svg",
-    address: "/panel/student-panel/support",
-    path: "/student-panel/support",
-  },
-  {
-    text: "کیف پول",
-    imgSrc: "/sidebar/5.svg",
-    address: "/panel/student-panel/money-bag",
-    path: "/student-panel/money-bag",
-  },
-  {
-    text: "اشتغال",
-    imgSrc: "/sidebar/6.svg",
-    address: "/panel/student-panel/employement",
-    path: "",
+    id: 4,
+    type: "پزشکی",
+    title: "لورم ایپسوم متن ساختگی",
+    planInfo: [
+      "لورم ایپسوم متن ساختگی",
+      "لورم ایپسوم متن ساختگی",
+      "لورم ایپسوم متن ساختگی",
+      "لورم ایپسوم متن ساختگی",
+    ],
+    price: "10",
+    imgSrc: news,
+    route:"medical"
   },
 ];
-
+export const SiteTypeOptions = [
+  {
+    id: 0,
+    type: "شرکت",
+    imgUrl: corporate,
+    desc: `سایت شما معرف برند و سازمان شماست.
+    وب سایت های شرکت،چهره و ویترین کسب و کار شما در فضای مجازی می باشد.این تارنما ها با هدف معرفی محصولات و خدمات و ارتباط با مشتریان باعث رونق کسب  و کار شما می شوند.
+    دنیای دیجیتال امروز باعث شده است که طراحی سایت شرکتی به یک ضرورت پیش نیاز برای هر کسب و کاری تبدیل شود.
+    تیم حرفه ای کیکاووس زمان آماده است تا این پیش نیاز در کوتاه ترین زمان بر اساس استانداردهای جهانی به فرصتی استسنائی تبدیل کند.`,
+    sliderImgUrls: [],
+  },
+  {
+    id: 1,
+    type: "فروشگاه",
+    imgUrl: ecommerce,
+    desc: `سایت فروشگاهی یک سایت اینترنتی است که به منظور فروش محصولات یا خدمات به مشتریان ایجاد می‌شود. این نوع وب‌سایت‌ها به عنوان یک فضای مجازی برای ارائه محصولات به مشتریان عمده و خرده عمل می‌کنند. وب‌سایت فروشگاهی معمولاً اطلاعات جامعی از جمله تصاویر، توضیحات، قیمت‌ها، مشخصات فنی، نظرات مشتریان و دیگر اطلاعات مربوط به محصولات را فراهم می‌کند. همچنین، این وب‌سایت‌ها ممکن است امکاناتی مانند سیستم سبد خرید، پرداخت آنلاین، پیگیری سفارش، حساب کاربری شخصی، و روش‌های ارتباط با مشتریان (مانند گفتگوی زنده یا تیکتینگ) را ارائه دهند. وب‌سایت‌های فروشگاهی اغلب با استفاده از طراحی‌های زیبا، رابط کاربری مطلوب و تجربه خرید آسان توجه بیشتری را به خود جلب می‌کنند تا مشتریان را به خرید وفادار کنند.`,
+    sliderImgUrls: [],
+  },
+  {
+    id: 2,
+    type: "موسسه گردشگری",
+    imgUrl: tourism,
+    desc: `به طور کلی، یک وب‌سایت گردشگری و مهاجرتی یک پلتفرم آنلاین است که اطلاعات مرتبط با سفر، گردشگری، و مهاجرت را فراهم می‌کند. این نوع وب‌سایت‌ها ممکن است شامل اطلاعاتی از جمله مقاصد مسافرتی، نکات سفر، راهنمایی‌های مربوط به ویزا و مهاجرت، توصیه‌ها برای برنامه‌ریزی سفر، اطلاعات امنیتی، راهنمایی‌های فرهنگی و غذایی، نقدها و تجربیات سفر، اخبار مرتبط با صنعت گردشگری و مهاجرت، و اطلاعات پیرامون امکانات مسافرتی مانند هتل‌ها، رستوران‌ها، جاذبه‌های گردشگری، و فعالیت‌های تفریحی می‌باشد. هدف اصلی این وب‌سایت‌ها ارائه اطلاعات جامع و مفید برای افرادی است که به دنبال برنامه‌ریزی سفر یا مهاجرت به یک کشور خاص هستند. از طریق این وب‌سایت‌ها، کاربران می‌توانند به طور آگاهانه‌تری تصمیم‌گیری کنند و برنامه‌ریزی مناسبی برای سفر یا مهاجرت خود داشته باشند.`,
+    sliderImgUrls: [],
+  },
+  {
+    id: 3,
+    type: "مطب پزشکی",
+    imgUrl: medical,
+    desc: `ایده طراحی سایت پزشکی از آنجا پیش آمد که معمولا مراجعین گوناگونی وارد مطب شده و سوالات مختلفی از من در مورد استفاده از داروها می‌پرسند، یا گاها از نوبت دهی که توسط منشی صورت می‌گیرد ناراضی هستند و ترجیح می‌دهند سایت اینترنتی باشد که به راحتی نوبت خود را از قبل تهیه کنند. هر روز که می گذشت تعداد سوالات و ابهامات از بیماری های مختلف برای مراجعین بیشتر می شد. اینگونه سوالات با نداشتن زمان یک مشکل بسیار بزرگی برای من شده بود که با صحبت با چند کارشناس توسعه کسب و کار به این نتیجه رسیدیم که با طراحی سایت حرفه ای پزشکان میتوانیم به اهداف مورد نظر خودمون دست پیدا کنیم و بیمارانی که به مطب مراجعه می‌کنند راضی تر کنیم.`,
+    sliderImgUrls: [],
+  },
+];
 export const userSidebarOptions = [
   {
     text: "داشبورد",
@@ -325,28 +361,6 @@ export const employerDashboardInfo = [
     imgSrc: "",
     imgWidth: 130,
     imgheight: 130,
-  },
-];
-export const activeAds = [
-  {
-    title: "رزومه دریافت شده",
-    status: true,
-  },
-  {
-    title: "در انتظار بررسی",
-    status: "in queue",
-  },
-  {
-    title: "تعیین وضعیت",
-    status: "in queue",
-  },
-  {
-    title: "تایید جهت مصاحبه",
-    status: true,
-  },
-  {
-    title: "رد شده",
-    status: false,
   },
 ];
 export const mainAdminSidebarOptions = [
@@ -736,75 +750,3 @@ export const MainadminSiteChangeSidebarInfo = [
     ],
   },
 ];
-// export const changeHomeSidebarOptions = [
-//   {
-//     id: 0,
-//     title: "Home Slider",
-//     // address: "/panel/main-admin/employees/check-time",
-//     step: 0,
-//   },
-//   {
-//     id: 1,
-//     title: "Partner Logo",
-//     // address: "/panel/main-admin/employees/",
-//     step: 1,
-//   },
-//   {
-//     id: 2,
-//     title: "Technology",
-//     // address: "/panel/main-admin/employees/responsibilities",
-//     step: 2,
-//   },
-//   {
-//     id: 3,
-//     title: "Support",
-//     // address: "/panel/main-admin/employees/",
-//     step: 3,
-//   },
-//   {
-//     id: 4,
-//     title: "Comments",
-//     // address: "/panel/main-admin/employees/",
-//     step: 4,
-//   },
-// ];
-// export const changeCertificatesSidebarOptions = [
-//   {
-//     id: 0,
-//     title: "فلان",
-//     // address: "/panel/main-admin/employees/check-time",
-//     step: 0,
-//   },
-// ];
-// export const changeCoursesSidebarOptions = [
-//   {
-//     id: 0,
-//     title: "فرانت اند",
-//     // address: "/panel/main-admin/employees/check-time",
-//     step: 0,
-//   },
-//   {
-//     id: 1,
-//     title: "بک اند",
-//     // address: "/panel/main-admin/employees/",
-//     step: 1,
-//   },
-//   {
-//     id: 2,
-//     title: "حسابداری",
-//     // address: "/panel/main-admin/employees/responsibilities",
-//     step: 2,
-//   },
-//   {
-//     id: 3,
-//     title: "دیجیتال مارکتینگ",
-//     // address: "/panel/main-admin/employees/",
-//     step: 3,
-//   },
-//   {
-//     id: 4,
-//     title: "افزودن دوره",
-//     // address: "/panel/main-admin/employees/",
-//     step: 4,
-//   },
-// ];
