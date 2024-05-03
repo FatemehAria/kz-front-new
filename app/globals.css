@@ -30,6 +30,22 @@ textarea {
     /* Set background to transparent */
 }
 
+table,
+th,
+td {
+    border: 2px solid #4866CF;
+    border-collapse: collapse;
+    padding: 1rem;
+}
+
+tr:nth-child(even) {
+    background-color: #4866CF7A;
+    color: #FFFFFF;
+}
+tr:nth-child(odd) {
+    color: #4866CF;
+}
+
 /* swiper arrows customization */
 .swiper-button-next {
     background-image: url('../public/arrow.png');

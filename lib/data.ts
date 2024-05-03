@@ -3,6 +3,9 @@ import ecommerce from "../public/site-type/foroshgahi.svg";
 import medical from "../public/site-type/pezeshki.svg";
 import tourism from "../public/site-type/gardeshgari.svg";
 import news from "../public/Plans/news.svg";
+import approve from "../public/Plans/approve.svg";
+import disapprove from "../public/Plans/disapprove.svg";
+
 export const CertificateSlider = [
   {
     id: 0,
@@ -133,6 +136,214 @@ export const SiteTypeOptions = [
     desc: `ایده طراحی سایت پزشکی از آنجا پیش آمد که معمولا مراجعین گوناگونی وارد مطب شده و سوالات مختلفی از من در مورد استفاده از داروها می‌پرسند، یا گاها از نوبت دهی که توسط منشی صورت می‌گیرد ناراضی هستند و ترجیح می‌دهند سایت اینترنتی باشد که به راحتی نوبت خود را از قبل تهیه کنند. هر روز که می گذشت تعداد سوالات و ابهامات از بیماری های مختلف برای مراجعین بیشتر می شد. اینگونه سوالات با نداشتن زمان یک مشکل بسیار بزرگی برای من شده بود که با صحبت با چند کارشناس توسعه کسب و کار به این نتیجه رسیدیم که با طراحی سایت حرفه ای پزشکان میتوانیم به اهداف مورد نظر خودمون دست پیدا کنیم و بیمارانی که به مطب مراجعه می‌کنند راضی تر کنیم.`,
     sliderImgUrls: [],
     route: "medical",
+  },
+];
+export const CorporateTableData = [
+  {
+    "سرعت سایت": ["متوسط", "خوب", "عالی", "عالی"],
+  },
+  {
+    "قابلیت سفارشی سازی": ["متوسط", "خوب", "عالی", "عالی"],
+  },
+  {
+    "مشاوره کسب و کار": [approve, approve, approve, approve],
+  },
+  {
+    "پشتیبانی رایگان": ["6 ماه", "9 ماه", "12 ماه", "2 سال"],
+  },
+  {
+    "خدمات پشتیبانی": ["2 سال", "3 سال", "4 سال", "4 سال"],
+  },
+  {
+    "نحوه پرداخت": ["در دو مرحله", "در دو مرحله", "در سه مرحله", "توافقی"],
+  },
+  {
+    "طراحی هویت برند": [disapprove, disapprove, approve, approve],
+  },
+  {
+    "زمان تحویل": ["5 روز", "9 روز", "17 روز", "27 روز"],
+  },
+  {
+    "طراحی مینیمال": [disapprove, disapprove, approve, approve],
+  },
+  {
+    "کد نویسی بهینه": [disapprove, disapprove, approve, approve],
+  },
+  {
+    "انتخاب از قالب آماده": [
+      approve,
+      approve,
+      "طراحی اختصاصی",
+      "طراحی اختصاصی ویژه",
+    ],
+  },
+  {
+    "ذخیره صفحات در کَش": [approve, approve, approve, "ماژول اختصاصی"],
+  },
+  {
+    "معرفی تیم همکاران": [approve, approve, approve, approve],
+  },
+  {
+    "طرح ها و پروژه ها": [approve, approve, approve, approve],
+  },
+  {
+    "صفحه تماس با ما": [approve, approve, approve, approve],
+  },
+];
+export const EcommerceTableData = [
+  {
+    "سرعت سایت": ["متوسط", "خوب", "عالی", "عالی"],
+  },
+  {
+    "قابلیت سفارشی سازی": ["متوسط", "خوب", "عالی", "عالی"],
+  },
+  {
+    "مشاوره کسب و کار": [approve, approve, approve, approve],
+  },
+  {
+    "پشتیبانی رایگان": ["6 ماه", "9 ماه", "12 ماه", "2 سال"],
+  },
+  {
+    "خدمات پشتیبانی": ["2 سال", "3 سال", "4 سال", "4 سال"],
+  },
+  {
+    "نحوه پرداخت": ["در دو مرحله", "در دو مرحله", "در سه مرحله", "توافقی"],
+  },
+  {
+    "طراحی هویت برند": [disapprove, disapprove, approve, approve],
+  },
+  {
+    "زمان تحویل": ["5 روز", "9 روز", "17 روز", "27 روز"],
+  },
+  {
+    "طراحی مینیمال": [disapprove, disapprove, approve, approve],
+  },
+  {
+    "کد نویسی بهینه": [disapprove, disapprove, approve, approve],
+  },
+  {
+    "انتخاب از قالب آماده": [
+      approve,
+      approve,
+      "طراحی اختصاصی",
+      "طراحی اختصاصی ویژه",
+    ],
+  },
+  {
+    "ذخیره صفحات در کَش": [approve, approve, approve, "ماژول اختصاصی"],
+  },
+  {
+    "معرفی تیم همکاران": [approve, approve, approve, approve],
+  },
+  {
+    "طرح ها و پروژه ها": [approve, approve, approve, approve],
+  },
+  {
+    "صفحه تماس با ما": [approve, approve, approve, approve],
+  },
+];
+export const TourismTableData = [
+  {
+    "سرعت سایت": ["متوسط", "خوب", "عالی", "عالی"],
+  },
+  {
+    "قابلیت سفارشی سازی": ["متوسط", "خوب", "عالی", "عالی"],
+  },
+  {
+    "مشاوره کسب و کار": [approve, approve, approve, approve],
+  },
+  {
+    "پشتیبانی رایگان": ["6 ماه", "9 ماه", "12 ماه", "2 سال"],
+  },
+  {
+    "خدمات پشتیبانی": ["2 سال", "3 سال", "4 سال", "4 سال"],
+  },
+  {
+    "نحوه پرداخت": ["در دو مرحله", "در دو مرحله", "در سه مرحله", "توافقی"],
+  },
+  {
+    "طراحی هویت برند": [disapprove, disapprove, approve, approve],
+  },
+  {
+    "زمان تحویل": ["5 روز", "9 روز", "17 روز", "27 روز"],
+  },
+  {
+    "طراحی مینیمال": [disapprove, disapprove, approve, approve],
+  },
+  {
+    "کد نویسی بهینه": [disapprove, disapprove, approve, approve],
+  },
+  {
+    "انتخاب از قالب آماده": [
+      approve,
+      approve,
+      "طراحی اختصاصی",
+      "طراحی اختصاصی ویژه",
+    ],
+  },
+  {
+    "ذخیره صفحات در کَش": [approve, approve, approve, "ماژول اختصاصی"],
+  },
+  {
+    "معرفی تیم همکاران": [approve, approve, approve, approve],
+  },
+  {
+    "طرح ها و پروژه ها": [approve, approve, approve, approve],
+  },
+  {
+    "صفحه تماس با ما": [approve, approve, approve, approve],
+  },
+];
+export const MedicalTableData = [
+  {
+    "سرعت سایت": ["متوسط", "خوب", "عالی", "عالی"],
+  },
+  {
+    "قابلیت سفارشی سازی": ["متوسط", "خوب", "عالی", "عالی"],
+  },
+  {
+    "مشاوره کسب و کار": [approve, approve, approve, approve],
+  },
+  {
+    "پشتیبانی رایگان": ["6 ماه", "9 ماه", "12 ماه", "2 سال"],
+  },
+  {
+    "خدمات پشتیبانی": ["2 سال", "3 سال", "4 سال", "4 سال"],
+  },
+  {
+    "نحوه پرداخت": ["در دو مرحله", "در دو مرحله", "در سه مرحله", "توافقی"],
+  },
+  {
+    "طراحی هویت برند": [disapprove, disapprove, approve, approve],
+  },
+  {
+    "زمان تحویل": ["5 روز", "9 روز", "17 روز", "27 روز"],
+  },
+  {
+    "طراحی مینیمال": [disapprove, disapprove, approve, approve],
+  },
+  {
+    "کد نویسی بهینه": [disapprove, disapprove, approve, approve],
+  },
+  {
+    "انتخاب از قالب آماده": [
+      approve,
+      approve,
+      "طراحی اختصاصی",
+      "طراحی اختصاصی ویژه",
+    ],
+  },
+  {
+    "ذخیره صفحات در کَش": [approve, approve, approve, "ماژول اختصاصی"],
+  },
+  {
+    "معرفی تیم همکاران": [approve, approve, approve, approve],
+  },
+  {
+    "طرح ها و پروژه ها": [approve, approve, approve, approve],
+  },
+  {
+    "صفحه تماس با ما": [approve, approve, approve, approve],
   },
 ];
 export const userSidebarOptions = [
