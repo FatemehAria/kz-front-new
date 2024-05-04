@@ -10,14 +10,16 @@ type PlansTableProps = {
 };
 function PlansTable({ TableData }: PlansTableProps) {
   return (
-    <table className="w-full text-center">
+    <table className="text-center bg-white w-full">
       <thead>
         <tr>
-          <th className="w-[15%]">
+          <th>
             <div className="text-center">
               <span className="text-[#4866CF]">مشاوره رایگان</span>
-              <p>برای مشاوره رایگان با کارشناسان ما تماس بگیرید</p>
-              <p className="text-[#4866CF]">09961900684</p>
+              <p className="text-black">
+                برای مشاوره رایگان با کارشناسان ما تماس بگیرید
+              </p>
+              <p className="text-[#4866CF] font-faNum">09961900684</p>
             </div>
           </th>
           <th>
@@ -25,7 +27,7 @@ function PlansTable({ TableData }: PlansTableProps) {
               <Image src={base} alt="پایه" />
               <span className="font-bold">پلن پایه</span>
               <span>شروع قیمت از</span>
-              <span>10 میلیون تومان</span>
+              <span className="font-faNum">10 میلیون تومان</span>
             </div>
           </th>
           <th>
@@ -33,7 +35,7 @@ function PlansTable({ TableData }: PlansTableProps) {
               <Image src={advanced} alt="حرفه ای" />
               <span className="font-bold">پلن حرفه ای</span>
               <span>شروع قیمت از</span>
-              <span>10 میلیون تومان</span>
+              <span className="font-faNum">15 میلیون تومان</span>
             </div>
           </th>
           <th>
@@ -41,7 +43,7 @@ function PlansTable({ TableData }: PlansTableProps) {
               <Image src={special} alt="پایه" />
               <span className="font-bold">پلن ویژه</span>
               <span>شروع قیمت از</span>
-              <span>10 میلیون تومان</span>
+              <span className="font-faNum">30 میلیون تومان</span>
             </div>
           </th>
           <th>
@@ -49,7 +51,7 @@ function PlansTable({ TableData }: PlansTableProps) {
               <Image src={elite} alt="الیت" />
               <span className="font-bold">پلن الیت</span>
               <span>شروع قیمت از</span>
-              <span>10 میلیون تومان</span>
+              <span className="font-faNum">50 میلیون تومان</span>
             </div>
           </th>
         </tr>

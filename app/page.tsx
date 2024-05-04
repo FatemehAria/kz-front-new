@@ -7,6 +7,7 @@ import Order from "@/components/home-components/order";
 import Plans from "@/components/home-components/plans";
 import Reason from "@/components/home-components/reason";
 import Script from "next/script";
+import Technology from "@/components/home-components/technology";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
         <Intro />
         <IntroStatistics />
         <Plans />
+        <Technology />
         <Reason />
         <Order />
         <News />

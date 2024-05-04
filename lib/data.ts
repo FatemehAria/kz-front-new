@@ -5,6 +5,31 @@ import tourism from "../public/site-type/gardeshgari.svg";
 import news from "../public/Plans/news.svg";
 import approve from "../public/Plans/approve.svg";
 import disapprove from "../public/Plans/disapprove.svg";
+import Graphics from "../public/Technology/graphics.svg";
+import front from "../public/Technology/front.svg";
+import back from "../public/Technology/back.svg";
+import server from "../public/Technology/server.svg";
+import FigmaLogo from "../public/Technology/figam.svg";
+import PhotoshopLogo from "../public/Technology/ps.svg";
+import AdobeIllus from "../public/Technology/aillus.svg";
+import JSLogo from "../public/Technology/js.svg";
+import ReactLogo from "../public/Technology/react.svg";
+import NextLogo from "../public/Technology/next.svg";
+import TypescriptLogo from "../public/Technology/typescript.svg";
+import CssLogo from "../public/Technology/css.svg";
+import MuiLogo from "../public/Technology/mui.svg";
+import HtmlLogo from "../public/Technology/html.svg";
+import NodeLogo from "../public/Technology/node.svg";
+import ExpressLogo from "../public/Technology/express.svg";
+import NestLogo from "../public/Technology/nest.svg";
+import PhpLogo from "../public/Technology/php.svg";
+import LaravelLogo from "../public/Technology/laravel.svg";
+import MongoLogo from "../public/Technology/mongo.svg";
+import MysqlLogo from "../public/Technology/mysql.svg";
+import WindowsLogo from "../public/Technology/windows.svg";
+import CloudLogo from "../public/Technology/cloud.svg";
+import VpsLogo from "../public/Technology/vps.svg";
+import CdnLogo from "../public/Technology/cdn.svg";
 
 export const CertificateSlider = [
   {
@@ -346,6 +371,141 @@ export const MedicalTableData = [
     "صفحه تماس با ما": [approve, approve, approve, approve],
   },
 ];
+export const TechnologyData = [
+  {
+    id: 0,
+    title: "گرافیک",
+    imgUrl: Graphics,
+    technologies: [
+      {
+        id: 0,
+        techImgUrl: FigmaLogo,
+        tech: "Figma",
+      },
+      {
+        id: 1,
+        techImgUrl: PhotoshopLogo,
+        tech: "PS",
+      },
+      {
+        id: 2,
+        techImgUrl: AdobeIllus,
+        tech: "AI",
+      },
+    ],
+  },
+  {
+    id: 1,
+    title: "فرانت اند",
+    imgUrl: front,
+    technologies: [
+      {
+        id: 0,
+        techImgUrl: JSLogo,
+        tech: "JS",
+      },
+      {
+        id: 1,
+        techImgUrl: ReactLogo,
+        tech: "React",
+      },
+      {
+        id: 2,
+        techImgUrl: NextLogo,
+        tech: "Next",
+      },
+      {
+        id: 3,
+        techImgUrl: TypescriptLogo,
+        tech: "TS",
+      },
+      {
+        id: 4,
+        techImgUrl: MuiLogo,
+        tech: "MUI",
+      },
+      {
+        id: 5,
+        techImgUrl: HtmlLogo,
+        tech: "HTML",
+      },
+      {
+        id: 6,
+        techImgUrl: CssLogo,
+        tech: "CSS",
+      },
+    ],
+  },
+  {
+    id: 2,
+    title: "بک اند",
+    imgUrl: back,
+    technologies: [
+      {
+        id: 0,
+        techImgUrl: NodeLogo,
+        tech: "Node",
+      },
+      {
+        id: 1,
+        techImgUrl: ExpressLogo,
+        tech: "Express",
+      },
+      {
+        id: 2,
+        techImgUrl: NestLogo,
+        tech: "Nest",
+      },
+      {
+        id: 3,
+        techImgUrl: PhpLogo,
+        tech: "PHP",
+      },
+      {
+        id: 4,
+        techImgUrl: LaravelLogo,
+        tech: "Laravel",
+      },
+      {
+        id: 5,
+        techImgUrl: MongoLogo,
+        tech: "Mongodb",
+      },
+      {
+        id: 6,
+        techImgUrl: MysqlLogo,
+        tech: "MySQL",
+      },
+    ],
+  },
+  {
+    id: 3,
+    title: "سرور",
+    imgUrl: server,
+    technologies: [
+      {
+        id: 0,
+        techImgUrl: WindowsLogo,
+        tech: "Windows",
+      },
+      {
+        id: 1,
+        techImgUrl: CloudLogo,
+        tech: "Cloud",
+      },
+      {
+        id: 2,
+        techImgUrl: VpsLogo,
+        tech: "VPS",
+      },
+      {
+        id: 3,
+        techImgUrl: CdnLogo,
+        tech: "CDN",
+      },
+    ],
+  },
+];
 export const userSidebarOptions = [
   {
     text: "داشبورد",
@@ -397,6 +557,7 @@ export const userSidebarOptions = [
     path: "/settings",
   },
 ];
+
 export const employerSidebarOptions = [
   {
     text: "داشبورد",
