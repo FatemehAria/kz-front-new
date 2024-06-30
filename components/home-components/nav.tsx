@@ -45,6 +45,7 @@ const Nav = () => {
       dispatch<any>(fetchUserProfile());
     }
   }, []);
+
   return (
     <div
       className={`w-full mx-auto top-0 z-[999] font-YekanBakh transition-all sticky mb-3 lg:${
@@ -114,6 +115,9 @@ const Nav = () => {
         </Link>
         <div className="lg:flex gap-6 hidden">
           <ul className="hidden lg:flex justify-center items-center gap-8 z-10">
+            <li className="bg-[#C9D6E9] text-[#4866CF] p-2 rounded-[4px]">
+              <button>دانلود کاتالوگ</button>
+            </li>
             {/* weblog */}
             <li
               className="flex flex-col justify-center items-end"
@@ -244,78 +248,20 @@ const Nav = () => {
                     className="list-none absolute rounded-2xl border-b-8 bg-white border-b-[#4866CF] w-[120px] px-2 text-right lg:top-[65px] flex flex-col gap-5 z-10"
                     onMouseEnter={() => setShowTwo(true)}
                   >
-                    <Link href="/courses">
-                      <li className="text-sm pt-1 font-semibold">آموزش</li>
+                    <Link href="/in-hand">
+                      <li className="text-sm pt-1 font-semibold">طراحی سایت</li>
                     </Link>
-                    <Link href="/moshavere">
-                      <li className="text-sm  font-semibold">مشاوره</li>
+                    {/* <Link href="/moshavere">
+                      <li className="text-sm  font-semibold">طراحی گرافیک</li>
                     </Link>
                     <Link href="/pay/get_redirect/?trans_id=1234567&id_get=12345678">
                       <li className="text-sm  font-semibold">خدمات وب</li>
+                    </Link> */}
+                    <Link href="/in-hand">
+                      <li className="text-sm  font-semibold">طراحی گرافیک</li>
                     </Link>
                     <Link href="/in-hand">
-                      <li className="text-sm  font-semibold">خدمات مالی</li>
-                    </Link>
-                    <Link href="/in-hand">
-                      <li className="text-sm pb-2 font-semibold">
-                        منابع انسانی
-                      </li>
-                    </Link>
-                  </ul>
-                </React.Fragment>
-              )}
-            </li>
-            {/* chance */}
-            <li
-              className="flex flex-col justify-center items-end"
-              onMouseEnter={() => (
-                setShowOne(true),
-                setShowFour(false),
-                setShowThree(false),
-                setShowTwo(false)
-              )}
-            >
-              <div className="flex gap-2 cursor-pointer">
-                <span>
-                  <Image
-                    src="/navarrow.svg"
-                    alt="arrow"
-                    width={22}
-                    height={22}
-                  />
-                </span>
-                <span
-                  onMouseEnter={() => setShowOne(true)}
-                  className="font-semibold"
-                >
-                  فرصت های شغلی
-                </span>
-              </div>
-
-              {showOne && (
-                <React.Fragment>
-                  <ul
-                    className="list-none absolute lg:top-[65px] bg-white rounded-2xl border-b-8 border-b-[#4866CF] px-2 mt-1 text-right flex flex-col gap-5 z-10"
-                    onMouseEnter={() => setShowOne(true)}
-                  >
-                    <Link href="/in-hand">
-                      <li className="text-sm pt-1 font-semibold">بک اند</li>
-                    </Link>
-                    <Link href="/in-hand">
-                      <li className="text-sm font-semibold">فرانت اند</li>
-                    </Link>
-                    <Link href="/in-hand">
-                      <li className="text-sm font-semibold">حسابداری</li>
-                    </Link>
-                    <Link href="/in-hand">
-                      <li className="text-sm font-semibold">
-                        طراحی رابط کاربری
-                      </li>
-                    </Link>
-                    <Link href="/in-hand">
-                      <li className="text-sm pb-2 font-semibold">
-                        دیجیتال مارکتینگ
-                      </li>
+                      <li className="text-sm pb-2 font-semibold">کد نویسی</li>
                     </Link>
                   </ul>
                 </React.Fragment>

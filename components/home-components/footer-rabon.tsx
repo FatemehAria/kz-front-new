@@ -4,7 +4,7 @@ import arrowImage from "../../public/arrow.png";
 function FooterRabon() {
   return (
     <div className="font-semibold text-black flex justify-center items-center lg:grid xl:grid-cols-12 lg:grid-cols-9 4xl:grid-cols-10 lg:w-[90%] 3xl:w-full sm:mx-auto text-center bg-blue-100 rounded-3xl my-2 sm:p-3 gap-4 whitespace-nowrap">
-      <p className="flex flex-col lg:grid lg:grid-cols-3 lg:justify-around lg:items-center xl:w-[90%] w-full xl:col-span-10 lg:col-span-8 4xl:col-span-9 gap-0">
+      <p className="flex flex-col lg:grid lg:grid-cols-3 lg:justify-around lg:items-center xl:w-[90%] w-full xl:col-span-10 lg:col-span-8 4xl:col-span-9 gap-2 md:max-lg:gap-5 lg:gap-0">
         <span className="text-indigo-600 font-semibold relative top-4 lg:top-0 font-faNum lg:border-l-2 lg:border-[#4866CF]">
           پشتیبانی 24 ساعته،7روز هفته{" "}
           {/* <span className="hidden md:inline-block lg:mx-8 8xl:mx-10">|</span> */}
@@ -31,6 +31,7 @@ function FooterRabon() {
           </span>
         </span>
       </p>
+
       <span className="text-gray-600 font-bold lg:flex justify-center items-center hidden gap-1 xl:col-span-2 lg:col-span-1 4xl:col-span-1 4xl:hover:drop-shadow-4xl">
         <span className="cursor-pointer">پشتیبانی آنلاین</span>
         <span>

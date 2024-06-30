@@ -1,18 +1,20 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import styles from "./order.module.css";
 type OrderProgressProps = {
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
 };
 function OrderProgress({ currentStep, setCurrentStep }: OrderProgressProps) {
-  const dotPositions = ["0%", "25%", "50%", "75%", "100%"];
+  const dotPositions = ["0%", "16.6666%", "33.3332%", "49.9998%", "66.6664%","83.333%","99.9996%"];
   const stepTexts = [
+    "مشاوره",
     "ثبت سفارش",
-    "ثبت سفارش",
-    "ثبت سفارش",
-    "ثبت سفارش",
-    "ثبت سفارش",
+    "دریافت فایلBrief",
+    "پروپوزال",
+    "تهیه زیرساخت",
+    "طراحی وب",
+    "تحویل وب",
   ];
   const handleDotClick = (step: number) => {
     setCurrentStep(step);
@@ -34,9 +36,10 @@ function OrderProgress({ currentStep, setCurrentStep }: OrderProgressProps) {
           onClick={() => handleDotClick(index)}
         >
           <span
-            className={`whitespace-nowrap absolute -bottom-8 left-1/2 -translate-x-1/2 text-[#4866CF] self-end ${
+            className={`whitespace-nowrap lg:whitespace-nowrap absolute -bottom-8 left-1/2 -translate-x-1/2 text-[#4866CF] self-end ${
               currentStep === index ? "text-[15px] font-bold" : "text-[12px]"
             }`}
+            dir="rtl"
           >
             {stepTexts[index]}
           </span>

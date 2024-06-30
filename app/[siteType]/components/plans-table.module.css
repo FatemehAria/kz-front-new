@@ -1,0 +1,22 @@
+.table-container {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  
+  .table-container table {
+    width: 100%;
+  }
+  
+  .table-container th,
+  .table-container td {
+    padding: 10px;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .table-container th,
+    .table-container td {
+      min-width: 100px;
+      white-space: nowrap;
+    }
+  }
+  

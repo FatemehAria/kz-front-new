@@ -48,7 +48,7 @@ function SectionHeader({
         className="hidden lg:inline"
       ></div>
       <div className="text-center absolute -top-14 left-1/2 -translate-x-1/2 bg-transparent">
-        <p className="text-[#68707A] sm:text-[32px] font-bold text-[6vmin]">
+        <p className="text-[#68707A] sm:text-[32px] font-bold">
           {mainTitle}
         </p>
         <p className="text-[#4866CF] sm:text-[24px] text-[4.5vmin]">

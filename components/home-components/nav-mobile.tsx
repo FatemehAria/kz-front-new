@@ -29,7 +29,7 @@ const NavMobile = ({
   showOne,
   showFour,
   showThree,
-  showTwo
+  showTwo,
 }: NavMobileProps) => {
   return (
     <div className="lg:hidden">
@@ -178,21 +178,15 @@ const NavMobile = ({
         <li className={style.list}>
           {/*  w-[120px] too ul bod */}
           {showThree && (
-            <ul className="list-none absolute top-28 left-0 w-full rounded-2xl border-b-8 bg-white border-b-[#4866CF] p-3 text-right flex flex-col gap-5 z-10 ">
-              <Link href="/courses">
-                <li className="text-sm font-semibold">آموزش</li>
+            <ul className="list-none absolute top-28 left-0 w-full rounded-2xl border-b-8 bg-white border-b-[#4866CF] p-3 text-right flex flex-col gap-5 z-10">
+              <Link href="/in-hand">
+                <li className="text-sm font-semibold">طراحی سایت</li>
               </Link>
               <Link href="/in-hand">
-                <li className="text-sm font-semibold">مشاوره</li>
+                <li className="text-sm font-semibold">طراحی گرافیک</li>
               </Link>
               <Link href="/in-hand">
-                <li className="text-sm font-semibold">خدمات وب</li>
-              </Link>
-              <Link href="/in-hand">
-                <li className="text-sm font-semibold">خدمات مالی</li>
-              </Link>
-              <Link href="/in-hand">
-                <li className="text-sm pb-2 font-semibold">منابع انسانی</li>
+                <li className="text-sm font-semibold">کد نویسی</li>
               </Link>
             </ul>
           )}
@@ -221,53 +215,6 @@ const NavMobile = ({
             )}
           >
             خدمات ما
-          </span>
-        </li>
-        <li className={style.list}>
-          {showFour && (
-            <ul className="list-none absolute top-36 left-0 w-full bg-white rounded-2xl border-b-8 border-b-[#4866CF] px-3 mt-1 text-right flex flex-col gap-5 z-10">
-              <Link href="/in-hand">
-                <li className="text-sm pt-1 font-semibold">بک اند</li>
-              </Link>
-              <Link href="/in-hand">
-                <li className="text-sm font-semibold">فرانت اند</li>
-              </Link>
-              <Link href="/in-hand">
-                <li className="text-sm font-semibold">حسابداری</li>
-              </Link>
-              <Link href="/in-hand">
-                <li className="text-sm font-semibold">طراحی رابط کاربری</li>
-              </Link>
-              <Link href="/in-hand">
-                <li className="text-sm pb-2 font-semibold">دیجیتال مارکتینگ</li>
-              </Link>
-            </ul>
-          )}
-          <span>
-            <Image
-              src="/arrow.png"
-              width={22}
-              height={22}
-              alt="arrow"
-              className={`${showFour ? "rotate-90" : "rotate-180"}`}
-              onClick={() => (
-                setShowFour(!showFour),
-                setShowOne(false),
-                setShowThree(false),
-                setShowTwo(false)
-              )}
-            />
-          </span>
-          <span
-            className="text-lg font-bold"
-            onClick={() => (
-              setShowFour(!showFour),
-              setShowOne(false),
-              setShowThree(false),
-              setShowTwo(false)
-            )}
-          >
-            فرصت شغلی
           </span>
         </li>
       </ul>
