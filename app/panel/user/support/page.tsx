@@ -14,6 +14,7 @@ import checkmark from "../../../../public/Panel/checkmark.svg";
 import vieweye from "../../../../public/ViewUsers/vieweye.svg";
 import CloseTicketModal from "./components/close-ticket-modal";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import NotFound from "../../admin/components/NotFound";
 const moment = require("moment-jalaali");
 
 const Support = () => {
@@ -49,16 +50,19 @@ const Support = () => {
       setSupportStatus((prevStatus) => ({ ...prevStatus, loading: false }));
       // console.log(data);
     } catch (error) {
-      setSupportStatus({ error: "خطا در خواندن اطلاعات.", loading: false });
+      setSupportStatus({ error: "خطا در دریافت اطلاعات.", loading: false });
       // console.log(error);
     }
   };
 
   useEffect(() => {
-    if (localUserId) {
-      getAllTheTickets();
-    }
-  }, [localUserId]);
+    getAllTheTickets();
+  }, []);
+  // useEffect(() => {
+  //   if (localUserId) {
+  //     getAllTheTickets();
+  //   }
+  // }, [localUserId]);
   return (
     <div className="flex flex-col gap-3">
       {showModal && (
@@ -88,8 +92,10 @@ const Support = () => {
           </div>
           {supportStatus.loading ? (
             <SkeletonTheme>
-              <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
+              <Skeleton count={1} className="p-3" baseColor="#EAEFF6" />
             </SkeletonTheme>
+          ) : supportStatus.error ? (
+            <NotFound text={supportStatus.error} />
           ) : (
             allTickets.map((item: any, index) => (
               <div

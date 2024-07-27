@@ -14,7 +14,9 @@ import checkmark from "../../../../public/Panel/checkmark.svg";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import vieweye from "../../../../public/ViewUsers/vieweye.svg";
 import CloseTicketModal from "./components/close-ticket-modal";
+import NotFound from "../components/NotFound";
 const moment = require("moment-jalaali");
+
 const Support = () => {
   const dispatch = useDispatch();
   const { localUserId, localToken } = useSelector(
@@ -52,10 +54,15 @@ const Support = () => {
     }
   };
   useEffect(() => {
-    if (localUserId) {
-      getAllTickets();
-    }
-  }, [localUserId]);
+    getAllTickets();
+  }, []);
+
+  // useEffect(() => {
+  //   if (localUserId) {
+  //     getAllTickets();
+  //   }
+  // }, [localUserId]);
+
   return (
     <div className="flex flex-col gap-3">
       {showModal && (
@@ -87,6 +94,8 @@ const Support = () => {
             <SkeletonTheme>
               <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
             </SkeletonTheme>
+          ) : allTicketsStatus.error ? (
+            <NotFound text={`${allTicketsStatus.error}`} />
           ) : (
             allTickets.map((item: any, index) => (
               <div

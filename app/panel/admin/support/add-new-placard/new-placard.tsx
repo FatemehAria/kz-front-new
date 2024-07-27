@@ -79,7 +79,7 @@ function NewPlacard({ setSteps }: NewPlacardProps) {
             className="bg-[#4866CE] text-white p-2 rounded-[4px] border"
             onClick={() => setSteps(2)}
           >
-            کاربر گروهی
+            کاربران گروهی
           </button>
         </div>
       </div>
@@ -90,6 +90,7 @@ function NewPlacard({ setSteps }: NewPlacardProps) {
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setAnnounceInfo((last) => ({ ...last, RelevantUnit: e.target.value }))
         }
+        direction="flex-row items-center"
       />
       <div
         style={{

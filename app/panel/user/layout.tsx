@@ -13,13 +13,14 @@ function UserLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getTokenFromLocal());
-    dispatch(getIdFromLocal());
-    dispatch<any>(fetchUserProfile());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getTokenFromLocal());
+  //   dispatch(getIdFromLocal());
+  //   dispatch<any>(fetchUserProfile());
+  // }, []);
 
-  return <div dir="rtl">{userType === "User" && children}</div>;
+  // return <div dir="rtl">{userType === "User" && children}</div>;
+  return <div dir="rtl">{children}</div>;
 }
 
 export default UserLayout;

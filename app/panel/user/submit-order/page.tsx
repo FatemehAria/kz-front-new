@@ -13,6 +13,7 @@ import {
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
 import { Bounce, toast } from "react-toastify";
+import Link from "next/link";
 
 function SubmitOrder() {
   const { localToken, localUserId } = useSelector(
@@ -177,9 +178,10 @@ function SubmitOrder() {
     }
   };
   return (
+    // w-[90%]
     <form
       onSubmit={(e) => handleSubmission(e)}
-      className="py-[3%] w-[90%] shadow mx-auto bg-white rounded-2xl px-[3%] grid grid-cols-1 gap-5 relative"
+      className="py-[3%] w-[100%] shadow mx-auto bg-white rounded-2xl px-[3%] grid grid-cols-1 gap-5 relative"
     >
       {showSimilarModal && (
         <OrdersubmissionModal
@@ -272,9 +274,9 @@ function SubmitOrder() {
       <div className="flex justify-between">
         <FileUpload File={File} handleChange={handleFileChange} />
         <div className="flex gap-5">
-          <div className="bg-[#4866CE] text-white rounded-lg p-1 whitespace-nowrap flex justify-center items-center">
+          <Link href={`/panel/user/submit-order/consultation`} className="bg-[#4866CE] text-white rounded-lg p-1 whitespace-nowrap flex justify-center items-center">
             <span>درخواست مشاوره رایگان</span>
-          </div>
+          </Link>
           <button className="bg-[#4866CE] text-white rounded-lg p-1 w-[80px] flex justify-center items-center">
             <span>ثبت</span>
           </button>

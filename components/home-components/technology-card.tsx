@@ -8,14 +8,14 @@ type TechnologyCardProps = {
     imgUrl: string;
     technologies: {
       id: number;
-      techImgUrl: string;
-      tech: string;
+      techImgUrl: string[];
+      tech: string[];
     }[];
   };
 };
 function TechnologyCard({ technologyInfo }: TechnologyCardProps) {
   return (
-    <div className="bg-white w-[250px] md:max-lg:w-[260px] shadow-md rounded-[15px] flex flex-col items-center gap-3">
+    <div className="bg-white h-[400px] md:max-lg:h-[300px] w-[260px] lg:w-full mx-auto shadow-md rounded-[15px] flex flex-col items-center gap-3">
       <div className="bg-[#4866CF] text-center text-white rounded-[15px] font-semibold w-full p-2 text-[20px]">
         {technologyInfo.title}
       </div>
@@ -31,10 +31,14 @@ function TechnologyCard({ technologyInfo }: TechnologyCardProps) {
       ></div>
       <ul className="flex flex-col items-center w-full gap-5 py-4">
         {technologyInfo.technologies.map(
-          (tech: { id: number; techImgUrl: string; tech: string }) => (
+          (tech: { id: number; techImgUrl: string[]; tech: string[] }) => (
             <li key={tech.id} className="flex flex-row items-center gap-3 w-20">
-              <Image src={tech.techImgUrl} alt={tech.tech} />
-              <span>{tech.tech}</span>
+              {tech.techImgUrl.map((url) => (
+                <Image key={url} src={url} alt={""} width={29} height={29} />
+              ))}
+              <span>
+                {tech.tech.length > 1 ? tech.tech.join(",") : tech.tech}
+              </span>
             </li>
           )
         )}

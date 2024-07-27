@@ -143,9 +143,6 @@ const NavMobile = ({
               <Link href="/contact-us">
                 <li className="text-sm font-semibold">تماس با ما</li>
               </Link>
-              <Link href="/in-hand">
-                <li className="text-sm font-semibold">نمودار سازمانی</li>
-              </Link>
             </ul>
           )}
           <span>

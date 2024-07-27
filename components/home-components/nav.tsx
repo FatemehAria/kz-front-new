@@ -206,11 +206,6 @@ const Nav = () => {
                     <Link href="/contact-us">
                       <li className="text-sm font-semibold">تماس با ما</li>
                     </Link>
-                    <Link href="/in-hand">
-                      <li className="text-sm pb-2 font-semibold">
-                        نمودار سازمانی
-                      </li>
-                    </Link>
                   </ul>
                 </React.Fragment>
               )}

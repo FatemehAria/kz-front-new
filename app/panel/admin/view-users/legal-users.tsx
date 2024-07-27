@@ -3,6 +3,8 @@ import React from "react";
 import vieweye from "../../../../public/ViewUsers/vieweye.svg";
 import Link from "next/link";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import NotFound from "../components/NotFound";
+import LegalUserHeader from "../components/LegalUserHeader";
 type LegalUsersProps = {
   LegalUsersData: any[];
   legalUsersStatus: {
@@ -13,13 +15,7 @@ type LegalUsersProps = {
 function LegalUsers({ LegalUsersData, legalUsersStatus }: LegalUsersProps) {
   return (
     <div className="flex flex-col gap-5">
-      <div className="grid grid-cols-5 text-center">
-        <p>ردیف</p>
-        <p>شماره موبایل</p>
-        <p>نام و نام خانوادگی</p>
-        <p>ایمیل</p>
-        <p>مشاهده</p>
-      </div>
+      <LegalUserHeader />
       {legalUsersStatus.loading ? (
         <SkeletonTheme>
           <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
@@ -45,9 +41,7 @@ function LegalUsers({ LegalUsersData, legalUsersStatus }: LegalUsersProps) {
           </div>
         ))
       ) : (
-        <p className="text-center font-bold text-red-700">
-          کاربری یافت نشد.
-        </p>
+        <NotFound text="کاربری یافت نشد." />
       )}
     </div>
   );

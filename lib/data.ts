@@ -1,35 +1,4 @@
-import corporate from "../public/site-type/sherkati.svg";
-import ecommerce from "../public/site-type/foroshgahi.svg";
-import medical from "../public/site-type/pezeshki.svg";
-import tourism from "../public/site-type/gardeshgari.svg";
-import news from "../public/Plans/news.svg";
-import approve from "../public/Plans/approve.svg";
-import disapprove from "../public/Plans/disapprove.svg";
-import Graphics from "../public/Technology/graphics.svg";
-import front from "../public/Technology/front.svg";
-import back from "../public/Technology/back.svg";
-import server from "../public/Technology/server.svg";
-import FigmaLogo from "../public/Technology/figam.svg";
-import PhotoshopLogo from "../public/Technology/ps.svg";
-import AdobeIllus from "../public/Technology/aillus.svg";
-import JSLogo from "../public/Technology/js.svg";
-import ReactLogo from "../public/Technology/react.svg";
-import NextLogo from "../public/Technology/next.svg";
-import TypescriptLogo from "../public/Technology/typescript.svg";
-import CssLogo from "../public/Technology/css.svg";
-import MuiLogo from "../public/Technology/mui.svg";
-import HtmlLogo from "../public/Technology/html.svg";
-import NodeLogo from "../public/Technology/node.svg";
-import ExpressLogo from "../public/Technology/express.svg";
-import NestLogo from "../public/Technology/nest.svg";
-import PhpLogo from "../public/Technology/php.svg";
-import LaravelLogo from "../public/Technology/laravel.svg";
-import MongoLogo from "../public/Technology/mongo.svg";
-import MysqlLogo from "../public/Technology/mysql.svg";
-import WindowsLogo from "../public/Technology/windows.svg";
-import CloudLogo from "../public/Technology/cloud.svg";
-import VpsLogo from "../public/Technology/vps.svg";
-import CdnLogo from "../public/Technology/cdn.svg";
+import { Images } from "./images";
 
 export const CertificateSlider = [
   {
@@ -80,7 +49,7 @@ export const PlanData = [
       "لورم ایپسوم متن ساختگی",
     ],
     price: "10",
-    imgSrc: news,
+    imgSrc: Images.news,
     route: "corporate",
   },
   {
@@ -94,7 +63,7 @@ export const PlanData = [
       "لورم ایپسوم متن ساختگی",
     ],
     price: "10",
-    imgSrc: news,
+    imgSrc: Images.news,
     route: "ecommerce",
   },
   {
@@ -108,7 +77,7 @@ export const PlanData = [
       "لورم ایپسوم متن ساختگی",
     ],
     price: "10",
-    imgSrc: news,
+    imgSrc: Images.news,
     route: "tourism",
   },
   {
@@ -122,15 +91,49 @@ export const PlanData = [
       "لورم ایپسوم متن ساختگی",
     ],
     price: "10",
-    imgSrc: news,
+    imgSrc: Images.news,
     route: "medical",
+  },
+];
+export const ReasonData = [
+  {
+    id: 1,
+    reasonTitle: "دامنه و هاست رایگان",
+    reasonText:
+      "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از ",
+    imgSrc: Images.data,
+    hoveredImgSrc: Images.hoveredData,
+  },
+  {
+    id: 2,
+    reasonTitle: "دامنه و هاست رایگان",
+    reasonText:
+      "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از ",
+    imgSrc: Images.time,
+    hoveredImgSrc: Images.hoveredTime,
+  },
+  {
+    id: 3,
+    reasonTitle: "دامنه و هاست رایگان",
+    reasonText:
+      "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از ",
+    imgSrc: Images.mail,
+    hoveredImgSrc: Images.hoveredMail,
+  },
+  {
+    id: 4,
+    reasonTitle: "دامنه و هاست رایگان",
+    reasonText:
+      "لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از ",
+    imgSrc: Images.book,
+    hoveredImgSrc: Images.hoveredBook,
   },
 ];
 export const SiteTypeOptions = [
   {
     id: 0,
     type: "شرکت",
-    imgUrl: corporate,
+    imgUrl: Images.corporate,
     desc: `سایت شما معرف برند و سازمان شماست.
     وب سایت های شرکت،چهره و ویترین کسب و کار شما در فضای مجازی می باشد.این تارنما ها با هدف معرفی محصولات و خدمات و ارتباط با مشتریان باعث رونق کسب  و کار شما می شوند.
     دنیای دیجیتال امروز باعث شده است که طراحی سایت شرکتی به یک ضرورت پیش نیاز برای هر کسب و کاری تبدیل شود.
@@ -141,7 +144,7 @@ export const SiteTypeOptions = [
   {
     id: 1,
     type: "فروشگاه",
-    imgUrl: ecommerce,
+    imgUrl: Images.ecommerce,
     desc: `سایت فروشگاهی یک سایت اینترنتی است که به منظور فروش محصولات یا خدمات به مشتریان ایجاد می‌شود. این نوع وب‌سایت‌ها به عنوان یک فضای مجازی برای ارائه محصولات به مشتریان عمده و خرده عمل می‌کنند. وب‌سایت فروشگاهی معمولاً اطلاعات جامعی از جمله تصاویر، توضیحات، قیمت‌ها، مشخصات فنی، نظرات مشتریان و دیگر اطلاعات مربوط به محصولات را فراهم می‌کند. همچنین، این وب‌سایت‌ها ممکن است امکاناتی مانند سیستم سبد خرید، پرداخت آنلاین، پیگیری سفارش، حساب کاربری شخصی، و روش‌های ارتباط با مشتریان (مانند گفتگوی زنده یا تیکتینگ) را ارائه دهند. وب‌سایت‌های فروشگاهی اغلب با استفاده از طراحی‌های زیبا، رابط کاربری مطلوب و تجربه خرید آسان توجه بیشتری را به خود جلب می‌کنند تا مشتریان را به خرید وفادار کنند.`,
     sliderImgUrls: [],
     route: "ecommerce",
@@ -149,7 +152,7 @@ export const SiteTypeOptions = [
   {
     id: 2,
     type: "موسسه گردشگری",
-    imgUrl: tourism,
+    imgUrl: Images.tourism,
     desc: `به طور کلی، یک وب‌سایت گردشگری و مهاجرتی یک پلتفرم آنلاین است که اطلاعات مرتبط با سفر، گردشگری، و مهاجرت را فراهم می‌کند. این نوع وب‌سایت‌ها ممکن است شامل اطلاعاتی از جمله مقاصد مسافرتی، نکات سفر، راهنمایی‌های مربوط به ویزا و مهاجرت، توصیه‌ها برای برنامه‌ریزی سفر، اطلاعات امنیتی، راهنمایی‌های فرهنگی و غذایی، نقدها و تجربیات سفر، اخبار مرتبط با صنعت گردشگری و مهاجرت، و اطلاعات پیرامون امکانات مسافرتی مانند هتل‌ها، رستوران‌ها، جاذبه‌های گردشگری، و فعالیت‌های تفریحی می‌باشد. هدف اصلی این وب‌سایت‌ها ارائه اطلاعات جامع و مفید برای افرادی است که به دنبال برنامه‌ریزی سفر یا مهاجرت به یک کشور خاص هستند. از طریق این وب‌سایت‌ها، کاربران می‌توانند به طور آگاهانه‌تری تصمیم‌گیری کنند و برنامه‌ریزی مناسبی برای سفر یا مهاجرت خود داشته باشند.`,
     sliderImgUrls: [],
     route: "tourism",
@@ -157,7 +160,7 @@ export const SiteTypeOptions = [
   {
     id: 3,
     type: "مطب پزشکی",
-    imgUrl: medical,
+    imgUrl: Images.medical,
     desc: `ایده طراحی سایت پزشکی از آنجا پیش آمد که معمولا مراجعین گوناگونی وارد مطب شده و سوالات مختلفی از من در مورد استفاده از داروها می‌پرسند، یا گاها از نوبت دهی که توسط منشی صورت می‌گیرد ناراضی هستند و ترجیح می‌دهند سایت اینترنتی باشد که به راحتی نوبت خود را از قبل تهیه کنند. هر روز که می گذشت تعداد سوالات و ابهامات از بیماری های مختلف برای مراجعین بیشتر می شد. اینگونه سوالات با نداشتن زمان یک مشکل بسیار بزرگی برای من شده بود که با صحبت با چند کارشناس توسعه کسب و کار به این نتیجه رسیدیم که با طراحی سایت حرفه ای پزشکان میتوانیم به اهداف مورد نظر خودمون دست پیدا کنیم و بیمارانی که به مطب مراجعه می‌کنند راضی تر کنیم.`,
     sliderImgUrls: [],
     route: "medical",
@@ -171,7 +174,12 @@ export const CorporateTableData = [
     "قابلیت سفارشی سازی": ["متوسط", "خوب", "عالی", "عالی"],
   },
   {
-    "مشاوره کسب و کار": [approve, approve, approve, approve],
+    "مشاوره کسب و کار": [
+      Images.approve,
+      Images.approve,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
     "پشتیبانی رایگان": ["6 ماه", "9 ماه", "12 ماه", "2 سال"],
@@ -183,36 +191,71 @@ export const CorporateTableData = [
     "نحوه پرداخت": ["در دو مرحله", "در دو مرحله", "در سه مرحله", "توافقی"],
   },
   {
-    "طراحی هویت برند": [disapprove, disapprove, approve, approve],
+    "طراحی هویت برند": [
+      Images.disapprove,
+      Images.disapprove,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
     "زمان تحویل": ["5 روز", "9 روز", "17 روز", "27 روز"],
   },
   {
-    "طراحی مینیمال": [disapprove, disapprove, approve, approve],
+    "طراحی مینیمال": [
+      Images.disapprove,
+      Images.disapprove,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
-    "کد نویسی بهینه": [disapprove, disapprove, approve, approve],
+    "کد نویسی بهینه": [
+      Images.disapprove,
+      Images.disapprove,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
     "انتخاب از قالب آماده": [
-      approve,
-      approve,
+      Images.approve,
+      Images.approve,
       "طراحی اختصاصی",
       "طراحی اختصاصی ویژه",
     ],
   },
   {
-    "ذخیره صفحات در کَش": [approve, approve, approve, "ماژول اختصاصی"],
+    "ذخیره صفحات در کَش": [
+      Images.approve,
+      Images.approve,
+      Images.approve,
+      "ماژول اختصاصی",
+    ],
   },
   {
-    "معرفی تیم همکاران": [approve, approve, approve, approve],
+    "معرفی تیم همکاران": [
+      Images.approve,
+      Images.approve,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
-    "طرح ها و پروژه ها": [approve, approve, approve, approve],
+    "طرح ها و پروژه ها": [
+      Images.approve,
+      Images.approve,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
-    "صفحه تماس با ما": [approve, approve, approve, approve],
+    "صفحه تماس با ما": [
+      Images.approve,
+      Images.approve,
+      Images.approve,
+      Images.approve,
+    ],
   },
 ];
 export const CorporateAccordionData = [
@@ -251,7 +294,12 @@ export const EcommerceTableData = [
     "قابلیت سفارشی سازی": ["متوسط", "خوب", "عالی", "عالی"],
   },
   {
-    "مشاوره کسب و کار": [approve, approve, approve, approve],
+    "مشاوره کسب و کار": [
+      Images.approve,
+      Images.approve,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
     "پشتیبانی رایگان": ["6 ماه", "9 ماه", "12 ماه", "2 سال"],
@@ -263,36 +311,71 @@ export const EcommerceTableData = [
     "نحوه پرداخت": ["در دو مرحله", "در دو مرحله", "در سه مرحله", "توافقی"],
   },
   {
-    "طراحی هویت برند": [disapprove, disapprove, approve, approve],
+    "طراحی هویت برند": [
+      Images.disapprove,
+      Images.disapprove,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
     "زمان تحویل": ["5 روز", "9 روز", "17 روز", "27 روز"],
   },
   {
-    "طراحی مینیمال": [disapprove, disapprove, approve, approve],
+    "طراحی مینیمال": [
+      Images.disapprove,
+      Images.disapprove,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
-    "کد نویسی بهینه": [disapprove, disapprove, approve, approve],
+    "کد نویسی بهینه": [
+      Images.disapprove,
+      Images.disapprove,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
     "انتخاب از قالب آماده": [
-      approve,
-      approve,
+      Images.approve,
+      Images.approve,
       "طراحی اختصاصی",
       "طراحی اختصاصی ویژه",
     ],
   },
   {
-    "ذخیره صفحات در کَش": [approve, approve, approve, "ماژول اختصاصی"],
+    "ذخیره صفحات در کَش": [
+      Images.approve,
+      Images.approve,
+      Images.approve,
+      "ماژول اختصاصی",
+    ],
   },
   {
-    "معرفی تیم همکاران": [approve, approve, approve, approve],
+    "معرفی تیم همکاران": [
+      Images.approve,
+      Images.approve,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
-    "طرح ها و پروژه ها": [approve, approve, approve, approve],
+    "طرح ها و پروژه ها": [
+      Images.approve,
+      Images.approve,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
-    "صفحه تماس با ما": [approve, approve, approve, approve],
+    "صفحه تماس با ما": [
+      Images.approve,
+      Images.approve,
+      Images.approve,
+      Images.approve,
+    ],
   },
 ];
 export const TourismTableData = [
@@ -303,7 +386,12 @@ export const TourismTableData = [
     "قابلیت سفارشی سازی": ["متوسط", "خوب", "عالی", "عالی"],
   },
   {
-    "مشاوره کسب و کار": [approve, approve, approve, approve],
+    "مشاوره کسب و کار": [
+      Images.approve,
+      Images.approve,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
     "پشتیبانی رایگان": ["6 ماه", "9 ماه", "12 ماه", "2 سال"],
@@ -315,36 +403,71 @@ export const TourismTableData = [
     "نحوه پرداخت": ["در دو مرحله", "در دو مرحله", "در سه مرحله", "توافقی"],
   },
   {
-    "طراحی هویت برند": [disapprove, disapprove, approve, approve],
+    "طراحی هویت برند": [
+      Images.disapprove,
+      Images.disapprove,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
     "زمان تحویل": ["5 روز", "9 روز", "17 روز", "27 روز"],
   },
   {
-    "طراحی مینیمال": [disapprove, disapprove, approve, approve],
+    "طراحی مینیمال": [
+      Images.disapprove,
+      Images.disapprove,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
-    "کد نویسی بهینه": [disapprove, disapprove, approve, approve],
+    "کد نویسی بهینه": [
+      Images.disapprove,
+      Images.disapprove,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
     "انتخاب از قالب آماده": [
-      approve,
-      approve,
+      Images.approve,
+      Images.approve,
       "طراحی اختصاصی",
       "طراحی اختصاصی ویژه",
     ],
   },
   {
-    "ذخیره صفحات در کَش": [approve, approve, approve, "ماژول اختصاصی"],
+    "ذخیره صفحات در کَش": [
+      Images.approve,
+      Images.approve,
+      Images.approve,
+      "ماژول اختصاصی",
+    ],
   },
   {
-    "معرفی تیم همکاران": [approve, approve, approve, approve],
+    "معرفی تیم همکاران": [
+      Images.approve,
+      Images.approve,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
-    "طرح ها و پروژه ها": [approve, approve, approve, approve],
+    "طرح ها و پروژه ها": [
+      Images.approve,
+      Images.approve,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
-    "صفحه تماس با ما": [approve, approve, approve, approve],
+    "صفحه تماس با ما": [
+      Images.approve,
+      Images.approve,
+      Images.approve,
+      Images.approve,
+    ],
   },
 ];
 export const MedicalTableData = [
@@ -355,7 +478,12 @@ export const MedicalTableData = [
     "قابلیت سفارشی سازی": ["متوسط", "خوب", "عالی", "عالی"],
   },
   {
-    "مشاوره کسب و کار": [approve, approve, approve, approve],
+    "مشاوره کسب و کار": [
+      Images.approve,
+      Images.approve,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
     "پشتیبانی رایگان": ["6 ماه", "9 ماه", "12 ماه", "2 سال"],
@@ -367,169 +495,204 @@ export const MedicalTableData = [
     "نحوه پرداخت": ["در دو مرحله", "در دو مرحله", "در سه مرحله", "توافقی"],
   },
   {
-    "طراحی هویت برند": [disapprove, disapprove, approve, approve],
+    "طراحی هویت برند": [
+      Images.disapprove,
+      Images.disapprove,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
     "زمان تحویل": ["5 روز", "9 روز", "17 روز", "27 روز"],
   },
   {
-    "طراحی مینیمال": [disapprove, disapprove, approve, approve],
+    "طراحی مینیمال": [
+      Images.disapprove,
+      Images.disapprove,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
-    "کد نویسی بهینه": [disapprove, disapprove, approve, approve],
+    "کد نویسی بهینه": [
+      Images.disapprove,
+      Images.disapprove,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
     "انتخاب از قالب آماده": [
-      approve,
-      approve,
+      Images.approve,
+      Images.approve,
       "طراحی اختصاصی",
       "طراحی اختصاصی ویژه",
     ],
   },
   {
-    "ذخیره صفحات در کَش": [approve, approve, approve, "ماژول اختصاصی"],
+    "ذخیره صفحات در کَش": [
+      Images.approve,
+      Images.approve,
+      Images.approve,
+      "ماژول اختصاصی",
+    ],
   },
   {
-    "معرفی تیم همکاران": [approve, approve, approve, approve],
+    "معرفی تیم همکاران": [
+      Images.approve,
+      Images.approve,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
-    "طرح ها و پروژه ها": [approve, approve, approve, approve],
+    "طرح ها و پروژه ها": [
+      Images.approve,
+      Images.approve,
+      Images.approve,
+      Images.approve,
+    ],
   },
   {
-    "صفحه تماس با ما": [approve, approve, approve, approve],
+    "صفحه تماس با ما": [
+      Images.approve,
+      Images.approve,
+      Images.approve,
+      Images.approve,
+    ],
   },
 ];
 export const TechnologyData = [
   {
-    id: 0,
-    title: "گرافیک",
-    imgUrl: Graphics,
+    id: 2,
+    title: "بک اند",
+    imgUrl: Images.back,
     technologies: [
       {
         id: 0,
-        techImgUrl: FigmaLogo,
-        tech: "Figma",
+        techImgUrl: [Images.ExpressLogo],
+        tech: ["Express"],
       },
       {
         id: 1,
-        techImgUrl: PhotoshopLogo,
-        tech: "PS",
+        techImgUrl: [Images.NodeLogo, Images.NestLogo],
+        tech: ["Node", "Nest"],
       },
       {
         id: 2,
-        techImgUrl: AdobeIllus,
-        tech: "AI",
+        techImgUrl: [Images.PhpLogo, Images.LaravelLogo],
+        tech: ["PHP", "Laravel"],
       },
     ],
   },
   {
     id: 1,
     title: "فرانت اند",
-    imgUrl: front,
+    imgUrl: Images.front,
     technologies: [
       {
         id: 0,
-        techImgUrl: JSLogo,
-        tech: "JS",
+        techImgUrl: [Images.JSLogo, Images.TypescriptLogo],
+        tech: ["JS", "TS"],
       },
       {
         id: 1,
-        techImgUrl: ReactLogo,
-        tech: "React",
-      },
-      {
-        id: 2,
-        techImgUrl: NextLogo,
-        tech: "Next",
+        techImgUrl: [Images.ReactLogo, Images.NextLogo],
+        tech: ["React", "Next"],
       },
       {
         id: 3,
-        techImgUrl: TypescriptLogo,
-        tech: "TS",
-      },
-      {
-        id: 4,
-        techImgUrl: MuiLogo,
-        tech: "MUI",
-      },
-      {
-        id: 5,
-        techImgUrl: HtmlLogo,
-        tech: "HTML",
-      },
-      {
-        id: 6,
-        techImgUrl: CssLogo,
-        tech: "CSS",
+        techImgUrl: [Images.HtmlLogo, Images.CssLogo],
+        tech: ["HTML", "CSS"],
       },
     ],
   },
   {
-    id: 2,
-    title: "بک اند",
-    imgUrl: back,
+    id: 0,
+    title: "گرافیک",
+    imgUrl: Images.Graphics,
     technologies: [
       {
         id: 0,
-        techImgUrl: NodeLogo,
-        tech: "Node",
+        techImgUrl: [Images.FigmaLogo],
+        tech: ["Figma"],
       },
       {
         id: 1,
-        techImgUrl: ExpressLogo,
-        tech: "Express",
+        techImgUrl: [Images.PhotoshopLogo],
+        tech: ["PS"],
       },
       {
         id: 2,
-        techImgUrl: NestLogo,
-        tech: "Nest",
+        techImgUrl: [Images.AdobeIllus],
+        tech: ["AI"],
+      },
+    ],
+  },
+
+  {
+    id: 5,
+    title: "پنل",
+    imgUrl: Images.ServerMangamenetLogo,
+    technologies: [
+      {
+        id: 0,
+        techImgUrl: [Images.CPanelLogo],
+        tech: ["cPanel"],
       },
       {
-        id: 3,
-        techImgUrl: PhpLogo,
-        tech: "PHP",
+        id: 1,
+        techImgUrl: [Images.DirectAdminLogo],
+        tech: ["DirectAdmin"],
       },
       {
-        id: 4,
-        techImgUrl: LaravelLogo,
-        tech: "Laravel",
-      },
-      {
-        id: 5,
-        techImgUrl: MongoLogo,
-        tech: "Mongodb",
-      },
-      {
-        id: 6,
-        techImgUrl: MysqlLogo,
-        tech: "MySQL",
+        id: 2,
+        techImgUrl: [Images.PleskLogo],
+        tech: ["Plesk"],
       },
     ],
   },
   {
     id: 3,
     title: "سرور",
-    imgUrl: server,
+    imgUrl: Images.server,
     technologies: [
       {
         id: 0,
-        techImgUrl: WindowsLogo,
-        tech: "Windows",
+        techImgUrl: [Images.WindowsLogo],
+        tech: ["Windows"],
       },
       {
         id: 1,
-        techImgUrl: CloudLogo,
-        tech: "Cloud",
+        techImgUrl: [Images.CloudLogo],
+        tech: ["Cloud"],
       },
       {
         id: 2,
-        techImgUrl: VpsLogo,
-        tech: "VPS",
+        techImgUrl: [Images.VpsLogo],
+        tech: ["VPS"],
+      },
+    ],
+  },
+  {
+    id: 4,
+    title: "دیتابیس",
+    imgUrl: Images.Database,
+    technologies: [
+      {
+        id: 0,
+        techImgUrl: [Images.MongoLogo],
+        tech: ["Mongodb"],
       },
       {
-        id: 3,
-        techImgUrl: CdnLogo,
-        tech: "CDN",
+        id: 1,
+        techImgUrl: [Images.MysqlLogo],
+        tech: ["MySQL"],
+      },
+      {
+        id: 2,
+        techImgUrl: [Images.RedisLogo],
+        tech: ["Redis"],
       },
     ],
   },
@@ -570,7 +733,7 @@ export const userSidebarOptions = [
     text: "ثبت سفارش",
     imgSrc: "/Panel/orders.svg",
     address: "/panel/user/submit-order",
-    path: "/submit-order",
+    path: ["/panel/user/submit-order", "/panel/user/submit-order/consultation"],
   },
   {
     text: "وضعیت مالی",
@@ -583,188 +746,6 @@ export const userSidebarOptions = [
     imgSrc: "/Panel/settings.svg",
     address: "/panel/user/settings",
     path: "/settings",
-  },
-];
-
-export const employerSidebarOptions = [
-  {
-    text: "داشبورد",
-    imgSrc: "/sidebar/1.svg",
-    address: "/panel/employer-panel",
-    path: "/employer-panel",
-  },
-  {
-    text: "پروفایل",
-    imgSrc: "/sidebar/2.svg",
-    address: "/panel/employer-panel/profile",
-    path: "/profile",
-  },
-  {
-    text: "ثبت آگهی",
-    imgSrc: "/sidebar/advertising.svg",
-    address: "/panel/employer-panel/advertisement",
-    path: "/advertisement",
-  },
-  {
-    text: "نیروکار",
-    imgSrc: "/sidebar/3.svg",
-    address: "/panel/employer-panel/active-ads",
-    path: "/active-ads",
-  },
-  {
-    text: "پشتیبانی",
-    imgSrc: "/sidebar/4.svg",
-    address: "/panel/employer-panel/support",
-    path: "/employer-panel/support",
-  },
-  {
-    text: "سفارشات",
-    imgSrc: "/sidebar/orders.svg",
-    address: "/panel/employer-panel/orders",
-    path: "/employer-panel/orders",
-  },
-];
-export const UserDashboardInfo = [
-  {
-    title: "آموزش",
-    subtitle: "آموزش و پیگیری",
-    imgSrc: "/userpaneldahsboard/graduation.svg",
-    imgWidth: 135,
-    imgheight: 135,
-    top: "-top-12",
-    linkHref: "/panel",
-  },
-  {
-    title: "وضعیت مالی",
-    subtitle: "موجودی کیف پول",
-    imgSrc: "/userpaneldahsboard/maali.svg",
-    imgWidth: 140,
-    imgheight: 140,
-    top: "-top-10",
-    linkHref: "/panel",
-  },
-  {
-    title: "ارتقا پنل کاربری",
-    subtitle: "پنل کارفرما و دانش پژوه",
-    imgSrc: "/userpaneldahsboard/optimize.svg",
-    imgWidth: 80,
-    imgheight: 80,
-    top: "-top-12",
-    linkHref: "/panel/boost",
-  },
-  {
-    title: "جایزه",
-    subtitle: "دریافت جایزه با حل سوال",
-    imgSrc: "/userpanel/award.svg",
-    imgWidth: 110,
-    imgheight: 110,
-    top: "-top-14",
-    linkHref: "/panel",
-  },
-  {
-    title: "تمرین و چالش",
-    subtitle: "تمرین و پیشرفت",
-    imgSrc: "/userpanel/excercise.svg",
-    imgWidth: 123,
-    imgheight: 123,
-    top: "-top-16",
-    linkHref: "/panel",
-  },
-  {
-    title: "سابقه عضویت",
-    subtitle: "",
-    imgSrc: "/userpaneldahsboard/calender.svg",
-    imgWidth: 150,
-    imgheight: 150,
-    top: "-top-10",
-  },
-];
-
-export const studentDashboardInfo = [
-  {
-    title: "دوره های شما",
-    subtitle: "آموزش و پیگیری",
-    imgSrc: "/studentpanel/dashboard-course.png",
-    imgWidth: 130,
-    imgheight: 130,
-  },
-  {
-    title: "وضعیت مالی",
-    subtitle: "آموزش و پیگیری",
-    imgSrc: "/studentpanel/dashboard-maali.png",
-    imgWidth: 150,
-    imgheight: 150,
-  },
-  {
-    title: "اطلاعات کاربری",
-    subtitle: "آموزش و پیگیری",
-    imgSrc: "/studentpanel/dashboard-info.png",
-    imgWidth: 80,
-    imgheight: 80,
-  },
-  {
-    title: "سابقه عضویت",
-    subtitle: "",
-    imgSrc: "/userpaneldahsboard/calender.svg",
-    imgWidth: 150,
-    imgheight: 150,
-  },
-  {
-    title: "پشتیبانی آنلاین",
-    subtitle: "آموزش و پیگیری",
-    imgSrc: "/studentpanel/dashboard-support.png",
-    imgWidth: 100,
-    imgheight: 100,
-  },
-  {
-    title: "تکالیف",
-    subtitle: "آموزش و پیگیری",
-    imgSrc: "/studentpanel/dashboard-hw.png",
-    imgWidth: 95,
-    imgheight: 95,
-  },
-];
-
-export const employerDashboardInfo = [
-  {
-    title: "آگهی فعال",
-    imgSrc: "/employerpanel/1.png",
-    imgWidth: 80,
-    imgheight: 80,
-    linkHref: "/panel/employer-panel/active-ads",
-  },
-  {
-    title: "آگهی غیر فعال",
-    imgSrc: "/employerpanel/1.png",
-    imgWidth: 80,
-    imgheight: 80,
-  },
-  {
-    title: " استخدام شده",
-    imgSrc: "/employerpanel/2.png",
-    imgWidth: 90,
-    imgheight: 90,
-  },
-  {
-    title: "سابقه عضویت",
-    subtitle: "",
-    imgSrc: "/userpaneldahsboard/calender.svg",
-    imgWidth: 150,
-    imgheight: 150,
-  },
-  {
-    title: "پشتیبانی آنلاین",
-    sub: "support",
-    imgSrc: "/employerpanel/4.png",
-    imgWidth: 100,
-    imgheight: 100,
-  },
-  {
-    title: "برنامه نویس",
-    sub: "65%",
-    imgSrc: "",
-    imgWidth: 130,
-    imgheight: 130,
   },
 ];
 export const mainAdminSidebarOptions = [
@@ -813,344 +794,41 @@ export const mainAdminSidebarOptions = [
       "/panel/admin/support/ticket-detail",
     ],
   },
-];
-export const AdminSidebarOptions = [
   {
-    text: "پروفایل",
-    imgSrc: "/mainadminpanel/profile.svg",
-    address: "/panel/main-admin/profile",
-    path: "/profile",
-  },
-  {
-    text: "امور مالی",
-    imgSrc: "/mainadminpanel/maali.svg",
-    address: "/panel/main-admin/finance",
-    path: [
-      "/panel/main-admin/finance",
-      "/panel/main-admin/finance/costs",
-      "/panel/main-admin/finance/chart",
-      "/panel/main-admin/finance/income",
-    ],
-  },
-  {
-    text: "امور اداری",
-    imgSrc: "/mainadminpanel/edari.svg",
-    address: "/panel/main-admin/adminstrative",
-    path: "/adminstrative",
-  },
-  {
-    text: "کارآموزی",
-    imgSrc: "/mainadminpanel/karamozi.svg",
-    address: "/panel/main-admin/internship",
-    path: "/internship",
-  },
-  {
-    text: "کارمندی",
-    imgSrc: "/mainadminpanel/karmandi.svg",
-    address: "/panel/main-admin/employees",
-    path: "/employees",
-  },
-  {
-    text: "پروژه ها",
-    imgSrc: "/mainadminpanel/projects.svg",
-    address: "/panel/main-admin/projects",
-    path: "/projects",
-  },
-  {
-    text: "کارفرمایان",
-    imgSrc: "/mainadminpanel/karfarma.svg",
-    address: "/panel/main-admin/employers",
-    path: "/employers",
-  },
-  {
-    text: "دانش پذیران",
-    imgSrc: "/mainadminpanel/daneshpazir.svg",
-    address: "/panel/main-admin/students",
-    path: "/students",
-  },
-  // {
-  //   text: "اساتید",
-  //   imgSrc: "/mainadminpanel/asatid.svg",
-  //   address: "/panel/main-admin/teachers",
-  //   path: "/teachers",
-  // },
-  {
-    text: "تغییر سایت",
-    imgSrc: "/mainadminpanel/sitechange.svg",
-    address: "/panel/main-admin/change-site",
-    path: [
-      "/change-site",
-      "/panel/main-admin/change-site/change-home",
-      "/panel/main-admin/change-site/change-contactus",
-      "/panel/main-admin/change-site/change-courses",
-      "/panel/main-admin/change-site/change-certificates",
-      "/panel/main-admin/change-site/change-home/support",
-      "/panel/main-admin/change-site/change-home/home-slider",
-      "/panel/main-admin/change-site/change-home/partner-logo",
-      "/panel/main-admin/change-site/change-home/technology",
-      "/panel/main-admin/change-site/change-home/comments",
-      "/panel/main-admin/change-site/change-courses/front-end",
-      "/panel/main-admin/change-site/change-courses/back-end",
-      "/panel/main-admin/change-site/change-courses/digital-marketing",
-      "/panel/main-admin/change-site/change-courses/accounting",
-      "/panel/main-admin/change-site/change-certificates/certificate-one",
-    ],
+    text: "خبرنامه",
+    imgSrc: "/Panel/newsletter.svg",
+    address: "/panel/admin/newsletter",
+    path: ["/panel/admin/newsletter"],
   },
 ];
-export const MainadminEmployeesSidebarInfo = [
+export const UserDashboardInfo = [
   {
     id: 0,
-    title: "ثبت ورود/خروج",
-    // address: "/panel/main-admin/employees/check-time",
-    step: 0,
+    title: "پروفایل",
+    link: "/panel/user/personal-info",
+    imgUrl: Images.ProfileUserDashboard,
+    width: 90,
   },
   {
     id: 1,
-    title: "گزارش کار",
-    // address: "/panel/main-admin/employees/",
-    step: 1,
+    title: "وضعیت سفارش",
+    link: "/panel/user/project-management",
+    imgUrl: Images.OrderUserDashboard,
+    width: 100,
   },
   {
     id: 2,
-    title: "مشاهده وظایف",
-    // address: "/panel/main-admin/employees/responsibilities",
-    step: 2,
+    title: "وضعیت مالی",
+    link: "/panel/user/finance",
+    imgUrl: Images.FinancialStatusUserDashboard,
+    width: 140,
+    top: "-top-12",
   },
   {
     id: 3,
-    title: "دست آوردها",
-    // address: "/panel/main-admin/employees/",
-    step: 3,
-  },
-  {
-    id: 4,
-    title: "پرسنل",
-    // address: "/panel/main-admin/employees/",
-    step: 4,
-  },
-];
-export const MainadminFinanceSidebarInfo = [
-  {
-    id: 0,
-    title: "گزارشات",
-    // address: "/panel/main-admin/employees/check-time",
-    step: 0,
-  },
-  {
-    id: 1,
-    title: "هزینه ها",
-    // address: "/panel/main-admin/employees/",
-    step: 1,
-  },
-  {
-    id: 2,
-    title: "درآمد ها",
-    // address: "/panel/main-admin/employees/responsibilities",
-    step: 2,
-  },
-  {
-    id: 3,
-    title: "گزارشات رد شده",
-    // address: "/panel/main-admin/employees/",
-    step: 3,
-  },
-  {
-    id: 4,
-    title: "بالانس مالی",
-    // address: "/panel/main-admin/employees/",
-    step: 4,
-  },
-];
-export const MainadminEmployersSidebarInfo = [
-  {
-    id: 0,
-    title: "تایید کارفرما",
-    // address: "/panel/main-admin/employees/check-time",
-    step: 0,
-  },
-  {
-    id: 1,
-    title: "اطلاعات مسئول شرکت",
-    // address: "/panel/main-admin/employees/",
-    step: 1,
-  },
-  {
-    id: 2,
-    title: "تایید آگهی شغلی",
-    // address: "/panel/main-admin/employees/responsibilities",
-    step: 2,
-  },
-  {
-    id: 3,
-    title: "تایید آگهی کارفرما",
-    // address: "/panel/main-admin/employees/responsibilities",
-    step: 3,
-  },
-  {
-    id: 4,
-    title: "ارتقا پنل",
-    // address: "/panel/main-admin/employees/",
-    step: 4,
-  },
-  {
-    id: 5,
-    title: "امتیازدهی به عادی",
-    // address: "/panel/main-admin/employees/",
-    step: 5,
-  },
-];
-export const MainadminManagementSidebarInfo = [
-  {
-    id: 0,
-    title: "تعین پرسنل جدید",
-    // address: "/panel/main-admin/employees/check-time",
-    step: 0,
-  },
-  {
-    id: 1,
-    title: "مشاهده پرسنل",
-    // address: "/panel/main-admin/employees/",
-    step: 1,
-  },
-  {
-    id: 2,
-    title: "ورود و خروج پرسنل",
-    // address: "/panel/main-admin/employees/responsibilities",
-    step: 2,
-  },
-  {
-    id: 3,
-    title: "مشاهده کارفرمایان",
-    // address: "/panel/main-admin/employees/",
-    step: 3,
-  },
-  {
-    id: 4,
-    title: "مشاهده دانش پژوهان",
-    // address: "/panel/main-admin/employees/",
-    step: 4,
-  },
-];
-export const MainadminSiteChangeSidebarInfo = [
-  {
-    id: 0,
-    title: "صفحه خانه",
-    address: "/panel/main-admin/change-site/change-home",
-    step: 0,
-    path: "/change-home",
-    subNav: [
-      {
-        id: 0,
-        title: "Home Slider",
-        address: "/panel/main-admin/change-site/change-home/home-slider",
-        step: 0,
-        path: "/home-slider",
-      },
-      {
-        id: 1,
-        title: "Partner Logo",
-        address: "/panel/main-admin/change-site/change-home/partner-logo",
-        step: 1,
-        path: "/partner-logo",
-      },
-      {
-        id: 2,
-        title: "Technology",
-        address: "/panel/main-admin/change-site/change-home/technology",
-        step: 2,
-        path: "/technology",
-      },
-      {
-        id: 3,
-        title: "Support",
-        address: "/panel/main-admin/change-site/change-home/support",
-        step: 3,
-        path: "support",
-      },
-      {
-        id: 4,
-        title: "Comments",
-        address: "/panel/main-admin/change-site/change-home/comments",
-        step: 4,
-        path: "comments",
-      },
-    ],
-  },
-  {
-    id: 1,
-    title: "صفحه تماس با ما",
-    address: "/panel/main-admin/change-site/change-contactus",
-    step: 1,
-    path: "/change-contactus",
-  },
-  {
-    id: 2,
-    title: "صفحه آموزش",
-    address: "/panel/main-admin/change-site/change-courses",
-    step: 2,
-    path: "/change-courses",
-    subNav: [
-      {
-        id: 0,
-        title: "فرانت اند",
-        address: "/panel/main-admin/change-site/change-courses/front-end",
-        step: 0,
-        path: "front-end",
-      },
-      {
-        id: 1,
-        title: "بک اند",
-        address: "/panel/main-admin/change-site/change-courses/back-end",
-        step: 1,
-        path: "back-end",
-      },
-      {
-        id: 2,
-        title: "حسابداری",
-        address: "/panel/main-admin/change-site/change-courses/accounting",
-        step: 2,
-        path: "accounting",
-      },
-      {
-        id: 3,
-        title: "دیجیتال مارکتینگ",
-        address:
-          "/panel/main-admin/change-site/change-courses/digital-marketing",
-        step: 3,
-        path: "digital-marketing",
-      },
-      {
-        id: 4,
-        title: "افزودن دوره",
-        address: "/panel/main-admin/change-site/change-courses/add-course",
-        step: 4,
-        path: "add-course",
-      },
-    ],
-  },
-  {
-    id: 3,
-    title: "صفحه مجوزها",
-    address: "/panel/main-admin/change-site/change-certificates",
-    step: 3,
-    path: "/change-certificates",
-    subNav: [
-      {
-        id: 0,
-        title: "مجوز یک",
-        address:
-          "/panel/main-admin/change-site/change-certificates/certificate-one",
-        step: 0,
-        path: "certificate-one",
-      },
-      {
-        id: 1,
-        title: "افزودن مجوز",
-        address:
-          "/panel/main-admin/change-site/change-certificates/add-certificate",
-        step: 1,
-        path: "add-certificate",
-      },
-    ],
+    title: "پشتیبانی",
+    link: "/panel/user/support",
+    imgUrl: Images.SupportUserDashboard,
+    width: 110,
   },
 ];

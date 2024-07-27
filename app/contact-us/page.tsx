@@ -1,4 +1,4 @@
-import Footer from "@/components/home-components/footer";
+import Footer from "@/components/home-components/Footer";
 import Nav from "@/components/home-components/nav";
 import React from "react";
 import ContactHeading from "./components/contact-heading";
@@ -15,8 +15,8 @@ const Contact = () => {
         <Options />
         <Form />
         <Map />
+        <Footer />
       </div>
-      <Footer />
     </React.Fragment>
   );
 };

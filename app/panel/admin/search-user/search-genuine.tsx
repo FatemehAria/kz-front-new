@@ -1,39 +1,21 @@
 import Image from "next/image";
 import React from "react";
 import vieweye from "../../../../public/ViewUsers/vieweye.svg";
-import search from "../../../../public/ViewUsers/search.svg";
+
+import NotFound from "../components/NotFound";
+import GenuineUserHeader from "../components/LegalUserHeader";
 
 type SearchGenuineProps = {
   GenuineUsers: any[];
   value: string;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  children: React.ReactNode;
 };
-function SearchGenuine({ GenuineUsers, value, onChange }: SearchGenuineProps) {
+function SearchGenuine({ GenuineUsers, value, children }: SearchGenuineProps) {
   return (
     <div>
-      <div className="relative mb-3">
-        <input
-          type="text"
-          placeholder="جستجو بر اساس شماره موبایل"
-          className="w-full outline-none border border-[#4866CF] rounded-[8px] p-2"
-          value={value}
-          onChange={onChange}
-        />
-        <Image
-          src={search}
-          alt="search"
-          className="absolute left-2 top-1/2 -translate-y-1/2"
-        />
-      </div>
-      <div className="flex flex-col gap-5">
-        <div className="grid grid-cols-6 text-center">
-          <p>ردیف</p>
-          <p>نام سازمان</p>
-          <p>شماره ملی</p>
-          <p>شماره موبایل </p>
-          <p>شماره ثبت</p>
-          <p>مشاهده</p>
-        </div>
+      {children}
+      <div className="flex flex-col gap-8">
+        <GenuineUserHeader />
         {GenuineUsers.length > 0 ? (
           GenuineUsers.filter((item) => item.PhoneNumber.includes(value)).map(
             (item, index) => (
@@ -54,7 +36,7 @@ function SearchGenuine({ GenuineUsers, value, onChange }: SearchGenuineProps) {
             )
           )
         ) : (
-          <p className="text-center font-bold text-red-700">کاربری یافت نشد.</p>
+          <NotFound text="کاربری یافت نشد." />
         )}
       </div>
     </div>

@@ -19,6 +19,7 @@ const Auth = () => {
     dispatch(getIdFromLocal());
     dispatch<any>(fetchUserProfile());
   }, []);
+  
   const renderSteps = () => {
     switch (steps) {
       case 1:

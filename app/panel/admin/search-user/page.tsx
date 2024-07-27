@@ -10,16 +10,19 @@ import {
 } from "@/redux/features/user/userSlice";
 import axios from "axios";
 import SearchUserHeader from "./components/search-user-header";
+import SearchInput from "../components/SearchInput";
 
 function SearchUser() {
   const { localToken, localUserId } = useSelector(
     (state: any) => state.userData
   );
+
   const [legalUsers, setLegalUsers] = useState([]);
   const [searchLegalUser, setSearchLegalUser] = useState("");
   const [genuineUsers, setGenuineUsers] = useState([]);
   const [searchGenuineUser, setSearchGenuineUser] = useState("");
-  const [step, setStep] = useState(1);
+
+  const [step, setStep] = useState(2);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getTokenFromLocal());
@@ -60,23 +63,27 @@ function SearchUser() {
     switch (step) {
       case 1:
         return (
-          <SearchGenuine
-            GenuineUsers={genuineUsers}
-            value={searchGenuineUser}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setSearchGenuineUser(e.target.value)
-            }
-          />
+          <SearchGenuine GenuineUsers={genuineUsers} value={searchGenuineUser}>
+            <SearchInput
+              value={searchGenuineUser}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSearchGenuineUser(e.target.value)
+              }
+              placeholder="جستجو بر اساس شماره موبایل"
+            />
+          </SearchGenuine>
         );
       case 2:
         return (
-          <SearchLegal
-            LegalUsers={legalUsers}
-            value={searchLegalUser}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setSearchLegalUser(e.target.value)
-            }
-          />
+          <SearchLegal LegalUsers={legalUsers} value={searchLegalUser}>
+            <SearchInput
+              value={searchLegalUser}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSearchLegalUser(e.target.value)
+              }
+              placeholder="جستجو بر اساس شماره موبایل"
+            />
+          </SearchLegal>
         );
       default:
         return;
@@ -91,6 +98,7 @@ function SearchUser() {
     renderLegalUsers();
     renderGenuineUsers();
   }, [AllUsersData]);
+
   return (
     <div className="grid grid-cols-1 gap-10 w-full">
       <SearchUserHeader setStep={setStep} step={step} />

@@ -11,6 +11,7 @@ import {
 import axios from "axios";
 import Link from "next/link";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import NotFound from "../components/NotFound";
 
 function AllProjects() {
   const { localToken, localUserId } = useSelector(
@@ -22,11 +23,13 @@ function AllProjects() {
     error: "",
     loading: false,
   });
+
   useEffect(() => {
     dispatch(getTokenFromLocal());
     dispatch(getIdFromLocal());
     dispatch<any>(fetchUserProfile());
   }, []);
+
   const AllProjects = async () => {
     try {
       setAllProjectsStatus((last) => ({ ...last, loading: true }));
@@ -43,14 +46,20 @@ function AllProjects() {
       // console.log(data);
     } catch (error) {
       setAllProjectsStatus({ error: "خطا در دریافت اطلاعات", loading: false });
-      // console.log(error);
+      console.log(allProjectsStatus.error);
+      console.log(error);
     }
   };
+
   useEffect(() => {
-    if (localUserId) {
-      AllProjects();
-    }
-  }, [localUserId]);
+    AllProjects();
+  }, []);
+  
+  // useEffect(() => {
+  //   if (localUserId) {
+  //     AllProjects();
+  //   }
+  // }, [localUserId]);
   return (
     <div className="flex flex-col gap-5">
       <div className="grid grid-cols-7 text-center">
@@ -66,6 +75,8 @@ function AllProjects() {
         <SkeletonTheme>
           <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
         </SkeletonTheme>
+      ) : allProjectsStatus.error ? (
+        <NotFound text={`${allProjectsStatus.error}`} />
       ) : (
         projectMangementData.map((item: any, index) => (
           <div

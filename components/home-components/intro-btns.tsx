@@ -22,10 +22,6 @@ function IntroBtns() {
   }, []);
   return (
     <div className="flex md:justify-end justify-center w-full gap-3">
-      <button className="flex flex-row items-center h-[40px] w-[145px] rounded-[4px] text-[#597193]">
-        <Image src={play} alt="play" width={40} height={40} />
-        <span>تماشا ویدیو</span>
-      </button>
       <Link
         href={`${
           localToken && localUserId

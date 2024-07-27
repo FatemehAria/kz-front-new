@@ -84,6 +84,7 @@ function Finance() {
     calculateTotalCost();
     console.log(totalProjectCost);
   }, [projectsData]);
+
   return (
     <form
       onSubmit={(e) => handleSubmission(e)}
@@ -105,7 +106,7 @@ function Finance() {
         <FinanceInput
           label="مبلغ پرداخت شده:"
           disable={true}
-          value={`${userProfile.Paid.toLocaleString()} ریال`}
+          value={`${userProfile.Paid?.toLocaleString()} ریال`}
         />
         <FinanceInput
           label="مبلغ پرداختی شما:"

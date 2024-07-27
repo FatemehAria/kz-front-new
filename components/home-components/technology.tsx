@@ -11,7 +11,7 @@ function Technology() {
         subTitle="کدام طرح مناسب کسب و کار شماست؟"
         width="20%"
       />
-      <div className="flex flex-row-reverse flex-wrap w-full sm:justify-between justify-center gap-5">
+      <div className="grid grid-cols-1 gap-5 md:max-lg:grid-cols-2 md:max-lg:gap-20 lg:grid-cols-3 lg:gap-x-32">
         {TechnologyData.map((item) => (
           <TechnologyCard key={item.id} technologyInfo={item} />
         ))}

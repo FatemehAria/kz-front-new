@@ -21,7 +21,7 @@ const Form = () => {
     }
   };
   return (
-    <div className="grid grid-cols-1 w-full mx-auto lg:w-[90%]">
+    <div className="grid grid-cols-1 w-full mx-auto lg:w-[80%]">
       <div className="grid grid-cols-1 lg:grid-cols-2 mx-auto justify-between lg:gap-[8%] w-full">
         <div className="flex flex-col w-full items-start lg:gap-[5%] gap-[3%]">
           <FormText />

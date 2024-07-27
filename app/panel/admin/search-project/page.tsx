@@ -12,6 +12,9 @@ import {
 import axios from "axios";
 import Link from "next/link";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import SearchInput from "../components/SearchInput";
+import NotFound from "../components/NotFound";
+
 function SearchProject() {
   const [searchProject, setSearchProject] = useState("");
   const { localToken, localUserId } = useSelector(
@@ -24,10 +27,12 @@ function SearchProject() {
     dispatch(getIdFromLocal());
     dispatch<any>(fetchUserProfile());
   }, []);
+
   const [allProjectsStatus, setAllProjectsStatus] = useState({
     error: "",
     loading: false,
   });
+
   const AllProjects = async () => {
     try {
       setAllProjectsStatus((last) => ({ ...last, loading: true }));
@@ -47,27 +52,24 @@ function SearchProject() {
       console.log(error);
     }
   };
+  
   useEffect(() => {
-    if (localUserId) {
-      AllProjects();
-    }
-  }, [localUserId]);
+    AllProjects();
+  }, []);
+
+  // useEffect(() => {
+  //   if (localUserId) {
+  //     AllProjects();
+  //   }
+  // }, [localUserId]);
+
   return (
     <div className="flex flex-col gap-5 bg-white shadow mx-auto rounded-2xl w-full p-[3%]">
-      <div className="relative mb-3 w-[50%]">
-        <input
-          type="text"
-          placeholder="جستجو بر اساس شماره درخواست و شماره موبایل"
-          className="w-full outline-none border border-[#4866CF] rounded-[8px] p-2"
-          value={searchProject}
-          onChange={(e) => setSearchProject(e.target.value)}
-        />
-        <Image
-          src={search}
-          alt="search"
-          className="absolute left-2 top-1/2 -translate-y-1/2"
-        />
-      </div>
+      <SearchInput
+        value={searchProject}
+        onChange={(e) => setSearchProject(e.target.value)}
+        placeholder="جستجو بر اساس شماره موبایل و درخواست"
+      />
       <div className="grid grid-cols-6 text-center">
         <p>شماره درخواست</p>
         <p>عنوان پروژه</p>
@@ -80,6 +82,8 @@ function SearchProject() {
         <SkeletonTheme>
           <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
         </SkeletonTheme>
+      ) : allProjectsStatus.error ? (
+        <NotFound text={`${allProjectsStatus.error}`} />
       ) : (
         SearchProjectData.filter(
           (item: any) =>

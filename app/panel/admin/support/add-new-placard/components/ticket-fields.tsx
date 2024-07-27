@@ -3,11 +3,12 @@ type TicketFieldsProps = {
   label: string;
   width: string;
   value: string;
-  onChange: React.ChangeEventHandler<HTMLInputElement>
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  direction?: string;
 };
-function TicketFields({ label, width, value , onChange}: TicketFieldsProps) {
+function TicketFields({ label, width, value, onChange , direction }: TicketFieldsProps) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className={`flex ${direction ? direction : "flex-col"} gap-2`}>
       <label htmlFor="">{label}</label>
       <input
         className="bg-[#EAEFF6] rounded-[4px] p-2"

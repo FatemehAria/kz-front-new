@@ -9,6 +9,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useDispatch, useSelector } from "react-redux";
+import NotFound from "../../admin/components/NotFound";
 
 function AllProjects() {
   const [allProjects, setAllProjects] = useState([]);
@@ -25,6 +26,7 @@ function AllProjects() {
     dispatch(getIdFromLocal());
     dispatch<any>(fetchUserProfile());
   }, []);
+
   const getAllProjects = async () => {
     try {
       setProjectStatus((prevStatus) => ({ ...prevStatus, loading: true }));
@@ -40,15 +42,20 @@ function AllProjects() {
       setProjectStatus((prevStatus) => ({ ...prevStatus, loading: false }));
       // console.log(data);
     } catch (error) {
-      setProjectStatus({ error: "خطا در خواندن اطلاعات.", loading: false });
+      setProjectStatus({ error: "خطا در دریافت اطلاعات.", loading: false });
       // console.log(error);
     }
   };
+  
   useEffect(() => {
-    if (localUserId) {
-      getAllProjects();
-    }
-  }, [localUserId]);
+    getAllProjects();
+  }, []);
+
+  // useEffect(() => {
+  //   if (localUserId) {
+  //     getAllProjects();
+  //   }
+  // }, [localUserId]);
   return (
     <div className="flex flex-col gap-5">
       <div className="grid grid-cols-5 text-center">
@@ -60,8 +67,10 @@ function AllProjects() {
       </div>
       {projectStatus.loading ? (
         <SkeletonTheme>
-          <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
+          <Skeleton count={1} className="p-3" baseColor="#EAEFF6" />
         </SkeletonTheme>
+      ) : projectStatus.error ? (
+        <NotFound text={projectStatus.error} />
       ) : (
         allProjects.map((item: any, index) => (
           <Link

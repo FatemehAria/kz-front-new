@@ -2,20 +2,17 @@ import Image from "next/image";
 import React from "react";
 import vieweye from "../../../../public/ViewUsers/vieweye.svg";
 import Link from "next/link";
+import NotFound from "../components/NotFound";
+import GenuineUserHeader from "../components/GenuineUserHeader";
+
 type GenuineUsersProps = {
   GenuineUsersData: any[];
 };
+
 function GenuineUsers({ GenuineUsersData }: GenuineUsersProps) {
   return (
     <div className="flex flex-col gap-5">
-      <div className="grid grid-cols-6 text-center">
-        <p>ردیف</p>
-        <p>نام سازمان</p>
-        <p>شماره ملی</p>
-        <p>شماره موبایل </p>
-        <p>شماره ثبت</p>
-        <p>مشاهده</p>
-      </div>
+      <GenuineUserHeader />
       {GenuineUsersData.length > 0 ? (
         GenuineUsersData.map((item, index) => (
           <div
@@ -36,9 +33,7 @@ function GenuineUsers({ GenuineUsersData }: GenuineUsersProps) {
           </div>
         ))
       ) : (
-        <p className="text-center font-bold text-red-700">
-          کاربری یافت نشد.
-        </p>
+        <NotFound text="کاربری یافت نشد." />
       )}
     </div>
   );

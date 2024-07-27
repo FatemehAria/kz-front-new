@@ -208,7 +208,7 @@ function OrdersubmissionForm({ setCurrentStep }: OrdersubmissionFormProps) {
         </div>
       </div>
       <button
-        className="bg-[#4866CF] text-white w-[100px] py-2 rounded-lg"
+        className="bg-[#4866CF] text-white w-[120px] p-2 rounded-lg"
         type="submit"
         disabled={isValid === false || fileSelected === false ? true : false}
       >

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import styles from "./order.module.css";
+
 type OrderProgressProps = {
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;

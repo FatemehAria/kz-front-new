@@ -22,8 +22,8 @@ const initialState = {
   isLoggedIn: false,
   welcomeMessage: "",
   userId: "",
-  userType: "",
-  type: "",
+  userType: "User",
+  type: "Genuine",
   numberOfAnnouncements: 0,
 };
 

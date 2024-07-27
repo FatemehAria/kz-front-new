@@ -3,7 +3,7 @@ import OptionsCard from "./options-card";
 
 const Options = () => {
   return (
-    <div className="mx-auto grid grid-cols-1 w-[90%] justify-center items-center gap-14 lg:grid lg:grid-cols-3 lg:justify-between 2xl:px-0 ">
+    <div className="mx-auto grid grid-cols-1 w-[80%] justify-center items-center gap-14 lg:grid lg:grid-cols-3 lg:justify-between 2xl:px-0 ">
       <div className="order-3 lg:order-1">
         <OptionsCard
           src="/contactus/addresslogo.svg"

@@ -34,24 +34,24 @@ function SearchUserHeader({ step, setStep }: SearchUserHeaderProps) {
       ></div>
       <div className="text-center absolute -top-5 left-1/2 text-[20px] -translate-x-1/2 bg-transparent flex flex-row gap-5">
         <button
-          className={`rounded-[4px] py-[3%] px-[8%] ${
+          className={`rounded-[4px] py-[3%] px-[8%]  ${
             step === 2
               ? "bg-[#4866CF] text-white cursor-default"
-              : "bg-[#EAEFF6] text-[#4866CF] cursor-pointer"
+              : "bg-[#FFFFFF] text-[#4866CF] cursor-pointer"
           }`}
           onClick={() => setStep(2)}
         >
-          حقوقی
+          حقیقی
         </button>
         <button
           className={`rounded-[4px] py-[3%] px-[8%] ${
             step === 1
               ? "bg-[#4866CF] text-white cursor-default"
-              : "bg-[#EAEFF6] text-[#4866CF] cursor-pointer"
+              : "bg-[#FFFFFF] text-[#4866CF] cursor-pointer"
           }`}
           onClick={() => setStep(1)}
         >
-          حقیقی
+          حقوقی
         </button>
       </div>
     </div>

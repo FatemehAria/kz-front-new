@@ -54,6 +54,7 @@ function AddNewTicket() {
   useEffect(() => {
     getAllUsers();
   }, []);
+  
   const renderSteps = () => {
     switch (steps) {
       case 0:

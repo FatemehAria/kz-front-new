@@ -1,7 +1,6 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Swiper as SwiperType } from "swiper/types";
-import { Autoplay, Controller, EffectCoverflow } from "swiper/modules";
+import { Autoplay, EffectCoverflow } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/effect-coverflow";
@@ -11,12 +10,11 @@ import { useState } from "react";
 
 const CertificatesSlider = () => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-  const [controlledSwiper, setControlledSwiper] = useState<SwiperType>();
   return (
     <div>
       {/* Pic Swiper */}
       <Swiper
-        modules={[Autoplay, EffectCoverflow, Controller]}
+        modules={[Autoplay, EffectCoverflow]}
         loop
         speed={1500}
         autoplay={{
@@ -25,35 +23,12 @@ const CertificatesSlider = () => {
           stopOnLastSlide: false,
         }}
         slidesPerView={3}
-        // breakpoints={{
-        //   360: {
-        //     coverflowEffect: {
-        //       modifier: 3,
-        //       depth: 900,
-        //       rotate: 0,
-        //       stretch: 90,
-        //     },
-        //     slidesPerView: 1,
-        //   },
-        //   1024: {
-        //     coverflowEffect: {
-        //       rotate: 0,
-        //       stretch: 90,
-        //       depth: 900,
-        //       modifier: 1,
-        //       slideShadows: false,
-        //     },
-        //     slidesPerView: 3,
-        //   },
-        // }}
         effect="coverflow"
         coverflowEffect={{
           rotate: 0,
           stretch: 90,
           depth: 900,
           modifier: 1,
-          // depth: 1000,
-          // modifier: 3,
           slideShadows: false,
         }}
         centeredSlides={true}
@@ -94,7 +69,7 @@ const CertificatesSlider = () => {
           />
           <div className="flex justify-center items-center text-center lg:w-[55%] lg:h-[200px] w-[90%]">
             <Swiper
-              modules={[Autoplay, Controller]}
+              modules={[Autoplay]}
               loop
               speed={1500}
               autoplay={{
@@ -106,12 +81,6 @@ const CertificatesSlider = () => {
               centeredSlides={true}
               preventInteractionOnTransition={true}
               onSlideChange={(swiper) => setCurrentSlideIndex(swiper.activeIndex)}
-              onSwiper={(swiper: SwiperType) => setControlledSwiper(swiper)}
-              controller={{
-                control: controlledSwiper,
-                by: "container",
-                target: controlledSwiper,
-              }}
             >
               {CertificateSlider.map((link) => (
                 <SwiperSlide

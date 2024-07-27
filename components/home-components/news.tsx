@@ -1,7 +1,9 @@
 "use client";
 import axios from "axios";
+import Image from "next/image";
 import React, { useState } from "react";
 import { Bounce, toast } from "react-toastify";
+import NewsIcon from "../../public/Newsletter/bottomsvg-newsletterbg-icon.svg";
 function News() {
   const [email, setEmail] = useState("");
   const submitEmail = async (email: string) => {
@@ -46,7 +48,7 @@ function News() {
   return (
     <form
       onSubmit={(e) => handleSubmission(e)}
-      className="bg-[#D0DBEC] h-[400px] mt-[5%] flex flex-col justify-center items-center gap-3 rounded-xl px-[3%] sm:px-0"
+      className="bg-[#D0DBEC] h-[400px] mt-[5%] flex flex-col justify-center items-center gap-3 rounded-xl px-[3%] sm:px-0 relative"
     >
       <p className="text-[#334052] sm:text-[40px] max-w-lg text-center text-[30px]">
         با عضویت در خبرنامه شرکت بین المللی کیکاووس زمان از تخفیفات باخبر شوید
@@ -65,6 +67,8 @@ function News() {
           onChange={(e) => setEmail(e.target.value)}
         />
       </div>
+      <Image src={NewsIcon} alt="bg" className="absolute left-0 bottom-0 max-lg:hidden"/>
+      <Image src={NewsIcon} alt="bg" className="absolute right-0 top-0 max-lg:hidden"/>
     </form>
   );
 }

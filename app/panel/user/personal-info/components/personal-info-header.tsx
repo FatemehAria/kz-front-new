@@ -2,8 +2,15 @@ import React from "react";
 type PersonalInfoHeaderProps = {
   step: string;
   setStep?: React.Dispatch<React.SetStateAction<string>>;
+  color?: string;
+  cursor?: string;
 };
-function PersonalInfoHeader({ step, setStep }: PersonalInfoHeaderProps) {
+function PersonalInfoHeader({
+  step,
+  setStep,
+  color,
+  cursor,
+}: PersonalInfoHeaderProps) {
   return (
     <div className="relative whitespace-nowrap">
       <div
@@ -36,8 +43,10 @@ function PersonalInfoHeader({ step, setStep }: PersonalInfoHeaderProps) {
         <button
           className={`rounded-[4px] py-[3%] px-[8%] ${
             step === "Genuine"
-              ? "bg-[#4866CF] text-white"
-              : "bg-[#EAEFF6] text-[#4866CF] cursor-default"
+              ? "bg-[#4866CF] text-white cursor-default"
+              : `bg-[${color ? color : "#ffffff"}] text-[#4866CF] ${
+                  cursor ? cursor : "cursor-pointer"
+                }`
           }`}
           onClick={() => setStep && setStep("Genuine")}
         >
@@ -46,8 +55,10 @@ function PersonalInfoHeader({ step, setStep }: PersonalInfoHeaderProps) {
         <button
           className={`rounded-[4px] py-[3%] px-[8%] ${
             step === "Legal"
-              ? "bg-[#4866CF] text-white"
-              : "bg-[#EAEFF6] text-[#4866CF] cursor-default"
+              ? "bg-[#4866CF] text-white cursor-default"
+              : `bg-[${color ? color : "#ffffff"}] text-[#4866CF] ${
+                  cursor ? cursor : "cursor-pointer"
+                }`
           }`}
           onClick={() => setStep && setStep("Legal")}
         >

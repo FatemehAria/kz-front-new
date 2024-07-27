@@ -49,13 +49,13 @@ const PanelSidebar = ({ sideOptions, status }: PanelSidebarProps) => {
                     : " text-[#68707A]"
                 }`}
               >
-                {status !== "success" ? (
+                {/* {status !== "success" ? (
                   <SkeletonTheme>
                     <Skeleton count={1} width={150} baseColor="#EAEFF6" />
                   </SkeletonTheme>
-                ) : (
-                  item.text
-                )}
+                ) : ( */}
+                  {item.text}
+                {/* )} */}
               </p>
             </Link>
           ))}

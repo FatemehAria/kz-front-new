@@ -30,6 +30,7 @@ function ViewUsers() {
     error: "",
     loading: false,
   });
+  
   const AllUsers = async () => {
     try {
       setLegalUsersStatus((last) => ({ ...last, loading: true }));

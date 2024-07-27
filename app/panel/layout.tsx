@@ -45,18 +45,18 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
     setCurrentPage((prevPage) => (prevPage > 0 ? prevPage - 1 : prevPage));
   };
 
-  useEffect(() => {
-    dispatch(getTokenFromLocal());
-    dispatch(getIdFromLocal());
-    dispatch<any>(fetchUserProfile());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getTokenFromLocal());
+  //   dispatch(getIdFromLocal());
+  //   dispatch<any>(fetchUserProfile());
+  // }, []);
 
-  useEffect(() => {
-    if (!localToken && localUserId) {
-      dispatch(deleteDataFromCookie());
-      router.push("/");
-    }
-  }, [localToken, localUserId]);
+  // useEffect(() => {
+  //   if (!localToken && localUserId) {
+  //     dispatch(deleteDataFromCookie());
+  //     router.push("/");
+  //   }
+  // }, [localToken, localUserId]);
 
   return (
     <div
@@ -64,7 +64,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
       style={{ boxShadow: "0px 0px 90px 2px rgba(0, 0, 0, 0.25)" }}
       dir="rtl"
     >
-      {localToken && localUserId && (
+      {/* {localToken && localUserId && ( */}
         <>
           <div className="hidden lg:block">
             <PanelSidebar
@@ -100,7 +100,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
             </div>
           </div>
         </>
-      )}
+      {/* )} */}
     </div>
   );
 };

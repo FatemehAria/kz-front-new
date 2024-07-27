@@ -10,7 +10,9 @@ import {
   getTokenFromLocal,
   readPhoneNumberFromLocalStroage,
 } from "@/redux/features/user/userSlice";
-
+import NotFound from "../../admin/components/NotFound";
+import SubLoading from "@/components/SubLoading";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 function PersonalInfo() {
   const {
@@ -20,6 +22,7 @@ function PersonalInfo() {
     localUserId,
     type,
     userProfile,
+    status,
   } = useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
   const [step, setStep] = useState(type);
@@ -65,9 +68,22 @@ function PersonalInfo() {
     <React.Fragment>
       <div className="py-[5%] w-[90%] shadow mx-auto bg-white rounded-2xl px-[3%]">
         <div className="pb-[5%] pt-0">
-          <PersonalInfoHeader step={step} />
+          <PersonalInfoHeader
+            step={step}
+            color="#EAEFF6"
+            // cursor={`${step === "Genuine" ? "cursor-default" : "cursor-pointer"}`}
+          />
         </div>
-        {renderSteps()}
+        {status === "loading" || status === "idle" ? (
+          // <SubLoading />
+          <SkeletonTheme>
+            <Skeleton count={1} className="p-3" baseColor="#EAEFF6" />
+          </SkeletonTheme>
+        ) : status === "failed" ? (
+          <NotFound text="خطا در دریافت اطلاعات" />
+        ) : (
+          status === "success" && renderSteps()
+        )}
       </div>
     </React.Fragment>
   );

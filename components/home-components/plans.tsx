@@ -7,7 +7,7 @@ function Plans() {
   return (
     <div className="flex flex-col">
       <SectionHeader
-        mainTitle="جدول پلن‌های طراحی سایت"
+        mainTitle="جدول خدمات طراحی سایت"
         subTitle="کدام طرح مناسب کسب و کار شماست؟"
         width="28%"
       />
