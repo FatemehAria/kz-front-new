@@ -1,15 +1,15 @@
 import React from "react";
-import LocationIcon from "../../public/footer/location.svg";
-import PhoneIcon from "../../public/footer/phone.svg";
-import MailIcon from "../../public/footer/mail.svg";
+import LocationIcon from "@/public/footer/location.svg";
+import PhoneIcon from "@/public/footer/phone.svg";
+import MailIcon from "@/public/footer/mail.svg";
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/app/authorization/components/logo";
-import SocialMedia from "./SocialMedia";
-import Copyright from "./Copyright";
-import SenfiLogo from "../../public/footer/senfi.svg";
-import EnamaadLogo from "../../public/footer/enamaad.svg";
-
+import SocialMedia from "@/home-components/Footer/SocialMedia";
+import Copyright from "@/home-components/Footer/Copyright";
+import SenfiLogo from "@/public/footer/senfi.svg";
+import EnamaadLogo from "@/public/footer/enamaad.svg";
+import styles from "./footer.module.css";
 function footer() {
   // bg:#ECF3F9,#FCFBFC,#EAEFF6,#4866CF
   return (
@@ -35,7 +35,7 @@ export default footer;
 const Contact = () => {
   return (
     <div className="flex flex-col justify-stretch gap-3">
-      <p className="text-[20px] text-[#4866CF] font-semibold">تماس با ما</p>
+      <p className={`${styles["footer-section-title"]}`}>تماس با ما</p>
       <div className="flex flex-row items-center gap-1">
         <Image src={LocationIcon} alt="location" width={16} />
         <p className="font-faNum text-[16px]">
@@ -59,7 +59,7 @@ const Contact = () => {
 const QuickNavigation = () => {
   return (
     <div className="flex flex-col justify-stretch gap-3">
-      <p className="text-[20px] text-[#4866CF] font-semibold">دسترسی سریع</p>
+      <p className={`${styles["footer-section-title"]}`}>دسترسی سریع</p>
       <p className="text-[16px]">سفارش سایت</p>
       <p className="text-[16px]">دریافت پشتیبانی</p>
       <p className="text-[16px]">دریافت مشاوره</p>

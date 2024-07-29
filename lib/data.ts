@@ -700,19 +700,19 @@ export const TechnologyData = [
 export const userSidebarOptions = [
   {
     text: "داشبورد",
-    imgSrc: "/Panel/dashboard.svg",
+    imgSrc: Images.DashboardIcon,
     address: "/panel/user/dashboard",
     path: "/dashboard",
   },
   {
     text: "مشخصات فردی",
-    imgSrc: "/Panel/personalinfo.svg",
+    imgSrc: Images.PersoanlInfoIcon,
     address: "/panel/user/personal-info",
     path: "/personal-info",
   },
   {
     text: "مدیریت پروژه ها",
-    imgSrc: "/Panel/projectsmanagement.svg",
+    imgSrc: Images.ProjectManagementIcon,
     address: "/panel/user/project-management",
     path: [
       "/panel/user/project-management",
@@ -721,7 +721,7 @@ export const userSidebarOptions = [
   },
   {
     text: "پشتیبانی",
-    imgSrc: "/Panel/support.svg",
+    imgSrc: Images.SupportIcon,
     address: "/panel/user/support",
     path: [
       "/panel/user/support",
@@ -731,19 +731,19 @@ export const userSidebarOptions = [
   },
   {
     text: "ثبت سفارش",
-    imgSrc: "/Panel/orders.svg",
+    imgSrc: Images.OrderSubmissionIcon,
     address: "/panel/user/submit-order",
     path: ["/panel/user/submit-order", "/panel/user/submit-order/consultation"],
   },
   {
     text: "وضعیت مالی",
-    imgSrc: "/Panel/financialstatus.svg",
+    imgSrc: Images.FinancialStatusIcon,
     address: "/panel/user/finance",
     path: "/finance",
   },
   {
     text: "تنظیمات",
-    imgSrc: "/Panel/settings.svg",
+    imgSrc: Images.SettingsIcon,
     address: "/panel/user/settings",
     path: "/settings",
   },
@@ -814,7 +814,8 @@ export const UserDashboardInfo = [
     title: "وضعیت سفارش",
     link: "/panel/user/project-management",
     imgUrl: Images.OrderUserDashboard,
-    width: 100,
+    width: 210,
+    top: "-top-20",
   },
   {
     id: 2,

@@ -21,18 +21,20 @@ const PanelSidebarSmall = ({
     <div className="flex justify-between w-full">
       <ul className="flex flex-row justify-between w-full whitespace-nowrap p-[3%] gap-3">
         {sideOptions.map((item, index) => (
-          <li key={index} className="font-bold text-lg">
-            <div className="flex flex-col justify-around items-center gap-2">
-              <Image src={item.imgSrc} alt={`${item}`} width={40} height={40} />
-              <Link
-                href={`${item.address}`}
-                className={`text-sm ${
-                  item.address === pathname ? "text-white" : "text-black"
-                }`}
-              >
-                {item.text}
-              </Link>
-            </div>
+          <li key={index} className="font-bold">
+            <Link
+              href={`${item.address}`}
+              className={`text-sm md:text-lg flex flex-col justify-around items-center gap-2 ${
+                item.address === pathname ? "text-black" : "text-white"
+              }`}
+            >
+              <Image
+                src={item.imgSrc}
+                alt={`${item}`}
+                className="md:w-[50px] md:h-[50px] w-[40px]"
+              />
+              <span>{item.text}</span>
+            </Link>
           </li>
         ))}
       </ul>

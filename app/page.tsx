@@ -1,13 +1,13 @@
-import Footer from "@/components/home-components/Footer";
-import Nav from "@/components/home-components/nav";
-import Intro from "@/components/home-components/intro";
-import IntroStatistics from "@/components/home-components/intro-statistics";
-import News from "@/components/home-components/news";
-import Order from "@/components/home-components/order";
-import Plans from "@/components/home-components/plans";
-import Reason from "@/components/home-components/reason";
+import Footer from "@/home-components/Footer/Footer";
+import Nav from "@/home-components/nav";
+import Intro from "@/home-components/intro";
+import IntroStatistics from "@/home-components/intro-statistics";
+import News from "@/home-components/news";
+import Order from "@/home-components/order";
+import Plans from "@/home-components/plans";
+import Reason from "@/home-components/reason";
 import Script from "next/script";
-import Technology from "@/components/home-components/technology";
+import Technology from "@/home-components/technology";
 
 export default function Home() {
   return (

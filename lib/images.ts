@@ -37,7 +37,7 @@ import CPanelLogo from "../public/Technology/cpanellogo.svg";
 import DirectAdminLogo from "../public/Technology/directadminlogo.svg";
 import PleskLogo from "../public/Technology/plesklogo.svg";
 import ProfileUserDashboard from "../public/Panel/profile-user-dashboard.svg";
-import OrderUserDashboard from "../public/Panel/order-user-dashboard.svg";
+import OrderUserDashboard from "../public/Panel/order-status-four.svg";
 import FinancialStatusUserDashboard from "../public/Panel/financial-status-user-dashboard.svg";
 import SupportUserDashboard from "../public/Panel/support-user-dashboard.svg";
 import data from "../public/Reason/data.svg";
@@ -48,8 +48,23 @@ import mail from "../public/Reason/mail.svg";
 import hoveredMail from "../public/Reason/mailhover.svg";
 import book from "../public/Reason/book.svg";
 import hoveredBook from "../public/Reason/bookhover.svg";
+import DashboardIcon from "../public/Panel/dashboard.svg";
+import PersoanlInfoIcon from "../public/Panel/personalinfo.svg";
+import ProjectManagementIcon from "../public/Panel/projectsmanagement.svg";
+import SupportIcon from "../public/Panel/support.svg";
+import OrderSubmissionIcon from "../public/Panel/orders.svg";
+import FinancialStatusIcon from "../public/Panel/financialstatus.svg";
+import SettingsIcon from "../public/Panel/settings.svg";
+
 
 export const Images = {
+  SettingsIcon,
+  FinancialStatusIcon,
+  OrderSubmissionIcon,
+  SupportIcon,
+  ProjectManagementIcon,
+  PersoanlInfoIcon,
+  DashboardIcon,
   data,
   hoveredData,
   time,
