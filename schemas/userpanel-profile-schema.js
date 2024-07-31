@@ -2,6 +2,9 @@ import * as yup from "yup";
 const PasswordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{8,24}$/;
 const PhoneNumberRegex = /^(09)\d{9}$/;
 
+export const HoghoghiAdditionalInfoSchema = yup.object().shape({
+  
+})
 export const HomeFormSubmissionSchema = yup.object().shape({
   FullName: yup.string().min(6).required("لطفا نام کامل خود را وارد کنید."),
   PhoneNumber: yup.string().required("").max(11).matches(PhoneNumberRegex, " "),
@@ -24,10 +27,10 @@ export const UserPanelPersonalSchema = yup.object().shape({
     .min(3)
     .required("لطفا نام خانوادگی خود را وارد کنید.")
     .required(" "),
-  Password: yup.string().required("").matches(PasswordRegex, " "),
-  type: yup.string().required(""),
-  shenase_melli: yup.string().required(""),
-  shomare_sabt: yup.string().required("")
+  Password: yup.string().min(8).max(24).required("رمز عبور را وارد کنید."),
+  type: yup.string(),
+  shenase_melli: yup.string(),
+  shomare_sabt: yup.string()
 });
 
 export const UserPanelMoreInfoSchema = yup.object().shape({

@@ -4,7 +4,6 @@ import Logo from "../authorization/components/logo";
 import { useFormik } from "formik";
 import { LoginSchema } from "@/schemas/userpanel-profile-schema";
 import Modal from "@/components/modal";
-import { login2 } from "@/utils/utils";
 import { AuthContext } from "./context/AuthContext";
 import { useCaptcha } from "@/hooks/useCaptcha";
 import styles from "./styles/login.module.css";
@@ -17,6 +16,7 @@ import {
   fetchUserInOTPLogin,
   openModal,
 } from "@/redux/features/user/userSlice";
+import { useRouter } from "next/navigation";
 // import ReCAPTCHA from 'react-google-recaptcha'
 
 type LoginProps = {
@@ -28,7 +28,8 @@ const Login = ({ setLoginApproach, loginApproach }: LoginProps) => {
   const { setAuthSteps, authSteps } = useContext(AuthContext);
   const { showModal } = useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
-  
+  const router = useRouter();
+
   const handleSubmission = async () => {
     // login ba phone
     if (result && loginApproach === 0) {
@@ -43,6 +44,7 @@ const Login = ({ setLoginApproach, loginApproach }: LoginProps) => {
         })
       );
       // redirect be profile
+      router.push("/panel/user/dashboard");
     }
   };
 

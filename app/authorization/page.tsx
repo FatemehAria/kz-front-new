@@ -13,6 +13,7 @@ import {
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
 import { AuthContext } from "./context/AuthContext";
+import AdditionalInfoOnRegister from "./additional-info-onregister";
 const Auth = () => {
   const { authSteps, setAuthSteps } = useContext(AuthContext);
   const [loginApproach, setLoginApproach] = useState(0);
@@ -42,6 +43,8 @@ const Auth = () => {
         return <Info setSteps={setAuthSteps} />;
       case 5:
         return <RegisterUser />;
+      case 6:
+        return <AdditionalInfoOnRegister />;
       default:
         return;
     }

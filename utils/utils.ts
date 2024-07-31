@@ -11,7 +11,7 @@ export const logout = async () => {
   }
 };
 // Register with Info
-export const RegisterInfo = async (
+export const registerInfo = async (
   name: string,
   surname: string,
   password: string,
@@ -28,14 +28,17 @@ export const RegisterInfo = async (
       mobile,
       type,
       shenase_melli,
-      shomare_sabt
+      shomare_sabt,
     });
     console.log(data);
   } catch (error) {
     console.log(error);
   }
 };
-
+// save info to local storage
+export const saveToLocalStorage = (key: string, value: string) => {
+  localStorage.setItem(`${key}`, value);
+};
 // export const login = async (
 //   PhoneNumber: string,
 //   setAuthSteps: React.Dispatch<React.SetStateAction<number>>
@@ -76,43 +79,43 @@ export const RegisterInfo = async (
 //   }
 // };
 
-export const login2 = async (PhoneNumber: string) => {
-  try {
-    const { data } = await axios.post(
-      "https://keykavoos.liara.run/Client/SignUp",
-      {
-        PhoneNumber,
-      }
-    );
-    toast.success("کد ارسال شد.", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      rtl: true,
-    });
-    console.log(data);
-  } catch (error: any) {
-    toast.error("خطا در ارسال کد.", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-      rtl: true,
-    });
-    console.log(error);
-  }
-};
+// export const login2 = async (PhoneNumber: string) => {
+//   try {
+//     const { data } = await axios.post(
+//       "https://keykavoos.liara.run/Client/SignUp",
+//       {
+//         PhoneNumber,
+//       }
+//     );
+//     toast.success("کد ارسال شد.", {
+//       position: "top-center",
+//       autoClose: 3000,
+//       hideProgressBar: true,
+//       closeOnClick: true,
+//       pauseOnHover: true,
+//       draggable: true,
+//       progress: undefined,
+//       theme: "light",
+//       transition: Bounce,
+//       rtl: true,
+//     });
+//     console.log(data);
+//   } catch (error: any) {
+//     toast.error("خطا در ارسال کد.", {
+//       position: "top-right",
+//       autoClose: 3000,
+//       hideProgressBar: false,
+//       closeOnClick: true,
+//       pauseOnHover: true,
+//       draggable: true,
+//       progress: undefined,
+//       theme: "light",
+//       transition: Bounce,
+//       rtl: true,
+//     });
+//     console.log(error);
+//   }
+// };
 
 export const getNewOTP = async (PhoneNumber: string) => {
   try {

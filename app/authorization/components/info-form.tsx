@@ -8,7 +8,7 @@ import FormInput from "@/app/contact-us/components/form/form-inputs";
 import Modal from "@/components/modal";
 import { useDispatch, useSelector } from "react-redux";
 import SubmitOrderDropdown from "@/app/panel/user/submit-order/components/submit-order-dropdown";
-import { RegisterInfo } from "@/utils/utils";
+import { registerInfo, saveToLocalStorage } from "@/utils/utils";
 
 type infoFormProps = {
   setSteps: Dispatch<SetStateAction<number>>;
@@ -17,7 +17,7 @@ const initialValues = {
   FirstName: "",
   LastName: "",
   Password: "",
-  type: "",
+  type: "hagighi",
   shenase_melli: "",
   shomare_sabt: "",
 };
@@ -36,8 +36,10 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
     }
   }, []);
 
+
   const handleSubmission = async () => {
-    await RegisterInfo(
+    console.log("object");
+    await registerInfo(
       values.FirstName,
       values.LastName,
       values.Password,
@@ -64,9 +66,18 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
     validateOnMount: true,
   });
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      saveToLocalStorage("name", JSON.stringify(values.FirstName));
+      saveToLocalStorage("surname", JSON.stringify(values.LastName));
+      saveToLocalStorage("type", JSON.stringify(values.type));
+    }
+  }, [values.FirstName,values.LastName,values.type]);
+
+  console.log(isValid);
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-      {showModal && (
+      {/* {showModal && (
         <Modal
           showModal={showModal}
           text={successMessage}
@@ -74,7 +85,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
           data=""
           redirect={true}
         />
-      )}
+      )} */}
       <label>
         <p className="font-bold text-[24px] pt-[3%] pb-1">
           ثبت نام در کیکاووس زمان
@@ -85,7 +96,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
         </p>
       </label>
 
-      <div className="grid grid-cols-1 gap-5">
+      <div className="grid grid-cols-1 gap-8">
         <FormInput
           value={PhoneNumber}
           label="شماره تماس"
@@ -94,7 +105,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
           disabled={true}
         />
         {/* required */}
-        <div className="grid grid-cols-2 gap-0">
+        <div className="grid grid-cols-2 gap-8">
           <div className="relative">
             <FormInput
               value={values.FirstName}
@@ -106,7 +117,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
               type="text"
               autoFocus={true}
             />
-            <span className="absolute -top-5 right-0 text-[#4866CF]">*</span>
+            <span className="absolute -top-7 right-[3.25rem] z-20 text-[#4866CF]">*</span>
           </div>
 
           <div className="relative">
@@ -119,7 +130,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
               onBlur={handleBlur}
               type="text"
             />
-            <span className="absolute -top-5 right-0 text-[#4866CF]">*</span>
+            <span className="absolute -top-7 right-[7rem] z-20 text-[#4866CF]">*</span>
           </div>
 
           <div className="relative">
@@ -132,7 +143,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
               onBlur={handleBlur}
               type="text"
             />
-            <span className="absolute -top-5 right-0 text-[#4866CF]">*</span>
+            <span className="absolute -top-7 right-[5rem] z-20 text-[#4866CF]">*</span>
           </div>
 
           <SubmitOrderDropdown
@@ -145,7 +156,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
         </div>
         {/* optional */}
         <div
-          className={`flex flex-row ${
+          className={`flex flex-row gap-8 ${
             values.type === "حقوقی" ? "inline-block" : "hidden"
           }`}
         >
@@ -160,7 +171,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
                 onBlur={handleBlur}
                 type="text"
               />
-              <span className="absolute -top-7 right-20 text-[#4866CF]">*</span>
+              <span className="absolute -top-7 right-[6.5rem] text-[#4866CF]">*</span>
             </div>
             <div className="flex flex-col justify-end relative">
               <FormInput
@@ -172,7 +183,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
                 onBlur={handleBlur}
                 type="text"
               />
-              <span className="absolute -top-7 right-20 text-[#4866CF]">*</span>
+              <span className="absolute -top-7 right-[6.5rem] text-[#4866CF]">*</span>
             </div>
           </React.Fragment>
         </div>

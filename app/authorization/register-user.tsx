@@ -1,18 +1,10 @@
 "use client";
 import Image from "next/image";
-import {
-  ChangeEvent,
-  FormEvent,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
 import SubmissionBtn from "./components/submission-btn";
 import Logo from "./components/logo";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  verifyUserByOTPInLoginAndRegistration,
-} from "@/redux/features/user/userSlice";
+import { verifyUserByOTPInLoginAndRegistration } from "@/redux/features/user/userSlice";
 import sms from "../../public/Auth/sms.svg";
 import phone from "../../public/Auth/phone.svg";
 import Modal from "@/components/modal";
@@ -47,13 +39,16 @@ const RegisterUser = () => {
 
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await dispatch<any>(
-      verifyUserByOTPInLoginAndRegistration({
-        mobile: PhoneNumber,
-        otp_code: OTP,
-      })
-    );
-    // redirect be profile bad az handle kardane error ha va gheire
+    // await dispatch<any>(
+    //   verifyUserByOTPInLoginAndRegistration({
+    //     mobile: PhoneNumber,
+    //     otp_code: OTP,
+    //   })
+    // );
+    
+    // if(تایپ یوزر === حقوقی){
+      setAuthSteps(6);
+    // }
   };
 
   return (
