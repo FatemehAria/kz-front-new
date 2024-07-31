@@ -4,6 +4,7 @@ import React, {
   Dispatch,
   FormEvent,
   SetStateAction,
+  useContext,
   useEffect,
   useState,
 } from "react";
@@ -18,16 +19,12 @@ import Modal from "@/components/modal";
 import { getNewOTP, getOTPViaCall } from "@/utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchUserInOTPValidation,
+  fetchUserInOTPLogin,
   handleAutoFocus,
 } from "@/redux/features/user/userSlice";
+import { AuthContext } from "./context/AuthContext";
 
-type UserLoginViaOTPProps = {
-  setSteps: Dispatch<SetStateAction<number>>;
-  steps: number;
-};
-
-const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
+const UserLoginViaOTP = () => {
   const {
     userInfoOnLogin,
     status,
@@ -36,6 +33,7 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
     showModal,
     autoFocus,
   } = useSelector((state: any) => state.userData);
+  const { setAuthSteps } = useContext(AuthContext);
   const dispatch = useDispatch();
   const [PhoneNumber, setPhoneNumber] = useState("");
   const [counter, setCounter] = useState(90);
@@ -65,7 +63,7 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
 
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await dispatch<any>(fetchUserInOTPValidation({ PhoneNumber, OTP }));
+    await dispatch<any>(fetchUserInOTPLogin({ PhoneNumber, OTP }));
   };
   useEffect(() => {
     if (status === "failed") {
@@ -140,7 +138,7 @@ const UserLoginViaOTP = ({ setSteps }: UserLoginViaOTPProps) => {
                   buttonText="متوجه شدم"
                   text={successMessage}
                   data=""
-                  setSteps={setSteps}
+                  setSteps={setAuthSteps}
                   isLoggedIn={userInfoOnLogin}
                   redirect={userInfoOnLogin}
                 />

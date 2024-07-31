@@ -1,146 +1,64 @@
 "use client";
-import React, {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
-import axios from "axios";
-import SubmissionBtn from "../authorization/components/submission-btn";
+import React, { useContext } from "react";
 import Logo from "../authorization/components/logo";
-import FormSlider from "../authorization/components/form-slider";
-import FormInput from "../contact-us/components/form/form-inputs";
 import { useFormik } from "formik";
 import { LoginSchema } from "@/schemas/userpanel-profile-schema";
-import LoginVia from "./components/login-via";
 import Modal from "@/components/modal";
-import { Bounce, toast } from "react-toastify";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import MathProblemComponent from "./components/math-problem-component";
 import { login2 } from "@/utils/utils";
+import { AuthContext } from "./context/AuthContext";
+import { useCaptcha } from "@/hooks/useCaptcha";
+import styles from "./styles/login.module.css";
+import OtpLoginMain from "./components/OtpLoginMain";
+import { useStoreNumInLocal } from "@/hooks/useStoreNumInLocal";
 import { useDispatch, useSelector } from "react-redux";
-import { closeModal } from "@/redux/features/user/userSlice";
-import { useRouter } from "next/navigation";
+import FormInput from "../contact-us/components/form/form-inputs";
+import {
+  fetchUserInLoginWithPassword,
+  fetchUserInOTPLogin,
+  openModal,
+} from "@/redux/features/user/userSlice";
+// import ReCAPTCHA from 'react-google-recaptcha'
 
 type LoginProps = {
-  setSteps: Dispatch<SetStateAction<number>>;
+  setLoginApproach: React.Dispatch<React.SetStateAction<number>>;
+  loginApproach: number;
 };
 
-const initialValues = {
-  PhoneNumber: "",
-};
-
-const Login = ({ setSteps }: LoginProps) => {
-  const router = useRouter();
+const Login = ({ setLoginApproach, loginApproach }: LoginProps) => {
+  const { setAuthSteps, authSteps } = useContext(AuthContext);
   const { showModal } = useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
-  const { executeRecaptcha } = useGoogleReCaptcha();
-  const [answer, setAnswer] = useState("");
-  const [mathProblem, setMathProblem] = useState("");
-  const [wrongAnswerMessage, setWrongAnswerMessage] = useState("");
-  const [firstNumber, setFirstNumber] = useState(
-    Math.floor(Math.random() * 10) + 1
-  );
-  const [secondNumber, setSecondNumber] = useState(
-    Math.floor(Math.random() * 10) + 1
-  );
-  let correctAnswer = firstNumber + secondNumber;
-
-  const login = async (PhoneNumber: string) => {
-    try {
-      const { data } = await axios.post(
-        "https://keykavoos.liara.run/Client/SignUp",
-        {
-          PhoneNumber,
-        }
-      );
-      toast.success("کد ارسال شد.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        rtl: true,
-      });
-      setSteps(2);
-    } catch (error: any) {
-      toast.error("خطا در ارسال کد.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        rtl: true,
-      });
-    }
-  };
-
+  
   const handleSubmission = async () => {
-    if (parseInt(answer) === correctAnswer) {
-      await login(formik.values.PhoneNumber);
+    // login ba phone
+    if (result && loginApproach === 0) {
+      dispatch(openModal(true));
+      await dispatch<any>(fetchUserInOTPLogin({ mobile: values.PhoneNumber }));
+      // login ba pass
+    } else if (result && loginApproach === 1) {
+      await dispatch<any>(
+        fetchUserInLoginWithPassword({
+          mobile: values.PhoneNumber,
+          password: values.Password,
+        })
+      );
+      // redirect be profile
     }
-    if (!executeRecaptcha) {
-      console.log("Recaptcha not available");
-      return;
-    }
-
-    const gRecaptchaToken = await executeRecaptcha("inquirySubmit");
-
-    const response = await axios({
-      method: "post",
-      url: "/api/recaptchaSubmit",
-      data: {
-        gRecaptchaToken,
-      },
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-    });
-
-    // if (response?.data?.success === true) {
-    //   console.log(`Success with score: ${response?.data?.score}`);
-    // } else {
-    //   console.log(`Failure with score: ${response?.data?.score}`);
-    // }
   };
 
-  const formik = useFormik({
-    initialValues,
+  const { values, errors, handleSubmit, handleChange, isValid } = useFormik({
+    initialValues: {
+      PhoneNumber: "",
+      Password: "",
+    },
     onSubmit: handleSubmission,
     validationSchema: LoginSchema,
     validateOnMount: true,
   });
 
-  useEffect(() => {
-    setMathProblem(`${firstNumber} + ${secondNumber}`);
-
-    if (answer === "") {
-      setWrongAnswerMessage("");
-    } else if (
-      parseInt(answer) !== correctAnswer &&
-      formik.values.PhoneNumber
-    ) {
-      setWrongAnswerMessage("پاسخ صحیح نیست.");
-    } else if (parseInt(answer) === correctAnswer) {
-      setWrongAnswerMessage("");
-    }
-  }, [answer, formik.values.PhoneNumber]);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.localStorage.setItem("PhoneNumber", formik.values.PhoneNumber);
-    }
-  }, [formik.values.PhoneNumber]);
+  const { result, setAnswer, answer, mathProblem, wrongAnswerMessage } =
+    useCaptcha(values.PhoneNumber);
+  useStoreNumInLocal(values.PhoneNumber);
 
   return (
     <React.Fragment>
@@ -151,90 +69,73 @@ const Login = ({ setSteps }: LoginProps) => {
         <div className="py-[5%] w-full relative px-[5%]">
           <Modal
             showModal={showModal}
-            data={formik.values.PhoneNumber}
-            text={`${
-              formik.values.PhoneNumber
+            data={values.PhoneNumber}
+            text={
+              values.PhoneNumber
                 ? "شماره تماس زیر مورد تایید است؟"
                 : "شماره همراه خود را وارد کنید"
-            }`}
-            buttonText={`${
-              formik.values.PhoneNumber ? "تغییر شماره همراه" : "تایید"
-            }`}
-            setSteps={setSteps}
-            executeFunction2={() => login2(formik.values.PhoneNumber)}
+            }
+            buttonText={values.PhoneNumber ? "تغییر شماره همراه" : "تایید"}
+            setSteps={setAuthSteps}
+            executeFunction2={() => handleSubmission()}
             isLoggedIn={true}
           />
-          <div>
-            <Logo />
-          </div>
-          <div className="grid grid-cols-1 gap-6">
-            <form
-              className="flex flex-col gap-5"
-              onSubmit={formik.handleSubmit}
-            >
-              <label htmlFor="PhoneNumber">
-                <p className="font-bold text-[24px] pt-[3%] pb-1">
-                  به خانواده ما خوش آمدید
-                </p>
-                <p className="lg:w-[90%] text-[16px] leading-6">
-                  دوست عزیز سلام ! <br />
-                  از این که شما را در جمع خود می بینیم بسیار خوشحالیم.
-                  <br /> لطفا شماره تماس خود را وارد کنید.
-                </p>
-              </label>
 
-              <div className="flex flex-col justify-end">
-                <FormInput
-                  onChange={formik.handleChange}
-                  value={formik.values.PhoneNumber}
-                  label="شماره تماس"
-                  type="tel"
-                  name="PhoneNumber"
-                  error={formik.errors.PhoneNumber}
-                  autoFocus={true}
-                />
-                <div className="relative">
-                  {formik.errors.PhoneNumber && (
-                    <p className="text-red-500 absolute left-1/2 -translate-x-1/2 w-full z-20">{`${formik.errors.PhoneNumber}`}</p>
-                  )}
-                </div>
-              </div>
-              <div className="grid grid-cols-2 md:gap-[8%] gap-[5%]">
-                <FormInput
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    setAnswer(e.target.value)
-                  }
-                  value={answer}
-                  label="جواب سوال"
-                  name="answer"
-                />
-                <MathProblemComponent
-                  mathProblem={mathProblem}
-                  wrongAnswerMessage={wrongAnswerMessage}
-                />
-              </div>
-              <SubmissionBtn
-                text="ورود"
-                validation={
-                  formik.isValid && parseInt(answer) === correctAnswer
-                }
-                type={showModal ? "button" : "submit"}
-              />
-            </form>
-            <LoginVia />
-            <div className="text-[16px] flex flex-row gap-1 justify-center items-center">
-              <p>حساب کاربری ندارید؟</p>
-              <span>
-                <span
-                  onClick={() => dispatch(closeModal(true))}
-                  className="text-[#4866CF] cursor-pointer"
-                >
-                  ثبت نام
-                </span>{" "}
-                کنید.
-              </span>
-            </div>
+          <Logo />
+          <div className="flex flex-row justify-between items-center mb-8">
+            <span
+              onClick={() => setLoginApproach(0)}
+              className={loginApproach === 0 ? styles.approach : "border-none"}
+            >
+              ورود با کد تایید
+            </span>
+            <span
+              onClick={() => setLoginApproach(1)}
+              className={loginApproach === 1 ? styles.approach : "border-none"}
+            >
+              ورود با رمز عبور
+            </span>
           </div>
+
+          {loginApproach === 0 ? (
+            <OtpLoginMain
+              PhoneNumber={values.PhoneNumber}
+              onChangeHandler={handleChange}
+              phoneNumberError={errors.PhoneNumber}
+              isValid={isValid}
+              onSubmitHandler={handleSubmit}
+              answer={answer}
+              mathProblem={mathProblem}
+              setAnswer={setAnswer}
+              wrongAnswerMessage={wrongAnswerMessage}
+              result={result}
+            />
+          ) : (
+            <OtpLoginMain
+              PhoneNumber={values.PhoneNumber}
+              onChangeHandler={handleChange}
+              phoneNumberError={errors.PhoneNumber}
+              isValid={isValid}
+              onSubmitHandler={handleSubmit}
+              answer={answer}
+              mathProblem={mathProblem}
+              setAnswer={setAnswer}
+              wrongAnswerMessage={wrongAnswerMessage}
+              result={result}
+            >
+              <FormInput
+                onChange={handleChange}
+                value={values.Password}
+                label="رمز عبور"
+                type="text"
+                name="Password"
+                error={errors.Password}
+                autoFocus={true}
+              />
+            </OtpLoginMain>
+          )}
+
+          {/* <ReCAPTCHA sitekey={`${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`} onChange={(value) => console.log(value)} /> */}
         </div>
       </div>
     </React.Fragment>

@@ -23,6 +23,7 @@
       "@/public/*": ["/public/*"],
       "@/components/*": ["./components/*"],
       "@/home-components/*": ["./components/home-components/*"],
+      "@/services/*": ["./services/*"]
     }
   },
   "include": [

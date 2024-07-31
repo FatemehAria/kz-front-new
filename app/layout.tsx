@@ -31,7 +31,7 @@ export default function RootLayout({
                 <div>{children}</div>
                 {/* <WebVitals /> */}
                 <Metrics />
-                <GoogleAnalytics gaId={`${process.env.GOOGLE_ANALYTICS}`} />
+                <GoogleAnalytics gaId={`${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`} />
               </Providers>
             </ToastProvider>
           </NextAuthProviderWrapper>

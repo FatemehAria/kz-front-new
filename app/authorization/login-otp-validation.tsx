@@ -14,7 +14,7 @@ import Logo from "./components/logo";
 import SubmissionBtn from "./components/submission-btn";
 import { useRouter } from "next/navigation";
 import {
-  fetchUserInOTPValidation,
+  fetchUserInOTPLogin,
   updateStatus,
 } from "@/redux/features/user/userSlice";
 import "react-toastify/dist/ReactToastify.css";
@@ -108,7 +108,7 @@ const LoginOTPValidation = ({ setSteps }: UserExistsProps) => {
 
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await dispatch<any>(fetchUserInOTPValidation({ PhoneNumber, OTP }));
+    await dispatch<any>(fetchUserInOTPLogin({ PhoneNumber, OTP }));
   };
 
   return (

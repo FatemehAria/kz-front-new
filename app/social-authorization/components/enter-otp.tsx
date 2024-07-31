@@ -4,7 +4,7 @@ import SubmissionBtn from "@/app/authorization/components/submission-btn";
 import FormInput from "@/app/contact-us/components/form/form-inputs";
 import Modal from "@/components/modal";
 import {
-  fetchUserInOTPValidation,
+  fetchUserInOTPLogin,
   handleAutoFocus,
 } from "@/redux/features/user/userSlice";
 import { getNewOTP, getOTPViaCall } from "@/utils/utils";
@@ -62,7 +62,7 @@ function EnterOTP({ setSteps }: UserLoginViaOTPProps) {
 
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await dispatch<any>(fetchUserInOTPValidation({ PhoneNumber, OTP }));
+    await dispatch<any>(fetchUserInOTPLogin({ PhoneNumber, OTP }));
   };
   useEffect(() => {
     if (status === "failed") {

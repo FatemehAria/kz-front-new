@@ -1,15 +1,22 @@
 "use client";
 import Login from "./login";
 import Info from "./info";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import RegisterUser from "./register-user";
 import { useDispatch, useSelector } from "react-redux";
 import UserLoginViaOTP from "./user-login-via-otp";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { fetchUserProfile, getIdFromLocal, getTokenFromLocal } from "@/redux/features/user/userSlice";
+import {
+  fetchUserProfile,
+  getIdFromLocal,
+  getTokenFromLocal,
+} from "@/redux/features/user/userSlice";
+import { AuthContext } from "./context/AuthContext";
 const Auth = () => {
-  const [steps, setSteps] = useState(1);
+  const { authSteps, setAuthSteps } = useContext(AuthContext);
+  const [loginApproach, setLoginApproach] = useState(0);
+
   const { localToken, localUserId } = useSelector(
     (state: any) => state.userData
   );
@@ -19,17 +26,22 @@ const Auth = () => {
     dispatch(getIdFromLocal());
     dispatch<any>(fetchUserProfile());
   }, []);
-  
+
   const renderSteps = () => {
-    switch (steps) {
+    switch (authSteps) {
       case 1:
-        return <Login setSteps={setSteps} />;
+        return (
+          <Login
+            setLoginApproach={setLoginApproach}
+            loginApproach={loginApproach}
+          />
+        );
       case 2:
-        return <UserLoginViaOTP setSteps={setSteps} steps={steps} />;
+        return <UserLoginViaOTP />;
       case 3:
-        return <Info setSteps={setSteps} />;
+        return <Info setSteps={setAuthSteps} />;
       case 5:
-        return <RegisterUser setSteps={setSteps} />;
+        return <RegisterUser />;
       default:
         return;
     }
@@ -40,6 +52,7 @@ const Auth = () => {
     router.replace("/");
   }
   console.log(status);
+
   return (
     <div>
       {(!localToken || !localUserId) && <div dir="rtl">{renderSteps()}</div>}

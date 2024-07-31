@@ -5,20 +5,22 @@ type SubmitOrderDropdownProps = {
   dropdownItems: string[];
   value: string;
   onChange: any;
+  name?: string;
 };
 function SubmitOrderDropdown({
   dropDownTitle,
   dropdownItems,
   value,
   onChange,
+  name
 }: SubmitOrderDropdownProps) {
   return (
-    <div className="flex flex-col gap-3 relative">
-      <p>{dropDownTitle}</p>
+    <div className={`flex ${dropDownTitle ? "flex-col gap-3" : "flex-row"}  relative`}>
+      <p>{dropDownTitle ? dropDownTitle : ""}</p>
       <select
-        name={dropDownTitle}
+        name={name ? name : dropDownTitle}
         id={dropDownTitle}
-        className="bg-[#EAEFF6] h-full rounded-[4px] p-2"
+        className={`bg-[#EAEFF6] h-full rounded-[4px] p-2 ${!dropDownTitle && "w-full" }`}
         value={value}
         onChange={onChange}
       >

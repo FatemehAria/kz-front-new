@@ -12,15 +12,22 @@ export const HomeFormSubmissionSchema = yup.object().shape({
     .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)
     .required(" "),
 });
+
 export const UserPanelPersonalSchema = yup.object().shape({
-  FirstName: yup.string().min(3).required("لطفا نام خود را وارد کنید."),
-  LastName: yup.string().min(3).required("لطفا نام خانوادگی خود را وارد کنید."),
-  PhoneNumber: yup.string().required("").max(11).matches(PhoneNumberRegex, " "),
-  email: yup
+  FirstName: yup
     .string()
-    .email("ایمیل نادرست است.")
-    .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)
+    .min(3)
+    .required("لطفا نام خود را وارد کنید.")
     .required(" "),
+  LastName: yup
+    .string()
+    .min(3)
+    .required("لطفا نام خانوادگی خود را وارد کنید.")
+    .required(" "),
+  Password: yup.string().required("").matches(PasswordRegex, " "),
+  type: yup.string().required(""),
+  shenase_melli: yup.string().required(""),
+  shomare_sabt: yup.string().required("")
 });
 
 export const UserPanelMoreInfoSchema = yup.object().shape({

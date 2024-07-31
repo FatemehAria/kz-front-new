@@ -34,14 +34,14 @@ const ModalStuff = ({
     }
   }, [showModal]);
 
-  const closeModal = () => {
+  const openModal = () => {
     modalRef.current?.close();
     onClose();
   };
 
   const saveModal = () => {
     onSave();
-    closeModal();
+    openModal();
   };
 
   const modal =
@@ -50,7 +50,7 @@ const ModalStuff = ({
         <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 backdrop:bg-gray-800/50 border bg-white w-[50%] flex items-end flex-col py-[2%] px-[1%] rounded-lg">
           <Link
             href="/panel/profile"
-            onClick={() => closeModal()}
+            onClick={() => openModal()}
             className="self-start text-red-600"
           >
             <ImCross />

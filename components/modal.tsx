@@ -1,6 +1,6 @@
 "use client";
 import {
-  closeModal,
+  openModal,
   handleAutoFocus,
   updateStatus,
 } from "@/redux/features/user/userSlice";
@@ -62,11 +62,9 @@ function Modal({
               {data && (
                 <button
                   onClick={() => {
-                    dispatch(closeModal(false));
-                    setSteps?.(5);
-                    // changeNumber && dispatch(updateInputDisability(false));
-                    changeNumber && setSteps?.(1);
-                    data !== "  " && executeFunction2();
+                    dispatch(openModal(false));
+                    setSteps?.(3);
+                    data && executeFunction2();
                   }}
                   type="button"
                   className="text-white bg-[#4866CF] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm md:px-5 md:py-2.5 text-center"
@@ -81,7 +79,7 @@ function Modal({
               >
                 <button
                   onClick={() => {
-                    dispatch(closeModal(false));
+                    dispatch(openModal(false));
                     executeFunction && executeFunction() && setCounter(90);
                     !isLoggedIn && setSteps?.(3);
                     dispatch(handleAutoFocus(true));

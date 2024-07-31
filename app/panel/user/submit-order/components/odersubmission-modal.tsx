@@ -56,7 +56,7 @@ function OrdersubmissionModal({
             <div className="flex items-center justify-between p-4 md:p-5 rounded-b">
               <button
                 // onClick={() => {
-                //   dispatch(closeModal(false));
+                //   dispatch(openModal(false));
                 // }}
                 type="button"
                 className="text-white bg-[#4866CF] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm md:px-5 md:py-2.5 text-center"

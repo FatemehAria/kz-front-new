@@ -1,13 +1,14 @@
 "use client";
 import axios from "axios";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import SubmissionBtn from "./submission-btn";
 import { useFormik } from "formik";
 import { UserPanelPersonalSchema } from "@/schemas/userpanel-profile-schema";
 import FormInput from "@/app/contact-us/components/form/form-inputs";
 import Modal from "@/components/modal";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserDataInRegistration } from "@/redux/features/user/userSlice";
+import SubmitOrderDropdown from "@/app/panel/user/submit-order/components/submit-order-dropdown";
+import { RegisterInfo } from "@/utils/utils";
 
 type infoFormProps = {
   setSteps: Dispatch<SetStateAction<number>>;
@@ -15,7 +16,10 @@ type infoFormProps = {
 const initialValues = {
   FirstName: "",
   LastName: "",
-  email: "",
+  Password: "",
+  type: "",
+  shenase_melli: "",
+  shomare_sabt: "",
 };
 
 const InfoForm = ({ setSteps }: infoFormProps) => {
@@ -24,31 +28,36 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
     (state: any) => state.userData
   );
   const [PhoneNumber, setPhoneNumber] = useState("");
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       let number = window.localStorage.getItem("PhoneNumber");
       setPhoneNumber(number || "");
     }
   }, []);
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setSteps(1);
-      // console.log("first");
-    }, 5 * 60 * 1000); // 5 minutes in milliseconds
-
-    return () => clearTimeout(timeout);
-  }, []);
 
   const handleSubmission = async () => {
-    const FirstName = formik.values.FirstName;
-    const LastName = formik.values.LastName;
-    const email = formik.values.email;
-    await dispatch<any>(
-      fetchUserDataInRegistration({ FirstName, LastName, email, PhoneNumber })
+    await RegisterInfo(
+      values.FirstName,
+      values.LastName,
+      values.Password,
+      PhoneNumber,
+      values.type,
+      values.shenase_melli,
+      values.shomare_sabt
     );
+    setSteps(5);
   };
 
-  const formik = useFormik({
+  const {
+    values,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    isValid,
+    touched,
+    errors,
+  } = useFormik({
     initialValues,
     onSubmit: handleSubmission,
     validationSchema: UserPanelPersonalSchema,
@@ -56,7 +65,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} className="flex flex-col gap-5">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
       {showModal && (
         <Modal
           showModal={showModal}
@@ -75,52 +84,103 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
           مند شوید.
         </p>
       </label>
-      <div className="grid grid-cols-1 gap-3">
-        <div className="grid grid-cols-1 gap-8">
+
+      <div className="grid grid-cols-1 gap-5">
+        <FormInput
+          value={PhoneNumber}
+          label="شماره تماس"
+          type="tel"
+          name="PhoneNumber"
+          disabled={true}
+        />
+        {/* required */}
+        <div className="grid grid-cols-2 gap-0">
           <div className="relative">
             <FormInput
-              value={formik.values.FirstName}
-              onChange={formik.handleChange}
+              value={values.FirstName}
+              onChange={handleChange}
               name="FirstName"
               label="نام"
-              error={formik.errors.FirstName && formik.touched.FirstName}
-              onBlur={formik.handleBlur}
+              error={errors.FirstName && touched.FirstName}
+              onBlur={handleBlur}
               type="text"
               autoFocus={true}
             />
-            <span className="absolute -top-7 right-12 text-[#4866CF]">*</span>
+            <span className="absolute -top-5 right-0 text-[#4866CF]">*</span>
           </div>
+
           <div className="relative">
             <FormInput
-              value={formik.values.LastName}
-              onChange={formik.handleChange}
+              value={values.LastName}
+              onChange={handleChange}
               name="LastName"
               label="نام خانوادگی"
-              error={formik.errors.LastName && formik.touched.LastName}
-              onBlur={formik.handleBlur}
+              error={errors.LastName && touched.LastName}
+              onBlur={handleBlur}
               type="text"
             />
-            <span className="absolute -top-7 right-28 text-[#4866CF]">*</span>
+            <span className="absolute -top-5 right-0 text-[#4866CF]">*</span>
           </div>
-          <div className="flex flex-col justify-end relative">
-            <FormInput
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              name="email"
-              label="پست الکترونیکی"
-              error={formik.errors.email && formik.touched.email}
-              onBlur={formik.handleBlur}
-              type="text"
-            />
-            <span className="absolute -top-7 right-36 text-[#4866CF]">*</span>
-          </div>
-        </div>
 
+          <div className="relative">
+            <FormInput
+              value={values.Password}
+              onChange={handleChange}
+              name="Password"
+              label="رمزعبور"
+              error={errors.Password && touched.Password}
+              onBlur={handleBlur}
+              type="text"
+            />
+            <span className="absolute -top-5 right-0 text-[#4866CF]">*</span>
+          </div>
+
+          <SubmitOrderDropdown
+            dropDownTitle=""
+            dropdownItems={["حقیقی", "حقوقی"]}
+            onChange={handleChange}
+            value={values.type}
+            name="type"
+          />
+        </div>
+        {/* optional */}
+        <div
+          className={`flex flex-row ${
+            values.type === "حقوقی" ? "inline-block" : "hidden"
+          }`}
+        >
+          <React.Fragment>
+            <div className="flex flex-col justify-end relative">
+              <FormInput
+                value={values.shenase_melli}
+                onChange={handleChange}
+                name="shenase_melli"
+                label="شناسه ملی"
+                error={errors.shenase_melli && touched.shenase_melli}
+                onBlur={handleBlur}
+                type="text"
+              />
+              <span className="absolute -top-7 right-20 text-[#4866CF]">*</span>
+            </div>
+            <div className="flex flex-col justify-end relative">
+              <FormInput
+                value={values.shomare_sabt}
+                onChange={handleChange}
+                name="shomare_sabt"
+                label="شماره ثبت"
+                error={errors.shomare_sabt && touched.shomare_sabt}
+                onBlur={handleBlur}
+                type="text"
+              />
+              <span className="absolute -top-7 right-20 text-[#4866CF]">*</span>
+            </div>
+          </React.Fragment>
+        </div>
         <div className="grid grid-cols-1 gap-x-[3%] items-center">
           <div className="text-left">
             <SubmissionBtn
               text="تایید اطلاعات"
-              validation={formik.isValid}
+              validation={isValid}
               type="submit"
             />
           </div>
