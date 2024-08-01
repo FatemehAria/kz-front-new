@@ -16,10 +16,11 @@ function IntroBtns() {
   );
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getIdFromLocal());
-    dispatch(getTokenFromLocal());
-    dispatch<any>(fetchUserProfile());
+    // dispatch(getIdFromLocal());
+    // dispatch(getTokenFromLocal());
+    // dispatch<any>(fetchUserProfile());
   }, []);
+  
   return (
     <div className="flex md:justify-end justify-center w-full gap-3">
       <Link

@@ -8,6 +8,7 @@ import SubmitOrderDropdown from "../panel/user/submit-order/components/submit-or
 import Logo from "./components/logo";
 import { HoghoghiAdditionalInfoSchema } from "@/schemas/userpanel-profile-schema";
 import { sendOTPCodeAfterRegistration } from "@/redux/features/user/userSlice";
+import { saveToLocalStorage } from "@/utils/utils";
 
 const initialValues = {
   org_address: "",
@@ -38,6 +39,10 @@ function AdditionalInfoOnRegister() {
       setSavedInfo((last) => ({ ...last, surname }));
       let type = window.localStorage.getItem("type") || "";
       setSavedInfo((last) => ({ ...last, type }));
+      saveToLocalStorage("org_name", JSON.stringify(values.org_name));
+      saveToLocalStorage("org_registration", JSON.stringify(values.org_registration));
+      saveToLocalStorage("org_address", JSON.stringify(values.org_address));
+      saveToLocalStorage("org_phone", JSON.stringify(values.org_phone));
     }
   }, []);
 

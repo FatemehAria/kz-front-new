@@ -4,7 +4,7 @@ import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
 import SubmissionBtn from "./components/submission-btn";
 import Logo from "./components/logo";
 import { useDispatch, useSelector } from "react-redux";
-import { verifyUserByOTPInLoginAndRegistration } from "@/redux/features/user/userSlice";
+import { sendOTPCodeAfterRegistration } from "@/redux/features/user/userSlice";
 import sms from "../../public/Auth/sms.svg";
 import phone from "../../public/Auth/phone.svg";
 import Modal from "@/components/modal";
@@ -25,32 +25,57 @@ const RegisterUser = () => {
   const { setAuthSteps } = useContext(AuthContext);
   const { counter, setCounter } = useTimer();
   const dispatch = useDispatch();
-  const [PhoneNumber, setPhoneNumber] = useState("");
+
   const [OTP, setOTP] = useState("");
 
   useEffect(() => {
-    if (typeof window !== "undefined" && PhoneNumberInput === true) {
-      const number = window.localStorage.getItem("PhoneNumber");
-      setPhoneNumber(number || "");
-    } else if (PhoneNumberInput === false) {
-      window.localStorage.removeItem("PhoneNumber");
+    // console.log(typeof JSON.stringify(localStorage.getItem("type")));
+    if (JSON.stringify(localStorage.getItem("type")) === "haghighi") {
+      console.log("haghigh");
+      dispatch<any>(
+        sendOTPCodeAfterRegistration({
+          name: localStorage.getItem("name") as string,
+          surname: localStorage.getItem("surname") as string,
+          type: localStorage.getItem("type") as string,
+          mobile: localStorage.getItem("PhoneNumber") as string,
+          org_name: "",
+          org_registration: "",
+          org_address: "",
+          org_phone: "",
+        })
+      );
+    } else {
+      console.log("haghigh");
+      dispatch<any>(
+        sendOTPCodeAfterRegistration({
+          name: localStorage.getItem("name") as string,
+          surname: localStorage.getItem("surname") as string,
+          type: localStorage.getItem("type") as string,
+          mobile: localStorage.getItem("PhoneNumber") as string,
+          org_name: localStorage.getItem("org_name") as string,
+          org_registration: localStorage.getItem("org_registration") as string,
+          org_address: localStorage.getItem("org_address") as string,
+          org_phone: localStorage.getItem("org_phone") as string,
+        })
+      );
     }
-  }, [PhoneNumber, PhoneNumberInput]);
+  }, [dispatch]);
 
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // console.log(localData);
     // await dispatch<any>(
     //   verifyUserByOTPInLoginAndRegistration({
     //     mobile: PhoneNumber,
     //     otp_code: OTP,
     //   })
     // );
-    
+
     // if(تایپ یوزر === حقوقی){
-      setAuthSteps(6);
+    // setAuthSteps(6);
     // }
   };
-
   return (
     <div>
       <div
@@ -75,16 +100,15 @@ const RegisterUser = () => {
               <FormInput
                 value={
                   PhoneNumberInput
-                    ? PhoneNumber.slice(9) + "*****" + PhoneNumber.slice(0, 4)
-                    : PhoneNumber
+                    ? localStorage.getItem("PhoneNumber")?.slice(9) +
+                      "*****" +
+                      localStorage.getItem("PhoneNumber")?.slice(0, 4)
+                    : (localStorage.getItem("PhoneNumber") as string)
                 }
                 label="شماره تماس"
                 type="tel"
-                name="PhoneNumber"
+                name="mobile"
                 disabled={PhoneNumberInput}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setPhoneNumber(e.target.value)
-                }
               />
               <OTPInput
                 value={OTP}
@@ -112,7 +136,9 @@ const RegisterUser = () => {
                   mainButtonText="تغییر شماره همراه"
                   text={errorMessage}
                   data="  "
-                  executeFunction={() => getNewOTP(PhoneNumber)}
+                  executeFunction={() =>
+                    getNewOTP(localStorage.getItem("PhoneNumber") as string)
+                  }
                   setCounter={setCounter}
                   changeNumber={true}
                   setSteps={setAuthSteps}
@@ -141,7 +167,10 @@ const RegisterUser = () => {
                       className="flex items-center gap-2"
                       onClick={async () =>
                         counter === 0 &&
-                        (await getNewOTP(PhoneNumber), setCounter(90))
+                        (await getNewOTP(
+                          localStorage.getItem("PhoneNumber") as string
+                        ),
+                        setCounter(90))
                       }
                     >
                       <Image src={sms} alt="sms" />
@@ -153,7 +182,10 @@ const RegisterUser = () => {
                       <span
                         className="cursor-pointer"
                         onClick={() =>
-                          counter === 0 && getOTPViaCall(PhoneNumber)
+                          counter === 0 &&
+                          getOTPViaCall(
+                            localStorage.getItem("PhoneNumber") as string
+                          )
                         }
                       >
                         ارسال کد از طریق تماس

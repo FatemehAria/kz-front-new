@@ -29,8 +29,8 @@ const Nav = () => {
     userType,
     localUserId,
   } = useSelector((state: any) => state.userData);
-  console.log("next-auth status", status);
-  console.log("next-auth data", data);
+  // console.log("next-auth status", status);
+  // console.log("next-auth data", data);
   useEffect(() => {
     window.addEventListener("scroll", () => {
       window.scrollY > 60
@@ -38,13 +38,13 @@ const Nav = () => {
         : setActiveColorChange(false);
     });
   });
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      dispatch(getTokenFromLocal());
-      dispatch(getIdFromLocal());
-      dispatch<any>(fetchUserProfile());
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     dispatch(getTokenFromLocal());
+  //     dispatch(getIdFromLocal());
+  //     dispatch<any>(fetchUserProfile());
+  //   }
+  // }, []);
 
   return (
     <div

@@ -72,6 +72,7 @@ const UserLoginViaOTP = () => {
     }
   }, [status]);
 
+  console.log("2");
   return (
     <React.Fragment>
       <div

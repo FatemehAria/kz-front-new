@@ -8,7 +8,7 @@ import {
   verifyUserByOTPInLoginAndRegistrationPayload,
 } from "@/types/types";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+// import axios from "axios";
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
 
 const initialState: RTKUserState = {
@@ -31,7 +31,7 @@ const initialState: RTKUserState = {
   isLoggedIn: false,
   welcomeMessage: "",
   userId: "",
-  userType: "Admin",
+  userType: "",
   type: "Genuine",
   numberOfAnnouncements: 0,
 };
@@ -58,9 +58,9 @@ const fetchUserInLoginWithPassword = createAsyncThunk(
         userType: data.User?.UserType,
         type: data.User?.type,
       };
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
-      return rejectWithValue(error);
+      return rejectWithValue(error.response.data.message);
     }
   }
 );
@@ -70,7 +70,7 @@ const fetchUserInOTPLogin = createAsyncThunk(
   async (payload: fetchUserInOTPLoginPayload, { rejectWithValue }) => {
     const { mobile } = payload;
     try {
-      const { data } = await axios.post("/v1/loginotp", {
+      const { data } = await app.post("/loginotp", {
         mobile,
       });
       console.log(data);
@@ -85,9 +85,9 @@ const fetchUserInOTPLogin = createAsyncThunk(
         userType: data.User?.UserType,
         type: data.User?.type,
       };
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
-      return rejectWithValue(error);
+      return rejectWithValue(error.response.data.message);
     }
   }
 );
@@ -100,7 +100,7 @@ const verifyUserByOTPInLoginAndRegistration = createAsyncThunk(
   ) => {
     const { mobile, otp_code } = payload;
     try {
-      const { data } = await axios.post("/v1/verifyotp", {
+      const { data } = await app.post("/verifyotp", {
         otp_code,
         mobile,
       });
@@ -116,9 +116,9 @@ const verifyUserByOTPInLoginAndRegistration = createAsyncThunk(
         userType: data.User?.UserType,
         type: data.User?.type,
       };
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
-      return rejectWithValue(error);
+      return rejectWithValue(error.response.data.message);
     }
   }
 );
@@ -136,16 +136,17 @@ const sendOTPCodeAfterRegistration = createAsyncThunk(
       org_address,
       org_phone,
     } = payload;
+    console.log("payload", payload.type);
     try {
-      const { data } = await axios.post("/v1/registerotp", {
+      const { data } = await app.post("/registerotp", {
         name,
         surname,
         type,
         mobile,
-        org_name,
-        org_registration,
-        org_address,
-        org_phone,
+        org_name: org_name || "",
+        org_registration: org_registration || "",
+        org_address: org_address || "",
+        org_phone: org_phone || "",
       });
       console.log(data);
       return {
@@ -159,9 +160,9 @@ const sendOTPCodeAfterRegistration = createAsyncThunk(
         userType: data.User?.UserType,
         type: data.User?.type,
       };
-    } catch (error) {
-      console.log(error);
-      return rejectWithValue(error);
+    } catch (error: any) {
+      console.log(error.response.data.message);
+      return rejectWithValue(error.response.data.message);
     }
   }
 );
@@ -182,7 +183,7 @@ const fetchUserProfile = createAsyncThunk<
   { state: RootState } // Types for thunkAPI
 >("userData/fetchUserProfile", async (_, { getState, rejectWithValue }) => {
   try {
-    const { data } = await axios.get(`/v1/user/show`, {
+    const { data } = await app.get(`/user/show`, {
       headers: {
         authorization: `Bearer ${getState().userData.localToken}`,
       },
@@ -198,8 +199,8 @@ const fetchUserProfile = createAsyncThunk<
       userId: data.data._id,
       numberOfAnnouncements: data.data.Announcement.length,
     };
-  } catch (error) {
-    return rejectWithValue(error);
+  } catch (error: any) {
+    return rejectWithValue(error.response.data.message);
   }
 });
 

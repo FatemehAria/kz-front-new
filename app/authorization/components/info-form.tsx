@@ -3,12 +3,16 @@ import axios from "axios";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import SubmissionBtn from "./submission-btn";
 import { useFormik } from "formik";
-import { UserPanelPersonalSchema } from "@/schemas/userpanel-profile-schema";
+import { UserRegistrationPersonalSchema } from "@/schemas/userpanel-profile-schema";
 import FormInput from "@/app/contact-us/components/form/form-inputs";
 import Modal from "@/components/modal";
 import { useDispatch, useSelector } from "react-redux";
 import SubmitOrderDropdown from "@/app/panel/user/submit-order/components/submit-order-dropdown";
 import { registerInfo, saveToLocalStorage } from "@/utils/utils";
+import { openModal } from "@/redux/features/user/userSlice";
+import FormValidationMsg from "./form-validation-msg";
+import { verifyIranianNationalId } from "@persian-tools/persian-tools";
+import InfoFormFieldContainer from "./info-form-filed-container";
 
 type infoFormProps = {
   setSteps: Dispatch<SetStateAction<number>>;
@@ -17,38 +21,54 @@ const initialValues = {
   FirstName: "",
   LastName: "",
   Password: "",
-  type: "hagighi",
+  type: "haghighi",
   shenase_melli: "",
   shomare_sabt: "",
 };
 
 const InfoForm = ({ setSteps }: infoFormProps) => {
+  const [errorMsg, setErrorMsg] = useState("");
   const dispatch = useDispatch();
-  const { showModal, successMessage } = useSelector(
-    (state: any) => state.userData
-  );
+  const { showModal } = useSelector((state: any) => state.userData);
   const [PhoneNumber, setPhoneNumber] = useState("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       let number = window.localStorage.getItem("PhoneNumber");
-      setPhoneNumber(number || "");
+      setPhoneNumber(number as string);
     }
   }, []);
 
-
   const handleSubmission = async () => {
-    console.log("object");
-    await registerInfo(
-      values.FirstName,
-      values.LastName,
-      values.Password,
-      PhoneNumber,
-      values.type,
-      values.shenase_melli,
-      values.shomare_sabt
-    );
-    setSteps(5);
+    try {
+      setErrorMsg("");
+      if (values.type !== "haghighi") {
+        if (verifyIranianNationalId(values.shenase_melli)) {
+          console.log("object");
+          values.shenase_melli = values.shenase_melli;
+        } else {
+          console.log("object2");
+          setErrorMsg("شناسه ملی معتبر نمی باشد.");
+        }
+      }
+      await registerInfo(
+        values.FirstName,
+        values.LastName,
+        values.Password,
+        PhoneNumber,
+        values.type,
+        values.shenase_melli,
+        values.shomare_sabt
+      );
+      if (values.type === "haghighi") {
+        setSteps(5);
+      }else{
+        setSteps(6)
+      }
+    } catch (error: any) {
+      setErrorMsg(error.message);
+      dispatch(openModal(true));
+    }
   };
 
   const {
@@ -62,7 +82,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
   } = useFormik({
     initialValues,
     onSubmit: handleSubmission,
-    validationSchema: UserPanelPersonalSchema,
+    validationSchema: UserRegistrationPersonalSchema,
     validateOnMount: true,
   });
 
@@ -72,20 +92,20 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
       saveToLocalStorage("surname", JSON.stringify(values.LastName));
       saveToLocalStorage("type", JSON.stringify(values.type));
     }
-  }, [values.FirstName,values.LastName,values.type]);
+  }, [values.FirstName, values.LastName, values.type]);
 
-  console.log(isValid);
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-      {/* {showModal && (
+      {errorMsg && showModal && (
         <Modal
           showModal={showModal}
-          text={successMessage}
+          text={errorMsg}
           buttonText="متوجه شدم"
           data=""
           redirect={true}
+          setSteps={setSteps}
         />
-      )} */}
+      )}
       <label>
         <p className="font-bold text-[24px] pt-[3%] pb-1">
           ثبت نام در کیکاووس زمان
@@ -106,7 +126,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
         />
         {/* required */}
         <div className="grid grid-cols-2 gap-8">
-          <div className="relative">
+          <InfoFormFieldContainer errorMsg={errors.FirstName}>
             <FormInput
               value={values.FirstName}
               onChange={handleChange}
@@ -117,10 +137,15 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
               type="text"
               autoFocus={true}
             />
-            <span className="absolute -top-7 right-[3.25rem] z-20 text-[#4866CF]">*</span>
-          </div>
+            <span className="absolute -top-7 right-[3.25rem] z-20 text-[#4866CF]">
+              *
+            </span>
+            {errors.FirstName && touched.FirstName && (
+              <FormValidationMsg errorMsg={`${errors.FirstName}`} />
+            )}
+          </InfoFormFieldContainer>
 
-          <div className="relative">
+          <InfoFormFieldContainer errorMsg={errors.LastName}>
             <FormInput
               value={values.LastName}
               onChange={handleChange}
@@ -130,10 +155,15 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
               onBlur={handleBlur}
               type="text"
             />
-            <span className="absolute -top-7 right-[7rem] z-20 text-[#4866CF]">*</span>
-          </div>
+            <span className="absolute -top-7 right-[7rem] z-20 text-[#4866CF]">
+              *
+            </span>
+            {errors.LastName && touched.LastName && (
+              <FormValidationMsg errorMsg={`${errors.LastName}`} />
+            )}
+          </InfoFormFieldContainer>
 
-          <div className="relative">
+          <InfoFormFieldContainer errorMsg={errors.Password}>
             <FormInput
               value={values.Password}
               onChange={handleChange}
@@ -143,16 +173,23 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
               onBlur={handleBlur}
               type="text"
             />
-            <span className="absolute -top-7 right-[5rem] z-20 text-[#4866CF]">*</span>
-          </div>
+            <span className="absolute -top-7 right-[5rem] z-20 text-[#4866CF]">
+              *
+            </span>
+            {errors.Password && touched.Password && (
+              <FormValidationMsg errorMsg={`${errors.Password}`} />
+            )}
+          </InfoFormFieldContainer>
 
-          <SubmitOrderDropdown
-            dropDownTitle=""
-            dropdownItems={["حقیقی", "حقوقی"]}
-            onChange={handleChange}
-            value={values.type}
-            name="type"
-          />
+          <div className="pb-0">
+            <SubmitOrderDropdown
+              dropDownTitle=""
+              dropdownItems={["حقیقی", "حقوقی"]}
+              onChange={handleChange}
+              value={values.type}
+              name="type"
+            />
+          </div>
         </div>
         {/* optional */}
         <div
@@ -161,7 +198,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
           }`}
         >
           <React.Fragment>
-            <div className="flex flex-col justify-end relative">
+            <InfoFormFieldContainer errorMsg={errors.shenase_melli}>
               <FormInput
                 value={values.shenase_melli}
                 onChange={handleChange}
@@ -171,9 +208,16 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
                 onBlur={handleBlur}
                 type="text"
               />
-              <span className="absolute -top-7 right-[6.5rem] text-[#4866CF]">*</span>
-            </div>
-            <div className="flex flex-col justify-end relative">
+              <span className="absolute -top-7 right-[6.5rem] text-[#4866CF]">
+                *
+              </span>
+              {errors.shenase_melli && touched.shenase_melli && (
+                <FormValidationMsg
+                  errorMsg={`${errorMsg ? errorMsg : errors.shenase_melli}`}
+                />
+              )}
+            </InfoFormFieldContainer>
+            <InfoFormFieldContainer errorMsg={errors.shomare_sabt}>
               <FormInput
                 value={values.shomare_sabt}
                 onChange={handleChange}
@@ -183,8 +227,15 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
                 onBlur={handleBlur}
                 type="text"
               />
-              <span className="absolute -top-7 right-[6.5rem] text-[#4866CF]">*</span>
-            </div>
+              <span className="absolute -top-7 right-[6.5rem] text-[#4866CF]">
+                *
+              </span>
+              {errors.shomare_sabt && touched.shomare_sabt && (
+                <FormValidationMsg
+                  errorMsg={`${errorMsg ? errorMsg : errors.shomare_sabt}`}
+                />
+              )}
+            </InfoFormFieldContainer>
           </React.Fragment>
         </div>
         <div className="grid grid-cols-1 gap-x-[3%] items-center">

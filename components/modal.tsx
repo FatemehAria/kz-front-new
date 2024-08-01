@@ -86,11 +86,13 @@ function Modal({
                     redirect &&
                       (userType === "User"
                         ? router.replace("/panel/user/dashboard")
-                        : router.replace("/panel/admin/view-users"));
+                        : userType === "Admin"
+                        ? router.replace("/panel/admin/view-users")
+                        : userType === "" ? setSteps?.(1) : console.log("none"))
                   }}
                   type="button"
                   className={`md:py-2.5 md:px-5 ms-3 px-5 text-sm font-medium focus:outline-none rounded-lg border border-[#4866CF] ${
-                    data.length === 0
+                    data
                       ? "self-center bg-[#4866CF] text-white"
                       : " bg-white text-[#4866CF]"
                   }`}

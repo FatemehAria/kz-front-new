@@ -54,7 +54,7 @@ const Auth = () => {
   if (status === "authenticated") {
     router.replace("/");
   }
-  console.log(status);
+  // console.log(status);
 
   return (
     <div>
