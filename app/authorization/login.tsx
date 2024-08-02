@@ -17,6 +17,7 @@ import {
   openModal,
 } from "@/redux/features/user/userSlice";
 import { useRouter } from "next/navigation";
+import { useGetUserRoles } from "@/hooks/useGetUserRoles";
 // import ReCAPTCHA from 'react-google-recaptcha'
 
 type LoginProps = {
@@ -25,17 +26,19 @@ type LoginProps = {
 };
 
 const Login = ({ setLoginApproach, loginApproach }: LoginProps) => {
-  const { setAuthSteps, authSteps } = useContext(AuthContext);
-  const { showModal } = useSelector((state: any) => state.userData);
+  const { setAuthSteps } = useContext(AuthContext);
+  const { showModal, isLoggedIn, successMessage , status} = useSelector(
+    (state: any) => state.userData
+  );
   const dispatch = useDispatch();
   const router = useRouter();
+  const userRoles = useGetUserRoles();
 
   const handleSubmission = async () => {
     // login ba phone
     if (result && loginApproach === 0) {
-      dispatch(openModal(true));
       await dispatch<any>(fetchUserInOTPLogin({ mobile: values.PhoneNumber }));
-      // login ba pass
+      setAuthSteps(2);
     } else if (result && loginApproach === 1) {
       await dispatch<any>(
         fetchUserInLoginWithPassword({
@@ -43,8 +46,6 @@ const Login = ({ setLoginApproach, loginApproach }: LoginProps) => {
           password: values.Password,
         })
       );
-      // redirect be profile
-      router.push("/panel/user/dashboard");
     }
   };
 
@@ -61,7 +62,7 @@ const Login = ({ setLoginApproach, loginApproach }: LoginProps) => {
   const { result, setAnswer, answer, mathProblem, wrongAnswerMessage } =
     useCaptcha(values.PhoneNumber);
   useStoreNumInLocal(values.PhoneNumber);
-
+  console.log(1);
   return (
     <React.Fragment>
       <div
@@ -79,10 +80,20 @@ const Login = ({ setLoginApproach, loginApproach }: LoginProps) => {
             }
             buttonText={values.PhoneNumber ? "تغییر شماره همراه" : "تایید"}
             setSteps={setAuthSteps}
-            executeFunction2={() => handleSubmission()}
-            isLoggedIn={true}
+            // executeFunction2={handleSubmission}
+            isLoggedIn={isLoggedIn}
           />
-
+          {status === "" && showModal && (
+            <Modal
+              showModal={showModal}
+              buttonText="متوجه شدم"
+              text={successMessage}
+              data=""
+              setSteps={setAuthSteps}
+              isLoggedIn={isLoggedIn}
+              redirect={isLoggedIn}
+            />
+          )}
           <Logo />
           <div className="flex flex-row justify-between items-center mb-8">
             <span

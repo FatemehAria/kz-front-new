@@ -1,9 +1,11 @@
 "use client";
+import { useGetUserRoles } from "@/hooks/useGetUserRoles";
 import {
   openModal,
   handleAutoFocus,
   updateStatus,
 } from "@/redux/features/user/userSlice";
+import { userRoleType } from "@/types/types";
 import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,6 +41,8 @@ function Modal({
   const { userType } = useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
   const router = useRouter();
+  const userRoles = useGetUserRoles();
+
   return (
     <div
       id="default-modal"
@@ -83,12 +87,17 @@ function Modal({
                     executeFunction && executeFunction() && setCounter(90);
                     !isLoggedIn && setSteps?.(3);
                     dispatch(handleAutoFocus(true));
-                    redirect &&
-                      (userType === "User"
-                        ? router.replace("/panel/user/dashboard")
-                        : userType === "Admin"
-                        ? router.replace("/panel/admin/view-users")
-                        : userType === "" ? setSteps?.(1) : console.log("none"))
+                    redirect && userRoles.includes("Admin")
+                      ? router.replace("/panel/admin/view-users")
+                      : router.replace("/panel/user/dashboard");
+                    // redirect &&
+                    //   (userRole === "User"
+                    //     ? router.replace("/panel/user/dashboard")
+                    //     : userRole === "Admin"
+                    //     ? router.replace("/panel/admin/view-users")
+                    //     : userRole === ""
+                    //     ? setSteps?.(1)
+                    //     : console.log("none"));
                   }}
                   type="button"
                   className={`md:py-2.5 md:px-5 ms-3 px-5 text-sm font-medium focus:outline-none rounded-lg border border-[#4866CF] ${

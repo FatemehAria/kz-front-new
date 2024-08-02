@@ -21,12 +21,14 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchUserInOTPLogin,
   handleAutoFocus,
+  verifyUserByOTPInLoginAndRegistration,
 } from "@/redux/features/user/userSlice";
 import { AuthContext } from "./context/AuthContext";
+import { useTimer } from "@/hooks/useTimer";
 
 const UserLoginViaOTP = () => {
   const {
-    userInfoOnLogin,
+    isLoggedIn,
     status,
     successMessage,
     errorMessage,
@@ -36,19 +38,8 @@ const UserLoginViaOTP = () => {
   const { setAuthSteps } = useContext(AuthContext);
   const dispatch = useDispatch();
   const [PhoneNumber, setPhoneNumber] = useState("");
-  const [counter, setCounter] = useState(90);
   const [OTP, setOTP] = useState("");
-  // COUNTER
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setCounter((prevCounter) => {
-        if (prevCounter > 0) return prevCounter - 1;
-        return 0;
-      });
-    }, 1000); // 1 second
-
-    return () => clearTimeout(timeout);
-  }, [counter]);
+  const { counter, setCounter } = useTimer();
   // PHONENUMBER FROM LOCALSTORAGE
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -63,8 +54,14 @@ const UserLoginViaOTP = () => {
 
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await dispatch<any>(fetchUserInOTPLogin({ PhoneNumber, OTP }));
+    await dispatch<any>(
+      verifyUserByOTPInLoginAndRegistration({
+        mobile: PhoneNumber,
+        otp_code: OTP,
+      })
+    );
   };
+
   useEffect(() => {
     if (status === "failed") {
       setOTP("");
@@ -140,8 +137,8 @@ const UserLoginViaOTP = () => {
                   text={successMessage}
                   data=""
                   setSteps={setAuthSteps}
-                  isLoggedIn={userInfoOnLogin}
-                  redirect={userInfoOnLogin}
+                  isLoggedIn={isLoggedIn}
+                  redirect={isLoggedIn}
                 />
               )}
               <span
@@ -155,7 +152,10 @@ const UserLoginViaOTP = () => {
                       className="flex items-center gap-2"
                       onClick={async () =>
                         counter === 0 &&
-                        (await getNewOTP(PhoneNumber), setCounter(90))
+                        (dispatch<any>(
+                          fetchUserInOTPLogin({ mobile: PhoneNumber })
+                        ),
+                        setCounter(90))
                       }
                     >
                       <Image src={sms} alt="sms" />

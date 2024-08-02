@@ -14,15 +14,12 @@ import { deleteCookie, getCookie, setCookie } from "cookies-next";
 const initialState: RTKUserState = {
   status: "idle",
   userProfile: {},
-  userInfoOnLogin: {},
   FirstName: "",
   LastName: "",
   token: "",
   errorMessage: "",
   successMessage: "",
   changePhoneNumber: false,
-  localToken: "" || undefined,
-  localUserId: "" || null,
   PhoneNumber: "" || null,
   email: "",
   PhoneNumberInput: true,
@@ -48,15 +45,14 @@ const fetchUserInLoginWithPassword = createAsyncThunk(
       });
       console.log(data);
       return {
-        token: data.User?.token,
-        userInfoOnLogin: data.User,
-        FirstName: data.User?.FirstName,
-        LastName: data.User?.LastName,
-        isLoggedIn: data.isLogin,
-        welcomeMessage: data.welcome,
-        userId: data.User?._id,
-        userType: data.User?.UserType,
-        type: data.User?.type,
+        token: data.data?.token,
+        FirstName: data.data?.user.name,
+        userId: data.data?.user.id,
+        userType: data.data?.user.roles,
+        type: data.data?.user.type,
+        isLoggedIn: true,
+        showModal: true,
+        status: "success",
       };
     } catch (error: any) {
       console.log(error);
@@ -75,15 +71,12 @@ const fetchUserInOTPLogin = createAsyncThunk(
       });
       console.log(data);
       return {
-        token: data.User?.token,
-        userInfoOnLogin: data.User,
-        FirstName: data.User?.FirstName,
-        LastName: data.User?.LastName,
-        isLoggedIn: data.isLogin,
-        welcomeMessage: data.welcome,
-        userId: data.User?._id,
-        userType: data.User?.UserType,
-        type: data.User?.type,
+        token: data.data?.token,
+        FirstName: data.data?.user.name,
+        // isLoggedIn: data.isLogin,
+        userId: data.data?.user.id,
+        // userType: data.User?.UserType,
+        type: data.data?.user.type,
       };
     } catch (error: any) {
       console.log(error);
@@ -106,15 +99,12 @@ const verifyUserByOTPInLoginAndRegistration = createAsyncThunk(
       });
       console.log(data);
       return {
-        token: data.User?.token,
-        userInfoOnLogin: data.User,
-        FirstName: data.User?.FirstName,
-        LastName: data.User?.LastName,
-        isLoggedIn: data.isLogin,
-        welcomeMessage: data.welcome,
-        userId: data.User?._id,
-        userType: data.User?.UserType,
-        type: data.User?.type,
+        token: data.data?.token,
+        userProfile: data.data?.user,
+        FirstName: data.data?.user.name,
+        userId: data.data?.user.id,
+        // userType: data.data?.user.type,
+        type: data.data?.user.type,
       };
     } catch (error: any) {
       console.log(error);
@@ -132,36 +122,32 @@ const sendOTPCodeAfterRegistration = createAsyncThunk(
       type,
       mobile,
       org_name,
-      org_registration,
+      org_registration_number,
       org_address,
       org_phone,
     } = payload;
-    console.log("payload", payload.type);
     try {
-      const { data } = await app.post("/registerotp", {
+      console.log(payload);
+      const data = await app.post("/registerotp", {
         name,
         surname,
         type,
         mobile,
-        org_name: org_name || "",
-        org_registration: org_registration || "",
-        org_address: org_address || "",
-        org_phone: org_phone || "",
+        org_name,
+        org_registration_number,
+        org_address,
+        org_phone,
       });
       console.log(data);
       return {
-        token: data.User?.token,
-        userInfoOnLogin: data.User,
-        FirstName: data.User?.FirstName,
-        LastName: data.User?.LastName,
-        isLoggedIn: data.isLogin,
-        welcomeMessage: data.welcome,
-        userId: data.User?._id,
-        userType: data.User?.UserType,
-        type: data.User?.type,
+        token: data.data.User?.token,
+        userProfile: data.data.user,
+        FirstName: data.data.User?.FirstName,
+        userId: data.data?.user?.id,
+        type: data.data.User?.type,
       };
     } catch (error: any) {
-      console.log(error.response.data.message);
+      console.log(error);
       return rejectWithValue(error.response.data.message);
     }
   }
@@ -172,32 +158,43 @@ const fetchUserProfile = createAsyncThunk<
   {
     data: any; // You can specify a concrete type for the response data
     FirstName: string;
-    LastName: string;
+    // LastName: string;
     email: string;
     type: string;
-    userType: string;
+    userType:
+      | string
+      | {
+          created_at: string;
+          deleted_at: string;
+          updated_at: string;
+          id: number;
+          name_en: string;
+          name_fa: string;
+          pivot: { user_id: number; role_id: number };
+        }[];
     userId: string;
-    numberOfAnnouncements: number;
+    // numberOfAnnouncements: number;
   }, // Return type
   void, // First argument type (it can be anything you want)
   { state: RootState } // Types for thunkAPI
 >("userData/fetchUserProfile", async (_, { getState, rejectWithValue }) => {
   try {
+    console.log(getState().userData.token);
     const { data } = await app.get(`/user/show`, {
       headers: {
-        authorization: `Bearer ${getState().userData.localToken}`,
+        authorization: `Bearer ${getState().userData.token}`,
       },
     });
     console.log(data);
     return {
       data: data.data,
-      FirstName: data.data.FirstName,
-      LastName: data.data.LastName,
+      FirstName: data.data.name,
       email: data.data.email,
       type: data.data.type,
-      userType: data.data.UserType,
-      userId: data.data._id,
-      numberOfAnnouncements: data.data.Announcement.length,
+      // roles:[]
+      userType: data.data.roles,
+      userId: data.data.id,
+      // numberOfAnnouncements: data.data.Announcement.length,
     };
   } catch (error: any) {
     return rejectWithValue(error.response.data.message);
@@ -231,10 +228,10 @@ const userSlice = createSlice({
       state.PhoneNumber = localStorage.getItem("PhoneNumber");
     },
     getTokenFromLocal: (state) => {
-      state.localToken = getCookie("token");
+      state.token = getCookie("token");
     },
     getIdFromLocal: (state) => {
-      state.localUserId = sessionStorage.getItem("userId");
+      state.userId = sessionStorage.getItem("userId") || "";
     },
     changeUserInfo: (state, action) => {
       state.FirstName = action.payload;
@@ -252,7 +249,7 @@ const userSlice = createSlice({
       state.status = "loading";
     });
     builder.addCase(fetchUserInOTPLogin.fulfilled, (state, action) => {
-      state.showModal = true;
+      // state.showModal = true;
       state.status = "success";
       state.token = action.payload.token;
       setCookie("token", state.token, {
@@ -260,19 +257,17 @@ const userSlice = createSlice({
         maxAge: 60 * 60,
         secure: true,
       });
-      state.userInfoOnLogin = action.payload.userInfoOnLogin;
       state.FirstName = action.payload.FirstName;
-      state.LastName = action.payload.LastName;
-      state.welcomeMessage = action.payload.welcomeMessage;
-      state.userType = action.payload.userType;
+      // state.userType = action.payload.userType;
       state.type = action.payload.type;
       state.userId = action.payload.userId;
+      state.isLoggedIn = true;
       sessionStorage.setItem("userId", state.userId);
-      if (!state.userInfoOnLogin) {
-        state.successMessage = "لطفا اطلاعات خود را تکمیل کنید.";
-      } else {
-        state.successMessage = `${state.FirstName} ${state.LastName} عزیز با موفقیت وارد پنل کاربری خود شدید.`;
-      }
+      // if (!state.userProfile) {
+      //   state.successMessage = "لطفا اطلاعات خود را تکمیل کنید.";
+      // } else {
+      //   state.successMessage = `${state.FirstName} ${state.LastName} عزیز با موفقیت وارد پنل کاربری خود شدید.`;
+      // }
       state.errorMessage = "";
     });
     builder.addCase(fetchUserInOTPLogin.rejected, (state) => {
@@ -281,7 +276,7 @@ const userSlice = createSlice({
       state.errorMessage = ` کد یکبار مصرف مورد تایید نمی باشد
       دوباره اقدام فرمایید.`;
     });
-
+    // token
     builder.addCase(fetchUserProfile.pending, (state) => {
       state.status = "loading";
     });
@@ -289,13 +284,14 @@ const userSlice = createSlice({
       state.status = "success";
       state.userProfile = action.payload.data;
       state.FirstName = action.payload.FirstName;
-      state.LastName = action.payload.LastName;
+      // state.LastName = action.payload.LastName;
       state.type = action.payload.type;
       state.errorMessage = "";
-      state.numberOfAnnouncements = action.payload.numberOfAnnouncements;
+      // state.numberOfAnnouncements = action.payload.numberOfAnnouncements;
       state.userType = action.payload.userType;
       state.userId = action.payload.userId;
       sessionStorage.setItem("userId", state.userId);
+      state.userType = action.payload.userType;
     });
     builder.addCase(fetchUserProfile.rejected, (state, action) => {
       state.status = "failed";
@@ -314,13 +310,12 @@ const userSlice = createSlice({
         maxAge: 60 * 60,
         secure: true,
       });
-      state.userInfoOnLogin = action.payload.userInfoOnLogin;
+      state.userProfile = action.payload.userProfile;
       state.FirstName = action.payload.FirstName;
-      state.LastName = action.payload.LastName;
-      state.userType = action.payload.userType;
       state.userId = action.payload.userId;
+      state.userType = "User";
       sessionStorage.setItem("userId", state.userId);
-      state.successMessage = `${state.FirstName} ${state.LastName} عزیز با موفقیت وارد پنل کاربری خود شدید.`;
+      state.successMessage = `${state.FirstName} عزیز با موفقیت وارد پنل کاربری خود شدید.`;
       state.errorMessage = "";
     });
     builder.addCase(sendOTPCodeAfterRegistration.rejected, (state, action) => {
@@ -342,14 +337,14 @@ const userSlice = createSlice({
           maxAge: 60 * 60,
           secure: true,
         });
-        state.userInfoOnLogin = action.payload.userInfoOnLogin;
         state.FirstName = action.payload.FirstName;
-        state.LastName = action.payload.LastName;
-        state.userType = action.payload.userType;
+        state.type = action.payload.type;
+        state.userType = "User";
         state.userId = action.payload.userId;
         sessionStorage.setItem("userId", state.userId);
-        state.successMessage = `${state.FirstName} ${state.LastName} عزیز با موفقیت وارد پنل کاربری خود شدید.`;
+        state.successMessage = `${state.FirstName} عزیز با موفقیت وارد پنل کاربری خود شدید.`;
         state.errorMessage = "";
+        state.isLoggedIn = true;
       }
     );
     builder.addCase(
@@ -362,28 +357,30 @@ const userSlice = createSlice({
     // fetchUserInLoginWithPassword
     builder.addCase(fetchUserInLoginWithPassword.pending, (state) => {
       state.status = "loading";
+      state.showModal = false;
     });
     builder.addCase(fetchUserInLoginWithPassword.fulfilled, (state, action) => {
-      state.showModal = true;
-      state.status = "success";
+      state.showModal = action.payload.showModal;
+      state.status = action.payload.status;
       state.token = action.payload.token;
       setCookie("token", state.token, {
         path: "/",
         maxAge: 60 * 60,
         secure: true,
       });
-      state.userInfoOnLogin = action.payload.userInfoOnLogin;
       state.FirstName = action.payload.FirstName;
-      state.LastName = action.payload.LastName;
       state.userType = action.payload.userType;
       state.userId = action.payload.userId;
+      state.isLoggedIn = action.payload.isLoggedIn;
       sessionStorage.setItem("userId", state.userId);
-      state.successMessage = `${state.FirstName} ${state.LastName} عزیز با موفقیت وارد پنل کاربری خود شدید.`;
+      state.successMessage = `${state.FirstName} عزیز با موفقیت وارد پنل کاربری خود شدید.`;
       state.errorMessage = "";
+      state.type = action.payload.type;
     });
     builder.addCase(fetchUserInLoginWithPassword.rejected, (state, action) => {
       state.status = "failed";
       state.errorMessage = "خطا";
+      state.showModal = false;
     });
   },
 });

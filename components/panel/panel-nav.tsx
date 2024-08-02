@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   deleteDataFromCookie,
-  deleteToken,
+  openModal,
 } from "@/redux/features/user/userSlice";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -15,7 +15,7 @@ import { signOut, useSession } from "next-auth/react";
 type NavProps = {
   userProfile: any;
   status: string;
-  userType: string;
+  userType: string[];
   numberOfAnnouncements: number;
   setShowAnnouncementDropdown: Dispatch<SetStateAction<boolean>>;
   showAnnouncementDropdown: boolean;
@@ -32,6 +32,7 @@ const PanelNav = ({
   const dispatch = useDispatch();
   const router = useRouter();
   const { data } = useSession();
+
   const handleExit = () => {
     if (data?.user) {
       signOut({ callbackUrl: "http://localhost:3000/" });
@@ -39,6 +40,7 @@ const PanelNav = ({
     }
     dispatch(deleteDataFromCookie());
     router.replace("/");
+    dispatch(openModal(false));
   };
   return (
     <div
@@ -50,9 +52,9 @@ const PanelNav = ({
         <div className="flex flex-row gap-3 items-center py-1">
           <Link
             href={`${
-              userType === "Admin"
+              userType.includes("Admin")
                 ? "/panel/admin/support"
-                : userType === "User" && "/panel/user/support"
+                : "/panel/user/support"
             }`}
             onMouseEnter={() => setShowAnnouncementDropdown(true)}
           >
@@ -77,7 +79,7 @@ const PanelNav = ({
                 <SkeletonTheme borderRadius="100%">
                   <Skeleton width={60} height={60} baseColor="#EAEFF6" />
                 </SkeletonTheme>
-              ) : userProfile.avatar?.path ? (
+              ) : userProfile?.avatar?.path ? (
                 <div className="bg-[#EAEFF6] p-2 rounded-full">
                   <img
                     alt="profile"

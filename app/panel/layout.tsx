@@ -9,22 +9,20 @@ import PanelSidebarSmall from "@/components/panel/panel-sidebar-small";
 import {
   deleteDataFromCookie,
   fetchUserProfile,
-  getIdFromLocal,
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import nextarrow from "../../public/forwardarrow.svg";
-import prevarrow from "../../public/backarrow.svg";
+import nextarrow from "@/public/forwardarrow.svg";
+import prevarrow from "@/public/backarrow.svg";
+import { useGetUserRoles } from "@/hooks/useGetUserRoles";
+
 const PanelLayout = ({ children }: { children: React.ReactNode }) => {
-  const {
-    localToken,
-    localUserId,
-    userProfile,
-    userType,
-    status,
-    numberOfAnnouncements,
-  } = useSelector((store: any) => store.userData);
+  const { token, userProfile, status, numberOfAnnouncements } = useSelector(
+    (store: any) => store.userData
+  );
+  const userRoles = useGetUserRoles();
+
   const [showAnnouncementDropdown, setShowAnnouncementDropdown] =
     useState(false);
   const router = useRouter();
@@ -47,18 +45,17 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
     setCurrentPage((prevPage) => (prevPage > 0 ? prevPage - 1 : prevPage));
   };
 
-  // useEffect(() => {
-  //   dispatch(getTokenFromLocal());
-  //   dispatch(getIdFromLocal());
-  //   dispatch<any>(fetchUserProfile());
-  // }, []);
+  useEffect(() => {
+    dispatch(getTokenFromLocal());
+    dispatch<any>(fetchUserProfile());
+  }, []);
 
-  // useEffect(() => {
-  //   if (!localToken && localUserId) {
-  //     dispatch(deleteDataFromCookie());
-  //     router.push("/");
-  //   }
-  // }, [localToken, localUserId]);
+  useEffect(() => {
+    if (!token) {
+      dispatch(deleteDataFromCookie());
+      router.push("/");
+    }
+  }, [token]);
 
   return (
     <div
@@ -66,56 +63,58 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
       style={{ boxShadow: "0px 0px 90px 2px rgba(0, 0, 0, 0.25)" }}
       dir="rtl"
     >
-      {/* {localToken && localUserId && ( */}
-      <>
-        <div className="hidden lg:block">
-          <PanelSidebar
-            sideOptions={
-              userType === "User" ? userSidebarOptions : mainAdminSidebarOptions
-            }
-            status={status}
-          />
-        </div>
-        <div className="w-full lg:overflow-hidden">
-          <div>
-            <PanelNav
-              userProfile={userProfile}
+      {token && (
+        <>
+          <div className="hidden lg:block">
+            <PanelSidebar
+              sideOptions={
+                userRoles.includes("Admin")
+                  ? mainAdminSidebarOptions
+                  : userSidebarOptions
+              }
               status={status}
-              userType={userType}
-              numberOfAnnouncements={numberOfAnnouncements}
-              setShowAnnouncementDropdown={setShowAnnouncementDropdown}
-              showAnnouncementDropdown={showAnnouncementDropdown}
             />
           </div>
-          <div
-            className="bg-[#EAEFF6] h-full p-[5%]"
-            onMouseEnter={() => setShowAnnouncementDropdown(false)}
-          >
-            {children}
+          <div className="w-full lg:overflow-hidden">
+            <div>
+              <PanelNav
+                userProfile={userProfile}
+                status={status}
+                userType={userRoles}
+                numberOfAnnouncements={numberOfAnnouncements}
+                setShowAnnouncementDropdown={setShowAnnouncementDropdown}
+                showAnnouncementDropdown={showAnnouncementDropdown}
+              />
+            </div>
+            <div
+              className="bg-[#EAEFF6] h-full p-[5%]"
+              onMouseEnter={() => setShowAnnouncementDropdown(false)}
+            >
+              {children}
+            </div>
+            <div className="md:hidden flex flex-row bg-[#4866CF] transition-all rounded-md w-full">
+              <Image
+                src={prevarrow}
+                alt=""
+                onClick={() => handlePrevClick()}
+                className={`${currentPage === 0 ? "hidden" : "flex"}`}
+              />
+              <PanelSidebarSmall sideOptions={displayedItems} />
+              <Image
+                src={nextarrow}
+                alt=""
+                onClick={() => handleNextClick()}
+                className={`${
+                  currentPage + 1 ===
+                  Math.ceil(userSidebarOptions.length / itemsPerPage)
+                    ? "hidden"
+                    : "flex"
+                }`}
+              />
+            </div>
           </div>
-          <div className="md:hidden flex flex-row bg-[#4866CF] transition-all rounded-md w-full">
-            <Image
-              src={prevarrow}
-              alt=""
-              onClick={() => handlePrevClick()}
-              className={`${currentPage === 0 ? "hidden" : "flex"}`}
-            />
-            <PanelSidebarSmall sideOptions={displayedItems} />
-            <Image
-              src={nextarrow}
-              alt=""
-              onClick={() => handleNextClick()}
-              className={`${
-                currentPage + 1 ===
-                Math.ceil(userSidebarOptions.length / itemsPerPage)
-                  ? "hidden"
-                  : "flex"
-              }`}
-            />
-          </div>
-        </div>
-      </>
-      {/* )} */}
+        </>
+      )}
     </div>
   );
 };

@@ -14,17 +14,15 @@ import {
 } from "@/redux/features/user/userSlice";
 import { AuthContext } from "./context/AuthContext";
 import AdditionalInfoOnRegister from "./additional-info-onregister";
+
 const Auth = () => {
   const { authSteps, setAuthSteps } = useContext(AuthContext);
   const [loginApproach, setLoginApproach] = useState(0);
-
-  const { localToken, localUserId } = useSelector(
-    (state: any) => state.userData
-  );
+  const { token } = useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getTokenFromLocal());
-    dispatch(getIdFromLocal());
     dispatch<any>(fetchUserProfile());
   }, []);
 
@@ -44,22 +42,17 @@ const Auth = () => {
       case 5:
         return <RegisterUser />;
       case 6:
-        return <AdditionalInfoOnRegister />;
+        return <AdditionalInfoOnRegister setSteps={setAuthSteps} />;
       default:
         return;
     }
   };
-  const { status } = useSession();
+
   const router = useRouter();
-  if (status === "authenticated") {
+  if (token) {
     router.replace("/");
   }
-  // console.log(status);
 
-  return (
-    <div>
-      {(!localToken || !localUserId) && <div dir="rtl">{renderSteps()}</div>}
-    </div>
-  );
+  return <div>{!token && <div dir="rtl">{renderSteps()}</div>}</div>;
 };
 export default Auth;

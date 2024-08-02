@@ -5,6 +5,8 @@ import Logo from "./components/logo";
 type LoginProps = {
   setSteps: Dispatch<SetStateAction<number>>;
 };
+
+console.log(3);
 const Info = ({ setSteps }: LoginProps) => {
   return (
     <React.Fragment>

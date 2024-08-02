@@ -5,12 +5,12 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchUserProfile,
-  getIdFromLocal,
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import NavMobile from "./nav-mobile";
 import { useSession } from "next-auth/react";
+import { useGetUserRoles } from "@/hooks/useGetUserRoles";
 
 const Nav = () => {
   const { data, status } = useSession();
@@ -21,16 +21,11 @@ const Nav = () => {
   const [showFour, setShowFour] = useState(false);
   const [activeColorChange, setActiveColorChange] = useState(false);
   const dispatch = useDispatch();
-  const {
-    localToken,
-    FirstName,
-    LastName,
-    userProfile,
-    userType,
-    localUserId,
-  } = useSelector((state: any) => state.userData);
-  // console.log("next-auth status", status);
-  // console.log("next-auth data", data);
+  const { token, FirstName, userProfile } = useSelector(
+    (state: any) => state.userData
+  );
+  const userRoles = useGetUserRoles();
+
   useEffect(() => {
     window.addEventListener("scroll", () => {
       window.scrollY > 60
@@ -38,13 +33,13 @@ const Nav = () => {
         : setActiveColorChange(false);
     });
   });
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     dispatch(getTokenFromLocal());
-  //     dispatch(getIdFromLocal());
-  //     dispatch<any>(fetchUserProfile());
-  //   }
-  // }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      dispatch(getTokenFromLocal());
+      dispatch<any>(fetchUserProfile());
+    }
+  }, []);
 
   return (
     <div
@@ -67,7 +62,7 @@ const Nav = () => {
           setShowTwo={setShowTwo}
           setShowThree={setShowThree}
           setShowFour={setShowFour}
-          localToken={localToken}
+          localToken={token}
           userProfile={userProfile}
           showOne={showOne}
           showTwo={showTwo}
@@ -77,17 +72,11 @@ const Nav = () => {
         {/* Large Screen */}
         <Link
           href={
-            status === "authenticated" && !localToken && !localUserId
-              ? "/social-authorization"
-              : localToken && localUserId && userType === "User"
-              ? "/panel/user/dashboard"
-              : localToken && localUserId && userType === "Admin"
+            !token
+              ? "/authorization"
+              : userRoles.includes("Admin")
               ? "/panel/admin/view-users"
-              : !localUserId && status === "unauthenticated" && !localToken
-              ? "/authorization"
-              : localToken && !localUserId
-              ? "/authorization"
-              : "/"
+              : "/panel/user/dashboard"
           }
         >
           {status === "loading" ? (
@@ -96,18 +85,9 @@ const Nav = () => {
             </SkeletonTheme>
           ) : (
             <button className="hidden lg:inline-block font-semibold bg-[#4866CF] text-white rounded-[4px] py-1 px-5 text-base">
-              {!localUserId && status === "unauthenticated" && "ثبت نام / ورود"}
-              {!localToken &&
-                status === "unauthenticated" &&
-                localUserId &&
-                "ثبت نام / ورود"}
-              {userProfile.FirstName &&
-                userProfile.LastName &&
-                localToken &&
-                localUserId &&
-                `${userProfile.FirstName} ${userProfile.LastName}`}
-              {status === "authenticated" && !localUserId && data.user?.name}
-              {!FirstName && !LastName && localToken && localUserId && (
+              {!token && "ثبت نام / ورود"}
+              {token && FirstName}
+              {!FirstName && token && (
                 <Skeleton width={100} baseColor="#4866CF" />
               )}
             </button>

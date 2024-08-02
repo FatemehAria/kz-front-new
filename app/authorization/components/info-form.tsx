@@ -21,7 +21,7 @@ const initialValues = {
   FirstName: "",
   LastName: "",
   Password: "",
-  type: "haghighi",
+  type: "حقیقی",
   shenase_melli: "",
   shomare_sabt: "",
 };
@@ -42,12 +42,12 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
   const handleSubmission = async () => {
     try {
       setErrorMsg("");
-      if (values.type !== "haghighi") {
+      if (values.type !== "حقیقی") {
         if (verifyIranianNationalId(values.shenase_melli)) {
-          console.log("object");
+          console.log("کدملی معتبر");
           values.shenase_melli = values.shenase_melli;
         } else {
-          console.log("object2");
+          console.log("کدملی نامعتبر");
           setErrorMsg("شناسه ملی معتبر نمی باشد.");
         }
       }
@@ -56,15 +56,11 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
         values.LastName,
         values.Password,
         PhoneNumber,
-        values.type,
+        values.type === "حقیقی" ? "haghighi" : "hoghooghi",
         values.shenase_melli,
-        values.shomare_sabt
+        values.shomare_sabt,
+        setSteps
       );
-      if (values.type === "haghighi") {
-        setSteps(5);
-      }else{
-        setSteps(6)
-      }
     } catch (error: any) {
       setErrorMsg(error.message);
       dispatch(openModal(true));
@@ -88,9 +84,9 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      saveToLocalStorage("name", JSON.stringify(values.FirstName));
-      saveToLocalStorage("surname", JSON.stringify(values.LastName));
-      saveToLocalStorage("type", JSON.stringify(values.type));
+      saveToLocalStorage("name", values.FirstName);
+      saveToLocalStorage("surname", values.LastName);
+      saveToLocalStorage("type", values.type);
     }
   }, [values.FirstName, values.LastName, values.type]);
 

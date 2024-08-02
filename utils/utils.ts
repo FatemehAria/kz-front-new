@@ -19,7 +19,8 @@ export const registerInfo = async (
   mobile: string,
   type: string,
   shenase_melli: string | null,
-  shomare_sabt: string | null
+  shomare_sabt: string | null,
+  setSteps: React.Dispatch<React.SetStateAction<number>>
 ) => {
   try {
     const { data } = await app.post("/user/register", {
@@ -31,7 +32,13 @@ export const registerInfo = async (
       shenase_melli: shenase_melli || "",
       shomare_sabt: shomare_sabt || "",
     });
-    localStorage.setItem("type", JSON.stringify(data.data.user?.type));
+    window.localStorage.setItem("type", JSON.stringify(type));
+    console.log(data);
+    if (type === "haghighi") {
+      setSteps(5);
+    } else {
+      setSteps(6);
+    }
   } catch (error: any) {
     console.log(error);
     if (error.response.data.message === "user-exists")
@@ -55,7 +62,7 @@ export const registerInfo = async (
 };
 // save info to local storage
 export const saveToLocalStorage = (key: string, value: string) => {
-  localStorage.setItem(`${key}`, value);
+  window.localStorage.setItem(`${key}`, value);
 };
 
 export const getNewOTP = async (PhoneNumber: string) => {

@@ -28,38 +28,23 @@ const RegisterUser = () => {
 
   const [OTP, setOTP] = useState("");
 
-  useEffect(() => {
-    // console.log(typeof JSON.stringify(localStorage.getItem("type")));
-    if (JSON.stringify(localStorage.getItem("type")) === "haghighi") {
-      console.log("haghigh");
-      dispatch<any>(
-        sendOTPCodeAfterRegistration({
-          name: localStorage.getItem("name") as string,
-          surname: localStorage.getItem("surname") as string,
-          type: localStorage.getItem("type") as string,
-          mobile: localStorage.getItem("PhoneNumber") as string,
-          org_name: "",
-          org_registration: "",
-          org_address: "",
-          org_phone: "",
-        })
-      );
-    } else {
-      console.log("haghigh");
-      dispatch<any>(
-        sendOTPCodeAfterRegistration({
-          name: localStorage.getItem("name") as string,
-          surname: localStorage.getItem("surname") as string,
-          type: localStorage.getItem("type") as string,
-          mobile: localStorage.getItem("PhoneNumber") as string,
-          org_name: localStorage.getItem("org_name") as string,
-          org_registration: localStorage.getItem("org_registration") as string,
-          org_address: localStorage.getItem("org_address") as string,
-          org_phone: localStorage.getItem("org_phone") as string,
-        })
-      );
-    }
-  }, [dispatch]);
+  const handleClick = () => {
+    dispatch<any>(
+      sendOTPCodeAfterRegistration({
+        name: window.localStorage.getItem("name") as string,
+        surname: window.localStorage.getItem("surname") as string,
+        type: window.localStorage
+          .getItem("type")
+          ?.replaceAll('"', "") as string,
+        mobile: window.localStorage.getItem("PhoneNumber") as string,
+        org_name: window.localStorage.getItem("org_name") || "",
+        org_registration_number:
+          window.localStorage.getItem("org_registration_number") || "",
+        org_address: window.localStorage.getItem("org_address") || "",
+        org_phone: window.localStorage.getItem("org_phone") || "",
+      })
+    );
+  };
 
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -76,6 +61,7 @@ const RegisterUser = () => {
     // setAuthSteps(6);
     // }
   };
+  console.log(5);
   return (
     <div>
       <div
@@ -86,6 +72,7 @@ const RegisterUser = () => {
           <div>
             <Logo />
           </div>
+          <button onClick={() => handleClick()}>onClick</button>
           <form
             onSubmit={(e) => handleSubmission(e)}
             className="flex flex-col gap-5"
@@ -151,7 +138,7 @@ const RegisterUser = () => {
                   buttonText="متوجه شدم"
                   text={successMessage}
                   data=""
-                  redirect={userInfoOnLogin}
+                  redirect={true}
                   isLoggedIn={userInfoOnLogin}
                   setSteps={setAuthSteps}
                 />

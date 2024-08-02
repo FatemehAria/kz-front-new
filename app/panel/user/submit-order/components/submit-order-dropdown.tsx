@@ -20,14 +20,14 @@ function SubmitOrderDropdown({
         dropDownTitle ? "flex-col gap-3" : "flex-row"
       } relative`}
     >
-      <p>{dropDownTitle ? dropDownTitle : ""}</p>
+      <p>{dropDownTitle}</p>
       <select
         name={name ? name : dropDownTitle}
         id={value}
         className={`bg-[#EAEFF6] h-full rounded-[4px] p-2 ${
           !dropDownTitle && "w-full"
         }`}
-        value={`${value === "حقوقی" ? "hoghooghi" : "haghighi"}`}
+        value={`${value}`}
         onChange={onChange}
       >
         {dropdownItems.map((item) => (
