@@ -5,18 +5,48 @@ import Link from "next/link";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import NotFound from "../components/NotFound";
 import LegalUserHeader from "../components/LegalUserHeader";
+import { deleteUser } from "@/utils/utils";
+import { RxCross1 } from "react-icons/rx";
+import SearchInput from "../components/SearchInput";
+
 type LegalUsersProps = {
   LegalUsersData: any[];
-  legalUsersStatus: {
-    error: string;
+  usersStatus: {
     loading: boolean;
   };
+  token: string;
+  setAllUsers: React.Dispatch<any>;
+  setDataStatus: React.Dispatch<
+    React.SetStateAction<{
+      loading: boolean;
+    }>
+  >;
+  AllUsersData: [];
+  searchUsers: string;
+  setSearchUsers: React.Dispatch<React.SetStateAction<string>>;
 };
-function LegalUsers({ LegalUsersData, legalUsersStatus }: LegalUsersProps) {
+
+function LegalUsers({
+  LegalUsersData,
+  usersStatus,
+  token,
+  setAllUsers,
+  setDataStatus,
+  AllUsersData,
+  searchUsers,
+  setSearchUsers,
+}: LegalUsersProps) {
   return (
     <div className="flex flex-col gap-5">
+      <SearchInput
+        value={searchUsers}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setSearchUsers(e.target.value)
+        }
+        placeholder="جستجو بر اساس شماره موبایل"
+      />
       <LegalUserHeader />
-      {legalUsersStatus.loading ? (
+      {usersStatus.loading ? (
         <SkeletonTheme>
           <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
         </SkeletonTheme>
@@ -27,17 +57,25 @@ function LegalUsers({ LegalUsersData, legalUsersStatus }: LegalUsersProps) {
             className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
           >
             <p className="font-faNum">{index + 1}</p>
-            <p className="font-faNum">{item.PhoneNumber}</p>
-            <p>
-              {item.FirstName} {item.LastName}
-            </p>
-            <p>{item.email}</p>
-            <Link
-              href={`/panel/admin/view-users/user-detail?id=${item._id}`}
+            <p>{item.name_of_Organization}</p>
+            <p>{item.National_ID}</p>
+            <p>{item.PhoneNumber}</p>
+            <p>{item.registration_Number}</p>
+            <span
+              onClick={() =>
+                deleteUser(
+                  item.id,
+                  token,
+                  setAllUsers,
+                  setDataStatus,
+                  AllUsersData
+                )
+              }
               className="flex justify-center"
             >
-              <Image src={vieweye} alt="مشاهده" width={20} height={20} />
-            </Link>
+              <RxCross1 />
+              {/* <Image src={vieweye} alt="مشاهده" width={20} height={20} /> */}
+            </span>
           </div>
         ))
       ) : (

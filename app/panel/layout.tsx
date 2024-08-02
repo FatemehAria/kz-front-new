@@ -50,12 +50,12 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
     dispatch<any>(fetchUserProfile());
   }, []);
 
-  useEffect(() => {
-    if (!token) {
-      dispatch(deleteDataFromCookie());
-      router.push("/");
-    }
-  }, [token]);
+  // useEffect(() => {
+  //   if (!token) {
+  //     dispatch(deleteDataFromCookie());
+  //     router.push("/");
+  //   }
+  // }, [token]);
 
   return (
     <div
@@ -63,7 +63,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
       style={{ boxShadow: "0px 0px 90px 2px rgba(0, 0, 0, 0.25)" }}
       dir="rtl"
     >
-      {token && (
+      {/* {token && ( */}
         <>
           <div className="hidden lg:block">
             <PanelSidebar
@@ -114,7 +114,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
             </div>
           </div>
         </>
-      )}
+      {/* )} */}
     </div>
   );
 };

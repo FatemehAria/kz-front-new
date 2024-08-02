@@ -64,7 +64,78 @@ export const registerInfo = async (
 export const saveToLocalStorage = (key: string, value: string) => {
   window.localStorage.setItem(`${key}`, value);
 };
+// getting all the users
+export const getAllUsers = async (
+  token: string,
+  setAllUsers: React.Dispatch<any>,
+  setDataStatus: React.Dispatch<
+    React.SetStateAction<{
+      loading: boolean;
+    }>
+  >
+) => {
+  try {
+    setDataStatus((last) => ({ ...last, loading: true }));
+    const { data } = await app.get("/users", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
+    setAllUsers(data.data);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setDataStatus((last) => ({ ...last, loading: false }));
+  }
+};
+// deleting user by admin
+export const deleteUser = async (
+  userId: number,
+  token: string,
+  setAllUsers: React.Dispatch<any>,
+  setDataStatus: React.Dispatch<
+    React.SetStateAction<{
+      loading: boolean;
+    }>
+  >,
+  AllUsersData: []
+) => {
+  try {
+    const { data } = await app.delete(`/user/delete/${userId}`);
+    console.log(data);
+    toast.success("کاربر با موفقیت حذف شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setAllUsers(
+      AllUsersData.filter((item: { id: number }) => item.id !== userId)
+    );
+    // getAllUsers(token, setAllUsers, setDataStatus);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در حذف کاربر", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
 export const getNewOTP = async (PhoneNumber: string) => {
   try {
     const { data } = await axios.post(

@@ -3,22 +3,19 @@ import React, { useEffect, useState } from "react";
 import PersonalInfoHeader from "../../user/personal-info/components/personal-info-header";
 import LegalUsers from "./legal-users";
 import GenuineUsers from "./genuine-users";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchUserProfile,
-  getIdFromLocal,
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
+import { getAllUsers } from "@/utils/utils";
 
 function ViewUsers() {
-  const { localToken, localUserId } = useSelector(
-    (state: any) => state.userData
-  );
+  const { token } = useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getTokenFromLocal());
-    dispatch(getIdFromLocal());
     dispatch<any>(fetchUserProfile());
   }, []);
 
@@ -26,49 +23,23 @@ function ViewUsers() {
   const [AllUsersData, setAllUsersData] = useState<any>([]);
   const [legalUsers, setLegalUsers] = useState([]);
   const [genuineUsers, setGenuineUsers] = useState([]);
-  const [legalUsersStatus, setLegalUsersStatus] = useState({
-    error: "",
+  const [usersStatus, setUsersStatus] = useState({
     loading: false,
   });
-  
-  const AllUsers = async () => {
-    try {
-      setLegalUsersStatus((last) => ({ ...last, loading: true }));
-      const { data } = await axios(
-        `https://keykavoos.liara.run/Admin/AllUser/${localUserId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localToken}`,
-          },
-        }
-      );
-      setAllUsersData(JSON.parse(JSON.stringify(data.data)));
-      setLegalUsersStatus((last) => ({ ...last, loading: false }));
-      // console.log(data);
-    } catch (error) {
-      setLegalUsersStatus({
-        error: "خطا در نمایش اطلاعات",
-        loading: false,
-      });
-      // console.log(error);
-    }
-  };
-
+  const [searchUsers, setSearchUsers] = useState("");
   const renderLegalUsers = () => {
-    let legal = AllUsersData.filter((item: any) => item.type === "Legal");
+    let legal = AllUsersData.filter((item: any) => item.type === "hoghooghi");
     setLegalUsers(legal);
-    console.log("legalUsers", legalUsers);
   };
 
   const renderGenuineUsers = () => {
-    let genuine = AllUsersData.filter((item: any) => item.type === "Genuine");
+    let genuine = AllUsersData.filter((item: any) => item.type === "haghighi");
     setGenuineUsers(genuine);
-    console.log("genuine", genuine);
   };
 
   useEffect(() => {
-    AllUsers();
-  }, [localUserId, localToken]);
+    getAllUsers(token, setAllUsersData, setUsersStatus);
+  }, []);
 
   useEffect(() => {
     renderLegalUsers();
@@ -77,15 +48,32 @@ function ViewUsers() {
 
   const renderSteps = () => {
     switch (type) {
+      case "Genuine":
+        return (
+          <GenuineUsers
+            GenuineUsersData={genuineUsers}
+            usersStatus={usersStatus}
+            setAllUsers={setAllUsersData}
+            setDataStatus={setUsersStatus}
+            token={token}
+            AllUsersData={AllUsersData}
+            searchUsers={searchUsers}
+            setSearchUsers={setSearchUsers}
+          />
+        );
       case "Legal":
         return (
           <LegalUsers
             LegalUsersData={legalUsers}
-            legalUsersStatus={legalUsersStatus}
+            usersStatus={usersStatus}
+            setAllUsers={setAllUsersData}
+            setDataStatus={setUsersStatus}
+            token={token}
+            AllUsersData={AllUsersData}
+            searchUsers={searchUsers}
+            setSearchUsers={setSearchUsers}
           />
         );
-      case "Genuine":
-        return <GenuineUsers GenuineUsersData={genuineUsers} />;
       default:
         return;
     }

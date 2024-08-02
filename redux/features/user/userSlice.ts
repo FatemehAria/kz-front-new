@@ -254,7 +254,7 @@ const userSlice = createSlice({
       state.token = action.payload.token;
       setCookie("token", state.token, {
         path: "/",
-        maxAge: 60 * 60,
+        maxAge: 24 * 60 * 60,
         secure: true,
       });
       state.FirstName = action.payload.FirstName;
@@ -307,7 +307,7 @@ const userSlice = createSlice({
       state.token = action.payload.token;
       setCookie("token", state.token, {
         path: "/",
-        maxAge: 60 * 60,
+        maxAge: 24 * 60 * 60,
         secure: true,
       });
       state.userProfile = action.payload.userProfile;
@@ -334,7 +334,7 @@ const userSlice = createSlice({
         state.token = action.payload.token;
         setCookie("token", state.token, {
           path: "/",
-          maxAge: 60 * 60,
+          maxAge: 24 * 60 * 60,
           secure: true,
         });
         state.FirstName = action.payload.FirstName;
@@ -365,7 +365,7 @@ const userSlice = createSlice({
       state.token = action.payload.token;
       setCookie("token", state.token, {
         path: "/",
-        maxAge: 60 * 60,
+        maxAge: 24 * 60 * 60,
         secure: true,
       });
       state.FirstName = action.payload.FirstName;
