@@ -54,7 +54,7 @@ const PanelSidebar = ({ sideOptions, status }: PanelSidebarProps) => {
                     <Skeleton count={1} width={150} baseColor="#EAEFF6" />
                   </SkeletonTheme>
                 ) : ( */}
-                  {item.text}
+                {item.text}
                 {/* )} */}
               </p>
             </Link>

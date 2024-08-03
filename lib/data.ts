@@ -756,14 +756,13 @@ export const mainAdminSidebarOptions = [
     path: ["/panel/admin/view-users", "/panel/admin/view-users/user-detail"],
   },
   {
-    text: "جستجو کاربر",
-    imgSrc: "/Panel/searchuserssidebar.svg",
-    address: "/panel/admin/search-user",
+    text: "برند ها",
+    imgSrc: "/Panel/searchuserssidebar.svg", //عکس ادیت شه
+    address: "/panel/admin/brands",
     path: [
-      "/panel/main-admin/finance",
-      "/panel/main-admin/finance/costs",
-      "/panel/main-admin/finance/chart",
-      "/panel/main-admin/finance/income",
+      "/panel/admin/brands",
+      "/panel/admin/brands/brand-detail",
+      "/panel/admin/brands/create-brand",
     ],
   },
   {

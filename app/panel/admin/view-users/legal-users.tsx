@@ -54,7 +54,7 @@ function LegalUsers({
         LegalUsersData.map((item, index) => (
           <div
             key={item._id}
-            className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
+            className="grid grid-cols-6 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
           >
             <p className="font-faNum">{index + 1}</p>
             <p>{item.name_of_Organization}</p>

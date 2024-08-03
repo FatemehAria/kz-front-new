@@ -1,3 +1,5 @@
+import { BrandDetailType } from "@/app/panel/admin/brands/brand-detail/page";
+import { BrandType } from "@/app/panel/admin/brands/page";
 import app from "@/services/service";
 import axios from "axios";
 import { Bounce, toast } from "react-toastify";
@@ -94,15 +96,14 @@ export const deleteUser = async (
   userId: number,
   token: string,
   setAllUsers: React.Dispatch<any>,
-  setDataStatus: React.Dispatch<
-    React.SetStateAction<{
-      loading: boolean;
-    }>
-  >,
-  AllUsersData: []
+  AllUsersData: never[]
 ) => {
   try {
-    const { data } = await app.delete(`/user/delete/${userId}`);
+    const { data } = await app.delete(`/user/delete/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     console.log(data);
     toast.success("کاربر با موفقیت حذف شد", {
       position: "top-right",
@@ -123,6 +124,213 @@ export const deleteUser = async (
   } catch (error) {
     console.log(error);
     toast.error("خطا در حذف کاربر", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// get all brands
+export const getAllBrands = async (
+  setBrands: React.Dispatch<React.SetStateAction<BrandType[]>>
+) => {
+  try {
+    const { data } = await app("/brands");
+    setBrands(data.data);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+// get brand details
+export const getBrandDetail = async (
+  brandId: string | null,
+  setBrandDetail: React.Dispatch<React.SetStateAction<BrandDetailType>>
+) => {
+  try {
+    const { data } = await app.get(`/brand/show/${brandId ? brandId : ""}`);
+    console.log(data);
+    setBrandDetail(data.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+// delete brand by admin
+export const deleteBrand = async (
+  brandId: number,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/brand/delete/${brandId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    toast.success("برند با موفقیت حذف شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(true);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در حذف برند", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// restore brand by admin
+export const restoreBrand = async (
+  brandId: number | null,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/brand/restore/${brandId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    toast.success("برند با موفقیت بازگردانی شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(false);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در بازگردانی برند", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// create brand by admin
+export const createNewBrand = async (
+  token: string,
+  title: string,
+  description: string
+) => {
+  try {
+    const { data } = await app.post(
+      "/brand/store",
+      {
+        title,
+        description,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("برند با موفقیت ایجاد شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(data);
+  } catch (error) {
+    toast.error("خطا در ایجاد برند", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(error);
+  }
+};
+// update brand by admin
+export const updateBrand = async (
+  token: string,
+  brandId: number | null,
+  title: string | null,
+  description: string | null,
+) => {
+  try {
+    const { data } = await app.post(
+      `/brand/update/${brandId}`,
+      {
+        title: title || "",
+        description: description || "",
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("برند با موفقیت به روزرسانی شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در به روزرسانی برند", {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
