@@ -36,7 +36,6 @@ function PlanManagement() {
 
   const handlePlanEdit = async (id: number) => {
     const selectedPlan = allPlans.find((item: PlanType) => item.plan.id === id);
-
     if (selectedPlan) {
       setAllPlans((last) =>
         last.map((item: PlanType) =>

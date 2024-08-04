@@ -16,6 +16,7 @@ import Image from "next/image";
 import nextarrow from "@/public/forwardarrow.svg";
 import prevarrow from "@/public/backarrow.svg";
 import { useGetUserRoles } from "@/hooks/useGetUserRoles";
+import PlanContextWrapper from "./admin/plan-management/context/PlanContextWrapper";
 
 const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   const { token, userProfile, status, numberOfAnnouncements } = useSelector(
@@ -58,20 +59,21 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   // }, [token]);
 
   return (
-    <div
-      className="font-YekanBakh flex w-full flex-row relative min-h-screen"
-      style={{ boxShadow: "0px 0px 90px 2px rgba(0, 0, 0, 0.25)" }}
-      dir="rtl"
-    >
-      {/* {token && ( */}
+    <PlanContextWrapper>
+      <div
+        className="font-YekanBakh flex w-full flex-row relative min-h-screen"
+        style={{ boxShadow: "0px 0px 90px 2px rgba(0, 0, 0, 0.25)" }}
+        dir="rtl"
+      >
+        {/* {token && ( */}
         <>
           <div className="hidden lg:block">
             <PanelSidebar
               sideOptions={
                 // userRoles.includes("Admin")
-                  // ?
-                   mainAdminSidebarOptions
-                  // : userSidebarOptions
+                // ?
+                mainAdminSidebarOptions
+                // : userSidebarOptions
               }
               status={status}
             />
@@ -115,8 +117,9 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
             </div>
           </div>
         </>
-      {/* )} */}
-    </div>
+        {/* )} */}
+      </div>
+    </PlanContextWrapper>
   );
 };
 export default PanelLayout;

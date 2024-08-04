@@ -1,6 +1,7 @@
 import { BrandDetailType } from "@/app/panel/admin/brands/brand-detail/page";
 import { BrandType } from "@/app/panel/admin/brands/page";
 import { PlanType } from "@/app/panel/admin/plan-management/page";
+import { PlanAttrType } from "@/app/panel/admin/plan-management/plan-detail/page";
 import app from "@/services/service";
 import axios from "axios";
 import { Bounce, toast } from "react-toastify";
@@ -734,6 +735,261 @@ export const getPlanDetail = async (
     console.log(data);
     setPlanDetail(data.data);
   } catch (error) {
+    console.log(error);
+  }
+};
+// get plan attrs
+export const getPlanAttrs = async (
+  token: string,
+  setPlanAttrs: React.Dispatch<React.SetStateAction<PlanAttrType[]>>
+) => {
+  try {
+    const { data } = await app.get("/attrs", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    setPlanAttrs(data.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+// create new plan attribute by admin
+export const createNewPlanAttr = async (
+  planId: number,
+  token: string,
+  title: string,
+  description: string
+) => {
+  try {
+    const { data } = await app.post(
+      "/attr/store",
+      {
+        plan_id: planId,
+        title,
+        description,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("ویژگی برای پلن مدنظر با موفقیت ایجاد شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(data);
+  } catch (error) {
+    toast.error("خطا در ایجاد ویژگی", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(error);
+  }
+};
+// delete plan attr by admin
+export const deletePlanAttr = async (
+  attrId: number,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/attr/delete/${attrId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    toast.success("ویژگی موردنظر با موفقیت حذف شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(true);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در حذف ویژگی", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// restore plan attr by admin
+export const restorePlanAttr = async (
+  attrId: number | null,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/attr/restore/${attrId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    toast.success("ویژگی مدنظر با موفقیت بازگردانی شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(false);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در بازگردانی ویژگی", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// update plan attr by admin
+export const updatePlanAttr = async (
+  attrId: number,
+  token: string,
+  planId: number | null,
+  title: string | null,
+  description: string | null
+) => {
+  try {
+    const { data } = await app.post(
+      `/attr/update/${attrId}`,
+      {
+        plan_id: planId,
+        title: title || "",
+        description: description || "",
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("ویژگی با موفقیت به روزرسانی شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در به روزرسانی ویژگی", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// create new plan value by admin
+export const createNewPlanValue = async (
+  attrId: number,
+  planId: number,
+  token: string,
+  title: string,
+  description: string
+) => {
+  try {
+    const { data } = await app.post(
+      "/value/store",
+      {
+        attr_id: attrId,
+        plan_id: planId,
+        title,
+        description,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("مقدار مدنظر با موفقیت ایجاد شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(data);
+  } catch (error) {
+    toast.error("خطا در ایجاد مقدار", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
     console.log(error);
   }
 };
