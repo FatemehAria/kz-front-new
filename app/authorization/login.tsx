@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Logo from "../authorization/components/logo";
 import { useFormik } from "formik";
 import { LoginSchema } from "@/schemas/userpanel-profile-schema";
@@ -13,39 +13,40 @@ import { useDispatch, useSelector } from "react-redux";
 import FormInput from "../contact-us/components/form/form-inputs";
 import {
   fetchUserInLoginWithPassword,
-  fetchUserInOTPLogin,
   openModal,
 } from "@/redux/features/user/userSlice";
 import { useRouter } from "next/navigation";
 import { useGetUserRoles } from "@/hooks/useGetUserRoles";
+import { sendOTPCodeMain } from "@/utils/utils";
 // import ReCAPTCHA from 'react-google-recaptcha'
 
 type LoginProps = {
   setLoginApproach: React.Dispatch<React.SetStateAction<number>>;
   loginApproach: number;
+  isLoggingIn: boolean;
+  setIsLoggingIn: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Login = ({ setLoginApproach, loginApproach }: LoginProps) => {
+const Login = ({
+  setLoginApproach,
+  loginApproach,
+  isLoggingIn,
+  setIsLoggingIn,
+}: LoginProps) => {
   const { setAuthSteps } = useContext(AuthContext);
-  const { showModal, isLoggedIn, successMessage , status} = useSelector(
+  const { showModal, successMessage, status, errorMessage, role } = useSelector(
     (state: any) => state.userData
   );
   const dispatch = useDispatch();
+  const [startLogin, setStartLogin] = useState(false);
   const router = useRouter();
-  const userRoles = useGetUserRoles();
-
   const handleSubmission = async () => {
     // login ba phone
+    setIsLoggingIn(true);
+    dispatch(openModal(true));
     if (result && loginApproach === 0) {
-      await dispatch<any>(fetchUserInOTPLogin({ mobile: values.PhoneNumber }));
-      setAuthSteps(2);
-    } else if (result && loginApproach === 1) {
-      await dispatch<any>(
-        fetchUserInLoginWithPassword({
-          mobile: values.PhoneNumber,
-          password: values.Password,
-        })
-      );
+      await sendOTPCodeMain(values.PhoneNumber);
+      // lagin ba password
     }
   };
 
@@ -62,7 +63,25 @@ const Login = ({ setLoginApproach, loginApproach }: LoginProps) => {
   const { result, setAnswer, answer, mathProblem, wrongAnswerMessage } =
     useCaptcha(values.PhoneNumber);
   useStoreNumInLocal(values.PhoneNumber);
-  console.log(1);
+  
+  useEffect(() => {
+    if (result && loginApproach === 1) {
+      if (startLogin) {
+        dispatch<any>(
+          fetchUserInLoginWithPassword({
+            mobile: values.PhoneNumber,
+            password: values.Password,
+          })
+        );
+
+        if (status === "success" && successMessage) {
+          if (role === "Admin") router.replace("/panel/admin/view-users");
+          else router.replace("/panel/user/dashboard");
+        }
+      }
+    }
+  }, [startLogin, status]);
+
   return (
     <React.Fragment>
       <div
@@ -72,28 +91,16 @@ const Login = ({ setLoginApproach, loginApproach }: LoginProps) => {
         <div className="py-[5%] w-full relative px-[5%]">
           <Modal
             showModal={showModal}
-            data={values.PhoneNumber}
+            data={values.PhoneNumber ? values.PhoneNumber : ""}
             text={
               values.PhoneNumber
                 ? "شماره تماس زیر مورد تایید است؟"
-                : "شماره همراه خود را وارد کنید"
+                : "شماره همراه خود را وارد کنید."
             }
-            buttonText={values.PhoneNumber ? "تغییر شماره همراه" : "تایید"}
             setSteps={setAuthSteps}
-            // executeFunction2={handleSubmission}
-            isLoggedIn={isLoggedIn}
+            isLoggingIn={isLoggingIn}
+            setStartLogin={setStartLogin}
           />
-          {status === "" && showModal && (
-            <Modal
-              showModal={showModal}
-              buttonText="متوجه شدم"
-              text={successMessage}
-              data=""
-              setSteps={setAuthSteps}
-              isLoggedIn={isLoggedIn}
-              redirect={isLoggedIn}
-            />
-          )}
           <Logo />
           <div className="flex flex-row justify-between items-center mb-8">
             <span
@@ -122,6 +129,8 @@ const Login = ({ setLoginApproach, loginApproach }: LoginProps) => {
               setAnswer={setAnswer}
               wrongAnswerMessage={wrongAnswerMessage}
               result={result}
+              isLoggingIn={isLoggingIn}
+              setIsLoggingIn={setIsLoggingIn}
             />
           ) : (
             <OtpLoginMain
@@ -135,6 +144,8 @@ const Login = ({ setLoginApproach, loginApproach }: LoginProps) => {
               setAnswer={setAnswer}
               wrongAnswerMessage={wrongAnswerMessage}
               result={result}
+              isLoggingIn={isLoggingIn}
+              setIsLoggingIn={setIsLoggingIn}
             >
               <FormInput
                 onChange={handleChange}
@@ -143,7 +154,6 @@ const Login = ({ setLoginApproach, loginApproach }: LoginProps) => {
                 type="text"
                 name="Password"
                 error={errors.Password}
-                autoFocus={true}
               />
             </OtpLoginMain>
           )}

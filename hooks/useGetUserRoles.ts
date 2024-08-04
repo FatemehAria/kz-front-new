@@ -6,6 +6,7 @@ export const useGetUserRoles = () => {
   const { userType } = useSelector((state: any) => state.userData);
   const userRoles = userType
     ? userType.map((item: userRoleType) => item.name_en)
-    : "User";
+    : "";
+  // console.log(userRoles); //['Admin']
   return userRoles;
 };

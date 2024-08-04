@@ -1,5 +1,6 @@
 import { BrandDetailType } from "@/app/panel/admin/brands/brand-detail/page";
 import { BrandType } from "@/app/panel/admin/brands/page";
+import { PlanType } from "@/app/panel/admin/plan-management/page";
 import app from "@/services/service";
 import axios from "axios";
 import { Bounce, toast } from "react-toastify";
@@ -8,6 +9,33 @@ import { Bounce, toast } from "react-toastify";
 export const logout = async () => {
   try {
     const { data } = await app.post("/v1/user/logout", {});
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+// send otp code
+export const sendOTPCodeForRegistration = async (
+  name: string,
+  surname: string,
+  type: string,
+  mobile: string,
+  org_name: string,
+  org_registration_number: string,
+  org_address: string,
+  org_phone: string
+) => {
+  try {
+    const data = await app.post("/registerotp", {
+      name,
+      surname,
+      type,
+      mobile,
+      org_name,
+      org_registration_number,
+      org_address,
+      org_phone,
+    });
     console.log(data);
   } catch (error) {
     console.log(error);
@@ -36,8 +64,9 @@ export const registerInfo = async (
     });
     window.localStorage.setItem("type", JSON.stringify(type));
     console.log(data);
-    if (type === "haghighi") {
-      setSteps(5);
+    if (type === "haghighi" || type === "حقیقی") {
+      await sendOTPCodeMain(mobile);
+      setSteps(2);
     } else {
       setSteps(6);
     }
@@ -60,6 +89,17 @@ export const registerInfo = async (
         rtl: true,
       });
     }
+  }
+};
+// send otp code for login and general
+export const sendOTPCodeMain = async (mobile: string) => {
+  try {
+    const { data } = await app.post("/loginotp", {
+      mobile,
+    });
+    console.log(data);
+  } catch (error: any) {
+    console.log(error);
   }
 };
 // save info to local storage
@@ -300,7 +340,7 @@ export const updateBrand = async (
   token: string,
   brandId: number | null,
   title: string | null,
-  description: string | null,
+  description: string | null
 ) => {
   try {
     const { data } = await app.post(
@@ -344,31 +384,121 @@ export const updateBrand = async (
     });
   }
 };
-export const getNewOTP = async (PhoneNumber: string) => {
+// get all consultations
+export const getAllConsultations = async (
+  token: string,
+  setAllConsults: React.Dispatch<React.SetStateAction<never[]>>
+) => {
   try {
-    const { data } = await axios.post(
-      "https://keykavoos.liara.run/Client/SendOTP",
-      {
-        PhoneNumber,
-      }
-    );
-    // console.log(data);
-  } catch (error: any) {
-    // console.log(error);
+    const { data } = await app("/consults", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    setAllConsults(data.data);
+  } catch (error) {
+    console.log(error);
   }
 };
-
-export const getOTPViaCall = async (PhoneNumber: string) => {
+// get all projects
+export const getAllProjects = async (
+  token: string,
+  setProjectStatus: React.Dispatch<
+    React.SetStateAction<{
+      error: string;
+      loading: boolean;
+    }>
+  >
+) => {
   try {
-    const { data } = await axios.post(
-      "https://keykavoos.liara.run/Client/SendCallOTP",
+    setProjectStatus((last) => ({ ...last, loading: true }));
+    const { data } = await app("/projects", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+  } catch (error: any) {
+    console.log(error.response.data.message);
+    setProjectStatus((last) => ({ ...last, error: "خطا در ردیافت اطلاعات" }));
+  } finally {
+    setProjectStatus((last) => ({ ...last, loading: false }));
+  }
+};
+// submit project by user
+export const submitProject = async (
+  token: string,
+  title: string,
+  description: string,
+  budget_cost: string,
+  price: string,
+  discount_code: string,
+  discount_percentage: string,
+  final_price: string,
+  status: string,
+  priority: string,
+  register_user_id: string,
+  plan_id: string,
+  consultation_id: string,
+  lookslike: string,
+  org_color: string,
+  plugin: string,
+  template: string
+) => {
+  try {
+    const { data } = await app.post(
+      "/project/store",
       {
-        PhoneNumber,
+        title,
+        description,
+        budget_cost,
+        price,
+        discount_code: discount_code || "",
+        discount_percentage,
+        final_price,
+        status,
+        priority,
+        register_user_id,
+        plan_id,
+        consultation_id,
+        lookslike: lookslike || "",
+        org_color: org_color || "",
+        plugin: plugin || "",
+        template: template || "",
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
-    toast.success("در حال برقراری تماس...", {
-      position: "top-center",
-      autoClose: 1000,
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+// file upload in project
+export const uploadProjectFile = async (
+  token: string,
+  projectId: string,
+  File: File
+) => {
+  const formData = new FormData();
+  formData.append("File", File);
+  try {
+    const { data } = await app.post(
+      `/project/file/upload/${projectId}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("آپلود فایل موفق بود.", {
+      position: "top-right",
+      autoClose: 3000,
       hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: true,
@@ -378,9 +508,9 @@ export const getOTPViaCall = async (PhoneNumber: string) => {
       transition: Bounce,
       rtl: true,
     });
-    // console.log(data);
+    console.log(data);
   } catch (error) {
-    toast.error("خطا در برقراری تماس.", {
+    toast.error("خطا در آپلود فایل، لطفا مجدد آپلود کنید.", {
       position: "top-right",
       autoClose: 3000,
       hideProgressBar: false,
@@ -392,6 +522,218 @@ export const getOTPViaCall = async (PhoneNumber: string) => {
       transition: Bounce,
       rtl: true,
     });
-    // console.log(error);
+    console.log(error);
+  }
+};
+// create new plan by admin
+export const createNewplan = async (
+  token: string,
+  title: string,
+  description: string
+) => {
+  try {
+    const { data } = await app.post(
+      "/plan/store",
+      {
+        title,
+        description,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("پلن با موفقیت ایجاد شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(data);
+  } catch (error) {
+    toast.error("خطا در ایجاد پلن", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(error);
+  }
+};
+// get all plans by admin
+export const getAllPlans = async (
+  token: string,
+  setPlans: React.Dispatch<React.SetStateAction<PlanType[]>>
+) => {
+  try {
+    const { data } = await app("/plans", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setPlans(data.data);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+// update a plan by admin
+export const updatePlan = async (
+  token: string,
+  planId: number | null,
+  title: string | null,
+  description: string | null
+) => {
+  try {
+    const { data } = await app.post(
+      `/plan/update/${planId}`,
+      {
+        title: title || "",
+        description: description || "",
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("پلن با موفقیت به روزرسانی شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در به روزرسانی پلن", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// delete plan by admin
+export const deletePlan = async (
+  planId: number,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/plan/delete/${planId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    toast.success("پلن با موفقیت حذف شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(true);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در حذف پلن", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// restore plan by admin
+export const restorePlan = async (
+  planId: number | null,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/plan/restore/${planId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    toast.success("پلن با موفقیت بازگردانی شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(false);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در بازگردانی پلن", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// get plan detail
+export const getPlanDetail = async (
+  planId: string | null,
+  setPlanDetail: React.Dispatch<React.SetStateAction<BrandDetailType>>
+) => {
+  try {
+    const { data } = await app.get(`/plan/show/${planId ? planId : ""}`);
+    console.log(data);
+    setPlanDetail(data.data);
+  } catch (error) {
+    console.log(error);
   }
 };

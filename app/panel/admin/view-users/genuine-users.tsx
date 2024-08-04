@@ -68,7 +68,6 @@ function GenuineUsers({
                   item.id,
                   token,
                   setAllUsers,
-                  setDataStatus,
                   AllUsersData
                 )
               }

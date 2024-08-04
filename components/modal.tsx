@@ -4,18 +4,21 @@ import {
   openModal,
   handleAutoFocus,
   updateStatus,
+  getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
 import { userRoleType } from "@/types/types";
 import { useRouter } from "next/navigation";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 type ModalProps = {
   showModal: boolean;
   data?: any;
   text?: string;
-  buttonText?: string;
+  isLoggingIn?: boolean;
   setSteps?: Dispatch<SetStateAction<number>>;
+  setStartLogin: React.Dispatch<React.SetStateAction<boolean>>;
+  buttonText?: string;
   mainButtonText?: string;
   executeFunction?: any;
   executeFunction2?: any;
@@ -28,6 +31,8 @@ function Modal({
   showModal,
   data,
   text,
+  isLoggingIn,
+  setStartLogin,
   buttonText,
   setSteps,
   mainButtonText,
@@ -38,11 +43,29 @@ function Modal({
   isLoggedIn,
   redirect,
 }: ModalProps) {
-  const { userType } = useSelector((state: any) => state.userData);
+  const { token, role } = useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
   const router = useRouter();
-  const userRoles = useGetUserRoles();
+  useEffect(() => {
+    dispatch(getTokenFromLocal());
+  }, []);
+  console.log(role);
+  console.log(token);
+  const handleMainButtonClick = () => {
+    dispatch(openModal(false));
+    if (isLoggingIn) {
+      if (!token) {
+        setStartLogin(true);
+        setSteps?.(1);
+      }
+    } else {
+      setSteps?.(3);
+    }
+  };
 
+  const handlePrimaryButtonClick = () => {
+    dispatch(openModal(false));
+  };
   return (
     <div
       id="default-modal"
@@ -57,48 +80,32 @@ function Modal({
           <div className="bg-white rounded-[25px] shadow border">
             <div className="md:p-5 text-black font-semibold">
               <p className="text-[20px] leading-relaxed max-w-sm mx-auto py-3">
+                {/* متن */}
+                {/* شماره همراه ؟ شماره تماس مورد تایید است : شماره همراه را وارد کنید*/}
                 {text}
               </p>
+              {/* شماره موبایل */}
+              {/* شماره همراه ؟ شماره همراه : "" */}
               <p className="text-[32px]">{data}</p>
             </div>
 
-            <div className="flex items-center justify-between p-4 md:p-5 rounded-b">
-              {data && (
-                <button
-                  onClick={() => {
-                    dispatch(openModal(false));
-                    setSteps?.(3);
-                    data && executeFunction2();
-                  }}
-                  type="button"
-                  className="text-white bg-[#4866CF] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm md:px-5 md:py-2.5 text-center"
-                >
-                  {mainButtonText ? mainButtonText : "تایید شماره همراه"}
-                </button>
-              )}
+            <div className="flex items-center justify-between p-4 md:p-5 rounded-b whitespace-nowrap">
+              {/* اگر شماره موبایل بود */}
+
+              <button
+                onClick={() => handleMainButtonClick()}
+                type="button"
+                className="text-white bg-[#4866CF] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm md:px-5 md:py-2.5 text-center"
+              >
+                تایید شماره همراه
+              </button>
               <div
                 className={`${
                   data === "" && "flex justify-center w-full text-center "
                 }`}
               >
                 <button
-                  onClick={() => {
-                    dispatch(openModal(false));
-                    executeFunction && executeFunction() && setCounter(90);
-                    !isLoggedIn && setSteps?.(3);
-                    dispatch(handleAutoFocus(true));
-                    redirect && userRoles.includes("Admin")
-                      ? router.replace("/panel/admin/view-users")
-                      : router.replace("/panel/user/dashboard");
-                    // redirect &&
-                    //   (userRole === "User"
-                    //     ? router.replace("/panel/user/dashboard")
-                    //     : userRole === "Admin"
-                    //     ? router.replace("/panel/admin/view-users")
-                    //     : userRole === ""
-                    //     ? setSteps?.(1)
-                    //     : console.log("none"));
-                  }}
+                  onClick={() => handlePrimaryButtonClick()}
                   type="button"
                   className={`md:py-2.5 md:px-5 ms-3 px-5 text-sm font-medium focus:outline-none rounded-lg border border-[#4866CF] ${
                     data
@@ -106,7 +113,7 @@ function Modal({
                       : " bg-white text-[#4866CF]"
                   }`}
                 >
-                  {buttonText}
+                  تغییر شماره همراه
                 </button>
               </div>
             </div>

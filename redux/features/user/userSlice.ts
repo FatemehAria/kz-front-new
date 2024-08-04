@@ -5,6 +5,7 @@ import {
   RootState,
   RTKUserState,
   sendOTPCodeAfterRegistrationPayload,
+  userRoleType,
   verifyUserByOTPInLoginAndRegistrationPayload,
 } from "@/types/types";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
@@ -28,8 +29,9 @@ const initialState: RTKUserState = {
   isLoggedIn: false,
   welcomeMessage: "",
   userId: "",
-  userType: "",
+  userType: [],
   type: "Genuine",
+  role: "",
   numberOfAnnouncements: 0,
 };
 
@@ -50,9 +52,6 @@ const fetchUserInLoginWithPassword = createAsyncThunk(
         userId: data.data?.user.id,
         userType: data.data?.user.roles,
         type: data.data?.user.type,
-        isLoggedIn: true,
-        showModal: true,
-        status: "success",
       };
     } catch (error: any) {
       console.log(error);
@@ -60,30 +59,7 @@ const fetchUserInLoginWithPassword = createAsyncThunk(
     }
   }
 );
-// vorod ba mobile
-const fetchUserInOTPLogin = createAsyncThunk(
-  "userData/fetchUserInOTPLogin",
-  async (payload: fetchUserInOTPLoginPayload, { rejectWithValue }) => {
-    const { mobile } = payload;
-    try {
-      const { data } = await app.post("/loginotp", {
-        mobile,
-      });
-      console.log(data);
-      return {
-        token: data.data?.token,
-        FirstName: data.data?.user.name,
-        // isLoggedIn: data.isLogin,
-        userId: data.data?.user.id,
-        // userType: data.User?.UserType,
-        type: data.data?.user.type,
-      };
-    } catch (error: any) {
-      console.log(error);
-      return rejectWithValue(error.response.data.message);
-    }
-  }
-);
+
 // tayide otp bad az login ba mobile va sabtenam
 const verifyUserByOTPInLoginAndRegistration = createAsyncThunk(
   "userData/verifyUserByOTPInLoginAndRegistration",
@@ -113,46 +89,47 @@ const verifyUserByOTPInLoginAndRegistration = createAsyncThunk(
   }
 );
 // ersal otp bad az sabtenam
-const sendOTPCodeAfterRegistration = createAsyncThunk(
-  "userData/sendOTPCodeAfterRegistration",
-  async (payload: sendOTPCodeAfterRegistrationPayload, { rejectWithValue }) => {
-    const {
-      name,
-      surname,
-      type,
-      mobile,
-      org_name,
-      org_registration_number,
-      org_address,
-      org_phone,
-    } = payload;
-    try {
-      console.log(payload);
-      const data = await app.post("/registerotp", {
-        name,
-        surname,
-        type,
-        mobile,
-        org_name,
-        org_registration_number,
-        org_address,
-        org_phone,
-      });
-      console.log(data);
-      return {
-        token: data.data.User?.token,
-        userProfile: data.data.user,
-        FirstName: data.data.User?.FirstName,
-        userId: data.data?.user?.id,
-        type: data.data.User?.type,
-      };
-    } catch (error: any) {
-      console.log(error);
-      return rejectWithValue(error.response.data.message);
-    }
-  }
-);
+// const sendOTPCodeAfterRegistration = createAsyncThunk(
+//   "userData/sendOTPCodeAfterRegistration",
+//   async (payload: sendOTPCodeAfterRegistrationPayload, { rejectWithValue }) => {
+//     const {
+//       name,
+//       surname,
+//       type,
+//       mobile,
+//       org_name,
+//       org_registration_number,
+//       org_address,
+//       org_phone,
+//     } = payload;
+//     try {
+//       console.log(payload);
+//       const data = await app.post("/registerotp", {
+//         name,
+//         surname,
+//         type,
+//         mobile,
+//         org_name,
+//         org_registration_number,
+//         org_address,
+//         org_phone,
+//       });
+//       console.log(data);
+//       return {
+//         token: data.data?.token,
+//         userProfile: data.data.user,
+//         FirstName: data.data.user?.name,
+//         userId: data.data?.user?.id,
+//         type: data.data.user?.type,
+//       };
+//     } catch (error: any) {
+//       console.log(error);
+//       return rejectWithValue(error.response.data.message);
+//     }
+//   }
+// );
 
+// daryafte etelaat karbar:checked
 const fetchUserProfile = createAsyncThunk<
   // This is the return type of the payload creator
   {
@@ -161,17 +138,15 @@ const fetchUserProfile = createAsyncThunk<
     // LastName: string;
     email: string;
     type: string;
-    userType:
-      | string
-      | {
-          created_at: string;
-          deleted_at: string;
-          updated_at: string;
-          id: number;
-          name_en: string;
-          name_fa: string;
-          pivot: { user_id: number; role_id: number };
-        }[];
+    userType: {
+      created_at: string;
+      deleted_at: string;
+      updated_at: string;
+      id: number;
+      name_en: string;
+      name_fa: string;
+      pivot: { user_id: number; role_id: number };
+    }[];
     userId: string;
     // numberOfAnnouncements: number;
   }, // Return type
@@ -244,39 +219,7 @@ const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // fetchUserInOTPLogin
-    builder.addCase(fetchUserInOTPLogin.pending, (state) => {
-      state.status = "loading";
-    });
-    builder.addCase(fetchUserInOTPLogin.fulfilled, (state, action) => {
-      // state.showModal = true;
-      state.status = "success";
-      state.token = action.payload.token;
-      setCookie("token", state.token, {
-        path: "/",
-        maxAge: 24 * 60 * 60,
-        secure: true,
-      });
-      state.FirstName = action.payload.FirstName;
-      // state.userType = action.payload.userType;
-      state.type = action.payload.type;
-      state.userId = action.payload.userId;
-      state.isLoggedIn = true;
-      sessionStorage.setItem("userId", state.userId);
-      // if (!state.userProfile) {
-      //   state.successMessage = "لطفا اطلاعات خود را تکمیل کنید.";
-      // } else {
-      //   state.successMessage = `${state.FirstName} ${state.LastName} عزیز با موفقیت وارد پنل کاربری خود شدید.`;
-      // }
-      state.errorMessage = "";
-    });
-    builder.addCase(fetchUserInOTPLogin.rejected, (state) => {
-      state.showModal = true;
-      state.status = "failed";
-      state.errorMessage = ` کد یکبار مصرف مورد تایید نمی باشد
-      دوباره اقدام فرمایید.`;
-    });
-    // token
+    // fetchUserProfile
     builder.addCase(fetchUserProfile.pending, (state) => {
       state.status = "loading";
     });
@@ -284,10 +227,8 @@ const userSlice = createSlice({
       state.status = "success";
       state.userProfile = action.payload.data;
       state.FirstName = action.payload.FirstName;
-      // state.LastName = action.payload.LastName;
       state.type = action.payload.type;
       state.errorMessage = "";
-      // state.numberOfAnnouncements = action.payload.numberOfAnnouncements;
       state.userType = action.payload.userType;
       state.userId = action.payload.userId;
       sessionStorage.setItem("userId", state.userId);
@@ -295,33 +236,9 @@ const userSlice = createSlice({
     });
     builder.addCase(fetchUserProfile.rejected, (state, action) => {
       state.status = "failed";
-      state.errorMessage = "خطا";
+      state.errorMessage = "خطا در دریافت اطلاعات کاربری";
     });
-    // sendOTPCodeAfterRegistration
-    builder.addCase(sendOTPCodeAfterRegistration.pending, (state) => {
-      state.status = "loading";
-    });
-    builder.addCase(sendOTPCodeAfterRegistration.fulfilled, (state, action) => {
-      state.showModal = true;
-      state.status = "success";
-      state.token = action.payload.token;
-      setCookie("token", state.token, {
-        path: "/",
-        maxAge: 24 * 60 * 60,
-        secure: true,
-      });
-      state.userProfile = action.payload.userProfile;
-      state.FirstName = action.payload.FirstName;
-      state.userId = action.payload.userId;
-      state.userType = "User";
-      sessionStorage.setItem("userId", state.userId);
-      state.successMessage = `${state.FirstName} عزیز با موفقیت وارد پنل کاربری خود شدید.`;
-      state.errorMessage = "";
-    });
-    builder.addCase(sendOTPCodeAfterRegistration.rejected, (state, action) => {
-      state.status = "failed";
-      state.errorMessage = "خطا";
-    });
+
     // verifyUserByOTPInLoginAndRegistration
     builder.addCase(verifyUserByOTPInLoginAndRegistration.pending, (state) => {
       state.status = "loading";
@@ -339,7 +256,7 @@ const userSlice = createSlice({
         });
         state.FirstName = action.payload.FirstName;
         state.type = action.payload.type;
-        state.userType = "User";
+        // state.userType = action.payload.us;
         state.userId = action.payload.userId;
         sessionStorage.setItem("userId", state.userId);
         state.successMessage = `${state.FirstName} عزیز با موفقیت وارد پنل کاربری خود شدید.`;
@@ -351,17 +268,17 @@ const userSlice = createSlice({
       verifyUserByOTPInLoginAndRegistration.rejected,
       (state, action) => {
         state.status = "failed";
-        state.errorMessage = "خطا";
+        state.errorMessage = "کد وارد شده صحیح نمی باشد.";
+        state.showModal = true;
       }
     );
     // fetchUserInLoginWithPassword
     builder.addCase(fetchUserInLoginWithPassword.pending, (state) => {
       state.status = "loading";
-      state.showModal = false;
     });
     builder.addCase(fetchUserInLoginWithPassword.fulfilled, (state, action) => {
-      state.showModal = action.payload.showModal;
-      state.status = action.payload.status;
+      state.showModal = true;
+      state.status = "success";
       state.token = action.payload.token;
       setCookie("token", state.token, {
         path: "/",
@@ -371,16 +288,25 @@ const userSlice = createSlice({
       state.FirstName = action.payload.FirstName;
       state.userType = action.payload.userType;
       state.userId = action.payload.userId;
-      state.isLoggedIn = action.payload.isLoggedIn;
+      state.isLoggedIn = true;
       sessionStorage.setItem("userId", state.userId);
-      state.successMessage = `${state.FirstName} عزیز با موفقیت وارد پنل کاربری خود شدید.`;
+      state.successMessage = `${state?.FirstName} عزیز با موفقیت وارد پنل کاربری خود شدید.`;
       state.errorMessage = "";
       state.type = action.payload.type;
+      state.role =
+        state.userType
+          ?.map((item: userRoleType) => item.name_en)
+          .includes("Admin") ||
+        state.userType
+          ?.map((item: userRoleType) => item.name_en)
+          .includes("admin")
+          ? "Admin"
+          : "User";
     });
     builder.addCase(fetchUserInLoginWithPassword.rejected, (state, action) => {
       state.status = "failed";
-      state.errorMessage = "خطا";
-      state.showModal = false;
+      state.errorMessage = "رمز عبور اشتباه است.";
+      state.showModal = true;
     });
   },
 });
@@ -403,6 +329,4 @@ export {
   fetchUserProfile,
   fetchUserInLoginWithPassword,
   verifyUserByOTPInLoginAndRegistration,
-  sendOTPCodeAfterRegistration,
-  fetchUserInOTPLogin,
 };

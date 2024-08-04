@@ -18,11 +18,15 @@ import AdditionalInfoOnRegister from "./additional-info-onregister";
 const Auth = () => {
   const { authSteps, setAuthSteps } = useContext(AuthContext);
   const [loginApproach, setLoginApproach] = useState(0);
-  const { token } = useSelector((state: any) => state.userData);
+  const { token, userId, userType, showModal } = useSelector(
+    (state: any) => state.userData
+  );
   const dispatch = useDispatch();
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   useEffect(() => {
     dispatch(getTokenFromLocal());
+    dispatch(getIdFromLocal());
     dispatch<any>(fetchUserProfile());
   }, []);
 
@@ -33,6 +37,8 @@ const Auth = () => {
           <Login
             setLoginApproach={setLoginApproach}
             loginApproach={loginApproach}
+            isLoggingIn={isLoggingIn}
+            setIsLoggingIn={setIsLoggingIn}
           />
         );
       case 2:
@@ -49,10 +55,12 @@ const Auth = () => {
   };
 
   const router = useRouter();
-  if (token) {
-    router.replace("/");
-  }
-
-  return <div>{!token && <div dir="rtl">{renderSteps()}</div>}</div>;
+  // if (token) {
+  //   router.replace("/");
+  // }
+  // console.log("userRole in aurh",userType);
+  // console.log("token in aurh",token);
+  // console.log("showmoadl in aurh",showModal);
+  return <div>{<div dir="rtl">{renderSteps()}</div>}</div>;
 };
 export default Auth;

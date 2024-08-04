@@ -16,10 +16,9 @@ import OtpInput from "react-otp-input";
 import sms from "../../public/Auth/sms.svg";
 import phone from "../../public/Auth/phone.svg";
 import Modal from "@/components/modal";
-import { getNewOTP, getOTPViaCall } from "@/utils/utils";
+import { sendOTPCodeMain } from "@/utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchUserInOTPLogin,
   handleAutoFocus,
   verifyUserByOTPInLoginAndRegistration,
 } from "@/redux/features/user/userSlice";
@@ -68,8 +67,8 @@ const UserLoginViaOTP = () => {
       dispatch(handleAutoFocus(true));
     }
   }, [status]);
-
-  console.log("2");
+  // console.log(successMessage);
+  // console.log("2");
   return (
     <React.Fragment>
       <div
@@ -120,13 +119,13 @@ const UserLoginViaOTP = () => {
                 inputType="tel"
                 shouldAutoFocus={autoFocus}
               />
-              {errorMessage !== "" && showModal && (
+              {/* {errorMessage !== "" && showModal && (
                 <Modal
                   showModal={showModal}
                   buttonText="ارسال مجدد کد یکبارمصرف"
                   text={errorMessage}
                   data=""
-                  executeFunction={() => getNewOTP(PhoneNumber)}
+                  executeFunction={() => sendOTPCodeMain(PhoneNumber)}
                   setCounter={setCounter}
                 />
               )}
@@ -140,7 +139,7 @@ const UserLoginViaOTP = () => {
                   isLoggedIn={isLoggedIn}
                   redirect={isLoggedIn}
                 />
-              )}
+              )} */}
               <span
                 className={`w-full text-[20px] ${
                   counter === 0 && "text-blue-700 cursor-pointer "
@@ -152,26 +151,11 @@ const UserLoginViaOTP = () => {
                       className="flex items-center gap-2"
                       onClick={async () =>
                         counter === 0 &&
-                        (dispatch<any>(
-                          fetchUserInOTPLogin({ mobile: PhoneNumber })
-                        ),
-                        setCounter(90))
+                        (sendOTPCodeMain(PhoneNumber), setCounter(90))
                       }
                     >
                       <Image src={sms} alt="sms" />
                       <span>ارسال مجدد</span>
-                    </p>
-                    <p className="text-black">یا</p>
-                    <p className="flex w-full items-center gap-2">
-                      <Image src={phone} alt="phone" />
-                      <span
-                        className="cursor-pointer"
-                        onClick={() =>
-                          counter === 0 && getOTPViaCall(PhoneNumber)
-                        }
-                      >
-                        ارسال کد از طریق تماس
-                      </span>
                     </p>
                   </div>
                 ) : (

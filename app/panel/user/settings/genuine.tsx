@@ -5,13 +5,13 @@ import axios from "axios";
 import { useFormik } from "formik";
 import SettingsFileupload from "./components/settings-fileupload";
 import { Bounce, toast } from "react-toastify";
+import app from "@/services/service";
 
 const initialValues = {
   FirstName: "",
   LastName: "",
-  type: "Genuine",
   email: "",
-  National_ID: "",
+  mobile: "",
 };
 type GenuineProps = {
   PhoneNumber: string;
@@ -25,14 +25,15 @@ function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
   };
   const handleAvatar = async () => {
     const formData = new FormData();
-    formData.append("Image", selectedFile);
+    formData.append("pic", selectedFile);
     try {
-      const { data } = await axios.put(
-        `https://keykavoos.liara.run/Client/UploadAvatar/${userId}`,
+      const { data } = await app.post(
+        `/upload/profile_pic/${userId}`,
         formData,
         {
           headers: {
-            authorization: `Bearer ${token}`,
+            "Content-Type":"multipart/form-data",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -66,23 +67,19 @@ function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
     }
   };
   const GenuineSubmission = async (
-    National_ID: string,
-    type: string,
-    FirstName: string,
-    LastName: string,
-    email: string
+    name: string,
+    surname: string,
+    email: string,
+    mobile: string
   ) => {
     try {
-      const { data } = await axios.put(
-        `https://keykavoos.liara.run/Client/EditGenuine/${userId}`,
-        {
-          National_ID,
-          type,
-          FirstName,
-          LastName,
-          email,
-        }
-      );
+      const { data } = await app.put(`/user/update/${userId}`, {
+        name,
+        surname,
+        email,
+        mobile,
+      });
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -92,9 +89,8 @@ function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
       await GenuineSubmission(
         values.FirstName,
         values.LastName,
-        values.type,
-        values.National_ID,
-        values.email
+        values.email,
+        values.mobile
       ),
       await handleAvatar(),
     ]);
@@ -121,12 +117,6 @@ function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
             name="LastName"
           />
           <PanelFields
-            label="شماره موبایل:"
-            onChange={handleChange}
-            value={PhoneNumber}
-            disable={true}
-          />
-          <PanelFields
             label="ایمیل:"
             onChange={handleChange}
             value={values.email}
@@ -140,10 +130,10 @@ function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
             label="عکس کاربری:"
           />
           <PanelFields
-            label="کد ملی:"
+            label="شماره همراه:"
             onChange={handleChange}
-            value={values.National_ID}
-            name="National_ID"
+            value={values.mobile}
+            name="mobile"
           />
         </div>
       </div>

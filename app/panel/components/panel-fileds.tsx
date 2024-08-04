@@ -5,6 +5,7 @@ type PanelFieldsProps = {
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   disable?: boolean;
   name?: string;
+  readonly?:boolean
 };
 function PanelFields({
   label,
@@ -12,6 +13,7 @@ function PanelFields({
   value,
   disable,
   name,
+  readonly
 }: PanelFieldsProps) {
   return (
     <div className="flex flex-col gap-3">
@@ -24,6 +26,7 @@ function PanelFields({
         value={value}
         disabled={disable}
         name={name}
+        readOnly={readonly}
       />
     </div>
   );

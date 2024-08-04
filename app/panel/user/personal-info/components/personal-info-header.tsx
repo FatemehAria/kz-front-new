@@ -42,25 +42,25 @@ function PersonalInfoHeader({
       <div className="text-center absolute -top-5 left-1/2 text-[20px] -translate-x-1/2 bg-transparent flex flex-row gap-5">
         <button
           className={`rounded-[4px] py-[3%] px-[8%] ${
-            step === "Genuine"
+            step === "Genuine" || step === "haghighi"
               ? "bg-[#4866CF] text-white cursor-default"
               : `bg-[${color ? color : "#ffffff"}] text-[#4866CF] ${
                   cursor ? cursor : "cursor-pointer"
                 }`
           }`}
-          onClick={() => setStep && setStep("Genuine")}
+          onClick={() => setStep && setStep("Genuine" || "haghighi")}
         >
           حقیقی
         </button>
         <button
           className={`rounded-[4px] py-[3%] px-[8%] ${
-            step === "Legal"
+            step === "Legal" || step === "hoghooghi"
               ? "bg-[#4866CF] text-white cursor-default"
               : `bg-[${color ? color : "#ffffff"}] text-[#4866CF] ${
                   cursor ? cursor : "cursor-pointer"
                 }`
           }`}
-          onClick={() => setStep && setStep("Legal")}
+          onClick={() => setStep && setStep("Legal" || "hoghooghi")}
         >
           حقوقی
         </button>

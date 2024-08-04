@@ -24,6 +24,8 @@ type OtpLoginMainProps = {
   wrongAnswerMessage: string;
   result: boolean;
   children?: React.ReactNode;
+  isLoggingIn: boolean;
+  setIsLoggingIn: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function OtpLoginMain({
@@ -38,6 +40,8 @@ function OtpLoginMain({
   wrongAnswerMessage,
   result,
   children,
+  isLoggingIn,
+  setIsLoggingIn,
 }: OtpLoginMainProps) {
   const { showModal } = useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
@@ -89,7 +93,7 @@ function OtpLoginMain({
         <p>حساب کاربری ندارید؟</p>
         <span>
           <span
-            onClick={() => dispatch(openModal(true))}
+            onClick={() => dispatch(openModal(true), setIsLoggingIn(false))}
             className="text-[#4866CF] cursor-pointer"
           >
             ثبت نام

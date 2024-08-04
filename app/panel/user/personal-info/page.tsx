@@ -15,23 +15,10 @@ import SubLoading from "@/components/SubLoading";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 function PersonalInfo() {
-  const {
-    userId,
-    PhoneNumber,
-    localToken,
-    localUserId,
-    type,
-    userProfile,
-    status,
-  } = useSelector((state: any) => state.userData);
-  const dispatch = useDispatch();
+  const { userId, PhoneNumber, token, type, userProfile, status } = useSelector(
+    (state: any) => state.userData
+  );
   const [step, setStep] = useState(type);
-  useEffect(() => {
-    dispatch(readPhoneNumberFromLocalStroage());
-    dispatch(getTokenFromLocal());
-    dispatch(getIdFromLocal());
-    dispatch<any>(fetchUserProfile());
-  }, []);
 
   useEffect(() => {
     setStep(type);
@@ -39,20 +26,13 @@ function PersonalInfo() {
 
   const renderSteps = () => {
     switch (step) {
-      case "Genuine":
-        return (
-          <Genuine
-            PhoneNumber={PhoneNumber}
-            userId={userId}
-            token={localToken}
-          />
-        );
-      case "Legal":
+      case "haghighi":
+        return <Genuine userProfile={userProfile} />;
+      case "hoghooghi":
         return (
           <Legal
             PhoneNumber={PhoneNumber}
-            userId={localUserId}
-            token={localToken}
+            token={token}
             name_of_Organization={userProfile.name_of_Organization}
             National_ID={userProfile.National_ID}
             registration_Number={userProfile.registration_Number}

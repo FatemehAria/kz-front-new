@@ -12,36 +12,31 @@ import {
 import SettingsHeader from "./components/settings-header";
 
 function PersonalInfo() {
-  const { PhoneNumber, localToken, localUserId, userProfile, type } =
+  const { PhoneNumber, token, userId, userProfile, type } =
     useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
   const [step, setStep] = useState(type);
-  useEffect(() => {
-    dispatch(readPhoneNumberFromLocalStroage());
-    dispatch(getTokenFromLocal());
-    dispatch(getIdFromLocal());
-    dispatch<any>(fetchUserProfile());
-  }, []);
+
   useEffect(() => {
     setStep(type);
   }, [type]);
 
   const renderSteps = () => {
     switch (step) {
-      case "Genuine":
+      case "haghighi":
         return (
           <Genuine
             PhoneNumber={PhoneNumber}
-            userId={localUserId}
-            token={localToken}
+            userId={userId}
+            token={token}
           />
         );
-      case "Legal":
+      case "hoghooghi":
         return (
           <Legal
             PhoneNumber={PhoneNumber}
-            userId={localUserId}
-            token={localToken}
+            userId={userId}
+            token={token}
             userProfile={userProfile}
           />
         );

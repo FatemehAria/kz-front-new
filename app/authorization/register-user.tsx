@@ -4,7 +4,7 @@ import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
 import SubmissionBtn from "./components/submission-btn";
 import Logo from "./components/logo";
 import { useDispatch, useSelector } from "react-redux";
-import { sendOTPCodeAfterRegistration } from "@/redux/features/user/userSlice";
+// import { sendOTPCodeAfterRegistration } from "@/redux/features/user/userSlice";
 import sms from "../../public/Auth/sms.svg";
 import phone from "../../public/Auth/phone.svg";
 import Modal from "@/components/modal";
@@ -27,24 +27,6 @@ const RegisterUser = () => {
   const dispatch = useDispatch();
 
   const [OTP, setOTP] = useState("");
-
-  const handleClick = () => {
-    dispatch<any>(
-      sendOTPCodeAfterRegistration({
-        name: window.localStorage.getItem("name") as string,
-        surname: window.localStorage.getItem("surname") as string,
-        type: window.localStorage
-          .getItem("type")
-          ?.replaceAll('"', "") as string,
-        mobile: window.localStorage.getItem("PhoneNumber") as string,
-        org_name: window.localStorage.getItem("org_name") || "",
-        org_registration_number:
-          window.localStorage.getItem("org_registration_number") || "",
-        org_address: window.localStorage.getItem("org_address") || "",
-        org_phone: window.localStorage.getItem("org_phone") || "",
-      })
-    );
-  };
 
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -72,7 +54,6 @@ const RegisterUser = () => {
           <div>
             <Logo />
           </div>
-          <button onClick={() => handleClick()}>onClick</button>
           <form
             onSubmit={(e) => handleSubmission(e)}
             className="flex flex-col gap-5"
@@ -116,7 +97,7 @@ const RegisterUser = () => {
                 inputType="tel"
                 shouldAutoFocus={true}
               />
-              {errorMessage !== "" && showModal && (
+              {/* {errorMessage !== "" && showModal && (
                 <Modal
                   showModal={showModal}
                   buttonText="ارسال مجدد کد"
@@ -142,7 +123,7 @@ const RegisterUser = () => {
                   isLoggedIn={userInfoOnLogin}
                   setSteps={setAuthSteps}
                 />
-              )}
+              )} */}
               <span
                 className={`w-full text-[20px] ${
                   counter === 0 && "text-blue-700 cursor-pointer "

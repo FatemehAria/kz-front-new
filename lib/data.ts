@@ -766,6 +766,12 @@ export const mainAdminSidebarOptions = [
     ],
   },
   {
+    text: "مشاوره ها",
+    imgSrc: "/Panel/searchuserssidebar.svg", //عکس ادیت شه
+    address: "/panel/admin/consultations",
+    path: ["/panel/admin/consultations"],
+  },
+  {
     text: "مدیریت پروژه ها",
     imgSrc: "/Panel/projectsmanagement.svg",
     address: "/panel/admin/project-management",
@@ -775,14 +781,24 @@ export const mainAdminSidebarOptions = [
     ],
   },
   {
-    text: "جستجو پروژه",
-    imgSrc: "/Panel/searchprojectssidebar.svg",
-    address: "/panel/admin/search-project",
+    text: "مدیریت پلن ها",
+    imgSrc: "/Panel/searchprojectssidebar.svg", //icon
+    address: "/panel/admin/plan-management",
     path: [
-      "/panel/admin/search-project",
-      "/panel/admin/search-project/project-detail",
+      "/panel/admin/plan-management",
+      "/panel/admin/plan-management/create-plan",
+      "/panel/admin/plan-management/plan-detail",
     ],
   },
+  // {
+  //   text: "جستجو پروژه",
+  //   imgSrc: "/Panel/searchprojectssidebar.svg",
+  //   address: "/panel/admin/search-project",
+  //   path: [
+  //     "/panel/admin/search-project",
+  //     "/panel/admin/search-project/project-detail",
+  //   ],
+  // },
   {
     text: "پشتیبانی",
     imgSrc: "/Panel/support.svg",

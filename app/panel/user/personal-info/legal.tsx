@@ -5,7 +5,6 @@ import malegender from "../../../../public/Panel/malegender.svg";
 import Link from "next/link";
 type LegalProps = {
   PhoneNumber: string;
-  userId: string;
   token: string;
   name_of_Organization: string;
   National_ID: string;

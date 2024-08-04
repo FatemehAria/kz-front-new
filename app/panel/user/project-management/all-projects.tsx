@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useDispatch, useSelector } from "react-redux";
 import NotFound from "../../admin/components/NotFound";
+import { getAllProjects } from "@/utils/utils";
 
 function AllProjects() {
   const [allProjects, setAllProjects] = useState([]);
@@ -17,45 +18,17 @@ function AllProjects() {
     error: "",
     loading: false,
   });
-  const { localToken, localUserId } = useSelector(
-    (state: any) => state.userData
-  );
+  const { token } = useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getTokenFromLocal());
-    dispatch(getIdFromLocal());
     dispatch<any>(fetchUserProfile());
   }, []);
 
-  const getAllProjects = async () => {
-    try {
-      setProjectStatus((prevStatus) => ({ ...prevStatus, loading: true }));
-      const { data } = await axios(
-        `https://keykavoos.liara.run/Client/AllProject/${localUserId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localToken}`,
-          },
-        }
-      );
-      setAllProjects(data.data);
-      setProjectStatus((prevStatus) => ({ ...prevStatus, loading: false }));
-      // console.log(data);
-    } catch (error) {
-      setProjectStatus({ error: "خطا در دریافت اطلاعات.", loading: false });
-      // console.log(error);
-    }
-  };
-  
   useEffect(() => {
-    getAllProjects();
+    getAllProjects(token,setProjectStatus);
   }, []);
 
-  // useEffect(() => {
-  //   if (localUserId) {
-  //     getAllProjects();
-  //   }
-  // }, [localUserId]);
   return (
     <div className="flex flex-col gap-5">
       <div className="grid grid-cols-5 text-center">

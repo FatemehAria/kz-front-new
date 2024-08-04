@@ -1,104 +1,61 @@
-"use client";
-import React, { ChangeEvent, useState } from "react";
 import PanelFields from "../../components/panel-fileds";
-import axios from "axios";
-import { useFormik } from "formik";
 import Image from "next/image";
-import malegender from "../../../../public/Panel/malegender.svg";
-const initialValues = {
-  FullName: "",
-  type: "حقیقی",
-  email: "",
-  National_ID: "",
-};
-type GenuineProps = {
-  PhoneNumber: string;
-  userId: string;
-  token: string;
-};
-function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
-  const [selectedFile, setSelectedFile] = useState<any>(null);
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    setSelectedFile(file);
-  };
-  const GenuineSubmission = async (
-    National_ID: string,
-    type: string,
-    FullName: string,
-    email: string
-  ) => {
-    try {
-      const { data } = await axios.put(
-        `https://keykavoos.liara.run/Client/EditGenuine/${userId}`,
-        {
-          National_ID,
-          type,
-          FullName,
-          email,
-        }
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const handleSubmission = async () => {
-    await GenuineSubmission(
-      values.FullName,
-      values.type,
-      values.National_ID,
-      values.email
-    );
-  };
-  const { values, handleChange, handleSubmit } = useFormik({
-    initialValues,
-    onSubmit: handleSubmission,
-  });
+import malegender from "@/public/Panel/malegender.svg";
+import Link from "next/link";
 
+type GenuineProps = {
+  userProfile: {
+    name: string;
+    email: string;
+    mobile: string;
+    pic_path: string;
+  };
+};
+function Genuine({ userProfile }: GenuineProps) {
   return (
-    <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+    <div className="flex flex-col gap-2">
       <div className="grid grid-cols-2 gap-[5%]">
         <div className="flex flex-col justify-between">
           <PanelFields
             label="نام و نام خانوادگی:"
-            onChange={handleChange}
-            value={values.FullName}
+            value={userProfile.name}
             name="FullName"
+            disable={true}
+            readonly={true}
           />
           <PanelFields
             label="شماره موبایل:"
-            onChange={handleChange}
-            value={PhoneNumber}
+            value={userProfile.mobile}
             disable={true}
+            readonly={true}
           />
           <PanelFields
             label="ایمیل:"
-            onChange={handleChange}
-            value={values.email}
+            value={userProfile.email ? userProfile.email : "-"}
             name="email"
+            readonly={true}
           />
         </div>
         <div className="flex flex-col gap-5">
           <div className="self-center">
-            <Image src={malegender} alt="profile" width={200} />
+            <Image
+              // src={userProfile.pic_path ? userProfile.pic_path : malegender}
+              src={malegender}
+              alt="profile"
+              width={200}
+            />
           </div>
-          <PanelFields
-            label="کد ملی:"
-            onChange={handleChange}
-            value={values.National_ID}
-            name="National_ID"
-          />
+          <div className="flex justify-center">
+            <Link
+              href={"/panel/user/settings"}
+              className="bg-[#4866CF] text-white text-center px-3 py-1 rounded-lg w-[200px]"
+            >
+              ویرایش حساب کاربری
+            </Link>
+          </div>
         </div>
       </div>
-      <div className="flex justify-end">
-        <button
-          className="bg-[#4866CF] text-white px-3 py-1 rounded-lg"
-          type="submit"
-        >
-          ویرایش حساب کاربری
-        </button>
-      </div>
-    </form>
+    </div>
   );
 }
 

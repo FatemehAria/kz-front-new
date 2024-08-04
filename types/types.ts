@@ -15,9 +15,10 @@ export interface RTKUserState {
   isLoggedIn: boolean;
   welcomeMessage: string;
   userId: string;
-  userType: string | userRoleType[];
+  userType: userRoleType[];
   type: string;
   numberOfAnnouncements: number;
+  role: string;
 }
 
 export type userRoleType = {

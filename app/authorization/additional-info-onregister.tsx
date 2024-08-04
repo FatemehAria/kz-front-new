@@ -1,14 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import SubmissionBtn from "./components/submission-btn";
 import { useFormik } from "formik";
-import { useDispatch, useSelector } from "react-redux";
 import FormInput from "../contact-us/components/form/form-inputs";
-import SubmitOrderDropdown from "../panel/user/submit-order/components/submit-order-dropdown";
 import Logo from "./components/logo";
-import { HoghoghiAdditionalInfoSchema } from "@/schemas/userpanel-profile-schema";
-import { sendOTPCodeAfterRegistration } from "@/redux/features/user/userSlice";
-import { saveToLocalStorage } from "@/utils/utils";
+import { sendOTPCodeForRegistration } from "@/utils/utils";
+import { InfoContext } from "./context/InfoContext";
 
 const initialValues = {
   org_address: "",
@@ -22,21 +19,20 @@ function AdditionalInfoOnRegister({
 }: {
   setSteps: React.Dispatch<React.SetStateAction<number>>;
 }) {
+  const { savedInfo } = useContext(InfoContext);
+
   const handleSubmission = async () => {
-    // await dispatch<any>(
-    //   sendOTPCodeAfterRegistration({
-    //     mobile: savedInfo.mobile,
-    //     name: savedInfo.name,
-    //     type: savedInfo.type,
-    //     surname: savedInfo.surname,
-    //     org_address: values.org_address,
-    //     org_name: values.org_name,
-    //     org_phone: values.org_phone,
-    //     org_registration_number: values.org_registration_number,
-    //   })
-    // );
-    // console.log("handle 6");
-    setSteps(5);
+    await sendOTPCodeForRegistration(
+      savedInfo.name,
+      savedInfo.surname,
+      savedInfo.type,
+      savedInfo.mobile,
+      values.org_name,
+      values.org_registration_number,
+      values.org_address,
+      values.org_phone
+    );
+    // setSteps(2);
   };
 
   const {
@@ -50,27 +46,9 @@ function AdditionalInfoOnRegister({
   } = useFormik({
     initialValues,
     onSubmit: handleSubmission,
-    validationSchema: HoghoghiAdditionalInfoSchema,
     validateOnMount: true,
   });
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      saveToLocalStorage("org_address", values.org_address);
-      saveToLocalStorage("org_name", values.org_name);
-      saveToLocalStorage("org_phone", values.org_phone);
-      saveToLocalStorage(
-        "org_registration_number",
-        values.org_registration_number
-      );
-    }
-  }, [
-    values.org_address,
-    values.org_name,
-    values.org_phone,
-    values.org_registration_number,
-  ]);
-  console.log(6);
-  // console.log(isValid);
+
   return (
     <div
       className="mx-auto grid grid-cols-1 font-YekanBakh rounded-3xl overflow-hidden my-[3%] shadow-2xl shadow-[13px_0_61px_-24px_rgba(0, 0, 0, 0.15)] p-[5%]"
@@ -78,15 +56,6 @@ function AdditionalInfoOnRegister({
     >
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         <Logo />
-        {/* {showModal && (
-        <Modal
-          showModal={showModal}
-          text={successMessage}
-          buttonText="متوجه شدم"
-          data=""
-          redirect={true}
-        />
-      )} */}
         <label>
           <p className="font-bold text-[24px] pt-[3%] pb-1">
             ثبت نام در کیکاووس زمان
@@ -102,7 +71,7 @@ function AdditionalInfoOnRegister({
                 onChange={handleChange}
                 name="org_name"
                 label="نام سازمان"
-                error={errors.org_name && touched.org_address}
+                error={errors.org_name && touched.org_name}
                 onBlur={handleBlur}
                 type="text"
                 autoFocus={true}

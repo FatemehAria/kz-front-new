@@ -1,6 +1,12 @@
 "use client";
 import axios from "axios";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import SubmissionBtn from "./submission-btn";
 import { useFormik } from "formik";
 import { UserRegistrationPersonalSchema } from "@/schemas/userpanel-profile-schema";
@@ -8,11 +14,16 @@ import FormInput from "@/app/contact-us/components/form/form-inputs";
 import Modal from "@/components/modal";
 import { useDispatch, useSelector } from "react-redux";
 import SubmitOrderDropdown from "@/app/panel/user/submit-order/components/submit-order-dropdown";
-import { registerInfo, saveToLocalStorage } from "@/utils/utils";
+import {
+  registerInfo,
+  saveToLocalStorage,
+  sendOTPCodeMain,
+} from "@/utils/utils";
 import { openModal } from "@/redux/features/user/userSlice";
 import FormValidationMsg from "./form-validation-msg";
 import { verifyIranianNationalId } from "@persian-tools/persian-tools";
 import InfoFormFieldContainer from "./info-form-filed-container";
+import { InfoContext } from "../context/InfoContext";
 
 type infoFormProps = {
   setSteps: Dispatch<SetStateAction<number>>;
@@ -31,6 +42,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
   const dispatch = useDispatch();
   const { showModal } = useSelector((state: any) => state.userData);
   const [PhoneNumber, setPhoneNumber] = useState("");
+  const { savedInfo, setSavedInfo } = useContext(InfoContext);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -61,6 +73,13 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
         values.shomare_sabt,
         setSteps
       );
+      setSavedInfo((last) => ({
+        ...last,
+        name: values.FirstName,
+        surname: values.LastName,
+        mobile: PhoneNumber,
+        type: values.type === "حقیقی" ? "haghighi" : "hoghooghi",
+      }));
     } catch (error: any) {
       setErrorMsg(error.message);
       dispatch(openModal(true));
@@ -82,17 +101,9 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
     validateOnMount: true,
   });
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      saveToLocalStorage("name", values.FirstName);
-      saveToLocalStorage("surname", values.LastName);
-      saveToLocalStorage("type", values.type);
-    }
-  }, [values.FirstName, values.LastName, values.type]);
-
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-      {errorMsg && showModal && (
+      {/* {errorMsg && showModal && (
         <Modal
           showModal={showModal}
           text={errorMsg}
@@ -101,7 +112,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
           redirect={true}
           setSteps={setSteps}
         />
-      )}
+      )} */}
       <label>
         <p className="font-bold text-[24px] pt-[3%] pb-1">
           ثبت نام در کیکاووس زمان
