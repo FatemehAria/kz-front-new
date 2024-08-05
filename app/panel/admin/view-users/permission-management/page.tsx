@@ -1,98 +1,93 @@
 "use client";
 import {
-  deletePlan,
-  getAllPlans,
-  restorePlan,
-  updatePlan,
+  deletePermission,
+  getAllPermissions,
+  restorePermission,
+  updatePermission,
 } from "@/utils/utils";
-import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { AiOutlineEdit } from "react-icons/ai";
-import { FaCheck } from "react-icons/fa6";
-import { MdOutlineSettingsBackupRestore } from "react-icons/md";
-import { RxCross1 } from "react-icons/rx";
+import React, { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import vieweye from "@/public/ViewUsers/vieweye.svg";
+import Image from "next/image";
+import { RxCross1 } from "react-icons/rx";
+import { MdOutlineSettingsBackupRestore } from "react-icons/md";
+import { FaCheck } from "react-icons/fa6";
+import { AiOutlineEdit } from "react-icons/ai";
+import { PermissionContext } from "../context/permission-context/PermissionContext";
 
-export type PlanType = {
-  plan: {
-    title: string;
-    description: string;
-    id: number;
-    deleted_at: string;
-  };
+export type PermissionType = {
+  name_en: string;
+  name_fa: string;
+  id: number;
 };
-
-function PlanManagement() {
+function PermissionManagement() {
+  // const [permissions, setPermissions] = useState<PermissionType[]>([]);
+  const { permissions, setPermissions } = useContext(PermissionContext);
   const { token } = useSelector((state: any) => state.userData);
-  const [allPlans, setAllPlans] = useState<PlanType[]>([]);
-  const [planIsDeleted, setPlanIsDeleted] = useState(false);
+  const [permissionIsDeleted, setPermissionIsDeleted] = useState(false);
+
+  // useEffect(() => {
+  //   getAllPermissions(token, setPermissions);
+  // }, []);
+
   const [editField, setEditField] = useState({
     showEditField: false,
-    editTitle: "",
-    editDesc: "",
+    name_en: "",
+    name_fa: "",
   });
 
-  const handlePlanEdit = async (id: number) => {
-    const selectedPlan = allPlans.find((item: PlanType) => item.plan.id === id);
-    if (selectedPlan) {
-      setAllPlans((last) =>
-        last.map((item: PlanType) =>
-          item.plan.id === id
-            ? {
-                ...item,
-                plan: {
-                  ...item.plan,
-                  title:
-                    editField.editTitle !== ""
-                      ? editField.editTitle
-                      : item.plan.title,
-                  description:
-                    editField.editDesc !== ""
-                      ? editField.editDesc
-                      : item.plan.description,
-                },
-              }
-            : item
-        )
-      );
-    }
-    await updatePlan(token, id, editField.editTitle, editField.editDesc);
+  const handlePermissionEdit = async (id: number) => {
+    const selectedPermission = permissions.find(
+      (item: PermissionType) => item.id === id
+    );
+    // check
+    // if (selectedPermission) {
+    //   setPermissions((last) =>
+    //     last.map((item: PermissionType) =>
+    //       item.id === id
+    //         ? {
+    //             ...item,
+    //             name_en:
+    //               editField.name_en !== "" ? editField.name_en : item.name_en,
+    //             name_fa:
+    //               editField.name_fa !== "" ? editField.name_fa : item.name_fa,
+    //           }
+    //         : item
+    //     )
+    //   );
+    // }
+    await updatePermission(token, id, editField.name_en, editField.name_fa);
   };
 
-  useEffect(() => {
-    getAllPlans(token, setAllPlans);
-  }, []);
-
   return (
-    <div className="flex flex-col gap-5">
-      <div className="flex flex-row items-center gap-5 whitespace-nowrap">
+    <div className="grid grid-cols-1 gap-5">
+      <div className="flex">
         <Link
-          href={`/panel/admin/plan-management/create-plan`}
-          className="text-white bg-[#4866CF] p-2 rounded-[5px] w-[100px]"
+          href={`/panel/admin/view-users/permission-management/create-permission`}
+          className="text-white bg-[#4866CF] p-2 rounded-[5px]"
         >
-          + ایجاد پلن
+          + ایجاد دسترسی
         </Link>
         <Link
-          href={`/panel/admin/plan-management/site-types`}
-          className="text-white bg-[#4866CF] p-2 rounded-[5px] w-[230px]"
+          href={`/panel/admin/view-users/permission-management/change-permission`}
+          className="text-white bg-[#4866CF] p-2 rounded-[5px]"
         >
-          مدیریت سایت های قابل طراحی
+          + تغییر و مدیریت دسترسی ها
         </Link>
       </div>
       <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center space-y-3">
         <div className="grid grid-cols-4">
           <div>ردیف</div>
-          <div>عنوان پلن</div>
-          <div>توضیحات</div>
+          <div>نام دسترسی به فارسی</div>
+          <div>نام دسترسی به انگلیسی</div>
           <div>عملیات</div>
         </div>
 
-        {allPlans.map((item: PlanType, index) => (
+        {permissions.map((item: any, index) => (
           <div
             className={`${
-              planIsDeleted && item.plan.deleted_at
+              permissionIsDeleted && item.deleted_at
                 ? "bg-red-300"
                 : "bg-[#EAEFF6]"
             } grid grid-cols-4 gap-x-5 text-center py-1 rounded-[4px] cursor-pointer`}
@@ -100,13 +95,11 @@ function PlanManagement() {
           >
             <p>{index + 1}</p>
             <input
-              value={
-                editField.showEditField ? editField.editTitle : item.plan.title
-              }
+              value={editField.showEditField ? editField.name_en : item.name_en}
               onChange={(e) =>
                 setEditField((last) => ({
                   ...last,
-                  editTitle: e.target.value,
+                  name_en: e.target.value,
                 }))
               }
               className={`${
@@ -116,15 +109,11 @@ function PlanManagement() {
               } outline-none`}
             />
             <input
-              value={
-                editField.showEditField
-                  ? editField.editDesc
-                  : item.plan.description
-              }
+              value={editField.showEditField ? editField.name_fa : item.name_fa}
               onChange={(e) =>
                 setEditField((last) => ({
                   ...last,
-                  editDesc: e.target.value,
+                  name_fa: e.target.value,
                 }))
               }
               className={`${
@@ -135,14 +124,14 @@ function PlanManagement() {
             />
             <div className="flex flex-row items-center justify-center gap-3">
               <Link
-                href={`/panel/admin/plan-management/plan-detail?id=${item.plan.id}`}
+                href={`/panel/admin/view-users/permission-management/permission-detail?id=${item.id}`}
                 className="flex justify-center"
               >
                 <Image src={vieweye} alt="مشاهده" width={20} height={20} />
               </Link>
               <span
                 onClick={() =>
-                  deletePlan(item.plan.id, token, setPlanIsDeleted)
+                  deletePermission(item.id, token, setPermissionIsDeleted)
                 }
                 className="flex justify-center"
               >
@@ -150,7 +139,7 @@ function PlanManagement() {
               </span>
               <span
                 onClick={() =>
-                  restorePlan(item.plan.id, token, setPlanIsDeleted)
+                  restorePermission(item.id, token, setPermissionIsDeleted)
                 }
               >
                 <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg" />
@@ -166,7 +155,7 @@ function PlanManagement() {
               >
                 {editField.showEditField ? (
                   <FaCheck
-                    onClick={() => handlePlanEdit(item.plan.id)}
+                    onClick={() => handlePermissionEdit(item.id)}
                     className="text-green-600 text-lg"
                   />
                 ) : (
@@ -181,4 +170,4 @@ function PlanManagement() {
   );
 }
 
-export default PlanManagement;
+export default PermissionManagement;

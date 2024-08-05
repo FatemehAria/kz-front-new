@@ -44,21 +44,12 @@ function AttrAdditionForm({
   const { attrId } = useContext(PlanContext);
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    Promise.all([
-      await createNewPlanAttr(
-        Number(planId),
-        token,
-        addAtrrAndValue.addAttr.attrTitle,
-        addAtrrAndValue.addAttr.attrDesc
-      ),
-      await createNewPlanValue(
-        Number(attrId),
-        Number(planId),
-        token,
-        addAtrrAndValue.addValue.valueTitle,
-        addAtrrAndValue.addValue.valueDesc
-      ),
-    ]);
+    await createNewPlanAttr(
+      Number(planId),
+      token,
+      addAtrrAndValue.addAttr.attrTitle,
+      addAtrrAndValue.addAttr.attrDesc
+    );
     setAddAttrAndValue((last) => ({
       ...last,
       addAttr: { ...last.addAttr, attrDesc: "", attrTitle: "", add: false },
@@ -82,19 +73,6 @@ function AttrAdditionForm({
           }))
         }
         className="bg-[#D0DBEC] border-[#D0DBEC] mx-auto outline-none rounded-md px-2 py-2 text-lg w-full border-[0.3px]"
-      />
-
-      <label htmlFor="">مقدار ویژگی</label>
-      <input
-        type="text"
-        value={addAtrrAndValue.addValue.valueTitle}
-        onChange={(e) =>
-          setAddAttrAndValue((last) => ({
-            ...last,
-            addValue: { ...last.addValue, valueTitle: e.target.value },
-          }))
-        }
-        className="bg-[#D0DBEC] border-[#D0DBEC]mx-auto outline-none rounded-md px-2 py-2 text-lg w-full border-[0.3px]"
       />
 
       <label htmlFor="">توضیحات ویژگی</label>

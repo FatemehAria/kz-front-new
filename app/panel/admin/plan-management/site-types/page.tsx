@@ -1,98 +1,80 @@
 "use client";
-import {
-  deletePlan,
-  getAllPlans,
-  restorePlan,
-  updatePlan,
-} from "@/utils/utils";
+import { deleteSiteType, getAllSiteTypes, restoreSiteType, updateSiteType } from "@/utils/utils";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { AiOutlineEdit } from "react-icons/ai";
-import { FaCheck } from "react-icons/fa6";
-import { MdOutlineSettingsBackupRestore } from "react-icons/md";
-import { RxCross1 } from "react-icons/rx";
 import { useSelector } from "react-redux";
 import vieweye from "@/public/ViewUsers/vieweye.svg";
+import { RxCross1 } from "react-icons/rx";
+import { MdOutlineSettingsBackupRestore } from "react-icons/md";
+import { FaCheck } from "react-icons/fa6";
+import { AiOutlineEdit } from "react-icons/ai";
 
-export type PlanType = {
-  plan: {
-    title: string;
-    description: string;
-    id: number;
-    deleted_at: string;
-  };
-};
-
-function PlanManagement() {
+function SiteTypes() {
+  const [siteTypes, setSiteTypes] = useState<never[]>([]);
   const { token } = useSelector((state: any) => state.userData);
-  const [allPlans, setAllPlans] = useState<PlanType[]>([]);
-  const [planIsDeleted, setPlanIsDeleted] = useState(false);
+  const [siteTypeIsDeleted, setSiteTypeIsDeleted] = useState(false);
+
+  useEffect(() => {
+    getAllSiteTypes(token, setSiteTypes);
+  }, []);
+
   const [editField, setEditField] = useState({
     showEditField: false,
     editTitle: "",
     editDesc: "",
   });
 
-  const handlePlanEdit = async (id: number) => {
-    const selectedPlan = allPlans.find((item: PlanType) => item.plan.id === id);
-    if (selectedPlan) {
-      setAllPlans((last) =>
-        last.map((item: PlanType) =>
-          item.plan.id === id
+  const handleSiteTypeEdit = async (id: number) => {
+    const selectedSiteType = siteTypes.find(
+      //check
+      (item: any) => item.id === id
+    );
+
+    if (selectedSiteType) {
+      setSiteTypes((last) =>
+        last.map((item: any) =>
+          item.id === id
             ? {
                 ...item,
-                plan: {
-                  ...item.plan,
+                brand: {
+                  ...item.brand,
                   title:
                     editField.editTitle !== ""
                       ? editField.editTitle
-                      : item.plan.title,
+                      : item.title,
                   description:
                     editField.editDesc !== ""
                       ? editField.editDesc
-                      : item.plan.description,
+                      : item.description,
                 },
               }
             : item
         )
       );
     }
-    await updatePlan(token, id, editField.editTitle, editField.editDesc);
+    await updateSiteType(token, id, editField.editTitle, editField.editDesc);
   };
-
-  useEffect(() => {
-    getAllPlans(token, setAllPlans);
-  }, []);
-
   return (
-    <div className="flex flex-col gap-5">
-      <div className="flex flex-row items-center gap-5 whitespace-nowrap">
-        <Link
-          href={`/panel/admin/plan-management/create-plan`}
-          className="text-white bg-[#4866CF] p-2 rounded-[5px] w-[100px]"
-        >
-          + ایجاد پلن
-        </Link>
-        <Link
-          href={`/panel/admin/plan-management/site-types`}
-          className="text-white bg-[#4866CF] p-2 rounded-[5px] w-[230px]"
-        >
-          مدیریت سایت های قابل طراحی
-        </Link>
-      </div>
+    <div className="grid grid-cols-1 gap-5">
+      <Link
+        href={`/panel/admin/plan-management/site-types/create-site-type`}
+        className="text-white bg-[#4866CF] p-2 rounded-[5px] w-[140px] whitespace-nowrap"
+      >
+        + ایجاد نوع طراحی
+      </Link>
       <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center space-y-3">
         <div className="grid grid-cols-4">
           <div>ردیف</div>
-          <div>عنوان پلن</div>
+          <div>نام طراحی</div>
           <div>توضیحات</div>
           <div>عملیات</div>
         </div>
 
-        {allPlans.map((item: PlanType, index) => (
+        {siteTypes.map((item: any, index) => (
           <div
             className={`${
-              planIsDeleted && item.plan.deleted_at
+              siteTypeIsDeleted && item.deleted_at
                 ? "bg-red-300"
                 : "bg-[#EAEFF6]"
             } grid grid-cols-4 gap-x-5 text-center py-1 rounded-[4px] cursor-pointer`}
@@ -100,9 +82,7 @@ function PlanManagement() {
           >
             <p>{index + 1}</p>
             <input
-              value={
-                editField.showEditField ? editField.editTitle : item.plan.title
-              }
+              value={editField.showEditField ? editField.editTitle : item.title}
               onChange={(e) =>
                 setEditField((last) => ({
                   ...last,
@@ -119,7 +99,7 @@ function PlanManagement() {
               value={
                 editField.showEditField
                   ? editField.editDesc
-                  : item.plan.description
+                  : item.brand.description
               }
               onChange={(e) =>
                 setEditField((last) => ({
@@ -135,14 +115,14 @@ function PlanManagement() {
             />
             <div className="flex flex-row items-center justify-center gap-3">
               <Link
-                href={`/panel/admin/plan-management/plan-detail?id=${item.plan.id}`}
+                href={`/panel/admin/brands/brand-detail?id=${item.brand.id}`}
                 className="flex justify-center"
               >
                 <Image src={vieweye} alt="مشاهده" width={20} height={20} />
               </Link>
               <span
                 onClick={() =>
-                  deletePlan(item.plan.id, token, setPlanIsDeleted)
+                  deleteSiteType(item.id, token, setSiteTypeIsDeleted)
                 }
                 className="flex justify-center"
               >
@@ -150,7 +130,7 @@ function PlanManagement() {
               </span>
               <span
                 onClick={() =>
-                  restorePlan(item.plan.id, token, setPlanIsDeleted)
+                  restoreSiteType(item.brand.id, token, setSiteTypeIsDeleted)
                 }
               >
                 <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg" />
@@ -166,7 +146,7 @@ function PlanManagement() {
               >
                 {editField.showEditField ? (
                   <FaCheck
-                    onClick={() => handlePlanEdit(item.plan.id)}
+                    onClick={() => handleSiteTypeEdit(item.id)}
                     className="text-green-600 text-lg"
                   />
                 ) : (
@@ -181,4 +161,4 @@ function PlanManagement() {
   );
 }
 
-export default PlanManagement;
+export default SiteTypes;

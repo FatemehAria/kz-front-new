@@ -1,9 +1,14 @@
 import { BrandDetailType } from "@/app/panel/admin/brands/brand-detail/page";
 import { BrandType } from "@/app/panel/admin/brands/page";
+import { ValueType } from "@/app/panel/admin/plan-management/components/value-component";
 import { PlanType } from "@/app/panel/admin/plan-management/page";
 import { PlanAttrType } from "@/app/panel/admin/plan-management/plan-detail/page";
+import { PermissionType } from "@/app/panel/admin/view-users/permission-management/page";
+import { PositionType } from "@/app/panel/admin/view-users/position-management/page";
+import { RoleType } from "@/app/panel/admin/view-users/role-management/page";
 import app from "@/services/service";
 import axios from "axios";
+import { Dispatch, SetStateAction } from "react";
 import { Bounce, toast } from "react-toastify";
 
 // Logout
@@ -16,7 +21,7 @@ export const logout = async () => {
   }
 };
 // send otp code
-export const sendOTPCodeForRegistration = async (
+export const sendOTPCodeForRegistrationForHoghooghi = async (
   name: string,
   surname: string,
   type: string,
@@ -27,6 +32,13 @@ export const sendOTPCodeForRegistration = async (
   org_phone: string
 ) => {
   try {
+    console.log(
+      org_address,
+      org_name,
+      org_phone,
+      org_registration_number,
+      type
+    );
     const data = await app.post("/registerotp", {
       name,
       surname,
@@ -37,6 +49,26 @@ export const sendOTPCodeForRegistration = async (
       org_address,
       org_phone,
     });
+    // sendOTPCodeMain(mobile);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const sendOTPCodeForRegistrationForHaghighi = async (
+  name: string,
+  surname: string,
+  type: string,
+  mobile: string
+) => {
+  try {
+    const data = await app.post("/registerotp", {
+      name,
+      surname,
+      type,
+      mobile,
+    });
+    // sendOTPCodeMain(mobile);
     console.log(data);
   } catch (error) {
     console.log(error);
@@ -66,7 +98,8 @@ export const registerInfo = async (
     window.localStorage.setItem("type", JSON.stringify(type));
     console.log(data);
     if (type === "haghighi" || type === "حقیقی") {
-      await sendOTPCodeMain(mobile);
+      await sendOTPCodeForRegistrationForHaghighi(name, surname, type, mobile);
+      // await sendOTPCodeMain(mobile);
       setSteps(2);
     } else {
       setSteps(6);
@@ -124,7 +157,7 @@ export const getAllUsers = async (
         Authorization: `Bearer ${token}`,
       },
     });
-
+    window.localStorage.setItem("users", JSON.stringify(data.data));
     setAllUsers(data.data);
   } catch (error) {
     console.log(error);
@@ -165,6 +198,689 @@ export const deleteUser = async (
   } catch (error) {
     console.log(error);
     toast.error("خطا در حذف کاربر", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// get all positions
+export const getAllPositions = async (
+  token: string,
+  setPositions: React.Dispatch<React.SetStateAction<PositionType[]>>
+) => {
+  try {
+    const { data } = await app("/positions", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setPositions(data.data);
+    console.log(data);
+    window.localStorage.setItem("positions", JSON.stringify(data.data));
+  } catch (error) {
+    console.log(error);
+  }
+};
+// update position by admin
+export const updatePosition = async (
+  token: string,
+  positionId: number | null,
+  title_en: string,
+  title_fa: string,
+  dept_id: number,
+  user_id: number
+) => {
+  try {
+    const { data } = await app.post(
+      `/position/update/${positionId}`,
+      {
+        title_en,
+        title_fa,
+        dept_id,
+        user_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("موقعیت با موفقیت به روزرسانی شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در به روزرسانی موقعیت", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// delete position by admin
+export const deletePosition = async (
+  positionId: number,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/position/delete/${positionId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    toast.success("موقعیت با موفقیت حذف شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(true);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در حذف موقعیت", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// restore position by admin
+export const restorePosition = async (
+  positionId: number | null,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/position/restore/${positionId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    toast.success("موقعیت با موفقیت بازگردانی شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(false);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در بازگردانی موقعیت", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// get position detail
+export const getPositionDetail = async (
+  token: string,
+  positionId: string | null,
+  setPositionDetail: React.Dispatch<
+    React.SetStateAction<{
+      title_en: string;
+      title_fa: string;
+    }>
+  >
+) => {
+  try {
+    const { data } = await app.get(
+      `/position/show/${positionId ? positionId : ""}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(data);
+    setPositionDetail(data.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+// create position by admin
+export const createNewPosition = async (
+  token: string,
+  title_en: string,
+  title_fa: string,
+  dept_id: number,
+  user_id: number
+) => {
+  try {
+    const { data } = await app.post(
+      "/position/store",
+      {
+        title_en,
+        title_fa,
+        dept_id,
+        user_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("موقعیت با موفقیت ایجاد شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(data);
+  } catch (error) {
+    toast.error("خطا در ایجاد موقعیت", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(error);
+  }
+};
+// get all roles
+export const getAllRole = async (
+  token: string,
+  setRoles: React.Dispatch<React.SetStateAction<RoleType[]>>
+) => {
+  try {
+    const { data } = await app("/roles", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setRoles(data.data);
+    window.localStorage.setItem("roles", JSON.stringify(data.data));
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+// update role by admin
+export const updateRole = async (
+  token: string,
+  roleId: number | null,
+  name_en: string,
+  name_fa: string
+) => {
+  try {
+    const { data } = await app.post(
+      `/role/update/${roleId}`,
+      {
+        name_en,
+        name_fa,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("نقش با موفقیت به روزرسانی شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در به روزرسانی نقش", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// delete role by admin
+export const deleteRole = async (
+  roleId: number,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/role/delete/${roleId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    toast.success("نقش با موفقیت حذف شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(true);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در حذف نقش", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// restore role by admin
+export const restoreRole = async (
+  roleId: number | null,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/role/restore/${roleId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    toast.success("نقش با موفقیت بازگردانی شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(false);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در بازگردانی نقش", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// get role detail
+export const getRoleDetail = async (
+  token: string,
+  roleId: string | null,
+  setRoleDetail: React.Dispatch<
+    React.SetStateAction<{
+      name_en: string;
+      name_fa: string;
+    }>
+  >
+) => {
+  try {
+    const { data } = await app.get(`/role/show/${roleId ? roleId : ""}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    setRoleDetail(data.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+// create role by admin
+export const createNewRole = async (
+  token: string,
+  name_en: string,
+  name_fa: string
+) => {
+  try {
+    const { data } = await app.post(
+      "/role/store",
+      {
+        name_en,
+        name_fa,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("نقش با موفقیت ایجاد شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(data);
+  } catch (error) {
+    toast.error("خطا در ایجاد نقش", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(error);
+  }
+};
+// get all permissions
+export const getAllPermissions = async (
+  token: string,
+  setPermissions: React.Dispatch<React.SetStateAction<PermissionType[]>>
+) => {
+  try {
+    const { data } = await app("/permissions", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setPermissions(data.data);
+    window.localStorage.setItem("permissions", JSON.stringify(data.data));
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+// get permission detail
+export const getPermissionDetail = async (
+  token: string,
+  permissionId: string | null,
+  setPermissionDetail: React.Dispatch<
+    React.SetStateAction<{
+      name_en: string;
+      name_fa: string;
+    }>
+  >
+) => {
+  try {
+    const { data } = await app.get(
+      `/permission/show/${permissionId ? permissionId : ""}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(data);
+    setPermissionDetail(data.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+// create brand by admin
+export const createNewPermission = async (
+  token: string,
+  name_en: string,
+  name_fa: string
+) => {
+  try {
+    const { data } = await app.post(
+      "/permission/store",
+      {
+        name_en,
+        name_fa,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("دسترسی با موفقیت ایجاد شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(data);
+  } catch (error) {
+    toast.error("خطا در ایجاد دسترسی", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(error);
+  }
+};
+// update permission by admin
+export const updatePermission = async (
+  token: string,
+  permissionId: number | null,
+  name_en: string,
+  name_fa: string
+) => {
+  try {
+    const { data } = await app.post(
+      `/permission/update/${permissionId}`,
+      {
+        name_en,
+        name_fa,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("دسترسی با موفقیت به روزرسانی شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در به روزرسانی دسترسی", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// delete permission by admin
+export const deletePermission = async (
+  permissionId: number,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/permission/delete/${permissionId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    toast.success("دسترسی با موفقیت حذف شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(true);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در حذف دسترسی", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// restore permission by admin
+export const restorePermission = async (
+  permissionId: number | null,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/permission/restore/${permissionId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    toast.success("دسترسی با موفقیت بازگردانی شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(false);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در بازگردانی دسترسی", {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -950,6 +1666,7 @@ export const createNewPlanValue = async (
   description: string
 ) => {
   try {
+    console.log(attrId, planId, title, description);
     const { data } = await app.post(
       "/value/store",
       {
@@ -990,6 +1707,443 @@ export const createNewPlanValue = async (
       transition: Bounce,
       rtl: true,
     });
+    console.log(error);
+  }
+};
+// get all values of the plan
+export const getPlanValues = async (
+  token: string,
+  setPlanValues: React.Dispatch<React.SetStateAction<ValueType[]>>
+) => {
+  try {
+    const { data } = await app("/values", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    setPlanValues(data.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+// create new site type by admin
+export const CreateNewSiteType = async (
+  token: string,
+  title: string,
+  description: string
+) => {
+  try {
+    const { data } = await app.post(
+      "/type/store",
+      {
+        title,
+        description,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("طراحی جدید با موفقیت ایجاد شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(data);
+  } catch (error: any) {
+    toast.error("خطا در ایجاد طراحی", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(error.response.data.message);
+  }
+};
+// get all site types
+export const getAllSiteTypes = async (
+  token: string,
+  setSiteTypes: React.Dispatch<React.SetStateAction<never[]>>
+) => {
+  try {
+    const { data } = await app("/types");
+    setSiteTypes(data.data);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+// update site type by admin
+export const updateSiteType = async (
+  token: string,
+  siteTypeId: number | null,
+  title: string | null,
+  description: string | null
+) => {
+  try {
+    const { data } = await app.post(
+      `/type/update/${siteTypeId}`,
+      {
+        title: title || "",
+        description: description || "",
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("طراحی با موفقیت به روزرسانی شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در به روزرسانی طراحی", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// delete siet type by admin
+export const deleteSiteType = async (
+  brandId: number,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/type/delete/${brandId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    toast.success("طراحی با موفقیت حذف شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(true);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در حذف طراحی", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// restore site type by admin
+export const restoreSiteType = async (
+  siteType: number | null,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/brand/restore/${siteType}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    toast.success("طراحی با موفقیت بازگردانی شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(false);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در بازگردانی طراحی", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// get newsletters
+export const getAllNewsletters = async (
+  token: string,
+  setNewsLetters: Dispatch<SetStateAction<never[]>>
+) => {
+  try {
+    const { data } = await app("/newsletters", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    setNewsLetters(data.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+// update newsletter by admin
+export const updateNewsLetter = async (
+  token: string,
+  newsLetterId: number,
+  user_id: number | null,
+  dept_id: number | null,
+  title: string | null,
+  description: string | null
+) => {
+  try {
+    const { data } = await app.post(
+      `/newsletter/update/${newsLetterId}`,
+      {
+        title: title || "",
+        description: description || "",
+        user_id,
+        dept_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("خبرنامه با موفقیت به روزرسانی شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در به روزرسانی خبرنامه", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// create new newsletter by admin
+export const createNewsLetter = async (
+  token: string,
+  user_id: number | null,
+  dept_id: number | null,
+  title: string | null,
+  description: string | null
+) => {
+  try {
+    const { data } = await app.post(
+      "/newsletter/store",
+      {
+        title,
+        description,
+        user_id,
+        dept_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("خبرنامه با موفقیت ایجاد شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(data);
+  } catch (error) {
+    toast.error("خطا در ایجاد خبرنامه", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(error);
+  }
+};
+// delete newsletter by admin
+export const deleteNewsLetter = async (
+  token: string,
+  newsletterId: number,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/newsletter/delete/${newsletterId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    toast.success("خبرنامه موردنظر با موفقیت حذف شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(true);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در حذف خبرنامه", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// restore newsletter by admin
+export const restoreNewsletter = async (
+  token: string,
+  newsletterId: number,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/attr/restore/${newsletterId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    toast.success("خبرنامه مدنظر با موفقیت بازگردانی شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(false);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در بازگردانی خبرنامه", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// get newsletter detail
+export const getNewsLetterDetail = async (
+  token: string,
+  newsletterId: string | null,
+  setNewsLetterDetail: React.Dispatch<React.SetStateAction<BrandDetailType>>
+) => {
+  try {
+    const { data } = await app.get(`/newsletter/show/${newsletterId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    setNewsLetterDetail(data.data);
+  } catch (error) {
     console.log(error);
   }
 };

@@ -1,24 +1,21 @@
 "use client";
-import { getBrandDetail } from "@/utils/utils";
+import { getNewsLetterDetail } from "@/utils/utils";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
-export type BrandDetailType = {
-  title: string;
-  description: string;
-};
-function BrandDetail() {
+function NewsletterDetail() {
+  const { token } = useSelector((state: any) => state.userData);
   const params = useSearchParams();
   const id = params.get("id");
-  const [brandDetail, setBrandDetail] = useState({
+  const [newsletterDetail, setNewsletterDetail] = useState({
     title: "",
     description: "",
   });
 
   useEffect(() => {
-    getBrandDetail(id, setBrandDetail);
+    getNewsLetterDetail(token, id, setNewsletterDetail);
   }, []);
-
   return (
     <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center">
       <div className="grid grid-cols-2">
@@ -27,11 +24,11 @@ function BrandDetail() {
       </div>
 
       <div className="grid grid-cols-2 py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer">
-        <p>{brandDetail.title}</p>
-        <p>{brandDetail.description}</p>
+        <p>{newsletterDetail.title}</p>
+        <p>{newsletterDetail.description}</p>
       </div>
     </div>
   );
 }
 
-export default BrandDetail;
+export default NewsletterDetail;

@@ -4,8 +4,10 @@ import SubmissionBtn from "./components/submission-btn";
 import { useFormik } from "formik";
 import FormInput from "../contact-us/components/form/form-inputs";
 import Logo from "./components/logo";
-import { sendOTPCodeForRegistration } from "@/utils/utils";
+// import { sendOTPCodeForRegistration } from "@/utils/utils";
 import { InfoContext } from "./context/InfoContext";
+import app from "@/services/service";
+import { sendOTPCodeForRegistrationForHoghooghi } from "@/utils/utils";
 
 const initialValues = {
   org_address: "",
@@ -19,10 +21,11 @@ function AdditionalInfoOnRegister({
 }: {
   setSteps: React.Dispatch<React.SetStateAction<number>>;
 }) {
+
   const { savedInfo } = useContext(InfoContext);
 
   const handleSubmission = async () => {
-    await sendOTPCodeForRegistration(
+    await sendOTPCodeForRegistrationForHoghooghi(
       savedInfo.name,
       savedInfo.surname,
       savedInfo.type,

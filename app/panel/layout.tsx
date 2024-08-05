@@ -17,6 +17,8 @@ import nextarrow from "@/public/forwardarrow.svg";
 import prevarrow from "@/public/backarrow.svg";
 import { useGetUserRoles } from "@/hooks/useGetUserRoles";
 import PlanContextWrapper from "./admin/plan-management/context/PlanContextWrapper";
+import ValueIdContextWrapper from "./admin/plan-management/context/ValueIdContextWrapper";
+import PermissionContextWrapper from "./admin/view-users/context/permission-context/PermissionContextWrapper";
 
 const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   const { token, userProfile, status, numberOfAnnouncements } = useSelector(
@@ -59,67 +61,71 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   // }, [token]);
 
   return (
-    <PlanContextWrapper>
-      <div
-        className="font-YekanBakh flex w-full flex-row relative min-h-screen"
-        style={{ boxShadow: "0px 0px 90px 2px rgba(0, 0, 0, 0.25)" }}
-        dir="rtl"
-      >
-        {/* {token && ( */}
-        <>
-          <div className="hidden lg:block">
-            <PanelSidebar
-              sideOptions={
-                // userRoles.includes("Admin")
-                // ?
-                mainAdminSidebarOptions
-                // : userSidebarOptions
-              }
-              status={status}
-            />
+    <PermissionContextWrapper>
+      <ValueIdContextWrapper>
+        <PlanContextWrapper>
+          <div
+            className="font-YekanBakh flex w-full flex-row relative min-h-screen"
+            style={{ boxShadow: "0px 0px 90px 2px rgba(0, 0, 0, 0.25)" }}
+            dir="rtl"
+          >
+            {/* {token && ( */}
+            <>
+              <div className="hidden lg:block">
+                <PanelSidebar
+                  sideOptions={
+                    // userRoles.includes("Admin")
+                    // ?
+                    mainAdminSidebarOptions
+                    // : userSidebarOptions
+                  }
+                  status={status}
+                />
+              </div>
+              <div className="w-full lg:overflow-hidden">
+                <div>
+                  <PanelNav
+                    userProfile={userProfile}
+                    status={status}
+                    userType={userRoles}
+                    numberOfAnnouncements={numberOfAnnouncements}
+                    setShowAnnouncementDropdown={setShowAnnouncementDropdown}
+                    showAnnouncementDropdown={showAnnouncementDropdown}
+                  />
+                </div>
+                <div
+                  className="bg-[#EAEFF6] h-full p-[5%]"
+                  onMouseEnter={() => setShowAnnouncementDropdown(false)}
+                >
+                  {children}
+                </div>
+                <div className="md:hidden flex flex-row bg-[#4866CF] transition-all rounded-md w-full">
+                  <Image
+                    src={prevarrow}
+                    alt=""
+                    onClick={() => handlePrevClick()}
+                    className={`${currentPage === 0 ? "hidden" : "flex"}`}
+                  />
+                  <PanelSidebarSmall sideOptions={displayedItems} />
+                  <Image
+                    src={nextarrow}
+                    alt=""
+                    onClick={() => handleNextClick()}
+                    className={`${
+                      currentPage + 1 ===
+                      Math.ceil(userSidebarOptions.length / itemsPerPage)
+                        ? "hidden"
+                        : "flex"
+                    }`}
+                  />
+                </div>
+              </div>
+            </>
+            {/* )} */}
           </div>
-          <div className="w-full lg:overflow-hidden">
-            <div>
-              <PanelNav
-                userProfile={userProfile}
-                status={status}
-                userType={userRoles}
-                numberOfAnnouncements={numberOfAnnouncements}
-                setShowAnnouncementDropdown={setShowAnnouncementDropdown}
-                showAnnouncementDropdown={showAnnouncementDropdown}
-              />
-            </div>
-            <div
-              className="bg-[#EAEFF6] h-full p-[5%]"
-              onMouseEnter={() => setShowAnnouncementDropdown(false)}
-            >
-              {children}
-            </div>
-            <div className="md:hidden flex flex-row bg-[#4866CF] transition-all rounded-md w-full">
-              <Image
-                src={prevarrow}
-                alt=""
-                onClick={() => handlePrevClick()}
-                className={`${currentPage === 0 ? "hidden" : "flex"}`}
-              />
-              <PanelSidebarSmall sideOptions={displayedItems} />
-              <Image
-                src={nextarrow}
-                alt=""
-                onClick={() => handleNextClick()}
-                className={`${
-                  currentPage + 1 ===
-                  Math.ceil(userSidebarOptions.length / itemsPerPage)
-                    ? "hidden"
-                    : "flex"
-                }`}
-              />
-            </div>
-          </div>
-        </>
-        {/* )} */}
-      </div>
-    </PlanContextWrapper>
+        </PlanContextWrapper>
+      </ValueIdContextWrapper>
+    </PermissionContextWrapper>
   );
 };
 export default PanelLayout;

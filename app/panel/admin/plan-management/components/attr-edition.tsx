@@ -7,11 +7,15 @@ import { AiOutlineEdit } from "react-icons/ai";
 import {
   deletePlanAttr,
   getPlanAttrs,
+  getPlanValues,
   restorePlanAttr,
   updatePlanAttr,
 } from "@/utils/utils";
 import { PlanAttrType } from "../plan-detail/page";
 import { PlanContext } from "../context/PlanContext";
+import ValueComponent, { ValueType } from "./value-component";
+import { ValueIdContext } from "../context/ValueIdContext";
+import { createActionCreatorInvariantMiddleware } from "@reduxjs/toolkit";
 
 type AttrEditionProps = {
   token: string;
@@ -79,7 +83,9 @@ function AttrEdition({
 }: AttrEditionProps) {
   const [attrIsDeleted, setAttrIsDeleted] = useState(false);
   const [planAttrs, setPlanAttrs] = useState<PlanAttrType[]>([]);
-  const { setAttrId } = useContext(PlanContext);
+  const { setAttrId, attrId } = useContext(PlanContext);
+  const [planValues, setPlanValues] = useState<ValueType[]>([]);
+  const { setValueId, valueId } = useContext(ValueIdContext);
   const handlePlanEdit = async (id: number) => {
     const selectedPlan = planAttrs.find((item: PlanAttrType) => item.id === id);
     if (selectedPlan) {
@@ -111,22 +117,35 @@ function AttrEdition({
   };
   useEffect(() => {
     getPlanAttrs(token, setPlanAttrs);
-  }, [addAtrrAndValue.addAttr, addAtrrAndValue.addValue]);
+  }, [addAtrrAndValue.addAttr]);
+
+  useEffect(() => {
+    getPlanValues(token, setPlanValues);
+  }, [addAtrrAndValue.addValue]);
 
   const handleAddingValue = (id: number) => {
     setAttrId(String(id));
-    setAddAttrAndValue((last) => ({
-      ...last,
-      addValue: { ...last.addValue, add: true },
-    }));
+    setValueId(String(id));
+    console.log(attrId === valueId);
+    if (attrId === valueId) {
+      setAddAttrAndValue((last) => ({
+        ...last,
+        addValue: { ...last.addValue, add: true },
+      }));
+    }
   };
+
   return (
     <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center">
-      <div className="grid grid-cols-3">
+      <div
+        className={`grid  ${
+          valueId === attrId ? "grid-cols-4" : "grid-cols-3"
+        }`}
+      >
         <div>نام ویژگی</div>
         <div>توضیحات ویژگی</div>
+        {attrId === valueId ? <div>مقدار ویژگی</div> : ""}
         <div>عملیات</div>
-        {addAtrrAndValue.addValue.add ? <div>مقدار ویژگی</div> : ""}
       </div>
 
       <div className="grid grid-cols-1 gap-5">
@@ -135,7 +154,7 @@ function AttrEdition({
             className={`${
               attrIsDeleted && item.deleted_at ? "bg-red-300" : "bg-[#EAEFF6]"
             } grid ${
-              addAtrrAndValue.addValue.add ? "grid-cols-4" : "grid-cols-3"
+              valueId === attrId ? "grid-cols-4" : "grid-cols-3"
             } gap-x-5 text-center py-1 rounded-[4px] cursor-pointer`}
             key={item.id}
           >
@@ -181,30 +200,18 @@ function AttrEdition({
                   : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
               } outline-none`}
             />
-            {/* value */}
-            {addAtrrAndValue.addValue.add && (
-              <input
-                value={
-                  editAttrAndValue.editAttr.showEditField
-                    ? editAttrAndValue.editAttr.editDesc
-                    : item.description
-                }
-                onChange={(e) =>
-                  setEditAttrAndValue((last) => ({
-                    ...last,
-                    editAttr: {
-                      ...last.editAttr,
-                      editDesc: e.target.value,
-                    },
-                  }))
-                }
-                className={`${
-                  editAttrAndValue.editAttr.showEditField
-                    ? "bg-white"
-                    : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
-                } outline-none`}
+
+            {attrId === valueId ? (
+              <ValueComponent
+                addAtrrAndValue={addAtrrAndValue}
+                setEditAttrAndValue={setEditAttrAndValue}
+                setAddAttrAndValue={setAddAttrAndValue}
+                planValues={planValues}
               />
+            ) : (
+              ""
             )}
+
             <div className="flex flex-row items-center justify-center gap-3">
               <span
                 onClick={() => deletePlanAttr(item.id, token, setAttrIsDeleted)}
