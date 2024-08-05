@@ -1,5 +1,6 @@
 import { BrandDetailType } from "@/app/panel/admin/brands/brand-detail/page";
 import { BrandType } from "@/app/panel/admin/brands/page";
+import { DepartmentType } from "@/app/panel/admin/org_management/departments/page";
 import { ValueType } from "@/app/panel/admin/plan-management/components/value-component";
 import { PlanType } from "@/app/panel/admin/plan-management/page";
 import { PlanAttrType } from "@/app/panel/admin/plan-management/plan-detail/page";
@@ -2144,6 +2145,223 @@ export const getNewsLetterDetail = async (
     console.log(data);
     setNewsLetterDetail(data.data);
   } catch (error) {
+    console.log(error);
+  }
+};
+// get departments
+export const getAllDepartments = async (
+  token: string,
+  setDepartments: Dispatch<SetStateAction<DepartmentType[]>>
+) => {
+  try {
+    const { data } = await app("/departments", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    setDepartments(data.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+// update department by admin
+export const updateDepartment = async (
+  token: string,
+  departmentId: number,
+  name_en: string,
+  name_fa: string
+) => {
+  try {
+    const { data } = await app.post(
+      `/department/update/${departmentId}`,
+      {
+        name_en,
+        name_fa,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("دپارتمان با موفقیت به روزرسانی شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در به روزرسانی دپارتمان", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// delete department by admin
+export const deleteDepartment = async (
+  departmentId: number,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/department/delete/${departmentId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    toast.success("دپارتمان با موفقیت حذف شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(true);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در حذف دپارتمان", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// restore department by admin
+export const restoreDepartment = async (
+  departmentId: number | null,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/department/restore/${departmentId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    toast.success("دپارتمان با موفقیت بازگردانی شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(false);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در بازگردانی دپارتمان", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// get department detail
+export const getDepartmentDetail = async (
+  token: string,
+  departmentId: string | null,
+  setDepartmentDetail: React.Dispatch<React.SetStateAction<BrandDetailType>>
+) => {
+  try {
+    const { data } = await app.get(`/department/show/${departmentId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    setDepartmentDetail(data.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+// create new department by admin
+export const createNewDepartment = async (
+  token: string,
+  name_en: string,
+  name_fa: string
+) => {
+  try {
+    const { data } = await app.post(
+      "/department/store",
+      {
+        name_en,
+        name_fa,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("دپارتمان با موفقیت ایجاد شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(data);
+  } catch (error) {
+    toast.error("خطا در ایجاد دپارتمان", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
     console.log(error);
   }
 };

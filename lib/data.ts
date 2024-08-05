@@ -768,13 +768,14 @@ export const mainAdminSidebarOptions = [
     ],
   },
   {
-    text: "برند ها",
+    text: "مدیریت سازمان ها",
     imgSrc: "/Panel/searchuserssidebar.svg", //عکس ادیت شه
-    address: "/panel/admin/brands",
+    address: "/panel/admin/org_management",
     path: [
-      "/panel/admin/brands",
-      "/panel/admin/brands/brand-detail",
-      "/panel/admin/brands/create-brand",
+      "/panel/admin/org_management",
+      "/panel/admin/org_management/brands",
+      "/panel/admin/org_management/brands/brand-detail",
+      "/panel/admin/org_management/brands/create-brand",
     ],
   },
   {

@@ -72,7 +72,7 @@ function Brands() {
     <div className="grid grid-cols-1 gap-5">
       <div className="flex">
         <Link
-          href={`/panel/admin/brands/create-brand`}
+          href={`/panel/admin/org_management/brands/create-brand`}
           className="text-white bg-[#4866CF] p-2 rounded-[5px]"
         >
           + ایجاد برند
