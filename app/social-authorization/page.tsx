@@ -10,7 +10,7 @@ import {
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
 
-function Page() {
+function SocialAuthorization() {
   const [steps, setSteps] = useState(1);
   const [googleName, setGoogleName] = useState<string | null>("");
   const { localUserId } = useSelector((state: any) => state.userData);
@@ -44,4 +44,4 @@ function Page() {
   );
 }
 
-export default Page;
+export default SocialAuthorization;

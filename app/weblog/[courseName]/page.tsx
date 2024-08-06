@@ -1,5 +1,4 @@
 "use client";
-import Footer from "@/components/home-components/footer";
 import Nav from "@/components/home-components/nav";
 import React, { useState } from "react";
 import InfoCard from "./components/info-card";
@@ -8,6 +7,7 @@ import InfoBtn from "./components/info-btn";
 import Topics from "./components/topics";
 import Teacher from "./components/teacher";
 import MainComponent from "./components/mobile-components/main-component";
+import Footer from "@/components/home-components/Footer/Footer";
 
 const CourseInfo = ({ params }: { params: { courseName: string } }) => {
   const [expand, setExpand] = useState(false);

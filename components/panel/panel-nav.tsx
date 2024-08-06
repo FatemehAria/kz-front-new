@@ -79,11 +79,11 @@ const PanelNav = ({
                 <SkeletonTheme borderRadius="100%">
                   <Skeleton width={60} height={60} baseColor="#EAEFF6" />
                 </SkeletonTheme>
-              ) : userProfile?.avatar?.path ? (
+              ) : userProfile.data?.pic_path ? (
                 <div className="bg-[#EAEFF6] p-2 rounded-full">
-                  <img
+                  <Image
                     alt="profile"
-                    src={userProfile.avatar?.path}
+                    src={`http://localhost:8000/${userProfile.data.pic_path}`}
                     className="rounded-full w-[45px] h-[45px]"
                   />
                 </div>

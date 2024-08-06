@@ -17,7 +17,7 @@ type ModalProps = {
   text?: string;
   isLoggingIn?: boolean;
   setSteps?: Dispatch<SetStateAction<number>>;
-  setStartLogin: React.Dispatch<React.SetStateAction<boolean>>;
+  // setStartLogin: React.Dispatch<React.SetStateAction<boolean>>;
   buttonText?: string;
   mainButtonText?: string;
   executeFunction?: any;
@@ -32,7 +32,7 @@ function Modal({
   data,
   text,
   isLoggingIn,
-  setStartLogin,
+  // setStartLogin,
   buttonText,
   setSteps,
   mainButtonText,
@@ -51,13 +51,14 @@ function Modal({
   }, []);
   console.log(role);
   console.log(token);
+
   const handleMainButtonClick = () => {
     dispatch(openModal(false));
     if (isLoggingIn) {
-      if (!token) {
-        setStartLogin(true);
-        setSteps?.(1);
-      }
+      // if (!token) {
+        // setStartLogin(true);
+        setSteps?.(2);
+      // }
     } else {
       setSteps?.(3);
     }

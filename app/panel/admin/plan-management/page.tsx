@@ -155,7 +155,7 @@ function PlanManagement() {
               >
                 <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg" />
               </span>
-              <span
+              {/* <span
                 onClick={() =>
                   setEditField((last) => ({
                     ...last,
@@ -172,7 +172,7 @@ function PlanManagement() {
                 ) : (
                   <AiOutlineEdit className="text-green-600 text-lg" />
                 )}
-              </span>
+              </span> */}
             </div>
           </div>
         ))}

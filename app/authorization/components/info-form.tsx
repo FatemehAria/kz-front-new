@@ -15,8 +15,9 @@ import Modal from "@/components/modal";
 import { useDispatch, useSelector } from "react-redux";
 import SubmitOrderDropdown from "@/app/panel/user/submit-order/components/submit-order-dropdown";
 import {
-  registerInfo,
+  // registerInfo,
   saveToLocalStorage,
+  sendOTPCodeForRegistrationForHaghighi,
   sendOTPCodeMain,
 } from "@/utils/utils";
 import { openModal } from "@/redux/features/user/userSlice";
@@ -54,31 +55,44 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
   const handleSubmission = async () => {
     try {
       setErrorMsg("");
-      if (values.type !== "حقیقی") {
-        if (verifyIranianNationalId(values.shenase_melli)) {
-          console.log("کدملی معتبر");
-          values.shenase_melli = values.shenase_melli;
-        } else {
-          console.log("کدملی نامعتبر");
-          setErrorMsg("شناسه ملی معتبر نمی باشد.");
-        }
+      // if (values.type !== "حقیقی") {
+      //   if (verifyIranianNationalId(values.shenase_melli)) {
+      //     console.log("کدملی معتبر");
+      //     values.shenase_melli = values.shenase_melli;
+      //   } else {
+      //     console.log("کدملی نامعتبر");
+      //     setErrorMsg("شناسه ملی معتبر نمی باشد.");
+      //   }
+      // }
+      if (values.type === "haghighi" || values.type === "حقیقی") {
+        await sendOTPCodeForRegistrationForHaghighi(
+          values.FirstName,
+          values.LastName,
+          values.type === "حقیقی" ? "haghighi" : "hoghooghi",
+          PhoneNumber,
+          values.Password,
+          setSteps
+        );
+      } else {
+        setSteps(6);
       }
-      await registerInfo(
-        values.FirstName,
-        values.LastName,
-        values.Password,
-        PhoneNumber,
-        values.type === "حقیقی" ? "haghighi" : "hoghooghi",
-        values.shenase_melli,
-        values.shomare_sabt,
-        setSteps
-      );
+      // await registerInfo(
+      //   values.FirstName,
+      //   values.LastName,
+      //   values.Password,
+      //   PhoneNumber,
+      //   values.type === "حقیقی" ? "haghighi" : "hoghooghi",
+      //   values.shenase_melli,
+      //   values.shomare_sabt,
+      //   setSteps
+      // );
       setSavedInfo((last) => ({
         ...last,
         name: values.FirstName,
         surname: values.LastName,
         mobile: PhoneNumber,
         type: values.type === "حقیقی" ? "haghighi" : "hoghooghi",
+        password: values.Password,
       }));
     } catch (error: any) {
       setErrorMsg(error.message);
@@ -199,7 +213,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
           </div>
         </div>
         {/* optional */}
-        <div
+        {/* <div
           className={`flex flex-row gap-8 ${
             values.type === "حقوقی" ? "inline-block" : "hidden"
           }`}
@@ -244,7 +258,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
               )}
             </InfoFormFieldContainer>
           </React.Fragment>
-        </div>
+        </div> */}
         <div className="grid grid-cols-1 gap-x-[3%] items-center">
           <div className="text-left">
             <SubmissionBtn

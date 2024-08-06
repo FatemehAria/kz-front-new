@@ -6,6 +6,8 @@ import { useFormik } from "formik";
 import SettingsFileupload from "./components/settings-fileupload";
 import { Bounce, toast } from "react-toastify";
 import app from "@/services/service";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserProfile } from "@/redux/features/user/userSlice";
 
 const initialValues = {
   FirstName: "",
@@ -23,6 +25,9 @@ function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
   const handleFileChange = (file: File) => {
     setSelectedFile(file);
   };
+  const { userProfile } = useSelector((state: any) => state.userData);
+  const dispatch = useDispatch();
+
   const handleAvatar = async () => {
     const formData = new FormData();
     formData.append("pic", selectedFile);
@@ -32,12 +37,19 @@ function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
         formData,
         {
           headers: {
-            "Content-Type":"multipart/form-data",
+            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
           },
         }
       );
       console.log(data);
+      // check
+      dispatch(
+        updateUserProfile({
+          ...userProfile,
+          pic_path: data.data.pic_path,
+        })
+      );
       toast.success("آپلود فایل موفق بود.", {
         position: "top-right",
         autoClose: 3000,
@@ -66,6 +78,7 @@ function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
       console.log(error);
     }
   };
+
   const GenuineSubmission = async (
     name: string,
     surname: string,
@@ -79,6 +92,15 @@ function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
         email,
         mobile,
       });
+      dispatch(
+        updateUserProfile({
+          ...userProfile,
+          name,
+          surname,
+          email,
+          mobile,
+        })
+      );
       console.log(data);
     } catch (error) {
       console.log(error);

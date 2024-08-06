@@ -18,14 +18,14 @@ export const UserRegistrationPersonalSchema = yup.object().shape({
     )
     .required("رمز عبور را وارد کنید."),
   type: yup.string("").required(""),
-  shenase_melli: yup.string().min(10,"کدملی صحیح نمی باشد.").max(10,"کدملی صحیح نمی باشد.").when("type", {
-    is: (val) => val === "حقوقی",
-    then: (schema) => schema.required("شناسه ملی خود را وارد کنید."),
-  }),
-  shomare_sabt: yup.string().when("type", {
-    is: (val) => val === "حقوقی",
-    then: (schema) => schema.required("شماره ثبت را وارد کنید."),
-  }),
+  // shenase_melli: yup.string().min(10,"کدملی صحیح نمی باشد.").max(10,"کدملی صحیح نمی باشد.").when("type", {
+  //   is: (val) => val === "حقوقی",
+  //   then: (schema) => schema.required("شناسه ملی خود را وارد کنید."),
+  // }),
+  // shomare_sabt: yup.string().when("type", {
+  //   is: (val) => val === "حقوقی",
+  //   then: (schema) => schema.required("شماره ثبت را وارد کنید."),
+  // }),
 });
 
 export const LoginSchema = yup.object().shape({

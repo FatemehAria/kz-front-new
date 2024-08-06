@@ -14,6 +14,7 @@ function SubmitOrderDropdown({
   onChange,
   name,
 }: SubmitOrderDropdownProps) {
+  console.log(value);
   return (
     <div
       className={`flex ${
@@ -31,7 +32,11 @@ function SubmitOrderDropdown({
         onChange={onChange}
       >
         {dropdownItems.map((item) => (
-          <option key={item} value={item}>
+          <option
+            key={item}
+            value={item}
+            selected={dropdownItems[0] ? true : false}
+          >
             {item}
           </option>
         ))}

@@ -3,9 +3,10 @@ type TicketFieldsProps = {
   label: string;
   width: string;
   value: string;
+  type?: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
 };
-function TicketFields({ label, width, value , onChange }: TicketFieldsProps) {
+function TicketFields({ label, width, value, type , onChange }: TicketFieldsProps) {
   return (
     <div className="flex flex-col gap-2">
       <label htmlFor="">{label}</label>
@@ -14,6 +15,7 @@ function TicketFields({ label, width, value , onChange }: TicketFieldsProps) {
         style={{ width }}
         value={value}
         onChange={onChange}
+        type={type ? type : "text"}
       />
     </div>
   );

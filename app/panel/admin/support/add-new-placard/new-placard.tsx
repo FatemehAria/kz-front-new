@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import TicketFields from "./components/ticket-fields";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,13 +9,19 @@ import {
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
 import { FcCheckmark } from "react-icons/fc";
+import CostumSelect from "@/app/panel/components/costum-select";
+import { createTicket } from "@/utils/utils";
+import { DepartmentContext } from "../../context/department-context/DepartmentContext";
+import FormInput from "@/app/contact-us/components/form/form-inputs";
 type NewPlacardProps = {
   setSteps: React.Dispatch<React.SetStateAction<number>>;
 };
 function NewPlacard({ setSteps }: NewPlacardProps) {
-  const { localUserId, localToken } = useSelector(
-    (state: any) => state.userData
+  const { departments } = useContext(DepartmentContext);
+  const departmentInfo = departments.map(
+    (item) => item.department.id + "-" + item.department.name_fa
   );
+  const { token, userId } = useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getTokenFromLocal());
@@ -24,74 +30,67 @@ function NewPlacard({ setSteps }: NewPlacardProps) {
   }, []);
 
   const [annonceInfo, setAnnounceInfo] = useState({
-    RelevantUnit: "",
-    text: "",
+    title: "",
+    description: "",
+    status_id: false,
+    priority_id: "",
+    dept_id: "",
   });
-  const sendAnnouncementToSigleUser = async (
-    RelevantUnit: string,
-    text: string,
-    UserPhoneNumber: string
-  ) => {
-    try {
-      const { data } = await axios.post(
-        `https://keykavoos.liara.run/Admin/SendOneAnnouncement/${localUserId}`,
-        {
-          RelevantUnit,
-          text,
-          UserPhoneNumber,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localToken}`,
-          },
-        }
-      );
-      console.log(data);
-      // console.log(UserPhoneNumber);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await sendAnnouncementToSigleUser(
-      annonceInfo.RelevantUnit,
-      annonceInfo.text,
-      sessionStorage.getItem("userPhoneNumber") || ""
+    await createTicket(
+      token,
+      annonceInfo.title,
+      annonceInfo.description,
+      Number(annonceInfo.status_id === true ? "1" : "2"),
+      Number(annonceInfo.priority_id === "کم" ? "1" : "2"),
+      Number(userId),
+      Number(annonceInfo.dept_id.split("")[0]),
+      null
     );
   };
+
   return (
     <form
       onSubmit={(e) => handleSubmission(e)}
       className="grid grid-cols-1 gap-3"
     >
-      <div className="flex gap-3 items-center">
-        <p>ایجاد اعلان به:</p>
-        <div className="flex flex-row gap-3">
-          <button
-            className="bg-[#EAEFF6] text-[#4866CE] p-2 rounded-[4px] border flex"
-            onClick={() => setSteps(1)}
-          >
-            <span>کاربر تکی</span>
-            {sessionStorage.getItem("userPhoneNumber") ? <FcCheckmark /> : ""}
-          </button>
-          <button
-            className="bg-[#4866CE] text-white p-2 rounded-[4px] border"
-            onClick={() => setSteps(2)}
-          >
-            کاربران گروهی
-          </button>
-        </div>
-      </div>
       <TicketFields
-        label="واحد مربوطه:"
-        width="30%"
-        value={annonceInfo.RelevantUnit}
+        label="عنوان:"
+        width="100%"
+        value={annonceInfo.title}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setAnnounceInfo((last) => ({ ...last, RelevantUnit: e.target.value }))
+          setAnnounceInfo((last) => ({
+            ...last,
+            title: e.target.value,
+          }))
         }
         direction="flex-row items-center"
       />
+      <div className="grid grid-cols-2 gap-8">
+        <CostumSelect
+          changeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setAnnounceInfo((last) => ({ ...last, dept_id: e.target.value }))
+          }
+          label="ایجاد اعلان به:"
+          name="dept_id"
+          selectOptions={departmentInfo}
+          value={annonceInfo.dept_id}
+        />
+        <CostumSelect
+          label="اولویت:"
+          value={annonceInfo.priority_id}
+          changeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setAnnounceInfo((last) => ({
+              ...last,
+              priority_id: e.target.value,
+            }))
+          }
+          name="priority_id"
+          selectOptions={["کم", "زیاد"]}
+        />
+      </div>
       <div
         style={{
           border: "none",
@@ -110,21 +109,30 @@ function NewPlacard({ setSteps }: NewPlacardProps) {
             cols={30}
             rows={10}
             className="p-2 bg-[#EAEFF6] w-[30%] rounded-[4px]"
-            value={annonceInfo.text}
+            value={annonceInfo.description}
             onChange={(e) =>
-              setAnnounceInfo((last) => ({ ...last, text: e.target.value }))
+              setAnnounceInfo((last) => ({
+                ...last,
+                description: e.target.value,
+              }))
             }
           ></textarea>
         </div>
       </div>
       <div className="flex items-center w-[37%] justify-between">
         <div className="flex gap-3 items-center">
-          <input
-            type="checkbox"
-            className="appearance-none border-2 border-black rounded-sm w-4 h-4 checked:bg-[#4866CF]"
-            name="radio-button"
-          />
-          <label>قابلیت رد اعلان</label>
+          <div
+            className={`border-2 border-black rounded-sm w-4 h-4 ${
+              annonceInfo.status_id ? "bg-[#4866CF]" : "bg-white"
+            }`}
+            onClick={() =>
+              setAnnounceInfo((last) => ({
+                ...last,
+                status_id: !last.status_id,
+              }))
+            }
+          ></div>
+          <span>قابلیت رد اعلان</span>
         </div>
         <button className="bg-[#4866CE] text-white p-2 rounded-[4px]">
           ارسال اعلان

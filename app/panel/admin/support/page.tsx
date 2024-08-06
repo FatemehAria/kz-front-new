@@ -15,57 +15,25 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import vieweye from "../../../../public/ViewUsers/vieweye.svg";
 import CloseTicketModal from "./components/close-ticket-modal";
 import NotFound from "../components/NotFound";
+import { getAllTickets } from "@/utils/utils";
 const moment = require("moment-jalaali");
 
 const Support = () => {
-  const dispatch = useDispatch();
-  const { localUserId, localToken } = useSelector(
-    (state: any) => state.userData
-  );
-  useEffect(() => {
-    dispatch(getIdFromLocal());
-    dispatch(getTokenFromLocal());
-    dispatch<any>(fetchUserProfile());
-  }, []);
+  const { token } = useSelector((state: any) => state.userData);
   const [allTickets, setAllTickets] = useState([]);
   const [allTicketsStatus, setAllTicketsStatus] = useState({
     error: "",
     loading: false,
   });
   const [showModal, setShowModal] = useState(false);
-  const [closeTicketId, setCloseTicketId] = useState("");
-  const getAllTickets = async () => {
-    try {
-      setAllTicketsStatus((last) => ({ ...last, loading: true }));
-      const { data } = await axios(
-        `https://keykavoos.liara.run/Admin/AllTickets/${localUserId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localToken}`,
-          },
-        }
-      );
-      setAllTickets(data.data);
-      setAllTicketsStatus((last) => ({ ...last, loading: false }));
-      console.log(data);
-    } catch (error) {
-      setAllTicketsStatus({ error: "خطا در خواندن اطلاعات", loading: false });
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    getAllTickets();
-  }, []);
 
-  // useEffect(() => {
-  //   if (localUserId) {
-  //     getAllTickets();
-  //   }
-  // }, [localUserId]);
+  useEffect(() => {
+    getAllTickets(token, setAllTickets, setAllTicketsStatus);
+  }, []);
 
   return (
     <div className="flex flex-col gap-3">
-      {showModal && (
+      {/* {showModal && (
         <CloseTicketModal
           showModal={showModal}
           setShowModal={setShowModal}
@@ -73,7 +41,7 @@ const Support = () => {
           setAllTickets={setAllTickets}
           closeTicketId={closeTicketId}
         />
-      )}
+      )} */}
       <Link
         href="/panel/admin/support/add-new-placard"
         className="flex flex-row gap-2 bg-[#4866CE] text-white p-2 rounded-[4px] w-[120px]"
@@ -103,9 +71,9 @@ const Support = () => {
                 className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px]"
               >
                 <p>{index + 1}</p>
-                <p>{item.Title}</p>
+                <p>{item.title}</p>
                 <div>
-                  {item.Blocked === "true" ? (
+                  {item.status_id === 2 ? (
                     <p>
                       بسته{" "}
                       <span className="text-emerald-600 font-semibold">
@@ -120,17 +88,17 @@ const Support = () => {
                   )}
                 </div>
                 <p>
-                  {moment(item.updatedAt, "YYYY-MM-DDTHH:mm:ss.SSSZ").format(
+                  {item.updated_at ? moment(item.updated_at, "YYYY-MM-DDTHH:mm:ss.SSSZ").format(
                     "jYYYY/jM/jD"
-                  )}
+                  ) : "-"}
                 </p>
                 <div className="flex flex-row justify-center gap-2">
                   {item.Blocked !== "true" && (
                     <div>
                       <div
-                        onClick={() => (
-                          setShowModal(true), setCloseTicketId(item._id)
-                        )}
+                        // onClick={() => (
+                        //   setShowModal(true), setCloseTicketId(item._id)
+                        // )}
                         className="cursor-pointer"
                       >
                         <Image src={checkmark} alt="بستن" width={20} />

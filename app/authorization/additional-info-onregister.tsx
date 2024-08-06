@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import SubmissionBtn from "./components/submission-btn";
 import { useFormik } from "formik";
 import FormInput from "../contact-us/components/form/form-inputs";
@@ -8,12 +8,16 @@ import Logo from "./components/logo";
 import { InfoContext } from "./context/InfoContext";
 import app from "@/services/service";
 import { sendOTPCodeForRegistrationForHoghooghi } from "@/utils/utils";
+import InfoFormFieldContainer from "./components/info-form-filed-container";
+import FormValidationMsg from "./components/form-validation-msg";
 
 const initialValues = {
   org_address: "",
   org_name: "",
   org_phone: "",
   org_registration_number: "",
+  shenase_melli: "",
+  shomare_sabt: "",
 };
 
 function AdditionalInfoOnRegister({
@@ -21,21 +25,23 @@ function AdditionalInfoOnRegister({
 }: {
   setSteps: React.Dispatch<React.SetStateAction<number>>;
 }) {
-
   const { savedInfo } = useContext(InfoContext);
-
+  const [errorMsg, setErrorMsg] = useState("");
   const handleSubmission = async () => {
     await sendOTPCodeForRegistrationForHoghooghi(
       savedInfo.name,
       savedInfo.surname,
       savedInfo.type,
       savedInfo.mobile,
+      savedInfo.password,
       values.org_name,
       values.org_registration_number,
       values.org_address,
-      values.org_phone
+      values.org_phone,
+      values.shenase_melli,
+      setSteps
     );
-    // setSteps(2);
+  
   };
 
   const {
@@ -131,6 +137,28 @@ function AdditionalInfoOnRegister({
                 *
               </span>
             </div>
+
+            <React.Fragment>
+              <InfoFormFieldContainer errorMsg={errors.shenase_melli}>
+                <FormInput
+                  value={values.shenase_melli}
+                  onChange={handleChange}
+                  name="shenase_melli"
+                  label="شناسه ملی"
+                  error={errors.shenase_melli && touched.shenase_melli}
+                  onBlur={handleBlur}
+                  type="text"
+                />
+                <span className="absolute -top-7 right-[6.5rem] text-[#4866CF]">
+                  *
+                </span>
+                {errors.shenase_melli && touched.shenase_melli && (
+                  <FormValidationMsg
+                    errorMsg={`${errorMsg ? errorMsg : errors.shenase_melli}`}
+                  />
+                )}
+              </InfoFormFieldContainer>
+            </React.Fragment>
           </div>
           <div className="grid grid-cols-1 gap-x-[3%] items-center">
             <div className="text-left">

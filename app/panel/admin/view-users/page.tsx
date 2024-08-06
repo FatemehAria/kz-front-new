@@ -4,28 +4,25 @@ import PersonalInfoHeader from "../../user/personal-info/components/personal-inf
 import LegalUsers from "./legal-users";
 import GenuineUsers from "./genuine-users";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchUserProfile,
-  getTokenFromLocal,
-} from "@/redux/features/user/userSlice";
-import {
-  getAllPermissions,
-  getAllPositions,
-  getAllRole,
-  getAllUsers,
-} from "@/utils/utils";
 import Link from "next/link";
-import { PositionContext } from "./context/position-context/PositionContext";
-import { PermissionContext } from "./context/permission-context/PermissionContext";
-import { RoleContext } from "./context/role-context/RoleContext";
+import { RoleContext } from "../context/role-context/RoleContext";
+import { PermissionContext } from "../context/permission-context/PermissionContext";
+import { PositionContext } from "../context/position-context/PositionContext";
+import { DepartmentContext } from "../context/department-context/DepartmentContext";
+import { UserContext } from "../context/user-context/UserContext";
 
 function ViewUsers() {
   const { token } = useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
+  const { setRoles, roles } = useContext(RoleContext);
+  const { permissions, setPermissions } = useContext(PermissionContext);
+  const { positions, setPositions } = useContext(PositionContext);
+  const { setDepartments } = useContext(DepartmentContext);
+  const { setAllUsersData, AllUsersData } = useContext(UserContext);
   const [type, setType] = useState("Genuine");
-  const [AllUsersData, setAllUsersData] = useState<any>([]);
-  const [legalUsers, setLegalUsers] = useState([]);
-  const [genuineUsers, setGenuineUsers] = useState([]);
+
+  const [legalUsers, setLegalUsers] = useState<any>([]);
+  const [genuineUsers, setGenuineUsers] = useState<any>([]);
   const [usersStatus, setUsersStatus] = useState({
     loading: false,
   });
@@ -34,22 +31,11 @@ function ViewUsers() {
     let legal = AllUsersData.filter((item: any) => item.type === "hoghooghi");
     setLegalUsers(legal);
   };
-  const { setRoles, roles } = useContext(RoleContext);
-  const { permissions, setPermissions } = useContext(PermissionContext);
-  const { positions, setPositions } = useContext(PositionContext);
+
   const renderGenuineUsers = () => {
     let genuine = AllUsersData.filter((item: any) => item.type === "haghighi");
     setGenuineUsers(genuine);
   };
-
-  useEffect(() => {
-    Promise.all([
-      getAllUsers(token, setAllUsersData, setUsersStatus),
-      getAllPositions(token, setPositions),
-      getAllPermissions(token, setPermissions),
-      getAllRole(token, setRoles),
-    ]);
-  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {

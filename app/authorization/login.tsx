@@ -38,7 +38,7 @@ const Login = ({
     (state: any) => state.userData
   );
   const dispatch = useDispatch();
-  const [startLogin, setStartLogin] = useState(false);
+  // const [startLogin, setStartLogin] = useState(false);
   const router = useRouter();
   const handleSubmission = async () => {
     // login ba phone
@@ -47,6 +47,18 @@ const Login = ({
     if (result && loginApproach === 0) {
       await sendOTPCodeMain(values.PhoneNumber);
       // lagin ba password
+    } else if (result && loginApproach === 1) {
+      dispatch<any>(
+        fetchUserInLoginWithPassword({
+          mobile: values.PhoneNumber,
+          password: values.Password,
+        })
+      );
+
+      if (status === "success" && successMessage) {
+        if (role === "admin") router.replace("/panel/admin/view-users");
+        else router.replace("/panel/user/dashboard");
+      }
     }
   };
 
@@ -63,24 +75,23 @@ const Login = ({
   const { result, setAnswer, answer, mathProblem, wrongAnswerMessage } =
     useCaptcha(values.PhoneNumber);
   useStoreNumInLocal(values.PhoneNumber);
-  
-  useEffect(() => {
-    if (result && loginApproach === 1) {
-      if (startLogin) {
-        dispatch<any>(
-          fetchUserInLoginWithPassword({
-            mobile: values.PhoneNumber,
-            password: values.Password,
-          })
-        );
 
-        if (status === "success" && successMessage) {
-          if (role === "Admin") router.replace("/panel/admin/view-users");
-          else router.replace("/panel/user/dashboard");
-        }
-      }
-    }
-  }, [startLogin, status]);
+  // useEffect(() => {
+  //   if (result && loginApproach === 1) {
+  //     if (startLogin) {
+  //       dispatch<any>(
+  //         fetchUserInLoginWithPassword({
+  //           mobile: values.PhoneNumber,
+  //           password: values.Password,
+  //         })
+  //       );
+  //       if (status === "success" && successMessage) {
+  //         if (role === "admin") router.replace("/panel/admin/view-users");
+  //         else router.replace("/panel/user/dashboard");
+  //       }
+  //     }
+  //   }
+  // }, [startLogin, status]);
 
   return (
     <React.Fragment>
@@ -99,7 +110,7 @@ const Login = ({
             }
             setSteps={setAuthSteps}
             isLoggingIn={isLoggingIn}
-            setStartLogin={setStartLogin}
+            // setStartLogin={setStartLogin}
           />
           <Logo />
           <div className="flex flex-row justify-between items-center mb-8">

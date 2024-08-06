@@ -226,7 +226,7 @@ function AttrEdition({
               >
                 <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg" />
               </span>
-              <span
+              {/* <span
                 onClick={() =>
                   setEditAttrAndValue((last) => ({
                     ...last,
@@ -236,7 +236,7 @@ function AttrEdition({
                     },
                   }))
                 }
-                className="flex justify-center"
+                className="flex justify-center items-center"
               >
                 {editAttrAndValue.editAttr.showEditField ? (
                   <FaCheck
@@ -246,7 +246,7 @@ function AttrEdition({
                 ) : (
                   <AiOutlineEdit className="text-green-600 text-lg" />
                 )}
-              </span>
+              </span> */}
               <span onClick={() => handleAddingValue(item.id)}>
                 <FaPlus />
               </span>

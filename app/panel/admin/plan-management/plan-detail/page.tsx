@@ -12,6 +12,7 @@ import AttrAdditionForm from "../components/attr-addition-form";
 import { useSelector } from "react-redux";
 
 import AttrEdition from "../components/attr-edition";
+import Link from "next/link";
 
 export type PlanDetailType = {
   title: string;
@@ -65,17 +66,31 @@ function PlanDetail() {
   return (
     <div className="flex flex-col gap-5">
       {/* attr info form */}
-      <span
-        className="text-white bg-[#4866CF] p-2 rounded-[5px] w-[130px]"
-        onClick={() =>
-          setAddAttrAndValue((last) => ({
-            ...last,
-            addAttr: { ...last.addAttr, add: !last.addAttr.add },
-          }))
-        }
-      >
-        + افزودن ویژگی
-      </span>
+      <div className="flex flex-row items-center gap-5">
+        <span
+          className="text-white bg-[#4866CF] p-2 rounded-[5px] w-[130px]"
+          onClick={() =>
+            setAddAttrAndValue((last) => ({
+              ...last,
+              addAttr: { ...last.addAttr, add: !last.addAttr.add },
+            }))
+          }
+        >
+          + افزودن ویژگی
+        </span>
+        <Link
+          href={"/panel/admin/plan-management/plan-detail/manage-values"}
+          className="text-white bg-[#4866CF] p-2 rounded-[5px] w-[140px]"
+          onClick={() =>
+            setAddAttrAndValue((last) => ({
+              ...last,
+              addAttr: { ...last.addAttr, add: !last.addAttr.add },
+            }))
+          }
+        >
+          مدیریت ویژگی ها
+        </Link>
+      </div>
       {addAtrrAndValue.addAttr.add && (
         <AttrAdditionForm
           setAddAttrAndValue={setAddAttrAndValue}

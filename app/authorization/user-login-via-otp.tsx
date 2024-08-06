@@ -24,6 +24,7 @@ import {
 } from "@/redux/features/user/userSlice";
 import { AuthContext } from "./context/AuthContext";
 import { useTimer } from "@/hooks/useTimer";
+import { useRouter } from "next/navigation";
 
 const UserLoginViaOTP = () => {
   const {
@@ -33,12 +34,14 @@ const UserLoginViaOTP = () => {
     errorMessage,
     showModal,
     autoFocus,
+    role,
   } = useSelector((state: any) => state.userData);
   const { setAuthSteps } = useContext(AuthContext);
   const dispatch = useDispatch();
   const [PhoneNumber, setPhoneNumber] = useState("");
   const [OTP, setOTP] = useState("");
   const { counter, setCounter } = useTimer();
+  const router = useRouter();
   // PHONENUMBER FROM LOCALSTORAGE
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -59,6 +62,9 @@ const UserLoginViaOTP = () => {
         otp_code: OTP,
       })
     );
+    if (role === "admin" || role === "Admin")
+      router.replace("/panel/admin/view-users");
+    else router.replace("/panel/user/dashboard");
   };
 
   useEffect(() => {

@@ -1,10 +1,10 @@
-import Footer from "@/components/home-components/Footer";
 import Nav from "@/components/home-components/nav";
 import React from "react";
 import ContactHeading from "./components/contact-heading";
 import Options from "./components/options/options";
 import Form from "./components/form/form";
 import Map from "./components/map/map";
+import Footer from "@/components/home-components/Footer/Footer";
 
 const Contact = () => {
   return (

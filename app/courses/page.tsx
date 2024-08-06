@@ -1,4 +1,3 @@
-import Footer from "@/components/home-components/footer";
 import Nav from "@/components/home-components/nav";
 import React from "react";
 import MobileCard from "./components/mobile-cards/mobile-card";
@@ -191,7 +190,7 @@ const Contact = ({ params }: { params: { courseName: string } }) => {
           </div>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

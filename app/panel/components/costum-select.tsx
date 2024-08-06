@@ -2,7 +2,7 @@ import React from "react";
 
 type CostumSelectProps = {
   label: string;
-  selectOptions: string[];
+  selectOptions: string[] | number[];
   value: string;
   name: string;
   changeHandler: any;
@@ -28,7 +28,7 @@ function CostumSelect({
         name={name}
       >
         {selectOptions.map((opt) => (
-          <option>{opt}</option>
+          <option key={opt}>{opt}</option>
         ))}
       </select>
     </div>

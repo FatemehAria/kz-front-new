@@ -10,7 +10,7 @@ import Copyright from "@/home-components/Footer/Copyright";
 import SenfiLogo from "@/public/footer/senfi.svg";
 import EnamaadLogo from "@/public/footer/enamaad.svg";
 import styles from "./footer.module.css";
-function footer() {
+function Footer() {
   // bg:#ECF3F9,#FCFBFC,#EAEFF6,#4866CF
   return (
     <div className="text-[#000000] bg-slate-100 pt-7">
@@ -30,7 +30,7 @@ function footer() {
   );
 }
 
-export default footer;
+export default Footer;
 
 const Contact = () => {
   return (

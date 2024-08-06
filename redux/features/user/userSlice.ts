@@ -79,7 +79,7 @@ const verifyUserByOTPInLoginAndRegistration = createAsyncThunk(
         userProfile: data.data?.user,
         FirstName: data.data?.user.name,
         userId: data.data?.user.id,
-        // userType: data.data?.user.type,
+        userType: data.data?.user.roles,
         type: data.data?.user.type,
       };
     } catch (error: any) {
@@ -131,9 +131,8 @@ const verifyUserByOTPInLoginAndRegistration = createAsyncThunk(
 
 // daryafte etelaat karbar:checked
 const fetchUserProfile = createAsyncThunk<
-  // This is the return type of the payload creator
   {
-    data: any; // You can specify a concrete type for the response data
+    data: any; 
     FirstName: string;
     // LastName: string;
     email: string;
@@ -149,9 +148,9 @@ const fetchUserProfile = createAsyncThunk<
     }[];
     userId: string;
     // numberOfAnnouncements: number;
-  }, // Return type
-  void, // First argument type (it can be anything you want)
-  { state: RootState } // Types for thunkAPI
+  },
+  void,
+  { state: RootState }
 >("userData/fetchUserProfile", async (_, { getState, rejectWithValue }) => {
   try {
     console.log(getState().userData.token);
@@ -166,7 +165,6 @@ const fetchUserProfile = createAsyncThunk<
       FirstName: data.data.name,
       email: data.data.email,
       type: data.data.type,
-      // roles:[]
       userType: data.data.roles,
       userId: data.data.id,
       // numberOfAnnouncements: data.data.Announcement.length,
@@ -194,6 +192,7 @@ const userSlice = createSlice({
       state.userId = "";
       deleteCookie("token");
       sessionStorage.removeItem("userId");
+      localStorage.clear();
     },
     changePhoneNumber: (state) => {
       state.changePhoneNumber = true;

@@ -1,5 +1,5 @@
-import { BrandDetailType } from "@/app/panel/admin/brands/brand-detail/page";
-import { BrandType } from "@/app/panel/admin/brands/page";
+import { BrandDetailType } from "@/app/panel/admin/org_management/departments/department-detail/page";
+import { BrandType } from "@/app/panel/admin/org_management/brands/page";
 import { DepartmentType } from "@/app/panel/admin/org_management/departments/page";
 import { ValueType } from "@/app/panel/admin/plan-management/components/value-component";
 import { PlanType } from "@/app/panel/admin/plan-management/page";
@@ -11,6 +11,8 @@ import app from "@/services/service";
 import axios from "axios";
 import { Dispatch, SetStateAction } from "react";
 import { Bounce, toast } from "react-toastify";
+import { ConsultTypes } from "@/app/panel/admin/consultations/page";
+import { ConsultationDetail } from "@/app/panel/admin/consultations/consult-detail/page";
 
 // Logout
 export const logout = async () => {
@@ -27,10 +29,13 @@ export const sendOTPCodeForRegistrationForHoghooghi = async (
   surname: string,
   type: string,
   mobile: string,
+  password: string,
   org_name: string,
   org_registration_number: string,
   org_address: string,
-  org_phone: string
+  org_phone: string,
+  shenase_melli: string,
+  setSteps: React.Dispatch<React.SetStateAction<number>>
 ) => {
   try {
     console.log(
@@ -45,12 +50,15 @@ export const sendOTPCodeForRegistrationForHoghooghi = async (
       surname,
       type,
       mobile,
+      password,
       org_name,
       org_registration_number,
       org_address,
       org_phone,
+      shenase_melli,
     });
     // sendOTPCodeMain(mobile);
+    setSteps(2);
     console.log(data);
   } catch (error) {
     console.log(error);
@@ -60,7 +68,9 @@ export const sendOTPCodeForRegistrationForHaghighi = async (
   name: string,
   surname: string,
   type: string,
-  mobile: string
+  mobile: string,
+  password: string,
+  setSteps: React.Dispatch<React.SetStateAction<number>>
 ) => {
   try {
     const data = await app.post("/registerotp", {
@@ -68,64 +78,69 @@ export const sendOTPCodeForRegistrationForHaghighi = async (
       surname,
       type,
       mobile,
+      password,
     });
     // sendOTPCodeMain(mobile);
+    if (type === "haghighi" || type === "حقیقی") {
+      // await sendOTPCodeMain(mobile);
+      setSteps(2);
+    }
     console.log(data);
   } catch (error) {
     console.log(error);
   }
 };
 // Register with Info
-export const registerInfo = async (
-  name: string,
-  surname: string,
-  password: string,
-  mobile: string,
-  type: string,
-  shenase_melli: string | null,
-  shomare_sabt: string | null,
-  setSteps: React.Dispatch<React.SetStateAction<number>>
-) => {
-  try {
-    const { data } = await app.post("/user/register", {
-      name,
-      surname,
-      password,
-      mobile,
-      type,
-      shenase_melli: shenase_melli || "",
-      shomare_sabt: shomare_sabt || "",
-    });
-    window.localStorage.setItem("type", JSON.stringify(type));
-    console.log(data);
-    if (type === "haghighi" || type === "حقیقی") {
-      await sendOTPCodeForRegistrationForHaghighi(name, surname, type, mobile);
-      // await sendOTPCodeMain(mobile);
-      setSteps(2);
-    } else {
-      setSteps(6);
-    }
-  } catch (error: any) {
-    console.log(error);
-    if (error.response.data.message === "user-exists")
-      throw new Error("کاربر با این مشخصات قبلا ثبت شده است.");
-    else {
-      console.log(error);
-      return toast.error("خطا در ثبت اطلاعات", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        rtl: true,
-      });
-    }
-  }
-};
+// export const registerInfo = async (
+//   name: string,
+//   surname: string,
+//   password: string,
+//   mobile: string,
+//   type: string,
+//   shenase_melli: string | null,
+//   shomare_sabt: string | null,
+//   setSteps: React.Dispatch<React.SetStateAction<number>>
+// ) => {
+//   try {
+//     const { data } = await app.post("/user/register", {
+//       name,
+//       surname,
+//       password,
+//       mobile,
+//       type,
+//       shenase_melli: shenase_melli || "",
+//       shomare_sabt: shomare_sabt || "",
+//     });
+//     window.localStorage.setItem("type", JSON.stringify(type));
+//     console.log(data);
+//     if (type === "haghighi" || type === "حقیقی") {
+//       await sendOTPCodeForRegistrationForHaghighi(name, surname, type, mobile);
+//       // await sendOTPCodeMain(mobile);
+//       // setSteps(2);
+//     } else {
+//       setSteps(6);
+//     }
+//   } catch (error: any) {
+//     console.log(error);
+//     if (error.response.data.message === "user-exists")
+//       throw new Error("کاربر با این مشخصات قبلا ثبت شده است.");
+//     else {
+//       console.log(error);
+//       return toast.error("خطا در ثبت اطلاعات", {
+//         position: "top-center",
+//         autoClose: 5000,
+//         hideProgressBar: false,
+//         closeOnClick: true,
+//         pauseOnHover: true,
+//         draggable: true,
+//         progress: undefined,
+//         theme: "light",
+//         transition: Bounce,
+//         rtl: true,
+//       });
+//     }
+//   }
+// };
 // send otp code for login and general
 export const sendOTPCodeMain = async (mobile: string) => {
   try {
@@ -1102,23 +1117,6 @@ export const updateBrand = async (
     });
   }
 };
-// get all consultations
-export const getAllConsultations = async (
-  token: string,
-  setAllConsults: React.Dispatch<React.SetStateAction<never[]>>
-) => {
-  try {
-    const { data } = await app("/consults", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    console.log(data);
-    setAllConsults(data.data);
-  } catch (error) {
-    console.log(error);
-  }
-};
 // get all projects
 export const getAllProjects = async (
   token: string,
@@ -1139,7 +1137,14 @@ export const getAllProjects = async (
     console.log(data);
   } catch (error: any) {
     console.log(error.response.data.message);
-    setProjectStatus((last) => ({ ...last, error: "خطا در ردیافت اطلاعات" }));
+    if (error.response.data.message === "project-notFound") {
+      setProjectStatus((last) => ({ ...last, error: "پروژه ای یافت نشد." }));
+    } else {
+      setProjectStatus((last) => ({
+        ...last,
+        error: "خطا در دریافت اطلاعات.",
+      }));
+    }
   } finally {
     setProjectStatus((last) => ({ ...last, loading: false }));
   }
@@ -1888,7 +1893,7 @@ export const restoreSiteType = async (
   setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   try {
-    const { data } = await app.get(`/brand/restore/${siteType}`, {
+    const { data } = await app.get(`/type/restore/${siteType}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -1926,9 +1931,16 @@ export const restoreSiteType = async (
 // get newsletters
 export const getAllNewsletters = async (
   token: string,
-  setNewsLetters: Dispatch<SetStateAction<never[]>>
+  setNewsLetters: Dispatch<SetStateAction<never[]>>,
+  setNewsLetterStatus: Dispatch<
+    SetStateAction<{
+      loading: boolean;
+      erorr: string;
+    }>
+  >
 ) => {
   try {
+    setNewsLetterStatus((last) => ({ ...last, loading: true }));
     const { data } = await app("/newsletters", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1936,8 +1948,16 @@ export const getAllNewsletters = async (
     });
     console.log(data);
     setNewsLetters(data.data);
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
+    if (error.response.data.message == "newsletter-notFound") {
+      setNewsLetterStatus((last) => ({
+        ...last,
+        erorr: "خبرنامه ای یافت نشد.",
+      }));
+    }
+  } finally {
+    setNewsLetterStatus((last) => ({ ...last, loading: false }));
   }
 };
 // update newsletter by admin
@@ -2161,6 +2181,7 @@ export const getAllDepartments = async (
     });
     console.log(data);
     setDepartments(data.data);
+    window.localStorage.setItem("departments", JSON.stringify(data.data));
   } catch (error) {
     console.log(error);
   }
@@ -2362,6 +2383,290 @@ export const createNewDepartment = async (
       transition: Bounce,
       rtl: true,
     });
+    console.log(error);
+  }
+};
+// get all consultations
+export const getAllConsultations = async (
+  token: string,
+  setAllConsults: React.Dispatch<React.SetStateAction<ConsultTypes[]>>
+) => {
+  try {
+    const { data } = await app("/consults", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    setAllConsults(data.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+// submit consultation
+export const submitConsultation = async (
+  token: string,
+  title: string,
+  description: string,
+  date: string,
+  type: string,
+  status: string,
+  register_user_id: string,
+  responser_user_id: string
+) => {
+  try {
+    const { data } = await app.post(
+      "/consult/store",
+      {
+        title,
+        description,
+        date,
+        type,
+        status,
+        register_user_id,
+        responser_user_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+// delete consult by admin
+export const deleteConsultation = async (
+  consultId: number,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/consult/delete/${consultId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    toast.success("مشاوره با موفقیت حذف شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(true);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در حذف مشاوره", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// restore consultation by admin
+export const restoreConsultation = async (
+  consultationId: number | null,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/consult/restore/${consultationId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    toast.success("مشاوره با موفقیت بازگردانی شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(false);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در بازگردانی مشاوره", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// get consultation detail
+export const getConsultationDetail = async (
+  token: string,
+  consultationId: string | null,
+  setConsultationDetail: React.Dispatch<
+    React.SetStateAction<{
+      title: string;
+      description: string;
+      date: string;
+    }>
+  >
+) => {
+  try {
+    const { data } = await app.get(`/consult/show/${consultationId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    setConsultationDetail(data.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+// create ticket
+export const createTicket = async (
+  token: string,
+  title: string,
+  description: string,
+  status_id: number,
+  priority_id: number,
+  register_user_id: number,
+  dept_id: number,
+  ticket_id: number | null
+) => {
+  try {
+    const { data } = await app.post(
+      "/ticket/store",
+      {
+        title,
+        description,
+        status_id,
+        priority_id,
+        register_user_id,
+        dept_id,
+        ticket_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+// get all tickets
+export const getAllTickets = async (
+  token: string,
+  setAllTickets: React.Dispatch<React.SetStateAction<never[]>>,
+  setAllTicketsStatus: React.Dispatch<
+    React.SetStateAction<{
+      error: string;
+      loading: boolean;
+    }>
+  >
+) => {
+  try {
+    setAllTicketsStatus((last) => ({ ...last, loading: true }));
+    const { data } = await app("/tickets", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    setAllTickets(data.data);
+  } catch (error: any) {
+    console.log(error);
+    if (error.response.data.message === "ticket-notFound") {
+      setAllTicketsStatus((last) => ({ ...last, error: "تیکتی یافت نشد." }));
+    }
+  } finally {
+    setAllTicketsStatus((last) => ({ ...last, loading: false }));
+  }
+};
+// delete ticket
+export const deleteTicket = async (
+  ticketId: number,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/ticket/delete/${ticketId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    toast.success("تیکت با موفقیت حذف شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(true);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در حذف تیکت", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// get ticket detail
+export const getTicektDetail = async (
+  token: string,
+  ticketId: string | null,
+  setTicketDetail: React.Dispatch<React.SetStateAction<any>>
+) => {
+  try {
+    const { data } = await app.get(`/ticket/show/${ticketId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    setTicketDetail(data.data);
+  } catch (error) {
     console.log(error);
   }
 };

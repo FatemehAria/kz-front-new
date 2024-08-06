@@ -10,7 +10,6 @@ import phone from "../../public/Auth/phone.svg";
 import Modal from "@/components/modal";
 import FormInput from "../contact-us/components/form/form-inputs";
 import OTPInput from "react-otp-input";
-import { getNewOTP, getOTPViaCall } from "@/utils/utils";
 import { AuthContext } from "./context/AuthContext";
 import { useTimer } from "@/hooks/useTimer";
 
@@ -133,13 +132,13 @@ const RegisterUser = () => {
                   <div className="flex flex-row flex-wrap lg:flex-nowrap w-full  items-center gap-10 whitespace-nowrap">
                     <p
                       className="flex items-center gap-2"
-                      onClick={async () =>
-                        counter === 0 &&
-                        (await getNewOTP(
-                          localStorage.getItem("PhoneNumber") as string
-                        ),
-                        setCounter(90))
-                      }
+                      // onClick={async () =>
+                      //   counter === 0 &&
+                      //   (await getNewOTP(
+                      //     localStorage.getItem("PhoneNumber") as string
+                      //   ),
+                      //   setCounter(90))
+                      // }
                     >
                       <Image src={sms} alt="sms" />
                       <span>ارسال مجدد</span>
@@ -147,7 +146,7 @@ const RegisterUser = () => {
                     <p className="text-black">یا</p>
                     <p className="flex w-full items-center gap-2">
                       <Image src={phone} alt="phone" />
-                      <span
+                      {/* <span
                         className="cursor-pointer"
                         onClick={() =>
                           counter === 0 &&
@@ -157,7 +156,7 @@ const RegisterUser = () => {
                         }
                       >
                         ارسال کد از طریق تماس
-                      </span>
+                      </span> */}
                     </p>
                   </div>
                 ) : (

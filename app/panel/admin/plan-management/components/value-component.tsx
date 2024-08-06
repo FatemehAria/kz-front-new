@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { PlanContext } from "../context/PlanContext";
 import { ValueIdContext } from "../context/ValueIdContext";
 import { FaCheck } from "react-icons/fa6";
+
 type ValueComponentProps = {
   addAtrrAndValue: {
     addAttr: {
@@ -49,10 +50,12 @@ type ValueComponentProps = {
   >;
   planValues: ValueType[];
 };
+
 export type ValueType = {
   id: number;
   title: string;
 };
+
 function ValueComponent({
   addAtrrAndValue,
   setEditAttrAndValue,
@@ -81,23 +84,28 @@ function ValueComponent({
   };
 
   return (
-    <form onSubmit={(e) => handleValueSubmission(e)}>
-      <input
-        value={
-          planValue
-          //   : item.title
-        }
-        onChange={(e) => changeHandler(e)}
-        className={`${
-          valueId === attrId
-            ? "bg-white"
-            : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
-        } outline-none`}
-      />
-      <button>
-        <FaCheck className="text-green-600 text-lg" />
-      </button>
-    </form>
+    <div>
+      <form
+        onSubmit={(e) => handleValueSubmission(e)}
+        className="flex items-center gap-3"
+      >
+        <input
+          value={
+            planValue
+            //   : item.title
+          }
+          onChange={(e) => changeHandler(e)}
+          className={`${
+            valueId === attrId
+              ? "bg-white"
+              : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
+          } outline-none`}
+        />
+        <button>
+          <FaCheck className="text-green-600 text-lg" />
+        </button>
+      </form>
+    </div>
   );
 }
 

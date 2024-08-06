@@ -31,28 +31,28 @@ function SiteTypes() {
       (item: any) => item.id === id
     );
 
-    if (selectedSiteType) {
-      setSiteTypes((last) =>
-        last.map((item: any) =>
-          item.id === id
-            ? {
-                ...item,
-                brand: {
-                  ...item.brand,
-                  title:
-                    editField.editTitle !== ""
-                      ? editField.editTitle
-                      : item.title,
-                  description:
-                    editField.editDesc !== ""
-                      ? editField.editDesc
-                      : item.description,
-                },
-              }
-            : item
-        )
-      );
-    }
+    // if (selectedSiteType) {
+    //   setSiteTypes((last) =>
+    //     last.map((item: any) =>
+    //       item.id === id
+    //         ? {
+    //             ...item,
+    //             brand: {
+    //               ...item.brand,
+    //               title:
+    //                 editField.editTitle !== ""
+    //                   ? editField.editTitle
+    //                   : item.title,
+    //               description:
+    //                 editField.editDesc !== ""
+    //                   ? editField.editDesc
+    //                   : item.description,
+    //             },
+    //           }
+    //         : item
+    //     )
+    //   );
+    // }
     await updateSiteType(token, id, editField.editTitle, editField.editDesc);
   };
   return (
@@ -99,7 +99,7 @@ function SiteTypes() {
               value={
                 editField.showEditField
                   ? editField.editDesc
-                  : item.brand.description
+                  : item.description
               }
               onChange={(e) =>
                 setEditField((last) => ({
@@ -115,7 +115,7 @@ function SiteTypes() {
             />
             <div className="flex flex-row items-center justify-center gap-3">
               <Link
-                href={`/panel/admin/brands/brand-detail?id=${item.brand.id}`}
+                href={`/panel/admin/plan-management/site-types/site-type-detail?id=${item.id}`}
                 className="flex justify-center"
               >
                 <Image src={vieweye} alt="مشاهده" width={20} height={20} />
@@ -128,13 +128,13 @@ function SiteTypes() {
               >
                 <RxCross1 className="text-red-600 text-lg" />
               </span>
-              <span
+              {/* <span
                 onClick={() =>
-                  restoreSiteType(item.brand.id, token, setSiteTypeIsDeleted)
+                  restoreSiteType(item.id, token, setSiteTypeIsDeleted)
                 }
               >
                 <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg" />
-              </span>
+              </span> */}
               <span
                 onClick={() =>
                   setEditField((last) => ({

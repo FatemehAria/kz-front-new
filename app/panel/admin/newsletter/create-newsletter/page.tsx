@@ -20,6 +20,7 @@ function CreateNewsletter() {
   const handleNewsLetterSubmission = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {
+    e.preventDefault();
     await createNewsLetter(
       token,
       Number(newsletterInfo.user_id),
@@ -36,34 +37,36 @@ function CreateNewsletter() {
       <p>ایجاد خبرنامه جدید</p>
       <TicketFields
         label="عنوان:"
-        width="30%"
+        width="100%"
         value={newsletterInfo.title}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setNewsLetteInfo((last) => ({
             ...last,
-            relativeUnit: e.target.value,
+            title: e.target.value,
           }))
         }
         direction="flex-row items-center"
       />
-      <CostumSelect
-        label="به کاربر:"
-        selectOptions={userIds}
-        value={newsletterInfo.user_id}
-        name={newsletterInfo.user_id}
-        changeHandler={(e: React.ChangeEvent<HTMLSelectElement>) =>
-          setNewsLetteInfo((last) => ({ ...last, user_id: e.target.value }))
-        }
-      />
-      <CostumSelect
-        label="دپارتمان:"
-        selectOptions={userIds}
-        value={newsletterInfo.dept_id}
-        name={newsletterInfo.dept_id}
-        changeHandler={(e: React.ChangeEvent<HTMLSelectElement>) =>
-          setNewsLetteInfo((last) => ({ ...last, dept_id: e.target.value }))
-        }
-      />
+      <div className="grid grid-cols-2 gap-5">
+        <CostumSelect
+          label="به کاربر:"
+          selectOptions={userIds}
+          value={newsletterInfo.user_id}
+          name={newsletterInfo.user_id}
+          changeHandler={(e: React.ChangeEvent<HTMLSelectElement>) =>
+            setNewsLetteInfo((last) => ({ ...last, user_id: e.target.value }))
+          }
+        />
+        <CostumSelect
+          label="دپارتمان:"
+          selectOptions={userIds}
+          value={newsletterInfo.dept_id}
+          name={newsletterInfo.dept_id}
+          changeHandler={(e: React.ChangeEvent<HTMLSelectElement>) =>
+            setNewsLetteInfo((last) => ({ ...last, dept_id: e.target.value }))
+          }
+        />
+      </div>
       <div
         style={{
           border: "none",
@@ -87,7 +90,7 @@ function CreateNewsletter() {
             onChange={(e) =>
               setNewsLetteInfo((last) => ({
                 ...last,
-                newsText: e.target.value,
+                description: e.target.value,
               }))
             }
           ></textarea>

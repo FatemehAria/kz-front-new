@@ -1,4 +1,3 @@
-import Footer from "@/components/home-components/Footer";
 import Nav from "@/components/home-components/nav";
 import React from "react";
 import Informatik from "./components/informatik";
@@ -7,6 +6,7 @@ import FianaceAuthorizationCert from "./components/finance-authorization-cert";
 import SenfiCert from "./components/senfi-cert";
 import styles from "./certificates.module.css";
 import CertificatesSlider from "./components/certificate-slider";
+import Footer from "@/components/home-components/Footer/Footer";
 const Certificates = () => {
   return (
     <div>

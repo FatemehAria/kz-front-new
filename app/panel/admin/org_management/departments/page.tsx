@@ -7,13 +7,14 @@ import {
 } from "@/utils/utils";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import vieweye from "@/public/ViewUsers/vieweye.svg";
 import { RxCross1 } from "react-icons/rx";
 import { MdOutlineSettingsBackupRestore } from "react-icons/md";
 import { FaCheck } from "react-icons/fa6";
 import { AiOutlineEdit } from "react-icons/ai";
+import { DepartmentContext } from "../../view-users/context/department-context/DepartmentContext";
 
 export type DepartmentType = {
   id: number;
@@ -22,13 +23,9 @@ export type DepartmentType = {
   deleted_at: string;
 };
 function Departments() {
-  const [departments, setDepartments] = useState<DepartmentType[]>([]);
+  const { departments, setDepartments } = useContext(DepartmentContext);
   const { token } = useSelector((state: any) => state.userData);
   const [departmentIsDeleted, setDepartmentIsDeleted] = useState(false);
-
-  useEffect(() => {
-    getAllDepartments(token, setDepartments);
-  }, []);
 
   const [editField, setEditField] = useState({
     showEditField: false,

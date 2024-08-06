@@ -4,11 +4,11 @@ import SubmissionBtn from "@/app/authorization/components/submission-btn";
 import FormInput from "@/app/contact-us/components/form/form-inputs";
 import Modal from "@/components/modal";
 import { LoginSchema } from "@/schemas/userpanel-profile-schema";
-import { login2 } from "@/utils/utils";
+// import { login2 } from "@/utils/utils";
 import axios from "axios";
 import { useFormik } from "formik";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+// import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useDispatch, useSelector } from "react-redux";
 import { Bounce, toast } from "react-toastify";
 type LoginProps = {
@@ -20,7 +20,7 @@ const initialValues = {
 };
 function PhonenumberEntry({ setSteps }: LoginProps) {
   const { showModal } = useSelector((state: any) => state.userData);
-  const { executeRecaptcha } = useGoogleReCaptcha();
+  // const { executeRecaptcha } = useGoogleReCaptcha();
   const login = async (PhoneNumber: string) => {
     try {
       const { data } = await axios.post(
@@ -60,24 +60,24 @@ function PhonenumberEntry({ setSteps }: LoginProps) {
 
   const handleSubmission = async () => {
     await login(formik.values.PhoneNumber);
-    if (!executeRecaptcha) {
-      console.log("Recaptcha not available");
-      return;
-    }
+    // if (!executeRecaptcha) {
+    //   console.log("Recaptcha not available");
+    //   return;
+    // }
 
-    const gRecaptchaToken = await executeRecaptcha("inquirySubmit");
+    // const gRecaptchaToken = await executeRecaptcha("inquirySubmit");
 
-    const response = await axios({
-      method: "post",
-      url: "/api/recaptchaSubmit",
-      data: {
-        gRecaptchaToken,
-      },
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-    });
+    // const response = await axios({
+    //   method: "post",
+    //   url: "/api/recaptchaSubmit",
+    //   data: {
+    //     gRecaptchaToken,
+    //   },
+    //   headers: {
+    //     Accept: "application/json, text/plain, */*",
+    //     "Content-Type": "application/json",
+    //   },
+    // });
   };
 
   const formik = useFormik({
@@ -112,7 +112,7 @@ function PhonenumberEntry({ setSteps }: LoginProps) {
               formik.values.PhoneNumber ? "تغییر شماره همراه" : "تایید"
             }`}
             setSteps={setSteps}
-            executeFunction2={() => login2(formik.values.PhoneNumber)}
+            // executeFunction2={() => login2(formik.values.PhoneNumber)}
             isLoggedIn={true}
           />
           <div>
