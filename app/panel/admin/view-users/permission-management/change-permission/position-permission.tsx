@@ -1,12 +1,13 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { PermissionContext } from "../../context/permission-context/PermissionContext";
-import { PositionContext } from "../../context/position-context/PositionContext";
+
 import {
   givePositionPermission,
   removePositionPermission,
 } from "@/utils/relation-utils";
+import { PositionContext } from "../../../context/position-context/PositionContext";
+import { PermissionContext } from "../../../context/permission-context/PermissionContext";
 
 function PositionPermission() {
   const { token } = useSelector((state: any) => state.userData);

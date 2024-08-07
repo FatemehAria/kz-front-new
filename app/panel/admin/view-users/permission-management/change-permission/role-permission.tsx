@@ -1,12 +1,13 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
-import { PermissionContext } from "../../context/permission-context/PermissionContext";
-import { RoleContext } from "../../context/role-context/RoleContext";
+
 import {
   giveRolePermission,
   removeRolePermission,
 } from "@/utils/relation-utils";
 import { useSelector } from "react-redux";
+import { PermissionContext } from "../../../context/permission-context/PermissionContext";
+import { RoleContext } from "../../../context/role-context/RoleContext";
 
 function RolePermission() {
   const { token } = useSelector((state: any) => state.userData);

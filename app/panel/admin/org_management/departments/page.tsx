@@ -14,7 +14,7 @@ import { RxCross1 } from "react-icons/rx";
 import { MdOutlineSettingsBackupRestore } from "react-icons/md";
 import { FaCheck } from "react-icons/fa6";
 import { AiOutlineEdit } from "react-icons/ai";
-import { DepartmentContext } from "../../view-users/context/department-context/DepartmentContext";
+import { DepartmentContext } from "../../context/department-context/DepartmentContext";
 
 export type DepartmentType = {
   id: number;

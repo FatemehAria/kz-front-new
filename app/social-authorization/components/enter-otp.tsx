@@ -4,10 +4,8 @@ import SubmissionBtn from "@/app/authorization/components/submission-btn";
 import FormInput from "@/app/contact-us/components/form/form-inputs";
 import Modal from "@/components/modal";
 import {
-  fetchUserInOTPLogin,
   handleAutoFocus,
 } from "@/redux/features/user/userSlice";
-import { getNewOTP, getOTPViaCall } from "@/utils/utils";
 import Image from "next/image";
 import React, {
   Dispatch,
@@ -62,7 +60,7 @@ function EnterOTP({ setSteps }: UserLoginViaOTPProps) {
 
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await dispatch<any>(fetchUserInOTPLogin({ PhoneNumber, OTP }));
+    // await dispatch<any>(fetchUserInOTPLogin({ PhoneNumber, OTP }));
   };
   useEffect(() => {
     if (status === "failed") {
@@ -124,7 +122,7 @@ function EnterOTP({ setSteps }: UserLoginViaOTPProps) {
                   buttonText="ارسال مجدد کد یکبارمصرف"
                   text={errorMessage}
                   data=""
-                  executeFunction={() => getNewOTP(PhoneNumber)}
+                  // executeFunction={() => getNewOTP(PhoneNumber)}
                   setCounter={setCounter}
                 />
               )}
@@ -148,10 +146,10 @@ function EnterOTP({ setSteps }: UserLoginViaOTPProps) {
                   <div className="flex flex-row flex-wrap lg:flex-nowrap w-full  items-center gap-10 whitespace-nowrap">
                     <p
                       className="flex items-center gap-2"
-                      onClick={async () =>
-                        counter === 0 &&
-                        (await getNewOTP(PhoneNumber), setCounter(90))
-                      }
+                      // onClick={async () =>
+                      //   counter === 0 &&
+                      //   // (await getNewOTP(PhoneNumber), setCounter(90))
+                      // }
                     >
                       <Image src={sms} alt="sms" />
                       <span>ارسال مجدد</span>
@@ -161,9 +159,9 @@ function EnterOTP({ setSteps }: UserLoginViaOTPProps) {
                       <Image src={phone} alt="phone" />
                       <span
                         className="cursor-pointer"
-                        onClick={() =>
-                          counter === 0 && getOTPViaCall(PhoneNumber)
-                        }
+                        // onClick={() =>
+                        //   counter === 0 && getOTPViaCall(PhoneNumber)
+                        // }
                       >
                         ارسال کد از طریق تماس
                       </span>
