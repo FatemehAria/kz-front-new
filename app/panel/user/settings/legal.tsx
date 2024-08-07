@@ -7,19 +7,20 @@ import { Bounce, toast } from "react-toastify";
 import SettingsFileupload from "./components/settings-fileupload";
 import { useDispatch } from "react-redux";
 import { updateUserProfile } from "@/redux/features/user/userSlice";
+import app from "@/services/service";
 const initialValues = {
-  National_ID: "",
-  type: "Legal",
-  name_of_Organization: "",
-  registration_Number: "",
+  shenase_melli: "",
+  type: "hoghooghi",
+  org_name: "",
+  password: "",
+  org_registration_number: "",
 };
 type LegalProps = {
-  PhoneNumber: string;
   userId: string;
   token: string;
   userProfile: any;
 };
-function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
+function Legal({ userId, token, userProfile }: LegalProps) {
   const [invalidNationalIdMessage, setInvalidNationalIdMessage] = useState("");
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const dispatch = useDispatch();
@@ -29,37 +30,24 @@ function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
 
   const handleAvatar = async () => {
     const formData = new FormData();
-    formData.append("Image", selectedFile);
-
+    formData.append("pic", selectedFile);
     try {
-      await axios.put(
-        `https://keykavoos.liara.run/Client/UploadAvatar/${userId}`,
+      const { data } = await app.post(
+        `/upload/profile_pic/${userId}`,
         formData,
         {
           headers: {
-            authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-
-      // After successful upload, fetch updated user profile
-      const { data } = await axios.get(
-        `https://keykavoos.liara.run/Client/User/${userId}`,
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      // Dispatch an action to update the user profile with the new data
+      console.log(data);
+      // check
       dispatch(
         updateUserProfile({
           ...userProfile,
-          avatar: {
-            ...userProfile.avatar,
-            path: data.data.avatar.path, // Assuming the response contains the new avatar path
-          },
+          pic_path: data.data.pic_path,
         })
       );
       toast.success("آپلود فایل موفق بود.", {
@@ -92,61 +80,29 @@ function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
   };
 
   const LegalSubmission = async (
-    National_ID: string,
-    type: string,
-    name_of_Organization: string,
-    registration_Number: string
+    org_name: string,
+    password: string,
+    shenase_melli: string,
+    org_registration_number: string
   ) => {
     try {
-      const { data } = await axios.put(
-        `https://keykavoos.liara.run/Client/EditLegal/${userId}`,
-        {
-          National_ID,
-          type,
-          name_of_Organization,
-          registration_Number,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const { data } = await app.put(``, {
+        org_name,
+        password,
+        shenase_melli,
+        org_registration_number,
+      });
       dispatch(
         updateUserProfile({
           ...userProfile,
-          National_ID,
-          type,
-          name_of_Organization,
-          registration_Number,
+          org_name,
+          password,
+          shenase_melli,
+          org_registration_number,
         })
       );
-      toast.success("ثبت اطلاعات موفق بود.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        rtl: true,
-      });
       console.log(data);
     } catch (error) {
-      toast.error("خطا در ثبت اطلاعات.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        rtl: true,
-      });
       console.log(error);
     }
   };
@@ -154,20 +110,20 @@ function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
   const handleSubmission = async () => {
     if (isValidNationalId && !selectedFile) {
       await LegalSubmission(
-        values.National_ID,
-        values.type,
-        values.name_of_Organization,
-        values.registration_Number
+        values.org_name,
+        values.password,
+        values.shenase_melli,
+        values.org_registration_number
       );
     } else if (isValidNationalId && selectedFile) {
       try {
         (async () => {
           const [legalSubmissionResponse, avatarResponse] = await Promise.all([
             LegalSubmission(
-              values.National_ID,
-              values.type,
-              values.name_of_Organization,
-              values.registration_Number
+              values.org_name,
+              values.password,
+              values.shenase_melli,
+              values.org_registration_number
             ),
             handleAvatar(),
           ]);
@@ -178,9 +134,8 @@ function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
       }
     } else if (
       selectedFile &&
-      (values.National_ID === "" ||
-        values.name_of_Organization === "" ||
-        values.registration_Number === "")
+      (values.shenase_melli === "" ||
+        values.org_registration_number === "")
     ) {
       await handleAvatar();
     } else {
@@ -193,12 +148,13 @@ function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
     initialValues,
     onSubmit: handleSubmission,
   });
-  const isValidNationalId = verifyIranianNationalId(values.National_ID);
+  const isValidNationalId = verifyIranianNationalId(values.shenase_melli);
   useEffect(() => {
-    if (values.National_ID === "") {
+    if (values.shenase_melli === "") {
       setInvalidNationalIdMessage("");
     }
-  }, [values.National_ID, invalidNationalIdMessage]);
+  }, [values.shenase_melli, invalidNationalIdMessage]);
+
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-2">
       <div className="grid grid-cols-2 gap-[5%]">
@@ -206,20 +162,22 @@ function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
           <PanelFields
             label="نام سازمان:"
             onChange={handleChange}
-            value={values.name_of_Organization}
+            value={values.org_name}
+            disable={false}
+          />
+
+          <PanelFields
+            label="پسورد:"
+            onChange={handleChange}
+            value={values.password}
             name="name_of_Organization"
           />
-          <PanelFields
-            label="شماره موبایل:"
-            onChange={handleChange}
-            value={PhoneNumber}
-            disable={true}
-          />
+
           <div className="relative">
             <PanelFields
               label="شناسه ملی:"
               onChange={handleChange}
-              value={values.National_ID}
+              value={values.shenase_melli}
               name="National_ID"
             />
             <span className="absolute top-20">{invalidNationalIdMessage}</span>
@@ -234,7 +192,7 @@ function Legal({ PhoneNumber, userId, token, userProfile }: LegalProps) {
           <PanelFields
             label="شماره ثبت:"
             onChange={handleChange}
-            value={values.registration_Number}
+            value={values.org_registration_number}
             name="registration_Number"
           />
         </div>

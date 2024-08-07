@@ -34,7 +34,6 @@ function PersonalInfo() {
       case "hoghooghi":
         return (
           <Legal
-            PhoneNumber={PhoneNumber}
             userId={userId}
             token={token}
             userProfile={userProfile}
