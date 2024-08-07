@@ -22,7 +22,8 @@ function DashboardCard({ data }: DashboardCardProps) {
       <Image
         src={data.imgUrl}
         alt={data.title}
-        className={`absolute ${data.top ? data.top : "-top-14"}`}
+        // className={`absolute ${data.top ? data.top : "-top-14"}`}
+        className={`absolute -top-16`}
         width={data.width}
       />
     </Link>

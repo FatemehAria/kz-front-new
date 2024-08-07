@@ -66,7 +66,7 @@ function Modal({
     } else {
       if (isLoggingIn && !isLoggedIn) {
         setSteps?.(2);
-      } else if (isLoggedIn) {
+      } else if (isLoggingIn) {
         // if (status === "success" && successMessage) {
           if (role === "Admin") router.replace("/panel/admin/view-users");
           else router.replace("/panel/user/dashboard");

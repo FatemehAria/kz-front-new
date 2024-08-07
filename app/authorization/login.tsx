@@ -34,9 +34,8 @@ const Login = ({
   setIsLoggingIn,
 }: LoginProps) => {
   const { setAuthSteps } = useContext(AuthContext);
-  const { showModal, successMessage, status, errorMessage, role , isLoggedIn } = useSelector(
-    (state: any) => state.userData
-  );
+  const { showModal, successMessage, status, errorMessage, role, isLoggedIn } =
+    useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
   // const [startLogin, setStartLogin] = useState(false);
   const router = useRouter();
@@ -54,6 +53,9 @@ const Login = ({
           password: values.Password,
         })
       );
+      if (status === "success") {
+        setIsLoggingIn(false);
+      }
     }
   };
 
@@ -70,7 +72,8 @@ const Login = ({
   const { result, setAnswer, answer, mathProblem, wrongAnswerMessage } =
     useCaptcha(values.PhoneNumber);
   useStoreNumInLocal(values.PhoneNumber);
-
+  console.log("isLoggedIn", isLoggedIn);
+  console.log("isLogginIn", isLoggingIn);
   return (
     <React.Fragment>
       <div

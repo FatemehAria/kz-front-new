@@ -47,7 +47,7 @@ function Legal({ userId, token, userProfile }: LegalProps) {
       dispatch(
         updateUserProfile({
           ...userProfile,
-          pic_path: data.data.pic_path,
+          pic_path: userProfile.pic_path,
         })
       );
       toast.success("آپلود فایل موفق بود.", {
@@ -165,7 +165,6 @@ function Legal({ userId, token, userProfile }: LegalProps) {
             value={values.org_name}
             disable={false}
           />
-
           <PanelFields
             label="پسورد:"
             onChange={handleChange}
