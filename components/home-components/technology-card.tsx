@@ -31,10 +31,10 @@ function TechnologyCard({ technologyInfo }: TechnologyCardProps) {
       ></div>
       <ul className="flex flex-col items-center w-full gap-5 py-4">
         {technologyInfo.technologies.map(
-          (tech: { id: number; techImgUrl: string[]; tech: string[] }) => (
+          (tech: { id: number; techImgUrl: string[]; tech: string[] },index) => (
             <li key={tech.id} className="flex flex-row items-center gap-3 w-20">
-              {tech.techImgUrl.map((url) => (
-                <Image key={url} src={url} alt={""} width={29} height={29} />
+              {tech.techImgUrl.map((url,index) => (
+                <Image key={index} src={url} alt={""} width={29} height={29} />
               ))}
               <span>
                 {tech.tech.length > 1 ? tech.tech.join(",") : tech.tech}

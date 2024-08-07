@@ -569,17 +569,17 @@ export const TechnologyData = [
     imgUrl: Images.back,
     technologies: [
       {
-        id: 0,
+        id: 1,
         techImgUrl: [Images.ExpressLogo],
         tech: ["Express"],
       },
       {
-        id: 1,
+        id: 2,
         techImgUrl: [Images.NodeLogo, Images.NestLogo],
         tech: ["Node", "Nest"],
       },
       {
-        id: 2,
+        id: 3,
         techImgUrl: [Images.PhpLogo, Images.LaravelLogo],
         tech: ["PHP", "Laravel"],
       },
@@ -591,17 +591,17 @@ export const TechnologyData = [
     imgUrl: Images.front,
     technologies: [
       {
-        id: 0,
+        id: 4,
         techImgUrl: [Images.JSLogo, Images.TypescriptLogo],
         tech: ["JS", "TS"],
       },
       {
-        id: 1,
+        id: 5,
         techImgUrl: [Images.ReactLogo, Images.NextLogo],
         tech: ["React", "Next"],
       },
       {
-        id: 3,
+        id: 6,
         techImgUrl: [Images.HtmlLogo, Images.CssLogo],
         tech: ["HTML", "CSS"],
       },
@@ -613,17 +613,17 @@ export const TechnologyData = [
     imgUrl: Images.Graphics,
     technologies: [
       {
-        id: 0,
+        id: 7,
         techImgUrl: [Images.FigmaLogo],
         tech: ["Figma"],
       },
       {
-        id: 1,
+        id: 8,
         techImgUrl: [Images.PhotoshopLogo],
         tech: ["PS"],
       },
       {
-        id: 2,
+        id: 9,
         techImgUrl: [Images.AdobeIllus],
         tech: ["AI"],
       },
@@ -636,17 +636,17 @@ export const TechnologyData = [
     imgUrl: Images.ServerMangamenetLogo,
     technologies: [
       {
-        id: 0,
+        id: 10,
         techImgUrl: [Images.CPanelLogo],
         tech: ["cPanel"],
       },
       {
-        id: 1,
+        id: 11,
         techImgUrl: [Images.DirectAdminLogo],
         tech: ["DirectAdmin"],
       },
       {
-        id: 2,
+        id: 12,
         techImgUrl: [Images.PleskLogo],
         tech: ["Plesk"],
       },
@@ -658,17 +658,17 @@ export const TechnologyData = [
     imgUrl: Images.server,
     technologies: [
       {
-        id: 0,
+        id: 13,
         techImgUrl: [Images.WindowsLogo],
         tech: ["Windows"],
       },
       {
-        id: 1,
+        id: 14,
         techImgUrl: [Images.CloudLogo],
         tech: ["Cloud"],
       },
       {
-        id: 2,
+        id: 15,
         techImgUrl: [Images.VpsLogo],
         tech: ["VPS"],
       },
@@ -680,17 +680,17 @@ export const TechnologyData = [
     imgUrl: Images.Database,
     technologies: [
       {
-        id: 0,
+        id: 16,
         techImgUrl: [Images.MongoLogo],
         tech: ["Mongodb"],
       },
       {
-        id: 1,
+        id: 17,
         techImgUrl: [Images.MysqlLogo],
         tech: ["MySQL"],
       },
       {
-        id: 2,
+        id: 18,
         techImgUrl: [Images.RedisLogo],
         tech: ["Redis"],
       },
