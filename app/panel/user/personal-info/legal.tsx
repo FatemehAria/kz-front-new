@@ -24,7 +24,7 @@ function Legal({
         <div className="flex flex-col justify-between gap-3">
           <PanelFields
             label="نام سازمان:"
-            value={name_of_Organization}
+            value={""}
             name="name_of_Organization"
             disable={true}
           />
@@ -35,7 +35,7 @@ function Legal({
           />
           <PanelFields
             label="شناسه ملی:"
-            value={National_ID}
+            value={""}
             name="National_ID"
             disable={true}
           />
@@ -43,7 +43,7 @@ function Legal({
         <div className="flex flex-col justify-between">
           <div className="self-center">
             <Image
-              src={path ? path : malegender}
+              src={path ?  `http://localhost:8000/storage/${path}` : malegender}
               alt="profile"
               width={250}
               height={250}
@@ -51,7 +51,7 @@ function Legal({
           </div>
           <PanelFields
             label="شماره ثبت:"
-            value={registration_Number}
+            value={""}
             name="registration_Number"
             disable={true}
           />

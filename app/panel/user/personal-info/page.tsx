@@ -15,7 +15,7 @@ import SubLoading from "@/components/SubLoading";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 function PersonalInfo() {
-  const { userId, PhoneNumber, token, type, userProfile, status } = useSelector(
+  const { userId, token, type, userProfile, status } = useSelector(
     (state: any) => state.userData
   );
   const [step, setStep] = useState(type);
@@ -31,12 +31,12 @@ function PersonalInfo() {
       case "hoghooghi":
         return (
           <Legal
-            PhoneNumber={PhoneNumber}
+            PhoneNumber={userProfile.mobile}
             token={token}
             name_of_Organization={userProfile.name_of_Organization}
             National_ID={userProfile.National_ID}
             registration_Number={userProfile.registration_Number}
-            path={userProfile.avatar?.path}
+            path={userProfile.pic_path}
           />
         );
       default:
