@@ -29,28 +29,50 @@ import SubmitPluginModalfield from "./components/submit-plugin-modalfield";
 import PluginSubmissionModal from "./components/plugin-submission-modal";
 import TemplateSubmissionModal from "./components/template-sumission-modal";
 import SubmitTemplateModalfield from "./components/submit-template-modalfield";
+import { OrderSubmissionContext } from "../../context/order-submission-contexts/OrderSubmissionContext";
+
+export type PlanType = {
+  plan: { id: number; title: string; description: string; price: number };
+};
+export type SimilarSiteType = { title: string; url: string; id: number };
+export type ColorType = { title: string; color: string };
+export type TemplateType = { template_name: string };
+export type PluginType = { plugin_name: string };
 
 function SubmitOrder() {
   const { token, userProfile } = useSelector((state: any) => state.userData);
-  const dispatch = useDispatch();
+  const { allPlans, setAllPlans, siteTypes, setSiteTypes } = useContext(
+    OrderSubmissionContext
+  );
   useEffect(() => {
-    dispatch(getIdFromLocal());
-    dispatch(getTokenFromLocal());
+    if (typeof window !== "undefined") {
+      const localPlans = JSON.parse(
+        window.localStorage.getItem("plans") as string
+      );
+      const localSiteTypes = JSON.parse(
+        window.localStorage.getItem("site-types") as string
+      );
+      setSiteTypes(localSiteTypes);
+      setAllPlans(localPlans);
+    }
   }, []);
 
   const [File, setFile] = useState<any>(null);
-  const [templatesData, setTemplatesData] = useState<
-    { template_name: string }[]
-  >([]);
+  const [similarSiteData, setSimilarSiteData] = useState<SimilarSiteType[]>([
+    { title: "", url: "" },
+  ]);
+  const [similarSiteModalInputValue, setSimilarSiteModalInputValue] = useState({
+    title: "",
+    url: "",
+  });
+  const [showSimilarModal, setShowSimilarModal] = useState(false);
+  const [templatesData, setTemplatesData] = useState<TemplateType[]>([]);
   const [showTemplatesModal, setShowTemplatesModal] = useState(false);
   const [templateModalInputValue, setTemplateModalInputValue] = useState({
     template_name: "",
   });
-  const [pluginData, setPluginData] = useState<
-    {
-      plugin_name: string;
-    }[]
-  >([
+  const [showPluginModal, setShowPluginModal] = useState(false);
+  const [pluginData, setPluginData] = useState<PluginType[]>([
     {
       plugin_name: "",
     },
@@ -58,35 +80,26 @@ function SubmitOrder() {
   const [pluginModalInputValue, setPluginModalInputValue] = useState({
     plugin_name: "",
   });
-  const [showPluginModal, setShowPluginModal] = useState(false);
-  const [colorsData, setColorsData] = useState<
-    {
-      title: string;
-      color: string;
-    }[]
-  >([
+  const [showColorsModal, setShowColorsModal] = useState(false);
+  const [colorsData, setColorsData] = useState<ColorType[]>([
     {
       title: "",
       color: "",
     },
   ]);
-
   const [colorsModalInputValue, setColorsModalInputValue] = useState({
     title: "",
     color: "",
   });
-  const [showColorsModal, setShowColorsModal] = useState(false);
-  const [similarSiteData, setSimilarSiteData] = useState<
-    { title: string; url: string }[]
-  >([{ title: "", url: "" }]);
-  const [similarSiteModalInputValue, setSimilarSiteModalInputValue] = useState({
-    title: "",
-    url: "",
-  });
-  const [showSimilarModal, setShowSimilarModal] = useState(false);
+  const planTitlesAndDescs = allPlans.map(
+    (item) => item.plan.title + "-" + item.plan.description
+  );
+  const siteTypeTitles = siteTypes.map((item: SimilarSiteType) => item.title);
   const [projectFields, setProjectFields] = useState({
     title: "",
-    type: "1",
+    // نوع پروژه(طراحی) /types
+    type: "",
+    // پلن /plans
     plan: "",
     budget: "",
     Similar_Site: similarSiteData,
@@ -94,7 +107,17 @@ function SubmitOrder() {
     Templates: templatesData,
     Colors: colorsData,
   });
-  const price = 3000;
+
+  const plansId = allPlans.filter((item) =>
+    projectFields.plan.includes(item.plan.title)
+  )[0]?.plan.id;
+  const typeId = siteTypes.filter(
+    (item: SimilarSiteType) => item.title === projectFields.type
+  )[0]?.id;
+  const price = allPlans.filter((item) =>
+    projectFields.plan.includes(item.plan.title)
+  )[0]?.plan.price;
+
   const handleBudegtChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value.replace(/,/g, "");
     const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -108,12 +131,12 @@ function SubmitOrder() {
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     Promise.all([
-      await createProjectColor(
-        token,
-        colorsModalInputValue.title,
-        colorsModalInputValue.color,
-        null
-      ),
+      // await createProjectColor(
+      //   token,
+      //   colorsModalInputValue.title,
+      //   colorsModalInputValue.color,
+      //   null
+      // ),
       // await createProjectSimilars(
       //   token,
       //   similarSiteModalInputValue.title,
@@ -126,21 +149,25 @@ function SubmitOrder() {
       //   templateModalInputValue.template_name,
       //   null
       // ),
-      // await createProject(
-      //   token,
-      //   projectFields.title,
-      //   projectFields.Description,
-      //   Number(projectFields.type),
-      //   Number(projectFields.budget.replaceAll(",", "")),
-      //   price,
-      //   Number(projectFields.plan),
-      //   userProfile.id,
-      //   JSON.stringify(similarSiteData),
-      //   JSON.stringify(templatesData),
-      //   JSON.stringify(colorsData)
-      // ),
+      await createProject(
+        token,
+        projectFields.title,
+        projectFields.Description,
+        Number(projectFields.budget.replaceAll(",", "")),
+        price,
+        null,
+        "processing",
+        "low",
+        userProfile.id,
+        Number(plansId),
+        similarSiteData,
+        colorsData,
+        pluginData,
+        templatesData
+      ),
     ]);
   };
+
   return (
     // w-[90%]
     <form
@@ -197,21 +224,21 @@ function SubmitOrder() {
           name="title"
         />
         <SubmitOrderDropdown
-          dropDownTitle="نوع پروژه:"
-          dropdownItems={["فروشگاهی", "شرکتی ", "پنل سازمانی"]}
-          value={projectFields.type}
+          dropDownTitle="پلن انتخابی:"
+          dropdownItems={planTitlesAndDescs}
+          value={projectFields.plan}
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-            setProjectFields((last) => ({ ...last, type: e.target.value }))
+            setProjectFields((last) => ({ ...last, plan: e.target.value }))
           }
         />
       </div>
       <div className="grid grid-cols-2 gap-3">
         <SubmitOrderDropdown
-          dropDownTitle="پلن انتخابی:"
-          dropdownItems={["وردپرس ", "برنامه نویسی اختصاصی "]}
-          value={projectFields.plan}
+          dropDownTitle="نوع پروژه:"
+          dropdownItems={siteTypeTitles}
+          value={projectFields.type}
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-            setProjectFields((last) => ({ ...last, plan: e.target.value }))
+            setProjectFields((last) => ({ ...last, type: e.target.value }))
           }
         />
         <PanelFields

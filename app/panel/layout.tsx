@@ -1,7 +1,7 @@
 "use client";
 import PanelNav from "@/components/panel/panel-nav";
 import PanelSidebar from "@/components/panel/panel-sidebar";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { mainAdminSidebarOptions, userSidebarOptions } from "@/lib/data";
 import { useDispatch, useSelector } from "react-redux";
 import PanelNavSmall from "@/components/panel/panel-nav-small";
@@ -21,13 +21,15 @@ import ValueIdContextWrapper from "./admin/plan-management/context/ValueIdContex
 import DepartmentContextWrapper from "./admin/context/department-context/DepartmentContextWrapper";
 import PermissionContextWrapper from "./admin/context/permission-context/PermissionContextWrapper";
 import UserContextWrapper from "./admin/context/user-context/UserContextWrapper";
+import { getAllPlans, getAllSiteTypes } from "@/utils/utils";
+import { OrderSubmissionContext } from "./context/order-submission-contexts/OrderSubmissionContext";
+import OrderSubmissionContextWrapper from "./context/order-submission-contexts/OrderSubmissionContextWrapper";
 
 const PanelLayout = ({ children }: { children: React.ReactNode }) => {
-  const { token, userProfile, status, numberOfAnnouncements , role } = useSelector(
-    (store: any) => store.userData
-  );
+  const { token, userProfile, status, numberOfAnnouncements, role } =
+    useSelector((store: any) => store.userData);
   const userRoles = useGetUserRoles();
-
+  const { setAllPlans , setSiteTypes } = useContext(OrderSubmissionContext);
   const [showAnnouncementDropdown, setShowAnnouncementDropdown] =
     useState(false);
   const router = useRouter();
@@ -55,6 +57,10 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
     dispatch<any>(fetchUserProfile());
   }, []);
 
+  useEffect(() => {
+    getAllPlans(token, setAllPlans);
+    getAllSiteTypes(token,setSiteTypes);
+  }, []);
   // useEffect(() => {
   //   if (!token) {
   //     dispatch(deleteDataFromCookie());
@@ -63,78 +69,78 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   // }, [token]);
 
   return (
-    <UserContextWrapper>
-      <DepartmentContextWrapper>
-        <PermissionContextWrapper>
-          <ValueIdContextWrapper>
-            <PlanContextWrapper>
-              <div
-                className="font-YekanBakh flex w-full flex-row relative min-h-screen"
-                style={{ boxShadow: "0px 0px 90px 2px rgba(0, 0, 0, 0.25)" }}
-                dir="rtl"
-              >
-                {/* {token && ( */}
-                <>
-                  <div className="hidden lg:block">
-                    <PanelSidebar
-                      sideOptions={
-                        role === "Admin"
-                        ?
-                        mainAdminSidebarOptions
-                        :
-                        userSidebarOptions
-                      }
-                      status={status}
-                    />
-                  </div>
-                  <div className="w-full lg:overflow-hidden">
-                    <div>
-                      <PanelNav
-                        userProfile={userProfile}
-                        status={status}
-                        userType={userRoles}
-                        numberOfAnnouncements={numberOfAnnouncements}
-                        setShowAnnouncementDropdown={
-                          setShowAnnouncementDropdown
+    <OrderSubmissionContextWrapper>
+      <UserContextWrapper>
+        <DepartmentContextWrapper>
+          <PermissionContextWrapper>
+            <ValueIdContextWrapper>
+              <PlanContextWrapper>
+                <div
+                  className="font-YekanBakh flex w-full flex-row relative min-h-screen"
+                  style={{ boxShadow: "0px 0px 90px 2px rgba(0, 0, 0, 0.25)" }}
+                  dir="rtl"
+                >
+                  {/* {token && ( */}
+                  <>
+                    <div className="hidden lg:block">
+                      <PanelSidebar
+                        sideOptions={
+                          role === "Admin"
+                            ? mainAdminSidebarOptions
+                            : userSidebarOptions
                         }
-                        showAnnouncementDropdown={showAnnouncementDropdown}
+                        status={status}
                       />
                     </div>
-                    <div
-                      className="bg-[#EAEFF6] h-full p-[5%]"
-                      onMouseEnter={() => setShowAnnouncementDropdown(false)}
-                    >
-                      {children}
+                    <div className="w-full lg:overflow-hidden">
+                      <div>
+                        <PanelNav
+                          userProfile={userProfile}
+                          status={status}
+                          userType={userRoles}
+                          numberOfAnnouncements={numberOfAnnouncements}
+                          setShowAnnouncementDropdown={
+                            setShowAnnouncementDropdown
+                          }
+                          showAnnouncementDropdown={showAnnouncementDropdown}
+                        />
+                      </div>
+                      <div
+                        className="bg-[#EAEFF6] h-full p-[5%]"
+                        onMouseEnter={() => setShowAnnouncementDropdown(false)}
+                      >
+                        {children}
+                      </div>
+                      <div className="md:hidden flex flex-row bg-[#4866CF] transition-all rounded-md w-full">
+                        <Image
+                          src={prevarrow}
+                          alt=""
+                          onClick={() => handlePrevClick()}
+                          className={`${currentPage === 0 ? "hidden" : "flex"}`}
+                        />
+                        <PanelSidebarSmall sideOptions={displayedItems} />
+                        <Image
+                          src={nextarrow}
+                          alt=""
+                          onClick={() => handleNextClick()}
+                          className={`${
+                            currentPage + 1 ===
+                            Math.ceil(userSidebarOptions.length / itemsPerPage)
+                              ? "hidden"
+                              : "flex"
+                          }`}
+                        />
+                      </div>
                     </div>
-                    <div className="md:hidden flex flex-row bg-[#4866CF] transition-all rounded-md w-full">
-                      <Image
-                        src={prevarrow}
-                        alt=""
-                        onClick={() => handlePrevClick()}
-                        className={`${currentPage === 0 ? "hidden" : "flex"}`}
-                      />
-                      <PanelSidebarSmall sideOptions={displayedItems} />
-                      <Image
-                        src={nextarrow}
-                        alt=""
-                        onClick={() => handleNextClick()}
-                        className={`${
-                          currentPage + 1 ===
-                          Math.ceil(userSidebarOptions.length / itemsPerPage)
-                            ? "hidden"
-                            : "flex"
-                        }`}
-                      />
-                    </div>
-                  </div>
-                </>
-                {/* )} */}
-              </div>
-            </PlanContextWrapper>
-          </ValueIdContextWrapper>
-        </PermissionContextWrapper>
-      </DepartmentContextWrapper>
-    </UserContextWrapper>
+                  </>
+                  {/* )} */}
+                </div>
+              </PlanContextWrapper>
+            </ValueIdContextWrapper>
+          </PermissionContextWrapper>
+        </DepartmentContextWrapper>
+      </UserContextWrapper>
+    </OrderSubmissionContextWrapper>
   );
 };
 export default PanelLayout;

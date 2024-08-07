@@ -13,6 +13,12 @@ import { Dispatch, SetStateAction } from "react";
 import { Bounce, toast } from "react-toastify";
 import { ConsultTypes } from "@/app/panel/admin/consultations/page";
 import { ConsultationDetail } from "@/app/panel/admin/consultations/consult-detail/page";
+import {
+  ColorType,
+  PluginType,
+  SimilarSiteType,
+  TemplateType,
+} from "@/app/panel/user/submit-order/page";
 
 // Logout
 export const logout = async () => {
@@ -1331,6 +1337,7 @@ export const getAllPlans = async (
     });
     setPlans(data.data);
     console.log(data);
+    window.localStorage.setItem("plans", JSON.stringify(data.data));
   } catch (error) {
     console.log(error);
   }
@@ -1961,12 +1968,13 @@ export const CreateNewSiteType = async (
 // get all site types
 export const getAllSiteTypes = async (
   token: string,
-  setSiteTypes: React.Dispatch<React.SetStateAction<never[]>>
+  setSiteTypes: React.Dispatch<React.SetStateAction<SimilarSiteType[]>>
 ) => {
   try {
     const { data } = await app("/types");
     setSiteTypes(data.data);
     console.log(data);
+    window.localStorage.setItem("site-types", JSON.stringify(data.data));
   } catch (error) {
     console.log(error);
   }
@@ -2854,12 +2862,15 @@ export const createProject = async (
   description: string,
   budget_cost: number,
   price: number,
-  status: string | number,
-  planId: number,
+  discount_code: number | null,
+  status: string,
+  priority: string,
   register_user_id: number,
-  lookslike: string | null,
-  org_color: string | null,
-  template: string | null
+  planId: number,
+  lookslike: SimilarSiteType[] | null,
+  org_color: ColorType[] | null,
+  plugin: PluginType[] | null,
+  template: TemplateType[] | null
 ) => {
   try {
     const { data } = await app.post(
@@ -2869,12 +2880,15 @@ export const createProject = async (
         description,
         budget_cost,
         price,
+        discount_code,
         status,
+        priority,
         register_user_id,
         plan_id: planId,
-        lookslike,
-        org_color,
-        template,
+        lookslike: JSON.stringify(lookslike) || null,
+        org_color: JSON.stringify(org_color) || null,
+        plugin: JSON.stringify(plugin) || null,
+        template: JSON.stringify(template) || null,
       },
       {
         headers: {
@@ -2895,8 +2909,8 @@ export const createProject = async (
       rtl: true,
     });
     console.log(data);
-  } catch (error) {
-    console.log(error);
+  } catch (error:any) {
+    console.log(error.response.data.message);
     toast.error("خطا در ثبت پروژه.", {
       position: "top-right",
       autoClose: 3000,

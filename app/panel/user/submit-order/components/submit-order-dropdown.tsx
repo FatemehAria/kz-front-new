@@ -14,7 +14,6 @@ function SubmitOrderDropdown({
   onChange,
   name,
 }: SubmitOrderDropdownProps) {
-  console.log(value);
   return (
     <div
       className={`flex ${
