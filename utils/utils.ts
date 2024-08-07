@@ -1147,6 +1147,7 @@ export const updateBrand = async (
 // get all projects
 export const getAllProjects = async (
   token: string,
+  setAllProjects: React.Dispatch<React.SetStateAction<never[]>>,
   setProjectStatus: React.Dispatch<
     React.SetStateAction<{
       error: string;
@@ -1156,15 +1157,16 @@ export const getAllProjects = async (
 ) => {
   try {
     setProjectStatus((last) => ({ ...last, loading: true }));
-    const { data } = await app("/orders", {
+    const { data } = await app("/projects", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
     console.log(data);
+    setAllProjects(data.data);
   } catch (error: any) {
     console.log(error.response.data.message);
-    if (error.response.data.message === "order-notFound") {
+    if (error.response.data.message === "project-notFound") {
       setProjectStatus((last) => ({ ...last, error: "پروژه ای یافت نشد." }));
     } else {
       setProjectStatus((last) => ({
@@ -2909,7 +2911,7 @@ export const createProject = async (
       rtl: true,
     });
     console.log(data);
-  } catch (error:any) {
+  } catch (error: any) {
     console.log(error.response.data.message);
     toast.error("خطا در ثبت پروژه.", {
       position: "top-right",
@@ -3024,5 +3026,23 @@ export const createProjectTemplate = async (
     console.log(data);
   } catch (error: any) {
     console.log(error.response.data.message);
+  }
+};
+// get project detail
+export const getProjectDetail = async (
+  token: string,
+  projectId: string | null,
+  setProjectDetail: React.Dispatch<React.SetStateAction<any>>
+) => {
+  try {
+    const { data } = await app.get(`/project/show/${projectId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    setProjectDetail(data.data);
+  } catch (error) {
+    console.log(error);
   }
 };

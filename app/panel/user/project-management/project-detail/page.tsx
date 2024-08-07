@@ -3,10 +3,11 @@ import {
   getIdFromLocal,
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
+import { getProjectDetail } from "@/utils/utils";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ImBackward, ImBackward2 } from "react-icons/im";
 import { IoArrowBack } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,9 +23,8 @@ const ProjectDetailNav = [
 ];
 function ProjectDetail() {
   const router = useRouter();
-  const { localToken, localUserId } = useSelector(
-    (state: any) => state.userData
-  );
+  const { token, localUserId } = useSelector((state: any) => state.userData);
+  const [projectDetail, setProjectDetail] = useState([]);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getIdFromLocal());
@@ -34,26 +34,10 @@ function ProjectDetail() {
   const params = useSearchParams();
   const id = params.get("id");
 
-  const getProjectDetail = async () => {
-    try {
-      const { data } = await axios(
-        `https://keykavoos.liara.run/Client/OneProject/${localUserId}/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localToken}`,
-          },
-        }
-      );
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   useEffect(() => {
-    if (localUserId) {
-      getProjectDetail();
-    }
-  }, [localUserId]);
+    getProjectDetail(token, id, setProjectDetail);
+  }, []);
+
   return (
     <div className="relative">
       <div

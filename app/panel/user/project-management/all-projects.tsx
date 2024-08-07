@@ -26,17 +26,17 @@ function AllProjects() {
   }, []);
 
   useEffect(() => {
-    getAllProjects(token,setProjectStatus);
+    getAllProjects(token, setAllProjects, setProjectStatus);
   }, []);
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="grid grid-cols-5 text-center">
+      <div className="grid grid-cols-4 text-center">
         <p>ردیف</p>
         <p>عنوان پروژه</p>
         <p>وضعیت پیشرفت پروژه</p>
         <p>وضعیت مالی پروژه</p>
-        <p>درخواست فاکتور</p>
+        {/* <p>درخواست فاکتور</p> */}
       </div>
       {projectStatus.loading ? (
         <SkeletonTheme>
@@ -47,14 +47,20 @@ function AllProjects() {
       ) : (
         allProjects.map((item: any, index) => (
           <Link
-            key={item._id}
-            className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
-            href={`/panel/user/project-management/project-detail?id=${item._id}`}
+            key={item.id}
+            className="grid grid-cols-4 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
+            href={`/panel/user/project-management/project-detail?id=${item.id}`}
           >
             <p>{index + 1}</p>
             <p>{item.title}</p>
-            <p>{item.Development === "Not Started" ? "شروع نشده" : ""}</p>
-            <p>{item.Financial_Situation === "unknown" ? "نامعلوم" : ""}</p>
+            <p>
+              {item.status === "processing"
+                ? "در حال بررسی"
+                : item.status === "verified"
+                ? "تایید شده"
+                : "تایید نشده"}
+            </p>
+            <p>{item.final_price === null ? "نامعلوم" : ""}</p>
           </Link>
         ))
       )}
