@@ -8,14 +8,14 @@ type SubmitOrderDropdownProps = {
   modalFieldTitle: string;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   // showModal: boolean;
-  data: { title: string; url: string }[];
+  data: { title: string; color: string }[];
   setData: React.Dispatch<
-    React.SetStateAction<{ title: string; url: string }[]>
+    React.SetStateAction<{ title: string; color: string }[]>
   >;
   // modalInputValue: string;
   // setModalInputValue: React.Dispatch<React.SetStateAction<string>>;
 };
-function SubmitOrderModalfield({
+function SubmitColorModalfield({
   modalFieldTitle,
   setShowModal,
   // showModal,
@@ -41,9 +41,9 @@ SubmitOrderDropdownProps) {
         />
         <div className="flex justify-end gap-3 mx-2">
           {data.map((item, index) => (
-            item.url && <div key={item.url}>
+            item.color && <div key={item.color}>
               <div className="flex items-center bg-[#4866CE] text-white p-1 rounded-[4px]">
-                <span>{item.url}</span>
+                <span>{item.color}</span>
                 {
                   <span
                     className="text-red-600 cursor-pointer"
@@ -61,4 +61,4 @@ SubmitOrderDropdownProps) {
   );
 }
 
-export default SubmitOrderModalfield;
+export default SubmitColorModalfield;

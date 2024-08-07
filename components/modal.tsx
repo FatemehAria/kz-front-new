@@ -43,24 +43,35 @@ function Modal({
   isLoggedIn,
   redirect,
 }: ModalProps) {
-  const { token, role } = useSelector((state: any) => state.userData);
+  const { token, role, status, successMessage } = useSelector(
+    (state: any) => state.userData
+  );
   const dispatch = useDispatch();
   const router = useRouter();
   useEffect(() => {
     dispatch(getTokenFromLocal());
   }, []);
-  console.log(role);
-  console.log(token);
+  // console.log(role);
+  // console.log(token);
+
 
   const handleMainButtonClick = () => {
     dispatch(openModal(false));
-    if (isLoggingIn) {
+    console.log(isLoggedIn);
+    if (!isLoggingIn) {
       // if (!token) {
-        // setStartLogin(true);
-        setSteps?.(2);
+      // setStartLogin(true);
+      setSteps?.(3);
       // }
     } else {
-      setSteps?.(3);
+      if (isLoggingIn && !isLoggedIn) {
+        setSteps?.(2);
+      } else if (isLoggedIn) {
+        // if (status === "success" && successMessage) {
+          if (role === "Admin") router.replace("/panel/admin/view-users");
+          else router.replace("/panel/user/dashboard");
+        // }
+      }
     }
   };
 

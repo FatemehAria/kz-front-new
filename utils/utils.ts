@@ -142,13 +142,41 @@ export const sendOTPCodeForRegistrationForHaghighi = async (
 //   }
 // };
 // send otp code for login and general
-export const sendOTPCodeMain = async (mobile: string) => {
+export const sendOTPCodeMain = async (
+  mobile: string,
+  setSteps: React.Dispatch<React.SetStateAction<number>>
+) => {
   try {
     const { data } = await app.post("/loginotp", {
       mobile,
     });
     console.log(data);
+    toast.success("کد با موفقیت ارسال شد.", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setSteps(2);
   } catch (error: any) {
+    toast.error("خطا در ارسال کد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
     console.log(error);
   }
 };
@@ -1204,15 +1232,16 @@ export const submitProject = async (
 // file upload in project
 export const uploadProjectFile = async (
   token: string,
-  projectId: string,
+  projectId: number,
+  userId: number,
   File: File
 ) => {
   const formData = new FormData();
-  formData.append("File", File);
+  formData.append("file", File);
   try {
     const { data } = await app.post(
       `/project/file/upload/${projectId}`,
-      formData,
+      { formData, register_user_id: userId },
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -1700,7 +1729,7 @@ export const createNewPlanValue = async (
       rtl: true,
     });
     console.log(data);
-  } catch (error) {
+  } catch (error: any) {
     toast.error("خطا در ایجاد مقدار", {
       position: "top-right",
       autoClose: 5000,
@@ -1713,7 +1742,7 @@ export const createNewPlanValue = async (
       transition: Bounce,
       rtl: true,
     });
-    console.log(error);
+    console.log(error.response.data.message);
   }
 };
 // get all values of the plan
@@ -1731,6 +1760,161 @@ export const getPlanValues = async (
     setPlanValues(data.data);
   } catch (error) {
     console.log(error);
+  }
+};
+// restore plan values by admin
+export const restorePlanValues = async (
+  valueId: number | null,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/value/restore/${valueId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    toast.success("مقدار با موفقیت بازگردانی شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(false);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در بازگردانی مقدار", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// get all values of the plan
+export const getPlanValueDetail = async (
+  token: string,
+  setPlanValueDetail: React.Dispatch<React.SetStateAction<ValueType[]>>,
+  valueId: string
+) => {
+  try {
+    const { data } = await app(`/value/${valueId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    setPlanValueDetail(data.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+// update plan value by admin
+export const updatePlanValue = async (
+  token: string,
+  attrId: number,
+  planId: number | null,
+  title: string | null,
+  description: string | null
+) => {
+  try {
+    const { data } = await app.post(
+      `/value/update`,
+      {
+        title: title || "",
+        description: description || "",
+        plan_id: planId,
+        attr_id: attrId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("مقدار با موفقیت به روزرسانی شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در به روزرسانی مقدار", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// delete plan value by admin
+export const deletePlanValue = async (
+  valueId: number,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/value/delete/${valueId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    toast.success("مقدار با موفقیت حذف شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(true);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در حذف مقدار", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
   }
 };
 // create new site type by admin
@@ -1843,7 +2027,7 @@ export const updateSiteType = async (
     });
   }
 };
-// delete siet type by admin
+// delete site type by admin
 export const deleteSiteType = async (
   brandId: number,
   token: string,
@@ -2668,5 +2852,170 @@ export const getTicektDetail = async (
     setTicketDetail(data.data);
   } catch (error) {
     console.log(error);
+  }
+};
+// create new project
+export const createProject = async (
+  token: string,
+  title: string,
+  description: string,
+  budget_cost: number,
+  price: number,
+  status: string | number,
+  planId: number,
+  register_user_id: number,
+  lookslike: string | null,
+  org_color: string | null,
+  template: string | null
+) => {
+  try {
+    const { data } = await app.post(
+      "/project/store",
+      {
+        title,
+        description,
+        budget_cost,
+        price,
+        status,
+        register_user_id,
+        plan_id: planId,
+        lookslike,
+        org_color,
+        template,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("پروژه با موفقیت ثبت شد.", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در ثبت پروژه.", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// create project similar site
+export const createProjectSimilars = async (
+  token: string,
+  title: string,
+  url: string,
+  project_id: number | null
+) => {
+  try {
+    const { data } = await app.post(
+      "/project/like_site/store",
+      {
+        title,
+        url,
+        project_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(data);
+  } catch (error: any) {
+    console.log(error.response.data.message);
+  }
+};
+// create project color
+export const createProjectColor = async (
+  token: string,
+  title: string,
+  color: string,
+  project_id: number | null
+) => {
+  console.log(title, color);
+  try {
+    const { data } = await app.post(
+      "/project/org_color/store",
+      {
+        title,
+        color,
+        project_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(data);
+  } catch (error: any) {
+    console.log(error.response.data.message);
+  }
+};
+// create project plugin
+export const createProjectPlugin = async (
+  token: string,
+  plugin_name: string,
+  project_id: number | null
+) => {
+  try {
+    const { data } = await app.post(
+      "/project/plugin/store",
+      {
+        plungin_in: plugin_name,
+        project_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(data);
+  } catch (error: any) {
+    console.log(error.response.data.message);
+  }
+};
+// create project template
+export const createProjectTemplate = async (
+  token: string,
+  template_name: string,
+  project_id: number | null
+) => {
+  try {
+    const { data } = await app.post(
+      "/project/template/store",
+      {
+        template_name,
+        project_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(data);
+  } catch (error: any) {
+    console.log(error.response.data.message);
   }
 };

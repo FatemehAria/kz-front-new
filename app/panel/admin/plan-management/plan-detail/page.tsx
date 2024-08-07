@@ -79,7 +79,7 @@ function PlanDetail() {
           + افزودن ویژگی
         </span>
         <Link
-          href={"/panel/admin/plan-management/plan-detail/manage-values"}
+          href={`/panel/admin/plan-management/plan-detail/manage-values?plan_id=${planId}`}
           className="text-white bg-[#4866CF] p-2 rounded-[5px] w-[140px]"
           onClick={() =>
             setAddAttrAndValue((last) => ({

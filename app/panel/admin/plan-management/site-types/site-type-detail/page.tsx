@@ -15,7 +15,7 @@ function SiteTypesDetail() {
   return (
     <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center">
       <div className="grid grid-cols-2">
-        <div>نام برند</div>
+        <div>نام طراحی</div>
         <div>توضیحات</div>
       </div>
 

@@ -54,6 +54,8 @@ type ValueComponentProps = {
 export type ValueType = {
   id: number;
   title: string;
+  description: string;
+  deleted_at: string;
 };
 
 function ValueComponent({

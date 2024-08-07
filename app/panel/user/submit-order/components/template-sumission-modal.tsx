@@ -1,45 +1,39 @@
 "use client";
 import React from "react";
 
-type OrdersubmissionModalProps = {
+type TemplateSubmissionModalProps = {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  data: { title: string; url: string }[];
+  data: { template_name: string }[];
   setData: React.Dispatch<
     React.SetStateAction<
       {
-        title: string;
-        url: string;
+        template_name: string;
       }[]
     >
   >;
   modalInputValue: {
-    title: string;
-    url: string;
+    template_name: string;
   };
   setModalInputValue: React.Dispatch<
     React.SetStateAction<{
-      title: string;
-      url: string;
+        template_name: string;
     }>
   >;
 };
-function OrdersubmissionModal({
+function TemplateSubmissionModal({
   showModal,
   setShowModal,
   data,
   setData,
   modalInputValue,
   setModalInputValue,
-}: OrdersubmissionModalProps) {
+}: TemplateSubmissionModalProps) {
   const handleSave = () => {
-    if (
-      modalInputValue.title.trim() !== "" &&
-      modalInputValue.url.trim() !== ""
-    ) {
+    if (modalInputValue.template_name.trim() !== "") {
       setData([...data, modalInputValue]);
     }
-    setModalInputValue({ title: "", url: "" });
+    setModalInputValue({ template_name: "" });
   };
   // console.log(data);
   return (
@@ -59,29 +53,21 @@ function OrdersubmissionModal({
                 type="text"
                 className="bg-[#EAEFF6] w-full rounded-[4px] p-2 outline-none"
                 autoFocus={true}
-                value={modalInputValue.title}
+                value={modalInputValue.template_name}
                 onChange={(e) =>
                   setModalInputValue((last) => ({
                     ...last,
-                    title: e.target.value,
-                  }))
-                }
-              />
-              <input
-                type="text"
-                className="bg-[#EAEFF6] w-full rounded-[4px] p-2 outline-none"
-                value={modalInputValue.url}
-                onChange={(e) =>
-                  setModalInputValue((last) => ({
-                    ...last,
-                    url: e.target.value,
+                    template_name: e.target.value,
                   }))
                 }
               />
               <div className="flex flex-row-reverse gap-3">
                 {data.map((item) => (
-                  <p key={item.url} className="bg-[#EAEFF6] rounded-[4px] px-2">
-                    {item.url}
+                  <p
+                    key={item.template_name}
+                    className="bg-[#EAEFF6] rounded-[4px] px-2"
+                  >
+                    {item.template_name}
                   </p>
                 ))}
               </div>
@@ -117,4 +103,4 @@ function OrdersubmissionModal({
   );
 }
 
-export default OrdersubmissionModal;
+export default TemplateSubmissionModal;

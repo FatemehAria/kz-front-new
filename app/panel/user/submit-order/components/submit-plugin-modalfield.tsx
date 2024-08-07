@@ -7,15 +7,12 @@ import OrdersubmissionModal from "./odersubmission-modal";
 type SubmitOrderDropdownProps = {
   modalFieldTitle: string;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  // showModal: boolean;
-  data: { title: string; url: string }[];
+  data: { plugin_name: string; }[];
   setData: React.Dispatch<
-    React.SetStateAction<{ title: string; url: string }[]>
+    React.SetStateAction<{ plugin_name: string; }[]>
   >;
-  // modalInputValue: string;
-  // setModalInputValue: React.Dispatch<React.SetStateAction<string>>;
 };
-function SubmitOrderModalfield({
+function SubmitPluginModalfield({
   modalFieldTitle,
   setShowModal,
   // showModal,
@@ -41,9 +38,9 @@ SubmitOrderDropdownProps) {
         />
         <div className="flex justify-end gap-3 mx-2">
           {data.map((item, index) => (
-            item.url && <div key={item.url}>
+            item.plugin_name && <div key={item.plugin_name}>
               <div className="flex items-center bg-[#4866CE] text-white p-1 rounded-[4px]">
-                <span>{item.url}</span>
+                <span>{item.plugin_name}</span>
                 {
                   <span
                     className="text-red-600 cursor-pointer"
@@ -61,4 +58,4 @@ SubmitOrderDropdownProps) {
   );
 }
 
-export default SubmitOrderModalfield;
+export default SubmitPluginModalfield;

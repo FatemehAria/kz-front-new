@@ -42,6 +42,7 @@ const PanelNav = ({
     router.replace("/");
     dispatch(openModal(false));
   };
+
   return (
     <div
       className="flex flex-col items-end relative justify-center"
@@ -79,12 +80,14 @@ const PanelNav = ({
                 <SkeletonTheme borderRadius="100%">
                   <Skeleton width={60} height={60} baseColor="#EAEFF6" />
                 </SkeletonTheme>
-              ) : userProfile.data?.pic_path ? (
+              ) : userProfile.pic_path ? (
                 <div className="bg-[#EAEFF6] p-2 rounded-full">
                   <Image
                     alt="profile"
-                    src={`http://localhost:8000/${userProfile.data.pic_path}`}
+                    src={`http://localhost:8000/storage/${userProfile.pic_path}`}
                     className="rounded-full w-[45px] h-[45px]"
+                    width={45}
+                    height={45}
                   />
                 </div>
               ) : (

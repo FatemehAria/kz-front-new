@@ -52,6 +52,7 @@ const fetchUserInLoginWithPassword = createAsyncThunk(
         userId: data.data?.user.id,
         userType: data.data?.user.roles,
         type: data.data?.user.type,
+        isLoggedIn: true,
       };
     } catch (error: any) {
       console.log(error);
@@ -132,7 +133,7 @@ const verifyUserByOTPInLoginAndRegistration = createAsyncThunk(
 // daryafte etelaat karbar:checked
 const fetchUserProfile = createAsyncThunk<
   {
-    data: any; 
+    data: any;
     FirstName: string;
     // LastName: string;
     email: string;
@@ -153,7 +154,7 @@ const fetchUserProfile = createAsyncThunk<
   { state: RootState }
 >("userData/fetchUserProfile", async (_, { getState, rejectWithValue }) => {
   try {
-    console.log(getState().userData.token);
+    // console.log(getState().userData.token);
     const { data } = await app.get(`/user/show`, {
       headers: {
         authorization: `Bearer ${getState().userData.token}`,
@@ -287,7 +288,7 @@ const userSlice = createSlice({
       state.FirstName = action.payload.FirstName;
       state.userType = action.payload.userType;
       state.userId = action.payload.userId;
-      state.isLoggedIn = true;
+      state.isLoggedIn = action.payload.isLoggedIn;
       sessionStorage.setItem("userId", state.userId);
       state.successMessage = `${state?.FirstName} عزیز با موفقیت وارد پنل کاربری خود شدید.`;
       state.errorMessage = "";

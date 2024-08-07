@@ -1,45 +1,39 @@
 "use client";
 import React from "react";
 
-type OrdersubmissionModalProps = {
+type PluginSubmissionModalProps = {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  data: { title: string; url: string }[];
+  data: { plugin_name: string }[];
   setData: React.Dispatch<
     React.SetStateAction<
       {
-        title: string;
-        url: string;
+        plugin_name: string;
       }[]
     >
   >;
   modalInputValue: {
-    title: string;
-    url: string;
+    plugin_name: string;
   };
   setModalInputValue: React.Dispatch<
     React.SetStateAction<{
-      title: string;
-      url: string;
+      plugin_name: string;
     }>
   >;
 };
-function OrdersubmissionModal({
+function PluginSubmissionModal({
   showModal,
   setShowModal,
   data,
   setData,
   modalInputValue,
   setModalInputValue,
-}: OrdersubmissionModalProps) {
+}: PluginSubmissionModalProps) {
   const handleSave = () => {
-    if (
-      modalInputValue.title.trim() !== "" &&
-      modalInputValue.url.trim() !== ""
-    ) {
+    if (modalInputValue.plugin_name.trim() !== "") {
       setData([...data, modalInputValue]);
     }
-    setModalInputValue({ title: "", url: "" });
+    setModalInputValue({ plugin_name: "" });
   };
   // console.log(data);
   return (
@@ -59,29 +53,21 @@ function OrdersubmissionModal({
                 type="text"
                 className="bg-[#EAEFF6] w-full rounded-[4px] p-2 outline-none"
                 autoFocus={true}
-                value={modalInputValue.title}
+                value={modalInputValue.plugin_name}
                 onChange={(e) =>
                   setModalInputValue((last) => ({
                     ...last,
-                    title: e.target.value,
-                  }))
-                }
-              />
-              <input
-                type="text"
-                className="bg-[#EAEFF6] w-full rounded-[4px] p-2 outline-none"
-                value={modalInputValue.url}
-                onChange={(e) =>
-                  setModalInputValue((last) => ({
-                    ...last,
-                    url: e.target.value,
+                    plugin_name: e.target.value,
                   }))
                 }
               />
               <div className="flex flex-row-reverse gap-3">
                 {data.map((item) => (
-                  <p key={item.url} className="bg-[#EAEFF6] rounded-[4px] px-2">
-                    {item.url}
+                  <p
+                    key={item.plugin_name}
+                    className="bg-[#EAEFF6] rounded-[4px] px-2"
+                  >
+                    {item.plugin_name}
                   </p>
                 ))}
               </div>
@@ -117,4 +103,4 @@ function OrdersubmissionModal({
   );
 }
 
-export default OrdersubmissionModal;
+export default PluginSubmissionModal;

@@ -34,7 +34,7 @@ const Login = ({
   setIsLoggingIn,
 }: LoginProps) => {
   const { setAuthSteps } = useContext(AuthContext);
-  const { showModal, successMessage, status, errorMessage, role } = useSelector(
+  const { showModal, successMessage, status, errorMessage, role , isLoggedIn } = useSelector(
     (state: any) => state.userData
   );
   const dispatch = useDispatch();
@@ -45,7 +45,7 @@ const Login = ({
     setIsLoggingIn(true);
     dispatch(openModal(true));
     if (result && loginApproach === 0) {
-      await sendOTPCodeMain(values.PhoneNumber);
+      await sendOTPCodeMain(values.PhoneNumber, setAuthSteps);
       // lagin ba password
     } else if (result && loginApproach === 1) {
       dispatch<any>(
@@ -54,11 +54,6 @@ const Login = ({
           password: values.Password,
         })
       );
-
-      if (status === "success" && successMessage) {
-        if (role === "admin") router.replace("/panel/admin/view-users");
-        else router.replace("/panel/user/dashboard");
-      }
     }
   };
 
@@ -75,23 +70,6 @@ const Login = ({
   const { result, setAnswer, answer, mathProblem, wrongAnswerMessage } =
     useCaptcha(values.PhoneNumber);
   useStoreNumInLocal(values.PhoneNumber);
-
-  // useEffect(() => {
-  //   if (result && loginApproach === 1) {
-  //     if (startLogin) {
-  //       dispatch<any>(
-  //         fetchUserInLoginWithPassword({
-  //           mobile: values.PhoneNumber,
-  //           password: values.Password,
-  //         })
-  //       );
-  //       if (status === "success" && successMessage) {
-  //         if (role === "admin") router.replace("/panel/admin/view-users");
-  //         else router.replace("/panel/user/dashboard");
-  //       }
-  //     }
-  //   }
-  // }, [startLogin, status]);
 
   return (
     <React.Fragment>
@@ -110,6 +88,7 @@ const Login = ({
             }
             setSteps={setAuthSteps}
             isLoggingIn={isLoggingIn}
+            isLoggedIn={isLoggedIn}
             // setStartLogin={setStartLogin}
           />
           <Logo />
@@ -165,6 +144,7 @@ const Login = ({
                 type="text"
                 name="Password"
                 error={errors.Password}
+                autoFocus={false}
               />
             </OtpLoginMain>
           )}

@@ -56,10 +56,11 @@ const UserLoginViaOTP = () => {
 
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log("running");
     await dispatch<any>(
       verifyUserByOTPInLoginAndRegistration({
-        mobile: PhoneNumber,
         otp_code: OTP,
+        mobile: PhoneNumber,
       })
     );
     if (role === "admin" || role === "Admin")
@@ -74,7 +75,7 @@ const UserLoginViaOTP = () => {
     }
   }, [status]);
   // console.log(successMessage);
-  // console.log("2");
+  console.log("2");
   return (
     <React.Fragment>
       <div
@@ -157,7 +158,7 @@ const UserLoginViaOTP = () => {
                       className="flex items-center gap-2"
                       onClick={async () =>
                         counter === 0 &&
-                        (sendOTPCodeMain(PhoneNumber), setCounter(90))
+                        (sendOTPCodeMain(PhoneNumber,setAuthSteps), setCounter(90))
                       }
                     >
                       <Image src={sms} alt="sms" />
@@ -176,7 +177,8 @@ const UserLoginViaOTP = () => {
               <SubmissionBtn
                 text="تایید رمز یکبارمصرف"
                 validation={true}
-                type={showModal ? "button" : "submit"}
+                type="submit"
+                // type={showModal ? "button" : "submit"}
               />
             </div>
           </form>

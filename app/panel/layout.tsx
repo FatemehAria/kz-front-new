@@ -23,7 +23,7 @@ import PermissionContextWrapper from "./admin/context/permission-context/Permiss
 import UserContextWrapper from "./admin/context/user-context/UserContextWrapper";
 
 const PanelLayout = ({ children }: { children: React.ReactNode }) => {
-  const { token, userProfile, status, numberOfAnnouncements } = useSelector(
+  const { token, userProfile, status, numberOfAnnouncements , role } = useSelector(
     (store: any) => store.userData
   );
   const userRoles = useGetUserRoles();
@@ -78,11 +78,11 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
                   <div className="hidden lg:block">
                     <PanelSidebar
                       sideOptions={
-                        // userRoles.includes("Admin")
-                        // ?
+                        role === "Admin"
+                        ?
                         mainAdminSidebarOptions
-                        // :
-                        // userSidebarOptions
+                        :
+                        userSidebarOptions
                       }
                       status={status}
                     />

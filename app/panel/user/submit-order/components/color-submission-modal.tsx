@@ -1,47 +1,47 @@
 "use client";
 import React from "react";
 
-type OrdersubmissionModalProps = {
+type ColorSubmissionModalProps = {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  data: { title: string; url: string }[];
+  data: { title: string; color: string }[];
   setData: React.Dispatch<
     React.SetStateAction<
       {
         title: string;
-        url: string;
+        color: string;
       }[]
     >
   >;
   modalInputValue: {
     title: string;
-    url: string;
+    color: string;
   };
   setModalInputValue: React.Dispatch<
     React.SetStateAction<{
       title: string;
-      url: string;
+      color: string;
     }>
   >;
 };
-function OrdersubmissionModal({
+function ColorSubmissionModal({
   showModal,
   setShowModal,
   data,
   setData,
   modalInputValue,
   setModalInputValue,
-}: OrdersubmissionModalProps) {
+}: ColorSubmissionModalProps) {
   const handleSave = () => {
     if (
       modalInputValue.title.trim() !== "" &&
-      modalInputValue.url.trim() !== ""
+      modalInputValue.color.trim() !== ""
     ) {
       setData([...data, modalInputValue]);
     }
-    setModalInputValue({ title: "", url: "" });
+    setModalInputValue({ title: "", color: "" });
   };
-  // console.log(data);
+  console.log(data);
   return (
     <div
       id="default-modal"
@@ -70,18 +70,18 @@ function OrdersubmissionModal({
               <input
                 type="text"
                 className="bg-[#EAEFF6] w-full rounded-[4px] p-2 outline-none"
-                value={modalInputValue.url}
+                value={modalInputValue.color}
                 onChange={(e) =>
                   setModalInputValue((last) => ({
                     ...last,
-                    url: e.target.value,
+                    color: e.target.value,
                   }))
                 }
               />
               <div className="flex flex-row-reverse gap-3">
                 {data.map((item) => (
-                  <p key={item.url} className="bg-[#EAEFF6] rounded-[4px] px-2">
-                    {item.url}
+                  <p key={item.color} className="bg-[#EAEFF6] rounded-[4px] px-2">
+                    {item.color}
                   </p>
                 ))}
               </div>
@@ -117,4 +117,4 @@ function OrdersubmissionModal({
   );
 }
 
-export default OrdersubmissionModal;
+export default ColorSubmissionModal;

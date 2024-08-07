@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PanelFields from "../../components/panel-fileds";
 import SubmitOrderDropdown from "./components/submit-order-dropdown";
 import SubmitOrderModalfield from "./components/submit-order-modalfield";
@@ -14,11 +14,24 @@ import {
 } from "@/redux/features/user/userSlice";
 import { Bounce, toast } from "react-toastify";
 import Link from "next/link";
+import {
+  createProject,
+  createProjectColor,
+  createProjectPlugin,
+  createProjectSimilars,
+  createProjectTemplate,
+  uploadProjectFile,
+} from "@/utils/utils";
+import { UserContext } from "../../admin/context/user-context/UserContext";
+import ColorSubmissionModal from "./components/color-submission-modal";
+import SubmitColorModalfield from "./components/submit-colors-modalfield";
+import SubmitPluginModalfield from "./components/submit-plugin-modalfield";
+import PluginSubmissionModal from "./components/plugin-submission-modal";
+import TemplateSubmissionModal from "./components/template-sumission-modal";
+import SubmitTemplateModalfield from "./components/submit-template-modalfield";
 
 function SubmitOrder() {
-  const { localToken, localUserId } = useSelector(
-    (state: any) => state.userData
-  );
+  const { token, userProfile } = useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getIdFromLocal());
@@ -26,16 +39,54 @@ function SubmitOrder() {
   }, []);
 
   const [File, setFile] = useState<any>(null);
-  const [similarSiteData, setSimilarSiteData] = useState<string[]>([]);
-  const [templatesData, setTemplatesData] = useState<string[]>([]);
-  const [colorsData, setColorsData] = useState<string[]>([]);
-  const [modalInputValue, setModalInputValue] = useState("");
-  const [showSimilarModal, setShowSimilarModal] = useState(false);
+  const [templatesData, setTemplatesData] = useState<
+    { template_name: string }[]
+  >([]);
   const [showTemplatesModal, setShowTemplatesModal] = useState(false);
+  const [templateModalInputValue, setTemplateModalInputValue] = useState({
+    template_name: "",
+  });
+  const [pluginData, setPluginData] = useState<
+    {
+      plugin_name: string;
+    }[]
+  >([
+    {
+      plugin_name: "",
+    },
+  ]);
+  const [pluginModalInputValue, setPluginModalInputValue] = useState({
+    plugin_name: "",
+  });
+  const [showPluginModal, setShowPluginModal] = useState(false);
+  const [colorsData, setColorsData] = useState<
+    {
+      title: string;
+      color: string;
+    }[]
+  >([
+    {
+      title: "",
+      color: "",
+    },
+  ]);
+
+  const [colorsModalInputValue, setColorsModalInputValue] = useState({
+    title: "",
+    color: "",
+  });
   const [showColorsModal, setShowColorsModal] = useState(false);
+  const [similarSiteData, setSimilarSiteData] = useState<
+    { title: string; url: string }[]
+  >([{ title: "", url: "" }]);
+  const [similarSiteModalInputValue, setSimilarSiteModalInputValue] = useState({
+    title: "",
+    url: "",
+  });
+  const [showSimilarModal, setShowSimilarModal] = useState(false);
   const [projectFields, setProjectFields] = useState({
     title: "",
-    type: "",
+    type: "1",
     plan: "",
     budget: "",
     Similar_Site: similarSiteData,
@@ -43,139 +94,52 @@ function SubmitOrder() {
     Templates: templatesData,
     Colors: colorsData,
   });
+  const price = 3000;
   const handleBudegtChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value.replace(/,/g, "");
     const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     setProjectFields((last) => ({ ...last, budget: formattedValue }));
   };
-  const SubmitProject = async (
-    title: string,
-    type: string,
-    plan: string,
-    budget: string,
-    Similar_Site: string,
-    Description: string,
-    Templates: string,
-    Colors: string
-  ) => {
-    try {
-      const { data } = await axios.post(
-        `https://keykavoos.liara.run/Client/SubmitProject/${localUserId}`,
-        {
-          title,
-          type,
-          plan,
-          budget,
-          Similar_Site,
-          Description,
-          Templates,
-          Colors,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localToken}`,
-          },
-        }
-      );
-      toast.success("پروژه با موفقیت ثبت شد.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        rtl: true,
-      });
-    } catch (error) {
-      toast.error("خطا در ثبت پروژه.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        rtl: true,
-      });
-    }
-  };
+
   const handleFileChange = (file: File) => {
     setFile(file);
   };
-  const handleFileUpload = async () => {
-    const formData = new FormData();
-    formData.append("File", File);
-    try {
-      const { data } = await axios.post(
-        `https://keykavoos.liara.run/Client/UploadFileSubmit/${localUserId}`,
-        formData,
-        {
-          headers: {
-            authorization: `Bearer ${localToken}`,
-          },
-        }
-      );
-      toast.success("آپلود فایل موفق بود.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        rtl: true,
-      });
-    } catch (error) {
-      toast.error("خطا در آپلود فایل، لطفا مجدد آپلود کنید.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        rtl: true,
-      });
-      console.log(error);
-    }
-  };
+
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (File) {
-      Promise.all([
-        await SubmitProject(
-          projectFields.title,
-          projectFields.type,
-          projectFields.plan,
-          projectFields.budget.replaceAll(",", ""),
-          JSON.stringify(similarSiteData),
-          projectFields.Description,
-          JSON.stringify(templatesData),
-          JSON.stringify(colorsData)
-        ),
-        await handleFileUpload(),
-      ]);
-    } else {
-      await SubmitProject(
-        projectFields.title,
-        projectFields.type,
-        projectFields.plan,
-        projectFields.budget.replaceAll(",", ""),
-        JSON.stringify(similarSiteData),
-        projectFields.Description,
-        JSON.stringify(templatesData),
-        JSON.stringify(colorsData)
-      );
-    }
+    Promise.all([
+      await createProjectColor(
+        token,
+        colorsModalInputValue.title,
+        colorsModalInputValue.color,
+        null
+      ),
+      // await createProjectSimilars(
+      //   token,
+      //   similarSiteModalInputValue.title,
+      //   similarSiteModalInputValue.url,
+      //   null
+      // ),
+      // await createProjectPlugin(token, pluginModalInputValue.plugin_name, null),
+      // await createProjectTemplate(
+      //   token,
+      //   templateModalInputValue.template_name,
+      //   null
+      // ),
+      // await createProject(
+      //   token,
+      //   projectFields.title,
+      //   projectFields.Description,
+      //   Number(projectFields.type),
+      //   Number(projectFields.budget.replaceAll(",", "")),
+      //   price,
+      //   Number(projectFields.plan),
+      //   userProfile.id,
+      //   JSON.stringify(similarSiteData),
+      //   JSON.stringify(templatesData),
+      //   JSON.stringify(colorsData)
+      // ),
+    ]);
   };
   return (
     // w-[90%]
@@ -188,29 +152,39 @@ function SubmitOrder() {
           showModal={showSimilarModal}
           data={similarSiteData}
           setData={setSimilarSiteData}
-          modalInputValue={modalInputValue}
-          setModalInputValue={setModalInputValue}
+          modalInputValue={similarSiteModalInputValue}
+          setModalInputValue={setSimilarSiteModalInputValue}
           setShowModal={setShowSimilarModal}
         />
       )}
       {showTemplatesModal && (
-        <OrdersubmissionModal
+        <TemplateSubmissionModal
           showModal={showTemplatesModal}
           data={templatesData}
           setData={setTemplatesData}
-          modalInputValue={modalInputValue}
-          setModalInputValue={setModalInputValue}
+          modalInputValue={templateModalInputValue}
+          setModalInputValue={setTemplateModalInputValue}
           setShowModal={setShowTemplatesModal}
         />
       )}
       {showColorsModal && (
-        <OrdersubmissionModal
+        <ColorSubmissionModal
           showModal={showColorsModal}
           data={colorsData}
           setData={setColorsData}
-          modalInputValue={modalInputValue}
-          setModalInputValue={setModalInputValue}
+          modalInputValue={colorsModalInputValue}
+          setModalInputValue={setColorsModalInputValue}
           setShowModal={setShowColorsModal}
+        />
+      )}
+      {showPluginModal && (
+        <PluginSubmissionModal
+          showModal={showPluginModal}
+          data={pluginData}
+          setData={setPluginData}
+          modalInputValue={pluginModalInputValue}
+          setModalInputValue={setPluginModalInputValue}
+          setShowModal={setShowPluginModal}
         />
       )}
       <div className="grid grid-cols-2 gap-3">
@@ -259,22 +233,31 @@ function SubmitOrder() {
           setProjectFields((last) => ({ ...last, Description: e.target.value }))
         }
       />
-      <SubmitOrderModalfield
-        modalFieldTitle="قالب و افزونه های مورد نیاز:"
+      <SubmitTemplateModalfield
+        modalFieldTitle="قالب های مورد نیاز:"
         setShowModal={setShowTemplatesModal}
         data={templatesData}
         setData={setTemplatesData}
       />
-      <SubmitOrderModalfield
+      <SubmitPluginModalfield
+        modalFieldTitle="پلاگ این های مورد نیاز:"
+        setShowModal={setShowPluginModal}
+        data={pluginData}
+        setData={setPluginData}
+      />
+      <SubmitColorModalfield
         modalFieldTitle="رنگ سازمانی:"
         setShowModal={setShowColorsModal}
         data={colorsData}
         setData={setColorsData}
       />
-      <div className="flex justify-between">
-        <FileUpload File={File} handleChange={handleFileChange} />
+      <div className="flex justify-end">
+        {/* <FileUpload File={File} handleChange={handleFileChange} /> */}
         <div className="flex gap-5">
-          <Link href={`/panel/user/submit-order/consultation`} className="bg-[#4866CE] text-white rounded-lg p-1 whitespace-nowrap flex justify-center items-center">
+          <Link
+            href={`/panel/user/submit-order/consultation`}
+            className="bg-[#4866CE] text-white rounded-lg p-1 whitespace-nowrap flex justify-center items-center"
+          >
             <span>درخواست مشاوره رایگان</span>
           </Link>
           <button className="bg-[#4866CE] text-white rounded-lg p-1 w-[80px] flex justify-center items-center">
