@@ -1150,7 +1150,7 @@ export const getAllProjects = async (
 ) => {
   try {
     setProjectStatus((last) => ({ ...last, loading: true }));
-    const { data } = await app("/projects", {
+    const { data } = await app("/orders", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -1158,7 +1158,7 @@ export const getAllProjects = async (
     console.log(data);
   } catch (error: any) {
     console.log(error.response.data.message);
-    if (error.response.data.message === "project-notFound") {
+    if (error.response.data.message === "order-notFound") {
       setProjectStatus((last) => ({ ...last, error: "پروژه ای یافت نشد." }));
     } else {
       setProjectStatus((last) => ({
