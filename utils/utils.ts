@@ -38,13 +38,6 @@ export const sendOTPCodeForRegistrationForHoghooghi = async (
   setSteps: React.Dispatch<React.SetStateAction<number>>
 ) => {
   try {
-    console.log(
-      org_address,
-      org_name,
-      org_phone,
-      org_registration_number,
-      type
-    );
     const data = await app.post("/registerotp", {
       name,
       surname,

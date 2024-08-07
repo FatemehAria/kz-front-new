@@ -32,11 +32,7 @@ function SubmitOrderDropdown({
         onChange={onChange}
       >
         {dropdownItems.map((item) => (
-          <option
-            key={item}
-            value={item}
-            selected={dropdownItems[0] ? true : false}
-          >
+          <option key={item} value={item}>
             {item}
           </option>
         ))}
