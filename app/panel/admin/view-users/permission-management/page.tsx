@@ -14,7 +14,7 @@ import { RxCross1 } from "react-icons/rx";
 import { MdOutlineSettingsBackupRestore } from "react-icons/md";
 import { FaCheck } from "react-icons/fa6";
 import { AiOutlineEdit } from "react-icons/ai";
-import { PermissionContext } from "../context/permission-context/PermissionContext";
+import { PermissionContext } from "../../context/permission-context/PermissionContext";
 
 export type PermissionType = {
   name_en: string;
