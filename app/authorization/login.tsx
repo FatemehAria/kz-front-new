@@ -96,6 +96,7 @@ const Login = ({
               showModal={showModal}
               data=""
               text={errorMessage}
+              mainButtonText="متوجه شدم"
               showOnErrorOrSuccess={true}
             />
           )}
@@ -104,6 +105,7 @@ const Login = ({
               showModal={showModal}
               data=""
               text={successMessage}
+              mainButtonText="متوجه شدم"
               showOnErrorOrSuccess={true}
             />
           )}

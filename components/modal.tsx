@@ -2,13 +2,12 @@
 import { useGetUserRoles } from "@/hooks/useGetUserRoles";
 import {
   openModal,
-  handleAutoFocus,
   updateStatus,
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
 import { userRoleType } from "@/types/types";
 import { useRouter } from "next/navigation";
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 type ModalProps = {
@@ -34,17 +33,17 @@ function Modal({
   data,
   text,
   isLoggingIn,
+  isLoggedIn,
   setSteps,
   showOnErrorOrSuccess,
   setShowModalOnError,
+  mainButtonText,
   // setStartLogin,
   buttonText,
-  mainButtonText,
   executeFunction,
   executeFunction2,
   setCounter,
   changeNumber,
-  isLoggedIn,
   redirect,
 }: ModalProps) {
   const { token, role, status, successMessage, userType } = useSelector(
@@ -56,21 +55,20 @@ function Modal({
     dispatch(getTokenFromLocal());
   }, []);
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      if (role === "Admin") router.replace("/panel/admin/view-users");
+      else router.replace("/panel/user/dashboard");
+    }
+  }, [isLoggedIn]);
+  
   const handleMainButtonClick = () => {
     dispatch(openModal(false));
     setShowModalOnError && setShowModalOnError(false);
+    // ثبت نام
     if (!isLoggingIn) {
-      // if (!token) {
-      // setStartLogin(true);
       setSteps?.(3);
-      // }
-    } else {
-      if (!isLoggingIn && !isLoggedIn) {
-        setSteps?.(2);
-      } else if (isLoggedIn) {
-        if (role === "Admin") router.replace("/panel/admin/view-users");
-        else router.replace("/panel/user/dashboard");
-      }
+      // کاربر وارد شد یا ثبت نام موفق داشت
     }
   };
 
@@ -109,17 +107,20 @@ function Modal({
 
               <div
                 className={`${
-                  showOnErrorOrSuccess
-                    ? "flex justify-center"
-                    : ""
+                  showOnErrorOrSuccess ? "flex justify-center" : ""
                 }`}
               >
                 <button
                   onClick={() => handleMainButtonClick()}
                   type="button"
-                  className="text-white bg-[#4866CF] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm md:px-5 md:py-2.5 text-center"
+                  // check it after login
+                  className={
+                    isLoggedIn
+                      ? "hidden"
+                      : "text-white bg-[#4866CF] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm md:px-5 md:py-2.5 text-center"
+                  }
                 >
-                  {showOnErrorOrSuccess ? "متوجه شدم" : "تایید شماره همراه"}
+                  {showOnErrorOrSuccess ? mainButtonText : "تایید شماره همراه"}
                 </button>
               </div>
               <div

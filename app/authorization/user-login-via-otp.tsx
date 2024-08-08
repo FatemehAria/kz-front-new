@@ -1,30 +1,24 @@
 "use client";
 import Image from "next/image";
 import React, {
-  Dispatch,
   FormEvent,
-  SetStateAction,
   useContext,
   useEffect,
   useState,
 } from "react";
 import Logo from "./components/logo";
-import FormSlider from "./components/form-slider";
 import SubmissionBtn from "./components/submission-btn";
 import FormInput from "../contact-us/components/form/form-inputs";
 import OtpInput from "react-otp-input";
 import sms from "../../public/Auth/sms.svg";
-import phone from "../../public/Auth/phone.svg";
 import Modal from "@/components/modal";
 import { sendOTPCodeMain } from "@/utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  handleAutoFocus,
   verifyUserByOTPInLoginAndRegistration,
 } from "@/redux/features/user/userSlice";
 import { AuthContext } from "./context/AuthContext";
 import { useTimer } from "@/hooks/useTimer";
-import { useRouter } from "next/navigation";
 
 const UserLoginViaOTP = () => {
   const {
@@ -33,15 +27,12 @@ const UserLoginViaOTP = () => {
     successMessage,
     errorMessage,
     showModal,
-    autoFocus,
-    role,
   } = useSelector((state: any) => state.userData);
   const { setAuthSteps } = useContext(AuthContext);
   const dispatch = useDispatch();
   const [PhoneNumber, setPhoneNumber] = useState("");
   const [OTP, setOTP] = useState("");
   const { counter, setCounter } = useTimer();
-  const router = useRouter();
   // PHONENUMBER FROM LOCALSTORAGE
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -54,28 +45,29 @@ const UserLoginViaOTP = () => {
     }
   }, []);
 
+  useEffect(() => {
+    setCounter(180);
+    if(errorMessage && !showModal){
+      sendOTPCodeMain(PhoneNumber, setAuthSteps)
+    }
+  }, [showModal]);
+
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("running");
     await dispatch<any>(
       verifyUserByOTPInLoginAndRegistration({
         otp_code: OTP,
         mobile: PhoneNumber,
       })
     );
-    if (role === "admin" || role === "Admin")
-      router.replace("/panel/admin/view-users");
-    else router.replace("/panel/user/dashboard");
   };
 
   useEffect(() => {
     if (status === "failed") {
       setOTP("");
-      dispatch(handleAutoFocus(true));
     }
   }, [status]);
   // console.log(successMessage);
-  console.log("2");
   return (
     <React.Fragment>
       <div
@@ -107,6 +99,7 @@ const UserLoginViaOTP = () => {
                 name="PhoneNumber"
                 disabled={true}
               />
+
               <OtpInput
                 value={OTP}
                 onChange={setOTP}
@@ -124,29 +117,29 @@ const UserLoginViaOTP = () => {
                 }}
                 renderInput={(props) => <input {...props} />}
                 inputType="tel"
-                shouldAutoFocus={autoFocus}
+                shouldAutoFocus={true}
               />
-              {/* {errorMessage !== "" && showModal && (
+              {errorMessage !== "" && showModal && (
                 <Modal
                   showModal={showModal}
-                  buttonText="ارسال مجدد کد یکبارمصرف"
+                  mainButtonText="ارسال مجدد کد یکبارمصرف"
                   text={errorMessage}
                   data=""
-                  executeFunction={() => sendOTPCodeMain(PhoneNumber)}
-                  setCounter={setCounter}
+                  isLoggedIn={false}
+                  isLoggingIn={false}
+                  showOnErrorOrSuccess={true}
                 />
               )}
               {successMessage !== "" && showModal && (
                 <Modal
                   showModal={showModal}
-                  buttonText="متوجه شدم"
+                  mainButtonText="متوجه شدم"
                   text={successMessage}
                   data=""
-                  setSteps={setAuthSteps}
                   isLoggedIn={isLoggedIn}
-                  redirect={isLoggedIn}
+                  showOnErrorOrSuccess={true}
                 />
-              )} */}
+              )}
               <span
                 className={`w-full text-[20px] ${
                   counter === 0 && "text-blue-700 cursor-pointer "
@@ -158,7 +151,8 @@ const UserLoginViaOTP = () => {
                       className="flex items-center gap-2"
                       onClick={async () =>
                         counter === 0 &&
-                        (sendOTPCodeMain(PhoneNumber,setAuthSteps), setCounter(90))
+                        (sendOTPCodeMain(PhoneNumber, setAuthSteps),
+                        setCounter(180))
                       }
                     >
                       <Image src={sms} alt="sms" />
@@ -177,8 +171,7 @@ const UserLoginViaOTP = () => {
               <SubmissionBtn
                 text="تایید رمز یکبارمصرف"
                 validation={true}
-                type="submit"
-                // type={showModal ? "button" : "submit"}
+                type={showModal ? "button" : "submit"}
               />
             </div>
           </form>

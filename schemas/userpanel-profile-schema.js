@@ -1,4 +1,3 @@
-import { verifyIranianNationalId } from "@persian-tools/persian-tools";
 import * as yup from "yup";
 
 const PasswordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;

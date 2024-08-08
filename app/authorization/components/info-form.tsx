@@ -53,6 +53,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
   const handleSubmission = async () => {
     try {
       setErrorMsg("");
+      // throw new Error()
       if (verifyIranianNationalId(values.ncode)) {
         values.ncode = values.ncode;
       }
@@ -105,7 +106,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
         <Modal
           showModal={true}
           text={errorMsg}
-          buttonText="متوجه شدم"
+          mainButtonText="متوجه شدم"
           data=""
           showOnErrorOrSuccess={true}
           setShowModalOnError={setShowModalOnError}

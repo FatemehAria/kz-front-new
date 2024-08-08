@@ -82,9 +82,11 @@ const verifyUserByOTPInLoginAndRegistration = createAsyncThunk(
         token: data.data?.token,
         userProfile: data.data?.user,
         FirstName: data.data?.user.name,
+        LastName: data.data?.user.surname,
         userId: data.data?.user.id,
         userType: data.data?.user.roles,
         type: data.data?.user.type,
+        isLoggedIn: true,
       };
     } catch (error: any) {
       console.log(error);
@@ -148,9 +150,6 @@ const userSlice = createSlice({
     },
     openModal: (state, action) => {
       state.showModal = action.payload;
-    },
-    handleAutoFocus: (state, action) => {
-      state.autoFocus = action.payload;
     },
     deleteDataFromCookie: (state) => {
       state.token = "";
@@ -221,13 +220,21 @@ const userSlice = createSlice({
           secure: true,
         });
         state.FirstName = action.payload.FirstName;
+        state.LastName = action.payload.LastName;
         state.type = action.payload.type;
-        // state.userType = action.payload.us;
+        state.userType = action.payload.userType;
+        state.role = state.userType?.find(
+          (item: userRoleType) => item.name_en.toLowerCase() === "admin"
+        )
+          ? "Admin"
+          : "User";
         state.userId = action.payload.userId;
         sessionStorage.setItem("userId", state.userId);
-        state.successMessage = `${state.FirstName} عزیز با موفقیت وارد پنل کاربری خود شدید.`;
+        state.successMessage = `${
+          state.FirstName + state.LastName
+        } عزیز با موفقیت وارد پنل کاربری خود شدید.`;
         state.errorMessage = "";
-        state.isLoggedIn = true;
+        state.isLoggedIn = action.payload.isLoggedIn;
       }
     );
     builder.addCase(
@@ -236,6 +243,7 @@ const userSlice = createSlice({
         state.status = "failed";
         state.errorMessage = "کد وارد شده صحیح نمی باشد.";
         state.showModal = true;
+        state.isLoggedIn = false;
       }
     );
     // fetchUserInLoginWithPassword
@@ -258,7 +266,7 @@ const userSlice = createSlice({
       state.isLoggedIn = action.payload.isLoggedIn;
       sessionStorage.setItem("userId", state.userId);
       state.successMessage = `${
-        state?.FirstName + state?.LastName
+        state?.FirstName + " " + state?.LastName
       } عزیز با موفقیت وارد پنل کاربری خود شدید.`;
       state.errorMessage = "";
       state.type = action.payload.type;
@@ -285,7 +293,6 @@ export const {
   updateUserProfile,
   updateInputDisability,
   openModal,
-  handleAutoFocus,
   readPhoneNumberFromLocalStroage,
   getIdFromLocal,
   deleteDataFromCookie,

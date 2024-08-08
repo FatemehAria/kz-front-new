@@ -92,10 +92,7 @@ export const sendOTPCodeForRegistrationForHaghighi = async (
       }
     );
     // sendOTPCodeMain(mobile);
-    if (type === "haghighi" || type === "حقیقی") {
-      // await sendOTPCodeMain(mobile);
-      setSteps(2);
-    }
+    setSteps(2);
     console.log(data);
   } catch (error: any) {
     console.log(error.response.data.message);
