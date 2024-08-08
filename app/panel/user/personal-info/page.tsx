@@ -15,7 +15,7 @@ import SubLoading from "@/components/SubLoading";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 function PersonalInfo() {
-  const { userId, token, type, userProfile, status } = useSelector(
+  const { LastName, token, type, userProfile, status } = useSelector(
     (state: any) => state.userData
   );
   const [step, setStep] = useState(type);

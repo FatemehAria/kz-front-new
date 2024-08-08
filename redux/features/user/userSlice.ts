@@ -95,7 +95,7 @@ const fetchUserProfile = createAsyncThunk<
   {
     data: any;
     FirstName: string;
-    // LastName: string;
+    LastName: string;
     email: string;
     type: string;
     userType: {
@@ -128,6 +128,7 @@ const fetchUserProfile = createAsyncThunk<
       type: data.data.type,
       userType: data.data.roles,
       userId: data.data.id,
+      LastName: data.data.surname,
       // numberOfAnnouncements: data.data.Announcement.length,
     };
   } catch (error: any) {
@@ -187,6 +188,7 @@ const userSlice = createSlice({
       state.status = "success";
       state.userProfile = action.payload.data;
       state.FirstName = action.payload.FirstName;
+      state.LastName = action.payload.LastName;
       state.type = action.payload.type;
       state.errorMessage = "";
       state.userType = action.payload.userType;

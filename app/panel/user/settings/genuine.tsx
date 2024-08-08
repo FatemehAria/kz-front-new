@@ -101,8 +101,32 @@ function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
           mobile,
         })
       );
+      toast.success("آپدیت پروفایل موفق بود.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
       console.log(data);
     } catch (error) {
+      toast.error("خطا در آپلود فایل.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
       console.log(error);
     }
   };

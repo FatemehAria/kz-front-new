@@ -9,6 +9,7 @@ type GenuineProps = {
     email: string;
     mobile: string;
     pic_path: string;
+    surname: string;
   };
 };
 function Genuine({ userProfile }: GenuineProps) {
@@ -18,7 +19,7 @@ function Genuine({ userProfile }: GenuineProps) {
         <div className="flex flex-col justify-between">
           <PanelFields
             label="نام و نام خانوادگی:"
-            value={userProfile.name}
+            value={userProfile.name + " " + userProfile.surname}
             name="FullName"
             disable={true}
             readonly={true}
