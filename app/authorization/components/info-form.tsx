@@ -36,6 +36,7 @@ const initialValues = {
   type: "حقیقی",
   shenase_melli: "",
   shomare_sabt: "",
+  ncode: "",
 };
 
 const InfoForm = ({ setSteps }: infoFormProps) => {
@@ -71,6 +72,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
           values.type === "حقیقی" ? "haghighi" : "hoghooghi",
           PhoneNumber,
           values.Password,
+          values.ncode,
           setSteps
         );
       } else {
@@ -93,6 +95,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
         mobile: PhoneNumber,
         type: values.type === "حقیقی" ? "haghighi" : "hoghooghi",
         password: values.Password,
+        ncode: values.ncode,
       }));
     } catch (error: any) {
       setErrorMsg(error.message);
@@ -212,53 +215,25 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
             />
           </div>
         </div>
-        {/* optional */}
-        {/* <div
-          className={`flex flex-row gap-8 ${
-            values.type === "حقوقی" ? "inline-block" : "hidden"
-          }`}
-        >
-          <React.Fragment>
-            <InfoFormFieldContainer errorMsg={errors.shenase_melli}>
-              <FormInput
-                value={values.shenase_melli}
-                onChange={handleChange}
-                name="shenase_melli"
-                label="شناسه ملی"
-                error={errors.shenase_melli && touched.shenase_melli}
-                onBlur={handleBlur}
-                type="text"
-              />
-              <span className="absolute -top-7 right-[6.5rem] text-[#4866CF]">
-                *
-              </span>
-              {errors.shenase_melli && touched.shenase_melli && (
-                <FormValidationMsg
-                  errorMsg={`${errorMsg ? errorMsg : errors.shenase_melli}`}
-                />
-              )}
-            </InfoFormFieldContainer>
-            <InfoFormFieldContainer errorMsg={errors.shomare_sabt}>
-              <FormInput
-                value={values.shomare_sabt}
-                onChange={handleChange}
-                name="shomare_sabt"
-                label="شماره ثبت"
-                error={errors.shomare_sabt && touched.shomare_sabt}
-                onBlur={handleBlur}
-                type="text"
-              />
-              <span className="absolute -top-7 right-[6.5rem] text-[#4866CF]">
-                *
-              </span>
-              {errors.shomare_sabt && touched.shomare_sabt && (
-                <FormValidationMsg
-                  errorMsg={`${errorMsg ? errorMsg : errors.shomare_sabt}`}
-                />
-              )}
-            </InfoFormFieldContainer>
-          </React.Fragment>
-        </div> */}
+
+        <InfoFormFieldContainer errorMsg={errors.ncode}>
+          <FormInput
+            value={values.ncode}
+            onChange={handleChange}
+            name="ncode"
+            label="کدملی"
+            error={errors.ncode && touched.ncode}
+            onBlur={handleBlur}
+            type="text"
+          />
+          <span className="absolute -top-7 right-[5rem] z-20 text-[#4866CF]">
+            *
+          </span>
+          {errors.ncode && touched.ncode && (
+            <FormValidationMsg errorMsg={`${errors.ncode}`} />
+          )}
+        </InfoFormFieldContainer>
+
         <div className="grid grid-cols-1 gap-x-[3%] items-center">
           <div className="text-left">
             <SubmissionBtn

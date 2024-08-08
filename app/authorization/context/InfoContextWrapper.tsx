@@ -9,6 +9,7 @@ function InfoContextWrapper({ children }: { children: React.ReactNode }) {
     mobile: "",
     type: "",
     password: "",
+    ncode: "",
   });
   return (
     <InfoContext.Provider value={{ savedInfo, setSavedInfo }}>

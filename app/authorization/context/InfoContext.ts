@@ -7,6 +7,7 @@ interface InfoContextTypes {
     mobile: string;
     type: string;
     password: string;
+    ncode: string;
   };
   setSavedInfo: React.Dispatch<
     React.SetStateAction<{
@@ -15,6 +16,7 @@ interface InfoContextTypes {
       mobile: string;
       type: string;
       password: string;
+      ncode: string;
     }>
   >;
 }
@@ -25,6 +27,7 @@ export const InfoContext = createContext<InfoContextTypes>({
     mobile: "",
     type: "",
     password: "",
+    ncode: "",
   },
   setSavedInfo: () => {},
 });

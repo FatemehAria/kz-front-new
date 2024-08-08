@@ -69,24 +69,36 @@ export const sendOTPCodeForRegistrationForHaghighi = async (
   type: string,
   mobile: string,
   password: string,
+  ncode: string,
   setSteps: React.Dispatch<React.SetStateAction<number>>
 ) => {
+  console.log(name, surname, type, mobile, password, ncode);
   try {
-    const data = await app.post("/registerotp", {
-      name,
-      surname,
-      type,
-      mobile,
-      password,
-    });
+    const data = await app.post(
+      "/registerotp",
+      {
+        name,
+        surname,
+        type,
+        mobile,
+        password,
+        ncode,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      }
+    );
     // sendOTPCodeMain(mobile);
     if (type === "haghighi" || type === "حقیقی") {
       // await sendOTPCodeMain(mobile);
       setSteps(2);
     }
     console.log(data);
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    console.log(error.response.data.message);
   }
 };
 // Register with Info
