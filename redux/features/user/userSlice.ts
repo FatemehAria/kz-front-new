@@ -89,46 +89,6 @@ const verifyUserByOTPInLoginAndRegistration = createAsyncThunk(
     }
   }
 );
-// ersal otp bad az sabtenam
-// const sendOTPCodeAfterRegistration = createAsyncThunk(
-//   "userData/sendOTPCodeAfterRegistration",
-//   async (payload: sendOTPCodeAfterRegistrationPayload, { rejectWithValue }) => {
-//     const {
-//       name,
-//       surname,
-//       type,
-//       mobile,
-//       org_name,
-//       org_registration_number,
-//       org_address,
-//       org_phone,
-//     } = payload;
-//     try {
-//       console.log(payload);
-//       const data = await app.post("/registerotp", {
-//         name,
-//         surname,
-//         type,
-//         mobile,
-//         org_name,
-//         org_registration_number,
-//         org_address,
-//         org_phone,
-//       });
-//       console.log(data);
-//       return {
-//         token: data.data?.token,
-//         userProfile: data.data.user,
-//         FirstName: data.data.user?.name,
-//         userId: data.data?.user?.id,
-//         type: data.data.user?.type,
-//       };
-//     } catch (error: any) {
-//       console.log(error);
-//       return rejectWithValue(error.response.data.message);
-//     }
-//   }
-// );
 
 // daryafte etelaat karbar:checked
 const fetchUserProfile = createAsyncThunk<

@@ -53,9 +53,9 @@ const Login = ({
           password: values.Password,
         })
       );
-      if (status === "success") {
-        setIsLoggingIn(false);
-      }
+      // if (status === "success") {
+      //   setIsLoggingIn(false);
+      // }
     }
   };
 
@@ -72,8 +72,8 @@ const Login = ({
   const { result, setAnswer, answer, mathProblem, wrongAnswerMessage } =
     useCaptcha(values.PhoneNumber);
   useStoreNumInLocal(values.PhoneNumber);
-  console.log("isLoggedIn", isLoggedIn);
-  console.log("isLogginIn", isLoggingIn);
+  // console.log("isLoggedIn", isLoggedIn);
+  // console.log("isLogginIn", isLoggingIn);
   return (
     <React.Fragment>
       <div
