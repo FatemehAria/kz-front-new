@@ -17,6 +17,7 @@ type ModalProps = {
   text?: string;
   isLoggingIn?: boolean;
   setSteps?: Dispatch<SetStateAction<number>>;
+  showOnErrorOrSuccess?: boolean;
   // setStartLogin: React.Dispatch<React.SetStateAction<boolean>>;
   buttonText?: string;
   mainButtonText?: string;
@@ -32,9 +33,10 @@ function Modal({
   data,
   text,
   isLoggingIn,
+  setSteps,
+  showOnErrorOrSuccess,
   // setStartLogin,
   buttonText,
-  setSteps,
   mainButtonText,
   executeFunction,
   executeFunction2,
@@ -43,7 +45,7 @@ function Modal({
   isLoggedIn,
   redirect,
 }: ModalProps) {
-  const { token, role, status, successMessage , userType } = useSelector(
+  const { token, role, status, successMessage, userType } = useSelector(
     (state: any) => state.userData
   );
   const dispatch = useDispatch();
@@ -63,8 +65,8 @@ function Modal({
       if (!isLoggingIn && !isLoggedIn) {
         setSteps?.(2);
       } else if (isLoggedIn) {
-          if (role === "Admin") router.replace("/panel/admin/view-users");
-          else router.replace("/panel/user/dashboard");
+        if (role === "Admin") router.replace("/panel/admin/view-users");
+        else router.replace("/panel/user/dashboard");
       }
     }
   };
@@ -103,14 +105,14 @@ function Modal({
                 type="button"
                 className="text-white bg-[#4866CF] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm md:px-5 md:py-2.5 text-center"
               >
-                تایید شماره همراه
+                {showOnErrorOrSuccess ? "متوجه شدم" : "تایید شماره همراه"}
               </button>
               <div
                 className={`${
-                  data === "" && "flex justify-center w-full text-center "
+                  data === "" && "flex justify-center w-full text-center"
                 }`}
               >
-                <button
+                {!showOnErrorOrSuccess && <button
                   onClick={() => handlePrimaryButtonClick()}
                   type="button"
                   className={`md:py-2.5 md:px-5 ms-3 px-5 text-sm font-medium focus:outline-none rounded-lg border border-[#4866CF] ${
@@ -120,7 +122,7 @@ function Modal({
                   }`}
                 >
                   تغییر شماره همراه
-                </button>
+                </button>}
               </div>
             </div>
           </div>

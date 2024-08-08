@@ -15,10 +15,7 @@ import {
   fetchUserInLoginWithPassword,
   openModal,
 } from "@/redux/features/user/userSlice";
-import { useRouter } from "next/navigation";
-import { useGetUserRoles } from "@/hooks/useGetUserRoles";
 import { sendOTPCodeMain } from "@/utils/utils";
-// import ReCAPTCHA from 'react-google-recaptcha'
 
 type LoginProps = {
   setLoginApproach: React.Dispatch<React.SetStateAction<number>>;
@@ -34,11 +31,15 @@ const Login = ({
   setIsLoggingIn,
 }: LoginProps) => {
   const { setAuthSteps } = useContext(AuthContext);
-  const { showModal, successMessage, status, errorMessage, role, isLoggedIn } =
-    useSelector((state: any) => state.userData);
+  const {
+    showModal,
+    isLoggedIn,
+    errorMessage,
+    successMessage,
+    errorOnProfileHandler,
+  } = useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
-  // const [startLogin, setStartLogin] = useState(false);
-  const router = useRouter();
+
   const handleSubmission = async () => {
     // login ba phone
     setIsLoggingIn(true);
@@ -53,9 +54,6 @@ const Login = ({
           password: values.Password,
         })
       );
-      // if (status === "success") {
-      //   setIsLoggingIn(false);
-      // }
     }
   };
 
@@ -92,8 +90,24 @@ const Login = ({
             setSteps={setAuthSteps}
             isLoggingIn={isLoggingIn}
             isLoggedIn={isLoggedIn}
-            // setStartLogin={setStartLogin}
+            showOnErrorOrSuccess={false}
           />
+          {errorMessage !== "" && !errorOnProfileHandler && (
+            <Modal
+              showModal={showModal}
+              data=""
+              text={errorMessage}
+              showOnErrorOrSuccess={true}
+            />
+          )}
+          {successMessage !== "" && (
+            <Modal
+              showModal={showModal}
+              data=""
+              text={successMessage}
+              showOnErrorOrSuccess={true}
+            />
+          )}
           <Logo />
           <div className="flex flex-row justify-between items-center mb-8">
             <span

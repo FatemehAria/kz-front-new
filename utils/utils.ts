@@ -188,7 +188,7 @@ export const sendOTPCodeMain = async (
       transition: Bounce,
       rtl: true,
     });
-    console.log(error);
+    console.log(error.response.data.message);
   }
 };
 // save info to local storage
@@ -2875,9 +2875,7 @@ export const createProject = async (
   title: string,
   description: string,
   budget_cost: number,
-  price: number,
   discount_code: number | null,
-  status: string,
   priority: string,
   register_user_id: number,
   planId: number,
@@ -2893,16 +2891,14 @@ export const createProject = async (
         title,
         description,
         budget_cost,
-        price,
         discount_code,
-        status,
         priority,
         register_user_id,
         plan_id: planId,
-        lookslike: JSON.stringify(lookslike) || null,
-        org_color: JSON.stringify(org_color) || null,
-        plugin: JSON.stringify(plugin) || null,
-        template: JSON.stringify(template) || null,
+        lookslike: lookslike || null,
+        org_color: org_color || null,
+        plugin: plugin || null,
+        template: template || null,
       },
       {
         headers: {

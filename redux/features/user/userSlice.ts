@@ -20,6 +20,8 @@ const initialState: RTKUserState = {
   token: "",
   errorMessage: "",
   successMessage: "",
+  // to avoid conflict in auth and main page
+  errorOnProfileHandler: false,
   changePhoneNumber: false,
   PhoneNumber: "" || null,
   email: "",
@@ -49,6 +51,7 @@ const fetchUserInLoginWithPassword = createAsyncThunk(
       return {
         token: data.data?.token,
         FirstName: data.data?.user.name,
+        LastName: data.data.user?.surname,
         userId: data.data?.user.id,
         userType: data.data?.user.roles,
         type: data.data?.user.type,
@@ -198,6 +201,7 @@ const userSlice = createSlice({
     });
     builder.addCase(fetchUserProfile.rejected, (state, action) => {
       state.status = "failed";
+      state.errorOnProfileHandler = true;
       state.errorMessage = "خطا در دریافت اطلاعات کاربری";
     });
 
@@ -248,22 +252,21 @@ const userSlice = createSlice({
         secure: true,
       });
       state.FirstName = action.payload.FirstName;
+      state.LastName = action.payload.LastName;
       state.userType = action.payload.userType;
       state.userId = action.payload.userId;
       state.isLoggedIn = action.payload.isLoggedIn;
       sessionStorage.setItem("userId", state.userId);
-      state.successMessage = `${state?.FirstName} عزیز با موفقیت وارد پنل کاربری خود شدید.`;
+      state.successMessage = `${
+        state?.FirstName + state?.LastName
+      } عزیز با موفقیت وارد پنل کاربری خود شدید.`;
       state.errorMessage = "";
       state.type = action.payload.type;
-      state.role =
-        state.userType
-          ?.map((item: userRoleType) => item.name_en)
-          .includes("Admin") ||
-        state.userType
-          ?.map((item: userRoleType) => item.name_en)
-          .includes("admin")
-          ? "Admin"
-          : "User";
+      state.role = state.userType?.find(
+        (item: userRoleType) => item.name_en.toLowerCase() === "admin"
+      )
+        ? "Admin"
+        : "User";
     });
     builder.addCase(fetchUserInLoginWithPassword.rejected, (state, action) => {
       state.status = "failed";

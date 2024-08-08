@@ -4,25 +4,10 @@ import PanelFields from "../../components/panel-fileds";
 import SubmitOrderDropdown from "./components/submit-order-dropdown";
 import SubmitOrderModalfield from "./components/submit-order-modalfield";
 import SubmitOrderDescription from "./components/submit-order-description";
-import FileUpload from "./components/file-upload";
 import OrdersubmissionModal from "./components/odersubmission-modal";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  getIdFromLocal,
-  getTokenFromLocal,
-} from "@/redux/features/user/userSlice";
-import { Bounce, toast } from "react-toastify";
+import { useSelector } from "react-redux";
 import Link from "next/link";
-import {
-  createProject,
-  createProjectColor,
-  createProjectPlugin,
-  createProjectSimilars,
-  createProjectTemplate,
-  uploadProjectFile,
-} from "@/utils/utils";
-import { UserContext } from "../../admin/context/user-context/UserContext";
+import { createProject } from "@/utils/utils";
 import ColorSubmissionModal from "./components/color-submission-modal";
 import SubmitColorModalfield from "./components/submit-colors-modalfield";
 import SubmitPluginModalfield from "./components/submit-plugin-modalfield";
@@ -32,9 +17,9 @@ import SubmitTemplateModalfield from "./components/submit-template-modalfield";
 import { OrderSubmissionContext } from "../../context/order-submission-contexts/OrderSubmissionContext";
 
 export type PlanType = {
-  plan: { id: number; title: string; description: string; price: number };
+  plan: { id?: number; title: string; description: string; price: number };
 };
-export type SimilarSiteType = { title: string; url: string; id: number };
+export type SimilarSiteType = { title: string; url: string; id?: number };
 export type ColorType = { title: string; color: string };
 export type TemplateType = { template_name: string };
 export type PluginType = { plugin_name: string };
@@ -91,9 +76,7 @@ function SubmitOrder() {
     title: "",
     color: "",
   });
-  const planTitlesAndDescs = allPlans.map(
-    (item) => item.plan.title + "-" + item.plan.description
-  );
+  const planTitlesAndDescs = allPlans.map((item) => item.plan.title);
   const siteTypeTitles = siteTypes.map((item: SimilarSiteType) => item.title);
   const [projectFields, setProjectFields] = useState({
     title: "",
@@ -102,6 +85,7 @@ function SubmitOrder() {
     // پلن /plans
     plan: "",
     budget: "",
+    priority: "",
     Similar_Site: similarSiteData,
     Description: "",
     Templates: templatesData,
@@ -114,9 +98,6 @@ function SubmitOrder() {
   const typeId = siteTypes.filter(
     (item: SimilarSiteType) => item.title === projectFields.type
   )[0]?.id;
-  const price = allPlans.filter((item) =>
-    projectFields.plan.includes(item.plan.title)
-  )[0]?.plan.price;
 
   const handleBudegtChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value.replace(/,/g, "");
@@ -130,42 +111,20 @@ function SubmitOrder() {
 
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    Promise.all([
-      // await createProjectColor(
-      //   token,
-      //   colorsModalInputValue.title,
-      //   colorsModalInputValue.color,
-      //   null
-      // ),
-      // await createProjectSimilars(
-      //   token,
-      //   similarSiteModalInputValue.title,
-      //   similarSiteModalInputValue.url,
-      //   null
-      // ),
-      // await createProjectPlugin(token, pluginModalInputValue.plugin_name, null),
-      // await createProjectTemplate(
-      //   token,
-      //   templateModalInputValue.template_name,
-      //   null
-      // ),
-      await createProject(
-        token,
-        projectFields.title,
-        projectFields.Description,
-        Number(projectFields.budget.replaceAll(",", "")),
-        price,
-        null,
-        "processing",
-        "low",
-        userProfile.id,
-        Number(plansId),
-        similarSiteData,
-        colorsData,
-        pluginData,
-        templatesData
-      ),
-    ]);
+    await createProject(
+      token,
+      projectFields.title,
+      projectFields.Description,
+      Number(projectFields.budget.replaceAll(",", "")),
+      null,
+      projectFields.priority === "کم" ? "low" : "high",
+      userProfile.id,
+      Number(plansId),
+      similarSiteData,
+      colorsData,
+      pluginData,
+      templatesData
+    );
   };
 
   return (
@@ -215,38 +174,65 @@ function SubmitOrder() {
         />
       )}
       <div className="grid grid-cols-2 gap-3">
-        <PanelFields
-          label="عنوان پروژه:"
-          onChange={(e) =>
-            setProjectFields((last) => ({ ...last, title: e.target.value }))
-          }
-          value={projectFields.title}
-          name="title"
-        />
-        <SubmitOrderDropdown
-          dropDownTitle="پلن انتخابی:"
-          dropdownItems={planTitlesAndDescs}
-          value={projectFields.plan}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-            setProjectFields((last) => ({ ...last, plan: e.target.value }))
-          }
-        />
+        <div className="relative pt-3">
+          <PanelFields
+            label="عنوان پروژه:"
+            onChange={(e) =>
+              setProjectFields((last) => ({ ...last, title: e.target.value }))
+            }
+            value={projectFields.title}
+            name="title"
+          />
+          <p className="absolute top-0 right-[5.5rem] text-[#4866CF]">*</p>
+        </div>
+        <div className="relative pt-3">
+          <SubmitOrderDropdown
+            dropDownTitle="اولویت پروژه:"
+            dropdownItems={["کم", "زیاد"]}
+            onChange={(e) =>
+              setProjectFields((last) => ({
+                ...last,
+                priority: e.target.value,
+              }))
+            }
+            value={projectFields.priority}
+            name="priority"
+          />
+          <p className="absolute top-0 right-[5.5rem] text-[#4866CF]">*</p>
+        </div>
       </div>
       <div className="grid grid-cols-2 gap-3">
-        <SubmitOrderDropdown
-          dropDownTitle="نوع پروژه:"
-          dropdownItems={siteTypeTitles}
-          value={projectFields.type}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-            setProjectFields((last) => ({ ...last, type: e.target.value }))
-          }
-        />
+        <div className="relative pt-3">
+          <SubmitOrderDropdown
+            dropDownTitle="پلن انتخابی:"
+            dropdownItems={planTitlesAndDescs}
+            value={projectFields.plan}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+              setProjectFields((last) => ({ ...last, plan: e.target.value }))
+            }
+          />
+          <p className="absolute top-0 right-[5.5rem] text-[#4866CF]">*</p>
+        </div>
+        <div className="relative pt-3">
+          <SubmitOrderDropdown
+            dropDownTitle="نوع پروژه:"
+            dropdownItems={siteTypeTitles}
+            value={projectFields.type}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+              setProjectFields((last) => ({ ...last, type: e.target.value }))
+            }
+          />
+          <p className="absolute top-0 right-[5rem] text-[#4866CF]">*</p>
+        </div>
+      </div>
+      <div className="relative pt-3">
         <PanelFields
           label="بودجه مورد نظر: (برحسب تومان)"
           onChange={handleBudegtChange}
           value={projectFields.budget}
           name="budget"
         />
+        <p className="absolute top-0 right-[14rem] text-[#4866CF]">*</p>
       </div>
       <SubmitOrderModalfield
         modalFieldTitle="سایت مشابه مورد نظر شماست:"
@@ -254,12 +240,18 @@ function SubmitOrder() {
         data={similarSiteData}
         setData={setSimilarSiteData}
       />
-      <SubmitOrderDescription
-        value={projectFields.Description}
-        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-          setProjectFields((last) => ({ ...last, Description: e.target.value }))
-        }
-      />
+      <div className="relative pt-3">
+        <SubmitOrderDescription
+          value={projectFields.Description}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+            setProjectFields((last) => ({
+              ...last,
+              Description: e.target.value,
+            }))
+          }
+        />
+        <p className="absolute top-0 right-[7rem] text-[#4866CF]">*</p>
+      </div>
       <SubmitTemplateModalfield
         modalFieldTitle="قالب های مورد نیاز:"
         setShowModal={setShowTemplatesModal}

@@ -19,6 +19,7 @@ export interface RTKUserState {
   type: string;
   numberOfAnnouncements: number;
   role: string;
+  errorOnProfileHandler: boolean;
 }
 
 export type userRoleType = {
