@@ -1,11 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, {
-  FormEvent,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { FormEvent, useContext, useEffect, useState } from "react";
 import Logo from "./components/logo";
 import SubmissionBtn from "./components/submission-btn";
 import FormInput from "../contact-us/components/form/form-inputs";
@@ -15,6 +10,7 @@ import Modal from "@/components/modal";
 import { sendOTPCodeMain } from "@/utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  openModal,
   verifyUserByOTPInLoginAndRegistration,
 } from "@/redux/features/user/userSlice";
 import { AuthContext } from "./context/AuthContext";
@@ -27,6 +23,7 @@ const UserLoginViaOTP = () => {
     successMessage,
     errorMessage,
     showModal,
+    errorOnProfileHandler,
   } = useSelector((state: any) => state.userData);
   const { setAuthSteps } = useContext(AuthContext);
   const dispatch = useDispatch();
@@ -47,9 +44,11 @@ const UserLoginViaOTP = () => {
 
   useEffect(() => {
     setCounter(180);
-    if(errorMessage && !showModal){
-      sendOTPCodeMain(PhoneNumber, setAuthSteps)
+    if (errorMessage && !showModal && !errorOnProfileHandler) {
+      sendOTPCodeMain(PhoneNumber, setAuthSteps);
     }
+    console.log(!showModal);
+    console.log(errorMessage);
   }, [showModal]);
 
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {

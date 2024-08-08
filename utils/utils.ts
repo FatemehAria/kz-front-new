@@ -36,6 +36,7 @@ export const sendOTPCodeForRegistrationForHoghooghi = async (
   type: string,
   mobile: string,
   password: string,
+  ncode:string,
   org_name: string,
   org_registration_number: string,
   org_address: string,
@@ -50,11 +51,12 @@ export const sendOTPCodeForRegistrationForHoghooghi = async (
       type,
       mobile,
       password,
+      ncode,
       org_name,
       org_registration_number,
       org_address,
       org_phone,
-      shenase_melli,
+      org_shenase_melli: shenase_melli,
     });
     // sendOTPCodeMain(mobile);
     setSteps(2);
@@ -98,57 +100,6 @@ export const sendOTPCodeForRegistrationForHaghighi = async (
     console.log(error.response.data.message);
   }
 };
-// Register with Info
-// export const registerInfo = async (
-//   name: string,
-//   surname: string,
-//   password: string,
-//   mobile: string,
-//   type: string,
-//   shenase_melli: string | null,
-//   shomare_sabt: string | null,
-//   setSteps: React.Dispatch<React.SetStateAction<number>>
-// ) => {
-//   try {
-//     const { data } = await app.post("/user/register", {
-//       name,
-//       surname,
-//       password,
-//       mobile,
-//       type,
-//       shenase_melli: shenase_melli || "",
-//       shomare_sabt: shomare_sabt || "",
-//     });
-//     window.localStorage.setItem("type", JSON.stringify(type));
-//     console.log(data);
-//     if (type === "haghighi" || type === "حقیقی") {
-//       await sendOTPCodeForRegistrationForHaghighi(name, surname, type, mobile);
-//       // await sendOTPCodeMain(mobile);
-//       // setSteps(2);
-//     } else {
-//       setSteps(6);
-//     }
-//   } catch (error: any) {
-//     console.log(error);
-//     if (error.response.data.message === "user-exists")
-//       throw new Error("کاربر با این مشخصات قبلا ثبت شده است.");
-//     else {
-//       console.log(error);
-//       return toast.error("خطا در ثبت اطلاعات", {
-//         position: "top-center",
-//         autoClose: 5000,
-//         hideProgressBar: false,
-//         closeOnClick: true,
-//         pauseOnHover: true,
-//         draggable: true,
-//         progress: undefined,
-//         theme: "light",
-//         transition: Bounce,
-//         rtl: true,
-//       });
-//     }
-//   }
-// };
 // send otp code for login and general
 export const sendOTPCodeMain = async (
   mobile: string,

@@ -10,6 +10,7 @@ import app from "@/services/service";
 import { sendOTPCodeForRegistrationForHoghooghi } from "@/utils/utils";
 import InfoFormFieldContainer from "./components/info-form-filed-container";
 import FormValidationMsg from "./components/form-validation-msg";
+import { HoghooghiUserRegistrationSechema } from "@/schemas/userpanel-profile-schema";
 
 const initialValues = {
   org_address: "",
@@ -17,7 +18,6 @@ const initialValues = {
   org_phone: "",
   org_registration_number: "",
   shenase_melli: "",
-  shomare_sabt: "",
 };
 
 function AdditionalInfoOnRegister({
@@ -34,6 +34,7 @@ function AdditionalInfoOnRegister({
       savedInfo.type,
       savedInfo.mobile,
       savedInfo.password,
+      savedInfo.ncode,
       values.org_name,
       values.org_registration_number,
       values.org_address,
@@ -41,7 +42,6 @@ function AdditionalInfoOnRegister({
       values.shenase_melli,
       setSteps
     );
-  
   };
 
   const {
@@ -55,6 +55,7 @@ function AdditionalInfoOnRegister({
   } = useFormik({
     initialValues,
     onSubmit: handleSubmission,
+    validationSchema: HoghooghiUserRegistrationSechema,
     validateOnMount: true,
   });
 
@@ -88,6 +89,9 @@ function AdditionalInfoOnRegister({
               <span className="absolute -top-6 right-[6.5rem] text-[#4866CF] z-20">
                 *
               </span>
+              {errors.org_name && touched.org_name && (
+                <FormValidationMsg errorMsg={`${errors.org_name}`} />
+              )}
             </div>
 
             <div className="relative">
@@ -106,6 +110,12 @@ function AdditionalInfoOnRegister({
               <span className="absolute -top-6 right-[9.25rem] text-[#4866CF] z-20">
                 *
               </span>
+              {errors.org_registration_number &&
+                touched.org_registration_number && (
+                  <FormValidationMsg
+                    errorMsg={`${errors.org_registration_number}`}
+                  />
+                )}
             </div>
 
             <div className="relative">
@@ -121,6 +131,9 @@ function AdditionalInfoOnRegister({
               <span className="absolute -top-6 right-[7.25rem] text-[#4866CF] z-20">
                 *
               </span>
+              {errors.org_address && touched.org_address && (
+                <FormValidationMsg errorMsg={`${errors.org_address}`} />
+              )}
             </div>
 
             <div className="relative">
@@ -136,10 +149,13 @@ function AdditionalInfoOnRegister({
               <span className="absolute -top-6 right-[10.25rem] text-[#4866CF] z-20">
                 *
               </span>
+              {errors.org_phone && touched.org_phone && (
+                <FormValidationMsg errorMsg={`${errors.org_phone}`} />
+              )}
             </div>
 
             <React.Fragment>
-              <InfoFormFieldContainer errorMsg={errors.shenase_melli}>
+              <InfoFormFieldContainer>
                 <FormInput
                   value={values.shenase_melli}
                   onChange={handleChange}
