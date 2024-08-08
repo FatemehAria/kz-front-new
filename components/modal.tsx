@@ -18,6 +18,7 @@ type ModalProps = {
   isLoggingIn?: boolean;
   setSteps?: Dispatch<SetStateAction<number>>;
   showOnErrorOrSuccess?: boolean;
+  setShowModalOnError?: React.Dispatch<React.SetStateAction<boolean>>;
   // setStartLogin: React.Dispatch<React.SetStateAction<boolean>>;
   buttonText?: string;
   mainButtonText?: string;
@@ -35,6 +36,7 @@ function Modal({
   isLoggingIn,
   setSteps,
   showOnErrorOrSuccess,
+  setShowModalOnError,
   // setStartLogin,
   buttonText,
   mainButtonText,
@@ -56,6 +58,7 @@ function Modal({
 
   const handleMainButtonClick = () => {
     dispatch(openModal(false));
+    setShowModalOnError && setShowModalOnError(false);
     if (!isLoggingIn) {
       // if (!token) {
       // setStartLogin(true);
@@ -97,32 +100,46 @@ function Modal({
               <p className="text-[32px]">{data}</p>
             </div>
 
-            <div className="flex items-center justify-between p-4 md:p-5 rounded-b whitespace-nowrap">
+            <div
+              className={`${
+                showOnErrorOrSuccess ? "" : "flex items-center justify-between"
+              }  p-4 md:p-5 rounded-b whitespace-nowrap`}
+            >
               {/* اگر شماره موبایل بود */}
 
-              <button
-                onClick={() => handleMainButtonClick()}
-                type="button"
-                className="text-white bg-[#4866CF] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm md:px-5 md:py-2.5 text-center"
+              <div
+                className={`${
+                  showOnErrorOrSuccess
+                    ? "flex justify-center"
+                    : ""
+                }`}
               >
-                {showOnErrorOrSuccess ? "متوجه شدم" : "تایید شماره همراه"}
-              </button>
+                <button
+                  onClick={() => handleMainButtonClick()}
+                  type="button"
+                  className="text-white bg-[#4866CF] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm md:px-5 md:py-2.5 text-center"
+                >
+                  {showOnErrorOrSuccess ? "متوجه شدم" : "تایید شماره همراه"}
+                </button>
+              </div>
               <div
                 className={`${
                   data === "" && "flex justify-center w-full text-center"
                 }`}
               >
-                {!showOnErrorOrSuccess && <button
-                  onClick={() => handlePrimaryButtonClick()}
-                  type="button"
-                  className={`md:py-2.5 md:px-5 ms-3 px-5 text-sm font-medium focus:outline-none rounded-lg border border-[#4866CF] ${
-                    data
-                      ? "self-center bg-[#4866CF] text-white"
-                      : " bg-white text-[#4866CF]"
-                  }`}
-                >
-                  تغییر شماره همراه
-                </button>}
+                {!showOnErrorOrSuccess && (
+                  <button
+                    onClick={() => handlePrimaryButtonClick()}
+                    type="button"
+                    className={`md:py-2.5 md:px-5 ms-3 px-5 text-sm font-medium focus:outline-none rounded-lg border border-[#4866CF] ${
+                      data
+                        ? "self-center bg-[#4866CF] text-white"
+                        : " bg-white text-[#4866CF]"
+                    }`}
+                  >
+                    تغییر شماره همراه
+                  </button>
+                )}
               </div>
             </div>
           </div>

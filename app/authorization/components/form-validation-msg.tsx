@@ -5,7 +5,9 @@ type FormValidationMsgProps = {
 };
 function FormValidationMsg({ errorMsg }: FormValidationMsgProps) {
   return (
-    <div className="text-white bg-[#4866CF] rounded-[4px] border-none outline-none text-[10px] absolute bottom-0 w-full">
+    <div
+      className={`text-white bg-[#4866CF] rounded-[4px] border-none outline-none text-[10px] absolute w-full p-[.25rem] z-30`}
+    >
       {errorMsg !== "undefined" ? errorMsg : ""}
     </div>
   );

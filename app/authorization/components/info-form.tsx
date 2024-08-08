@@ -34,17 +34,14 @@ const initialValues = {
   LastName: "",
   Password: "",
   type: "حقیقی",
-  shenase_melli: "",
-  shomare_sabt: "",
   ncode: "",
 };
 
 const InfoForm = ({ setSteps }: infoFormProps) => {
   const [errorMsg, setErrorMsg] = useState("");
-  const dispatch = useDispatch();
-  const { showModal } = useSelector((state: any) => state.userData);
+  const [showModalOnError, setShowModalOnError] = useState(false);
   const [PhoneNumber, setPhoneNumber] = useState("");
-  const { savedInfo, setSavedInfo } = useContext(InfoContext);
+  const { setSavedInfo } = useContext(InfoContext);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -56,15 +53,9 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
   const handleSubmission = async () => {
     try {
       setErrorMsg("");
-      // if (values.type !== "حقیقی") {
-      //   if (verifyIranianNationalId(values.shenase_melli)) {
-      //     console.log("کدملی معتبر");
-      //     values.shenase_melli = values.shenase_melli;
-      //   } else {
-      //     console.log("کدملی نامعتبر");
-      //     setErrorMsg("شناسه ملی معتبر نمی باشد.");
-      //   }
-      // }
+      if (verifyIranianNationalId(values.ncode)) {
+        values.ncode = values.ncode;
+      }
       if (values.type === "haghighi" || values.type === "حقیقی") {
         await sendOTPCodeForRegistrationForHaghighi(
           values.FirstName,
@@ -78,16 +69,6 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
       } else {
         setSteps(6);
       }
-      // await registerInfo(
-      //   values.FirstName,
-      //   values.LastName,
-      //   values.Password,
-      //   PhoneNumber,
-      //   values.type === "حقیقی" ? "haghighi" : "hoghooghi",
-      //   values.shenase_melli,
-      //   values.shomare_sabt,
-      //   setSteps
-      // );
       setSavedInfo((last) => ({
         ...last,
         name: values.FirstName,
@@ -97,9 +78,9 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
         password: values.Password,
         ncode: values.ncode,
       }));
-    } catch (error: any) {
-      setErrorMsg(error.message);
-      dispatch(openModal(true));
+    } catch (error) {
+      setShowModalOnError(true);
+      setErrorMsg("خطا در ارسال کد");
     }
   };
 
@@ -119,17 +100,17 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
   });
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-      {/* {errorMsg && showModal && (
+    <form onSubmit={handleSubmit} className="flex flex-col">
+      {errorMsg && showModalOnError && (
         <Modal
-          showModal={showModal}
+          showModal={true}
           text={errorMsg}
           buttonText="متوجه شدم"
           data=""
-          redirect={true}
-          setSteps={setSteps}
+          showOnErrorOrSuccess={true}
+          setShowModalOnError={setShowModalOnError}
         />
-      )} */}
+      )}
       <label>
         <p className="font-bold text-[24px] pt-[3%] pb-1">
           ثبت نام در کیکاووس زمان
@@ -141,16 +122,17 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
       </label>
 
       <div className="grid grid-cols-1 gap-8">
-        <FormInput
-          value={PhoneNumber}
-          label="شماره تماس"
-          type="tel"
-          name="PhoneNumber"
-          disabled={true}
-        />
-        {/* required */}
+        <div className="mb-3">
+          <FormInput
+            value={PhoneNumber}
+            label="شماره تماس"
+            type="tel"
+            name="PhoneNumber"
+            disabled={true}
+          />
+        </div>
         <div className="grid grid-cols-2 gap-8">
-          <InfoFormFieldContainer errorMsg={errors.FirstName}>
+          <InfoFormFieldContainer>
             <FormInput
               value={values.FirstName}
               onChange={handleChange}
@@ -169,7 +151,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
             )}
           </InfoFormFieldContainer>
 
-          <InfoFormFieldContainer errorMsg={errors.LastName}>
+          <InfoFormFieldContainer>
             <FormInput
               value={values.LastName}
               onChange={handleChange}
@@ -187,7 +169,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
             )}
           </InfoFormFieldContainer>
 
-          <InfoFormFieldContainer errorMsg={errors.Password}>
+          <InfoFormFieldContainer>
             <FormInput
               value={values.Password}
               onChange={handleChange}
@@ -216,7 +198,7 @@ const InfoForm = ({ setSteps }: infoFormProps) => {
           </div>
         </div>
 
-        <InfoFormFieldContainer errorMsg={errors.ncode}>
+        <InfoFormFieldContainer>
           <FormInput
             value={values.ncode}
             onChange={handleChange}

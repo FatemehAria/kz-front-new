@@ -70,8 +70,7 @@ const Login = ({
   const { result, setAnswer, answer, mathProblem, wrongAnswerMessage } =
     useCaptcha(values.PhoneNumber);
   useStoreNumInLocal(values.PhoneNumber);
-  // console.log("isLoggedIn", isLoggedIn);
-  // console.log("isLogginIn", isLoggingIn);
+
   return (
     <React.Fragment>
       <div
