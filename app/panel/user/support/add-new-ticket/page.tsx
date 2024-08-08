@@ -14,9 +14,10 @@ import { IoArrowBack } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import AboutMeEducationDropdown from "@/app/panel/components/about-me-education-dropsown";
 import SubmitOrderDropdown from "../../submit-order/components/submit-order-dropdown";
+import { createTicket } from "@/utils/utils";
 
 function AddNewTicket() {
-  const { localToken, localUserId } = useSelector(
+  const { localToken, localUserId , token } = useSelector(
     (state: any) => state.userData
   );
   const [File, setFile] = useState<any>(null);
@@ -34,10 +35,10 @@ function AddNewTicket() {
   };
   const handleFileUpload = async () => {
     const formData = new FormData();
-    formData.append("File", File);
+    formData.append("file", File);
     try {
       const { data } = await axios.post(
-        `https://keykavoos.liara.run/Client/UploadFileTicket/${localUserId}`,
+        `/ticket/file/upload/${localUserId}`,
         formData,
         {
           headers: {
@@ -76,74 +77,30 @@ function AddNewTicket() {
   };
 
   const [ticket, setTicket] = useState({
-    RelevantUnit: "",
-    Title: "",
-    text: "",
-    Priority: "",
+    title: "",
+    description: "",
+    // ?
+    status_id:"",
+    priority_id: "",
+    // userId
+    register_user_id: "",
+    dept_id:"",
+    // ?
+    ticket_id:""
   });
-  const SubmitTicket = async (
-    RelevantUnit: string,
-    Title: string,
-    text: string,
-    Priority: string,
-    File: any
-  ) => {
-    try {
-      const { data } = await axios.post(
-        `https://keykavoos.liara.run/Client/submitTicket/${localUserId}`,
-        {
-          RelevantUnit,
-          Title,
-          text,
-          Priority,
-          File,
-        },
-        {
-          headers: {
-            authorization: `Bearer ${localToken}`,
-          },
-        }
-      );
-      toast.success("تیکت با موفقیت ارسال شد.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        rtl: true,
-      });
-    } catch (error) {
-      toast.error("خطا در ارسال تیکت.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        rtl: true,
-      });
-      console.log(error);
-    }
-  };
 
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     Promise.all([
       await handleFileUpload(),
-      await SubmitTicket(
-        ticket.RelevantUnit,
-        ticket.Title,
-        ticket.text,
-        ticket.Priority,
-        JSON.stringify(File)
-      ),
+      // await createTicket(
+      //   token,
+      //   ticket.Title,
+      //   ticket.RelevantUnit,
+      //   ticket.text,
+      //   ticket.Priority,
+      //   JSON.stringify(File)
+      // ),
     ]);
   };
   return (
@@ -163,7 +120,7 @@ function AddNewTicket() {
         <TicketFields
           label="عنوان تیکت:"
           width="30%"
-          value={ticket.Title}
+          value={ticket.title}
           onChange={(e) =>
             setTicket((last) => ({ ...last, Title: e.target.value }))
           }
@@ -171,7 +128,7 @@ function AddNewTicket() {
         <TicketFields
           label="واحد مربوطه:"
           width="30%"
-          value={ticket.RelevantUnit}
+          value={ticket.dept_id}
           onChange={(e) =>
             setTicket((last) => ({ ...last, RelevantUnit: e.target.value }))
           }
@@ -181,7 +138,7 @@ function AddNewTicket() {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setTicket((last) => ({ ...last, Priority: e.target.value }))
             }
-            value={ticket.Priority}
+            value={ticket.priority_id}
             dropDownTitle="اولویت تیکت:"
             dropdownItems={["کم", "متوسط", "فوری"]}
           />
@@ -204,7 +161,7 @@ function AddNewTicket() {
               cols={30}
               rows={10}
               className="p-2 bg-[#EAEFF6] w-[30%] rounded-[4px]"
-              value={ticket.text}
+              value={ticket.description}
               onChange={(e) =>
                 setTicket((last) => ({ ...last, text: e.target.value }))
               }

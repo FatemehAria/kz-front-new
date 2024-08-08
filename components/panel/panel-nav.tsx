@@ -82,12 +82,10 @@ const PanelNav = ({
                 </SkeletonTheme>
               ) : userProfile.pic_path ? (
                 <div className="bg-[#EAEFF6] p-2 rounded-full">
-                  <Image
+                  <img
                     alt="profile"
                     src={`http://localhost:8000/storage/${userProfile.pic_path}`}
                     className="rounded-full w-[45px] h-[45px]"
-                    width={45}
-                    height={45}
                   />
                 </div>
               ) : (

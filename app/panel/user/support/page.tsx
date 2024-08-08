@@ -15,6 +15,7 @@ import vieweye from "../../../../public/ViewUsers/vieweye.svg";
 import CloseTicketModal from "./components/close-ticket-modal";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import NotFound from "../../admin/components/NotFound";
+import { getAllTickets } from "@/utils/utils";
 const moment = require("moment-jalaali");
 
 const Support = () => {
@@ -25,9 +26,7 @@ const Support = () => {
     error: "",
     loading: false,
   });
-  const { localToken, localUserId } = useSelector(
-    (state: any) => state.userData
-  );
+  const { token, localUserId } = useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getIdFromLocal());
@@ -35,28 +34,8 @@ const Support = () => {
     dispatch<any>(fetchUserProfile());
   }, []);
 
-  const getAllTheTickets = async () => {
-    try {
-      setSupportStatus((prevStatus) => ({ ...prevStatus, loading: true }));
-      const { data } = await axios(
-        `https://keykavoos.liara.run/Client/AllTicket/${localUserId}`,
-        {
-          headers: {
-            authorization: `Bearer ${localToken}`,
-          },
-        }
-      );
-      setAllTickets(data.data);
-      setSupportStatus((prevStatus) => ({ ...prevStatus, loading: false }));
-      // console.log(data);
-    } catch (error) {
-      setSupportStatus({ error: "خطا در دریافت اطلاعات.", loading: false });
-      // console.log(error);
-    }
-  };
-
   useEffect(() => {
-    getAllTheTickets();
+    getAllTickets(token, setAllTickets, setSupportStatus);
   }, []);
   // useEffect(() => {
   //   if (localUserId) {
@@ -103,7 +82,8 @@ const Support = () => {
                 className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px]"
               >
                 <p className="font-faNum">{index + 1}</p>
-                <p className="font-faNum">{item.Title}</p>
+                <p className="font-faNum">{item.title}</p>
+                {/* item.priority_id */}
                 <div>
                   {item.Blocked === "true" ? (
                     <p>
