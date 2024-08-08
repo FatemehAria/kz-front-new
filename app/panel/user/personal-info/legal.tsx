@@ -7,14 +7,14 @@ type LegalProps = {
   PhoneNumber: string;
   token: string;
   name_of_Organization: string;
-  National_ID: string;
+  shenase_melli: string;
   registration_Number: string;
   path?: string;
 };
 function Legal({
   PhoneNumber,
   name_of_Organization,
-  National_ID,
+  shenase_melli,
   registration_Number,
   path,
 }: LegalProps) {
@@ -24,7 +24,7 @@ function Legal({
         <div className="flex flex-col justify-between gap-3">
           <PanelFields
             label="نام سازمان:"
-            value={""}
+            value={name_of_Organization}
             name="name_of_Organization"
             disable={true}
           />
@@ -35,7 +35,7 @@ function Legal({
           />
           <PanelFields
             label="شناسه ملی:"
-            value={""}
+            value={shenase_melli}
             name="National_ID"
             disable={true}
           />
@@ -43,7 +43,7 @@ function Legal({
         <div className="flex flex-col justify-between">
           <div className="self-center">
             <Image
-              src={path ?  `http://localhost:8000/storage/${path}` : malegender}
+              src={path ? `http://localhost:8000/storage/${path}` : malegender}
               alt="profile"
               width={250}
               height={250}
@@ -51,19 +51,11 @@ function Legal({
           </div>
           <PanelFields
             label="شماره ثبت:"
-            value={""}
+            value={registration_Number}
             name="registration_Number"
             disable={true}
           />
         </div>
-      </div>
-      <div className="flex justify-end">
-        <Link
-          className="bg-[#4866CF] text-white px-3 py-1 rounded-lg"
-          href="/panel/user/settings"
-        >
-          ویرایش حساب کاربری
-        </Link>
       </div>
     </div>
   );

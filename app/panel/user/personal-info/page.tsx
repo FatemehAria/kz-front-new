@@ -20,6 +20,9 @@ function PersonalInfo() {
   );
   const [step, setStep] = useState(type);
 
+  const LegalUserOrgName = userProfile.organizations?.map((item) => item.name)
+  const LegalUserShenaseMellli = userProfile.organizations?.map((item) => item.shenase_melli)
+  const LegalUserOrgReg = userProfile.organizations?.map((item) => item.registration_number)
   useEffect(() => {
     setStep(type);
   }, [type]);
@@ -33,9 +36,9 @@ function PersonalInfo() {
           <Legal
             PhoneNumber={userProfile.mobile}
             token={token}
-            name_of_Organization={userProfile.name_of_Organization}
-            National_ID={userProfile.National_ID}
-            registration_Number={userProfile.registration_Number}
+            name_of_Organization={LegalUserOrgName}
+            shenase_melli={LegalUserShenaseMellli}
+            registration_Number={LegalUserOrgReg}
             path={userProfile.pic_path}
           />
         );

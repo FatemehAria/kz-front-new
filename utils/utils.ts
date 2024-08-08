@@ -29,6 +29,7 @@ export const logout = async () => {
     console.log(error);
   }
 };
+
 // send otp code
 export const sendOTPCodeForRegistrationForHoghooghi = async (
   name: string,
@@ -139,6 +140,7 @@ export const sendOTPCodeMain = async (
     console.log(error.response.data.message);
   }
 };
+
 // save info to local storage
 export const saveToLocalStorage = (key: string, value: string) => {
   window.localStorage.setItem(`${key}`, value);

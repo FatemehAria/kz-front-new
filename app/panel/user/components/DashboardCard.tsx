@@ -9,7 +9,6 @@ type DashboardCardProps = {
     link: string;
     imgUrl: string;
     width: number;
-    top?: string;
   };
 };
 function DashboardCard({ data }: DashboardCardProps) {
@@ -22,8 +21,7 @@ function DashboardCard({ data }: DashboardCardProps) {
       <Image
         src={data.imgUrl}
         alt={data.title}
-        className={`absolute ${data.top ? data.top : "-top-14"}`}
-        // className={`absolute -top-16`}
+        className={`absolute ${data.title.includes("وضعیت سفارش") ? "-top-20" : "-top-14"}`}
         width={data.width}
       />
     </Link>

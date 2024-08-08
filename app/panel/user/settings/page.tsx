@@ -12,8 +12,9 @@ import {
 import SettingsHeader from "./components/settings-header";
 
 function PersonalInfo() {
-  const { PhoneNumber, token, userId, userProfile, type } =
-    useSelector((state: any) => state.userData);
+  const { PhoneNumber, token, userId, userProfile, type } = useSelector(
+    (state: any) => state.userData
+  );
   const dispatch = useDispatch();
   const [step, setStep] = useState(type);
 
@@ -25,20 +26,10 @@ function PersonalInfo() {
     switch (step) {
       case "haghighi":
         return (
-          <Genuine
-            PhoneNumber={PhoneNumber}
-            userId={userId}
-            token={token}
-          />
+          <Genuine PhoneNumber={PhoneNumber} userId={userId} token={token} />
         );
       case "hoghooghi":
-        return (
-          <Legal
-            userId={userId}
-            token={token}
-            userProfile={userProfile}
-          />
-        );
+        return <Legal />;
       default:
         break;
     }

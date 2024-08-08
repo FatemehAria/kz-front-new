@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import PanelNavSmall from "@/components/panel/panel-nav-small";
 import PanelSidebarSmall from "@/components/panel/panel-sidebar-small";
 import {
-  deleteDataFromCookie,
   fetchUserProfile,
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
@@ -15,7 +14,6 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import nextarrow from "@/public/forwardarrow.svg";
 import prevarrow from "@/public/backarrow.svg";
-import { useGetUserRoles } from "@/hooks/useGetUserRoles";
 import PlanContextWrapper from "./admin/plan-management/context/PlanContextWrapper";
 import ValueIdContextWrapper from "./admin/plan-management/context/ValueIdContextWrapper";
 import DepartmentContextWrapper from "./admin/context/department-context/DepartmentContextWrapper";
@@ -28,11 +26,9 @@ import OrderSubmissionContextWrapper from "./context/order-submission-contexts/O
 const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   const { token, userProfile, status, numberOfAnnouncements, role } =
     useSelector((store: any) => store.userData);
-  const userRoles = useGetUserRoles();
-  const { setAllPlans , setSiteTypes } = useContext(OrderSubmissionContext);
+  const { setAllPlans, setSiteTypes } = useContext(OrderSubmissionContext);
   const [showAnnouncementDropdown, setShowAnnouncementDropdown] =
     useState(false);
-  const router = useRouter();
   const dispatch = useDispatch();
 
   const [currentPage, setCurrentPage] = useState(0);
@@ -48,6 +44,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
         : prevPage
     );
   };
+  
   const handlePrevClick = () => {
     setCurrentPage((prevPage) => (prevPage > 0 ? prevPage - 1 : prevPage));
   };
@@ -59,15 +56,16 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     getAllPlans(token, setAllPlans);
-    getAllSiteTypes(token,setSiteTypes);
+    getAllSiteTypes(token, setSiteTypes);
   }, []);
+
   // useEffect(() => {
   //   if (!token) {
   //     dispatch(deleteDataFromCookie());
   //     router.push("/");
   //   }
   // }, [token]);
-
+  
   return (
     <OrderSubmissionContextWrapper>
       <UserContextWrapper>
@@ -85,10 +83,9 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
                     <div className="hidden lg:block">
                       <PanelSidebar
                         sideOptions={
-                          // role === "Admin"
-                            // ? 
-                            mainAdminSidebarOptions
-                            // : userSidebarOptions
+                          role === "Admin"
+                            ? mainAdminSidebarOptions
+                            : userSidebarOptions
                         }
                         status={status}
                       />
@@ -98,7 +95,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
                         <PanelNav
                           userProfile={userProfile}
                           status={status}
-                          userType={userRoles}
+                          userType={role}
                           numberOfAnnouncements={numberOfAnnouncements}
                           setShowAnnouncementDropdown={
                             setShowAnnouncementDropdown

@@ -197,6 +197,11 @@ const userSlice = createSlice({
       state.userId = action.payload.userId;
       sessionStorage.setItem("userId", state.userId);
       state.userType = action.payload.userType;
+      state.role = state.userType?.find(
+        (item: userRoleType) => item.name_en.toLowerCase() === "admin"
+      )
+        ? "Admin"
+        : "User";
     });
     builder.addCase(fetchUserProfile.rejected, (state, action) => {
       state.status = "failed";
