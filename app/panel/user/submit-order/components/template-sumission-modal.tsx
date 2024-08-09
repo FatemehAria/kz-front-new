@@ -17,7 +17,7 @@ type TemplateSubmissionModalProps = {
   };
   setModalInputValue: React.Dispatch<
     React.SetStateAction<{
-        template_name: string;
+      template_name: string;
     }>
   >;
 };
@@ -48,7 +48,7 @@ function TemplateSubmissionModal({
       <div className="p-4 w-full flex justify-center">
         <div className="relative p-8 w-full max-w-2xl max-h-full">
           <div className="bg-white rounded-[25px] shadow border">
-            <div className="md:p-5 text-black font-semibold grid grid-cols-1 gap-5">
+            <div className="md:p-5 text-black font-semibold">
               <input
                 type="text"
                 className="bg-[#EAEFF6] w-full rounded-[4px] p-2 outline-none"
@@ -60,24 +60,23 @@ function TemplateSubmissionModal({
                     template_name: e.target.value,
                   }))
                 }
+                placeholder="نام تمپلیت"
               />
-              <div className="flex flex-row-reverse gap-3">
-                {data.map((item) => (
-                  <p
-                    key={item.template_name}
-                    className="bg-[#EAEFF6] rounded-[4px] px-2"
-                  >
-                    {item.template_name}
-                  </p>
-                ))}
-              </div>
             </div>
-
+            <div className="flex flex-row-reverse gap-5 md:p-5">
+              {data.map((item) => (
+                <p
+                  key={item.template_name}
+                  className={`bg-[#EAEFF6] rounded-[4px] px-2 ${
+                    item.template_name ? "inline-block" : "hidden"
+                  }`}
+                >
+                  {item.template_name}
+                </p>
+              ))}
+            </div>
             <div className="flex items-center justify-between p-4 md:p-5 rounded-b">
               <button
-                // onClick={() => {
-                //   dispatch(openModal(false));
-                // }}
                 type="button"
                 className="text-white bg-[#4866CF] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm md:px-5 md:py-2.5 text-center"
                 onClick={() => handleSave()}

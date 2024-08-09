@@ -35,7 +35,6 @@ function PluginSubmissionModal({
     }
     setModalInputValue({ plugin_name: "" });
   };
-  // console.log(data);
   return (
     <div
       id="default-modal"
@@ -61,23 +60,21 @@ function PluginSubmissionModal({
                   }))
                 }
               />
-              <div className="flex flex-row-reverse gap-3">
-                {data.map((item) => (
-                  <p
-                    key={item.plugin_name}
-                    className="bg-[#EAEFF6] rounded-[4px] px-2"
-                  >
-                    {item.plugin_name}
-                  </p>
-                ))}
-              </div>
             </div>
-
+            <div className="flex flex-row-reverse gap-5 md:p-5">
+              {data.map((item) => (
+                <p
+                  key={item.plugin_name}
+                  className={`bg-[#EAEFF6] rounded-[4px] px-2 ${
+                    item.plugin_name ? "inline-block" : "hidden"
+                  }`}
+                >
+                  {item.plugin_name}
+                </p>
+              ))}
+            </div>
             <div className="flex items-center justify-between p-4 md:p-5 rounded-b">
               <button
-                // onClick={() => {
-                //   dispatch(openModal(false));
-                // }}
                 type="button"
                 className="text-white bg-[#4866CF] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm md:px-5 md:py-2.5 text-center"
                 onClick={() => handleSave()}

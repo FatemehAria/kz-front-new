@@ -67,7 +67,7 @@ function OrdersubmissionModal({
                     title: e.target.value,
                   }))
                 }
-                placeholder="عنوان سایت"
+                placeholder="عنوان سایت(الزامی)"
               />
               <input
                 type="text"
@@ -79,7 +79,7 @@ function OrdersubmissionModal({
                     url: e.target.value,
                   }))
                 }
-                placeholder="آدرس سایت"
+                placeholder="آدرس سایت(الزامی)"
               />
             </div>
 

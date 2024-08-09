@@ -33,10 +33,7 @@ function ColorSubmissionModal({
   setModalInputValue,
 }: ColorSubmissionModalProps) {
   const handleSave = () => {
-    if (
-      modalInputValue.title.trim() !== "" &&
-      modalInputValue.color.trim() !== ""
-    ) {
+    if (modalInputValue.color.trim() !== "") {
       setData([...data, modalInputValue]);
     }
     setModalInputValue({ title: "", color: "" });
@@ -54,19 +51,7 @@ function ColorSubmissionModal({
       <div className="p-4 w-full flex justify-center">
         <div className="relative p-8 w-full max-w-2xl max-h-full">
           <div className="bg-white rounded-[25px] shadow border">
-            <div className="md:p-5 text-black font-semibold grid grid-cols-1 gap-5">
-              <input
-                type="text"
-                className="bg-[#EAEFF6] w-full rounded-[4px] p-2 outline-none"
-                autoFocus={true}
-                value={modalInputValue.title}
-                onChange={(e) =>
-                  setModalInputValue((last) => ({
-                    ...last,
-                    title: e.target.value,
-                  }))
-                }
-              />
+            <div className="md:p-5 text-black font-semibold">
               <input
                 type="text"
                 className="bg-[#EAEFF6] w-full rounded-[4px] p-2 outline-none"
@@ -77,21 +62,23 @@ function ColorSubmissionModal({
                     color: e.target.value,
                   }))
                 }
+                placeholder="نام رنگ"
               />
-              <div className="flex flex-row-reverse gap-3">
-                {data.map((item) => (
-                  <p key={item.color} className="bg-[#EAEFF6] rounded-[4px] px-2">
-                    {item.color}
-                  </p>
-                ))}
-              </div>
             </div>
-
+            <div className="md:px-5 flex flex-row-reverse gap-5">
+              {data.map((item) => (
+                <p
+                  key={item.color}
+                  className={`bg-[#EAEFF6] rounded-[4px] px-2 ${
+                    item.color ? "inline-block" : "hidden"
+                  }`}
+                >
+                  {item.color}
+                </p>
+              ))}
+            </div>
             <div className="flex items-center justify-between p-4 md:p-5 rounded-b">
               <button
-                // onClick={() => {
-                //   dispatch(openModal(false));
-                // }}
                 type="button"
                 className="text-white bg-[#4866CF] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm md:px-5 md:py-2.5 text-center"
                 onClick={() => handleSave()}

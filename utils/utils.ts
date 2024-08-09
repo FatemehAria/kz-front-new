@@ -2825,7 +2825,7 @@ export const createProject = async (
   title: string,
   description: string,
   budget_cost: number,
-  discount_code: number | null,
+  discount_code: string | null,
   priority: string,
   register_user_id: number,
   planId: number,
