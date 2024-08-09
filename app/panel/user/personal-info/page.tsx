@@ -6,26 +6,42 @@ import Genuine from "./genuine";
 import Legal from "./legal";
 import {
   fetchUserProfile,
-  getIdFromLocal,
   getTokenFromLocal,
-  readPhoneNumberFromLocalStroage,
 } from "@/redux/features/user/userSlice";
 import NotFound from "../../admin/components/NotFound";
-import SubLoading from "@/components/SubLoading";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
+type OrganizationType = {
+  name: string;
+  shenase_melli: string;
+  registration_number: string;
+};
 function PersonalInfo() {
-  const { LastName, token, type, userProfile, status } = useSelector(
+  const { token, type, userProfile, status } = useSelector(
     (state: any) => state.userData
   );
+  const dispatch = useDispatch();
   const [step, setStep] = useState(type);
 
-  const LegalUserOrgName = userProfile.organizations?.map((item) => item.name)
-  const LegalUserShenaseMellli = userProfile.organizations?.map((item) => item.shenase_melli)
-  const LegalUserOrgReg = userProfile.organizations?.map((item) => item.registration_number)
+  const LegalUserOrgName = userProfile.organizations?.map(
+    (item: OrganizationType) => item.name
+  );
+  const LegalUserShenaseMellli = userProfile.organizations?.map(
+    (item: OrganizationType) => item.shenase_melli
+  );
+  const LegalUserOrgReg = userProfile.organizations?.map(
+    (item: OrganizationType) => item.registration_number
+  );
+
   useEffect(() => {
     setStep(type);
   }, [type]);
+  
+  // وقتی یوزر بره ستینگر تغییر بده برگرده دوباره میگیره دیتارو
+  useEffect(() => {
+    dispatch(getTokenFromLocal());
+    dispatch<any>(fetchUserProfile());
+  }, []);
 
   const renderSteps = () => {
     switch (step) {
@@ -54,11 +70,9 @@ function PersonalInfo() {
           <PersonalInfoHeader
             step={step}
             color="#EAEFF6"
-            // cursor={`${step === "Genuine" ? "cursor-default" : "cursor-pointer"}`}
           />
         </div>
         {status === "loading" || status === "idle" ? (
-          // <SubLoading />
           <SkeletonTheme>
             <Skeleton count={1} className="p-3" baseColor="#EAEFF6" />
           </SkeletonTheme>

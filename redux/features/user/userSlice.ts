@@ -137,6 +137,7 @@ const fetchUserProfile = createAsyncThunk<
       // numberOfAnnouncements: data.data.Announcement.length,
     };
   } catch (error: any) {
+    console.log(error.response.data.message);
     return rejectWithValue(error.response.data.message);
   }
 });

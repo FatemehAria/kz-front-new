@@ -717,6 +717,8 @@ export const userSidebarOptions = [
     path: [
       "/panel/user/project-management",
       "/panel/user/project-management/project-detail",
+      "/panel/user/submit-order",
+      "/panel/user/submit-order/consultation"
     ],
   },
   {
@@ -729,12 +731,12 @@ export const userSidebarOptions = [
       "/panel/user/support/ticket-detail",
     ],
   },
-  {
-    text: "ثبت سفارش",
-    imgSrc: Images.OrderSubmissionIcon,
-    address: "/panel/user/submit-order",
-    path: ["/panel/user/submit-order", "/panel/user/submit-order/consultation"],
-  },
+  // {
+  //   text: "ثبت سفارش",
+  //   imgSrc: Images.OrderSubmissionIcon,
+  //   address: "/panel/user/submit-order",
+  //   path: ["/panel/user/submit-order", "/panel/user/submit-order/consultation"],
+  // },
   {
     text: "وضعیت مالی",
     imgSrc: Images.FinancialStatusIcon,

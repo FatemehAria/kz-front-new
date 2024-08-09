@@ -29,6 +29,7 @@ function SubmitOrder() {
   const { allPlans, setAllPlans, siteTypes, setSiteTypes } = useContext(
     OrderSubmissionContext
   );
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const localPlans = JSON.parse(
@@ -42,7 +43,6 @@ function SubmitOrder() {
     }
   }, []);
 
-  const [File, setFile] = useState<any>(null);
   const [similarSiteData, setSimilarSiteData] = useState<SimilarSiteType[]>([
     { title: "", url: "" },
   ]);
@@ -76,37 +76,34 @@ function SubmitOrder() {
     title: "",
     color: "",
   });
-  const planTitlesAndDescs = allPlans.map((item) => item.plan.title);
-  const siteTypeTitles = siteTypes.map((item: SimilarSiteType) => item.title);
+
   const [projectFields, setProjectFields] = useState({
     title: "",
     // نوع پروژه(طراحی) /types
-    type: "",
+    type: "فروشگاهی",
     // پلن /plans
     plan: "",
     budget: "",
-    priority: "",
+    priority: "کم",
     Similar_Site: similarSiteData,
     Description: "",
     Templates: templatesData,
     Colors: colorsData,
   });
 
+  const planTitlesAndDescs = allPlans
+    .filter((item) => item.plan.title.includes(projectFields.type))
+    .map((item) => item.plan.title);
+
+  const siteTypeTitles = siteTypes.map((item: SimilarSiteType) => item.title);
   const plansId = allPlans.filter((item) =>
     projectFields.plan.includes(item.plan.title)
   )[0]?.plan.id;
-  const typeId = siteTypes.filter(
-    (item: SimilarSiteType) => item.title === projectFields.type
-  )[0]?.id;
 
   const handleBudegtChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value.replace(/,/g, "");
     const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     setProjectFields((last) => ({ ...last, budget: formattedValue }));
-  };
-
-  const handleFileChange = (file: File) => {
-    setFile(file);
   };
 
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -133,6 +130,7 @@ function SubmitOrder() {
       onSubmit={(e) => handleSubmission(e)}
       className="py-[3%] w-[100%] shadow mx-auto bg-white rounded-2xl px-[3%] grid grid-cols-1 gap-5 relative"
     >
+      {/* سایت مشابه مودال */}
       {showSimilarModal && (
         <OrdersubmissionModal
           showModal={showSimilarModal}
@@ -189,7 +187,7 @@ function SubmitOrder() {
           <SubmitOrderDropdown
             dropDownTitle="اولویت پروژه:"
             dropdownItems={["کم", "زیاد"]}
-            onChange={(e) =>
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
               setProjectFields((last) => ({
                 ...last,
                 priority: e.target.value,
@@ -204,17 +202,6 @@ function SubmitOrder() {
       <div className="grid grid-cols-2 gap-3">
         <div className="relative pt-3">
           <SubmitOrderDropdown
-            dropDownTitle="پلن انتخابی:"
-            dropdownItems={planTitlesAndDescs}
-            value={projectFields.plan}
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-              setProjectFields((last) => ({ ...last, plan: e.target.value }))
-            }
-          />
-          <p className="absolute top-0 right-[5.5rem] text-[#4866CF]">*</p>
-        </div>
-        <div className="relative pt-3">
-          <SubmitOrderDropdown
             dropDownTitle="نوع پروژه:"
             dropdownItems={siteTypeTitles}
             value={projectFields.type}
@@ -223,6 +210,17 @@ function SubmitOrder() {
             }
           />
           <p className="absolute top-0 right-[5rem] text-[#4866CF]">*</p>
+        </div>
+        <div className="relative pt-3">
+          <SubmitOrderDropdown
+            dropDownTitle="پلن انتخابی:"
+            dropdownItems={planTitlesAndDescs}
+            value={projectFields.plan}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+              setProjectFields((last) => ({ ...last, plan: e.target.value }))
+            }
+          />
+          <p className="absolute top-0 right-[5.5rem] text-[#4866CF]">*</p>
         </div>
       </div>
       <div className="relative pt-3">
@@ -271,7 +269,6 @@ function SubmitOrder() {
         setData={setColorsData}
       />
       <div className="flex justify-end">
-        {/* <FileUpload File={File} handleChange={handleFileChange} /> */}
         <div className="flex gap-5">
           <Link
             href={`/panel/user/submit-order/consultation`}

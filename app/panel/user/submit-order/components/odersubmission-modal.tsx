@@ -41,6 +41,7 @@ function OrdersubmissionModal({
     }
     setModalInputValue({ title: "", url: "" });
   };
+  const disabled = modalInputValue.title === "" || modalInputValue.url === "";
   // console.log(data);
   return (
     <div
@@ -66,6 +67,7 @@ function OrdersubmissionModal({
                     title: e.target.value,
                   }))
                 }
+                placeholder="عنوان سایت"
               />
               <input
                 type="text"
@@ -77,24 +79,27 @@ function OrdersubmissionModal({
                     url: e.target.value,
                   }))
                 }
+                placeholder="آدرس سایت"
               />
-              <div className="flex flex-row-reverse gap-3">
-                {data.map((item) => (
-                  <p key={item.url} className="bg-[#EAEFF6] rounded-[4px] px-2">
-                    {item.url}
-                  </p>
-                ))}
-              </div>
             </div>
 
+            <div className="md:px-5 flex flex-row-reverse gap-5 ">
+              {data.map((item) => (
+                <p key={item.url} className={`bg-[#EAEFF6] rounded-[4px] px-2 ${item.url ? "inline-block" : "hidden"}`}>
+                  {item.url}
+                </p>
+              ))}
+            </div>
             <div className="flex items-center justify-between p-4 md:p-5 rounded-b">
               <button
-                // onClick={() => {
-                //   dispatch(openModal(false));
-                // }}
                 type="button"
-                className="text-white bg-[#4866CF] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm md:px-5 md:py-2.5 text-center"
+                className={`${
+                  disabled
+                    ? "text-white bg-blue-400"
+                    : "text-white  bg-[#4866CF]"
+                }  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm md:px-5 md:py-2.5 text-center`}
                 onClick={() => handleSave()}
+                disabled={disabled ? true : false}
               >
                 ذخیره
               </button>

@@ -39,7 +39,6 @@ function SettingsHeader({ step, setStep }: SettingsHeaderProps) {
               ? "bg-[#4866CF] text-white"
               : "bg-[#EAEFF6] text-[#4866CF]"
           }`}
-          // onClick={() => setStep && setStep("haghighi")}
         >
           حقیقی
         </button>
@@ -49,7 +48,6 @@ function SettingsHeader({ step, setStep }: SettingsHeaderProps) {
               ? "bg-[#4866CF] text-white"
               : "bg-[#EAEFF6] text-[#4866CF]"
           }`}
-          // onClick={() => setStep && setStep("hoghooghi")}
         >
           حقوقی
         </button>
