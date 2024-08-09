@@ -21,7 +21,7 @@ const Nav = () => {
   const [showFour, setShowFour] = useState(false);
   const [activeColorChange, setActiveColorChange] = useState(false);
   const dispatch = useDispatch();
-  const { token, FirstName, userProfile } = useSelector(
+  const { token, FirstName, userProfile, role } = useSelector(
     (state: any) => state.userData
   );
   const userRoles = useGetUserRoles();
@@ -34,6 +34,7 @@ const Nav = () => {
     });
   });
 
+  console.log("role", role);
   useEffect(() => {
     if (typeof window !== "undefined") {
       dispatch(getTokenFromLocal());
@@ -74,7 +75,7 @@ const Nav = () => {
           href={
             !token
               ? "/authorization"
-              : userRoles.includes("Admin")
+              : role === "Admin"
               ? "/panel/admin/view-users"
               : "/panel/user/dashboard"
           }

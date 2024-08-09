@@ -47,13 +47,15 @@ const fetchUserInLoginWithPassword = createAsyncThunk(
         mobile,
         password,
       });
-      console.log(data);
+      // console.log(data.data?.user.roles);
+      console.log("loginwithpass", data);
+      console.log("loginwithpass", data.data?.token);
       return {
         token: data.data?.token,
         FirstName: data.data?.user.name,
         LastName: data.data.user?.surname,
         userId: data.data?.user.id,
-        userType: data.data?.user.roles,
+        // userType: [...data.data?.user.roles],
         type: data.data?.user.type,
         isLoggedIn: true,
       };
@@ -77,14 +79,14 @@ const verifyUserByOTPInLoginAndRegistration = createAsyncThunk(
         otp_code,
         mobile,
       });
-      console.log(data);
+      console.log("verifyotp",data);
       return {
         token: data.data?.token,
         userProfile: data.data?.user,
         FirstName: data.data?.user.name,
         LastName: data.data?.user.surname,
         userId: data.data?.user.id,
-        userType: data.data?.user.roles,
+        userType: [...data.data?.user.roles],
         type: data.data?.user.type,
         isLoggedIn: true,
       };
@@ -125,13 +127,13 @@ const fetchUserProfile = createAsyncThunk<
         authorization: `Bearer ${getState().userData.token}`,
       },
     });
-    console.log(data);
+    console.log("userprofile",data);
     return {
       data: data.data,
       FirstName: data.data.name,
       email: data.data.email,
       type: data.data.type,
-      userType: data.data.roles,
+      userType: [...data.data.roles],
       userId: data.data.id,
       LastName: data.data.surname,
       // numberOfAnnouncements: data.data.Announcement.length,
@@ -257,7 +259,7 @@ const userSlice = createSlice({
       state.status = "loading";
     });
     builder.addCase(fetchUserInLoginWithPassword.fulfilled, (state, action) => {
-      state.showModal = true;
+      state.showModal = false;
       state.status = "success";
       state.token = action.payload.token;
       setCookie("token", state.token, {
@@ -267,7 +269,7 @@ const userSlice = createSlice({
       });
       state.FirstName = action.payload.FirstName;
       state.LastName = action.payload.LastName;
-      state.userType = action.payload.userType;
+      // state.userType = action.payload.userType;
       state.userId = action.payload.userId;
       state.isLoggedIn = action.payload.isLoggedIn;
       sessionStorage.setItem("userId", state.userId);
@@ -276,11 +278,11 @@ const userSlice = createSlice({
       } عزیز با موفقیت وارد پنل کاربری خود شدید.`;
       state.errorMessage = "";
       state.type = action.payload.type;
-      state.role = state.userType?.find(
-        (item: userRoleType) => item.name_en.toLowerCase() === "admin"
-      )
-        ? "Admin"
-        : "User";
+      // state.role = state.userType?.find(
+      //   (item: userRoleType) => item.name_en.toLowerCase() === "admin"
+      // )
+      //   ? "Admin"
+      //   : "User";
     });
     builder.addCase(fetchUserInLoginWithPassword.rejected, (state, action) => {
       state.status = "failed";

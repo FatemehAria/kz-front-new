@@ -37,7 +37,7 @@ export const sendOTPCodeForRegistrationForHoghooghi = async (
   type: string,
   mobile: string,
   password: string,
-  ncode:string,
+  ncode: string,
   org_name: string,
   org_registration_number: string,
   org_address: string,
@@ -1124,7 +1124,7 @@ export const getAllProjects = async (
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(data);
+    console.log("all projects", data);
     setAllProjects(data.data);
   } catch (error: any) {
     console.log(error.response.data.message);
@@ -2725,8 +2725,8 @@ export const createTicket = async (
       }
     );
     console.log(data);
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    console.log(error.response.data.message);
   }
 };
 // get all tickets
@@ -2747,10 +2747,10 @@ export const getAllTickets = async (
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(data);
+    console.log("tickets", data);
     setAllTickets(data.data);
   } catch (error: any) {
-    console.log(error);
+    console.log(error.response.data.message);
     if (error.response.data.message === "ticket-notFound") {
       setAllTicketsStatus((last) => ({ ...last, error: "تیکتی یافت نشد." }));
     }
@@ -2813,10 +2813,10 @@ export const getTicektDetail = async (
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(data);
+    console.log("ticketdetail", data);
     setTicketDetail(data.data);
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    console.log(error.response.data.message);
   }
 };
 // create new project
@@ -2990,17 +2990,160 @@ export const createProjectTemplate = async (
 export const getProjectDetail = async (
   token: string,
   projectId: string | null,
-  setProjectDetail: React.Dispatch<React.SetStateAction<any>>
+  setProjectDetail: React.Dispatch<React.SetStateAction<any>>,
+  setProjectDetailStatus?: React.Dispatch<
+    React.SetStateAction<{
+      loading: boolean;
+      error: string;
+    }>
+  >
 ) => {
   try {
+    setProjectDetailStatus &&
+      setProjectDetailStatus((last) => ({ ...last, loading: true }));
     const { data } = await app.get(`/project/show/${projectId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(data);
+    console.log("project detail", data);
     setProjectDetail(data.data);
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    setProjectDetailStatus &&
+      setProjectDetailStatus((last) => ({
+        ...last,
+        error: "خطا در دریافت اطلاعات",
+      }));
+    console.log(error.response.data.message);
+  } finally {
+    setProjectDetailStatus &&
+      setProjectDetailStatus((last) => ({ ...last, loading: false }));
+  }
+};
+// get similar sites for project
+export const getSimilarSite = async (
+  token: string,
+  setProjectDetail: React.Dispatch<React.SetStateAction<never[]>>
+) => {
+  try {
+    const { data } = await app("/project/like_sites", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("similar", data);
+    setProjectDetail((last) => ({ ...last, Similar_Site: data.data }));
+  } catch (error: any) {
+    console.log(error.response.data.message);
+  }
+};
+// get colors for project
+export const getColors = async (
+  token: string,
+  setProjectDetail: React.Dispatch<React.SetStateAction<never[]>>
+) => {
+  try {
+    const { data } = await app("/project/org_colors", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("colors", data);
+    setProjectDetail((last) => ({ ...last, Colors: data.data }));
+  } catch (error: any) {
+    console.log(error.response.data.message);
+  }
+};
+// get templates for project
+export const getTemplates = async (
+  token: string,
+  setProjectDetail: React.Dispatch<React.SetStateAction<never[]>>
+) => {
+  try {
+    const { data } = await app("/project/templates", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("templates", data);
+    setProjectDetail((last) => ({ ...last, Templates: data.data }));
+  } catch (error: any) {
+    console.log(error.response.data.message);
+  }
+};
+// reject project
+export const rejectProject = async (
+  token: string,
+  title: string,
+  reason: string,
+  projectId: number,
+  userId: number
+) => {
+  try {
+    const { data } = await app.post("/project/rejected/store", {
+      title,
+      reason,
+      project_id: projectId,
+      user_id: userId,
+    });
+    console.log(data);
+    toast.success("پروژه با موفقیت رد شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  } catch (error: any) {
+    toast.error("خطا در رد پروژه", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(error.response.data.message);
+  }
+};
+// project status
+export const getProjectStatus = async (token: string) => {
+  try {
+  } catch (error) {}
+};
+// orders
+export const getOrders = async (
+  token: string,
+  setOrders: React.Dispatch<React.SetStateAction<never[]>>,
+  setOrderStatus: React.Dispatch<
+    React.SetStateAction<{
+      error: string;
+      loading: boolean;
+    }>
+  >
+) => {
+  try {
+    setOrderStatus((last) => ({ ...last, loading: true }));
+    const { data } = await app("/orders", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("orders", data);
+    setOrders(data.data);
+  } catch (error: any) {
+    setOrderStatus((last) => ({ ...last, error: "سفارشی یافت نشد." }));
+    console.log(error.response.data.message);
+  }finally{
+    setOrderStatus((last) => ({ ...last, loading: false }));
   }
 };

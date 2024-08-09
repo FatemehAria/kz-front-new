@@ -22,6 +22,14 @@ export type DepartmentType = {
   name_fa: string;
   deleted_at: string;
 };
+export type DepartmentFinalType = {
+  department: {
+    id: number;
+    name_en: string;
+    name_fa: string;
+    deleted_at: string;
+  };
+};
 function Departments() {
   const { departments, setDepartments } = useContext(DepartmentContext);
   const { token } = useSelector((state: any) => state.userData);

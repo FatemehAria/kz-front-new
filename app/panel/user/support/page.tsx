@@ -66,7 +66,7 @@ const Support = () => {
             <p>شماره</p>
             <p>عنوان</p>
             <p>وضعیت</p>
-            <p>تاریخ بروزرسانی</p>
+            <p>تاریخ به روزرسانی</p>
             <p>عملیات</p>
           </div>
           {supportStatus.loading ? (
@@ -78,7 +78,7 @@ const Support = () => {
           ) : (
             allTickets.map((item: any, index) => (
               <div
-                key={item._id}
+                key={item.id}
                 className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px]"
               >
                 <p className="font-faNum">{index + 1}</p>
@@ -100,29 +100,13 @@ const Support = () => {
                   )}
                 </div>
                 <p className="font-faNum">
-                  {moment(item.updatedAt, "YYYY-MM-DDTHH:mm:ss.SSSZ").format(
+                  {moment(item.updated_at, "YYYY-MM-DDTHH:mm:ss.SSSZ").format(
                     "jYYYY/jM/jD"
                   )}
                 </p>
-                <div className="flex justify-center items-center gap-5">
-                  {item.Blocked !== "true" && (
-                    <div>
-                      <div
-                        onClick={() => (
-                          setShowModal(true), setCloseTicketId(item._id)
-                        )}
-                        className="cursor-pointer"
-                      >
-                        <Image src={checkmark} alt="بستن" width={20} />
-                      </div>
-                    </div>
-                  )}
-                  <Link
-                    href={`/panel/user/support/ticket-detail?id=${item._id}`}
-                  >
-                    <Image src={vieweye} alt="مشاهده" width={20} />
-                  </Link>
-                </div>
+                <Link href={`/panel/user/support/ticket-detail?id=${item.id}`} className="flex justify-center">
+                  <Image src={vieweye} alt="مشاهده" width={20} />
+                </Link>
               </div>
             ))
           )}

@@ -61,7 +61,8 @@ function Modal({
       else router.replace("/panel/user/dashboard");
     }
   }, [isLoggedIn]);
-  
+
+  console.log(role);
   const handleMainButtonClick = () => {
     dispatch(openModal(false));
     setShowModalOnError && setShowModalOnError(false);

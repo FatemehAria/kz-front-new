@@ -21,7 +21,7 @@ export default function Home() {
         <Technology />
         <Reason />
         {/* <Order /> */}
-        <News />
+        {/* <News /> */}
       </main>
       <Footer />
     </div>

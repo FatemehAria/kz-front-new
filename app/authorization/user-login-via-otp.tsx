@@ -30,6 +30,7 @@ const UserLoginViaOTP = () => {
   const [PhoneNumber, setPhoneNumber] = useState("");
   const [OTP, setOTP] = useState("");
   const { counter, setCounter } = useTimer();
+
   // PHONENUMBER FROM LOCALSTORAGE
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -53,6 +54,7 @@ const UserLoginViaOTP = () => {
 
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log("sbmit");
     await dispatch<any>(
       verifyUserByOTPInLoginAndRegistration({
         otp_code: OTP,
@@ -118,7 +120,7 @@ const UserLoginViaOTP = () => {
                 inputType="tel"
                 shouldAutoFocus={true}
               />
-              {errorMessage !== "" && showModal && (
+              {errorMessage === "" && showModal && !errorOnProfileHandler && (
                 <Modal
                   showModal={showModal}
                   mainButtonText="ارسال مجدد کد یکبارمصرف"

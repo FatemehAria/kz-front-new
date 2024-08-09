@@ -2,22 +2,14 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import vieweye from "../../../../public/ViewUsers/vieweye.svg";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchUserProfile,
-  getIdFromLocal,
-  getTokenFromLocal,
-} from "@/redux/features/user/userSlice";
-import axios from "axios";
+import { useSelector } from "react-redux";
 import Link from "next/link";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import NotFound from "../components/NotFound";
+import { getAllProjects } from "@/utils/utils";
 
 function AllProjects() {
-  const { localToken, localUserId } = useSelector(
-    (state: any) => state.userData
-  );
-  const dispatch = useDispatch();
+  const { token } = useSelector((state: any) => state.userData);
   const [projectMangementData, setProjectMangementData] = useState([]);
   const [allProjectsStatus, setAllProjectsStatus] = useState({
     error: "",
@@ -25,41 +17,8 @@ function AllProjects() {
   });
 
   useEffect(() => {
-    dispatch(getTokenFromLocal());
-    dispatch(getIdFromLocal());
-    dispatch<any>(fetchUserProfile());
+    getAllProjects(token, setProjectMangementData, setAllProjectsStatus);
   }, []);
-
-  const AllProjects = async () => {
-    try {
-      setAllProjectsStatus((last) => ({ ...last, loading: true }));
-      const { data } = await axios(
-        `https://keykavoos.liara.run/Admin/AllProject/${localUserId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localToken}`,
-          },
-        }
-      );
-      setProjectMangementData(data.data);
-      setAllProjectsStatus((last) => ({ ...last, loading: false }));
-      // console.log(data);
-    } catch (error) {
-      setAllProjectsStatus({ error: "خطا در دریافت اطلاعات", loading: false });
-      console.log(allProjectsStatus.error);
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    AllProjects();
-  }, []);
-  
-  // useEffect(() => {
-  //   if (localUserId) {
-  //     AllProjects();
-  //   }
-  // }, [localUserId]);
   return (
     <div className="flex flex-col gap-5">
       <div className="grid grid-cols-7 text-center">
@@ -80,23 +39,32 @@ function AllProjects() {
       ) : (
         projectMangementData.map((item: any, index) => (
           <div
-            key={item._id}
-            className="grid grid-cols-7 text-center py-1 bg-[#EAEFF6] rounded-[4px]"
+            key={item.id}
+            className={`grid grid-cols-7 text-center py-1 rounded-[4px] ${
+              (item.rejected_projects.length !== 0 ||
+              item.status === "not-verified")
+                ? "bg-red-500"
+                : " bg-[#EAEFF6] text-black"
+            }`}
           >
             <p className="font-faNum">{index + 1}</p>
-            <p className="font-faNum">{item.Serial}</p>
+            <p className="font-faNum">{item.id}</p>
             <p>{item.title}</p>
-            <p className="font-faNum">{Number(item.budget).toLocaleString()}</p>
-            <p>{item.type}</p>
+            <p className="font-faNum">
+              {Number(item.final_price).toLocaleString()}
+            </p>
+            <p>{item.plan.title}</p>
             <p>
-              {item.isConfirmationProject === "true"
-                ? "تایید شده"
-                : item.isConfirmationProject === "unknown"
-                ? "نا معلوم"
-                : "تایید نشده"}
+              {(item.rejected_projects.length !== 0 ||
+                item.status === "not-verified") &&
+                "رد شده"}
+              {item.status === "processing" &&
+              item.rejected_projects.length === 0
+                ? "در حال بررسی"
+                : item.status === "verified" && "تایید شده"}
             </p>
             <Link
-              href={`/panel/admin/project-management/project-detail?id=${item._id}`}
+              href={`/panel/admin/project-management/project-detail?id=${item.id}`}
               className="flex justify-center"
             >
               <Image src={vieweye} alt="مشاهده" width={20} height={20} />

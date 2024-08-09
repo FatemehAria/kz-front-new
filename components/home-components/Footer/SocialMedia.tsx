@@ -21,7 +21,7 @@ function SocialMedia() {
   });
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-[18.5px] whitespace-nowrap text-[#4866CF] font-semibold">
+      <p className="text-[18.5px] whitespace-nowrap text-[#4866CF] font-semibold text-center">
         ما را در شبکه های اجتماعی دنبال کنید
       </p>
       <div className="flex flex-col text-center justify-center items-center gap-5">
@@ -55,6 +55,7 @@ function SocialMedia() {
             <Image
               src={hoverLogo.hoverTwo ? WhatsappLogo : WhatsappColoredLogo}
               alt="whatsapp"
+              width={55}
               className={styles["social-media-icon"]}
             />
           </SocialMediaIconsContainer>

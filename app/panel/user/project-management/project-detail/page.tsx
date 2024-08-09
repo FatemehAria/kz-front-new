@@ -11,15 +11,15 @@ import React, { useEffect, useState } from "react";
 import { ImBackward, ImBackward2 } from "react-icons/im";
 import { IoArrowBack } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
+
 const ProjectDetailNav = [
+  "مشاوره",
   "ثبت سفارش",
+  "دریافت فایل Brief",
+  "پروپوزال",
   "تهیه زیرساخت",
-  "طراحی UI",
-  "Front",
-  "Back",
-  "دیپلوی",
-  "تحویل موقت",
-  "پشتیبانی",
+  "طراحی وب",
+  "تحویل وب",
 ];
 function ProjectDetail() {
   const router = useRouter();
@@ -48,7 +48,7 @@ function ProjectDetail() {
           <IoArrowBack />
         </div>
       </div>
-      <ul className="grid grid-cols-8 justify-between bg-[#4866CE] text-white text-center rounded-t-2xl overflow-hidden">
+      <ul className="grid grid-cols-7 justify-between bg-[#4866CE] text-white text-center rounded-t-2xl overflow-hidden">
         {ProjectDetailNav.map((item, index) => (
           <li
             key={index}

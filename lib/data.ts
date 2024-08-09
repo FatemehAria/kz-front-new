@@ -718,7 +718,7 @@ export const userSidebarOptions = [
       "/panel/user/project-management",
       "/panel/user/project-management/project-detail",
       "/panel/user/submit-order",
-      "/panel/user/submit-order/consultation"
+      "/panel/user/submit-order/consultation",
     ],
   },
   {
@@ -731,12 +731,12 @@ export const userSidebarOptions = [
       "/panel/user/support/ticket-detail",
     ],
   },
-  // {
-  //   text: "ثبت سفارش",
-  //   imgSrc: Images.OrderSubmissionIcon,
-  //   address: "/panel/user/submit-order",
-  //   path: ["/panel/user/submit-order", "/panel/user/submit-order/consultation"],
-  // },
+  {
+    text: "مدیریت سفارش ها",
+    imgSrc: Images.OrderSubmissionIcon,
+    address: "/panel/user/order-management",
+    path: ["/panel/user/order-management","/panel/user/order-management/order-payment"],
+  },
   {
     text: "وضعیت مالی",
     imgSrc: Images.FinancialStatusIcon,

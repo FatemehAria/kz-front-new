@@ -1,6 +1,6 @@
 "use client";
 import { createContext } from "react";
-import { DepartmentType } from "../../../org_management/departments/page";
+import { DepartmentType } from "../../org_management/departments/page";
 
 export interface DepartmentTypeInterface {
   departments: DepartmentType[];

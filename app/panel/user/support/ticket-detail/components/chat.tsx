@@ -66,7 +66,7 @@ function Chat({
               item.sender !== "Admin" ? styles.sender : styles.receiver
             }`}
           >
-            <p>{item.content}</p>
+            <p>{item}</p>
             <span
               className={`flex ${
                 item.sender === "Admin" ? "justify-start" : "justify-end"

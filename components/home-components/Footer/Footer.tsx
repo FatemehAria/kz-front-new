@@ -10,19 +10,20 @@ import Copyright from "@/home-components/Footer/Copyright";
 import SenfiLogo from "@/public/footer/senfi.svg";
 import EnamaadLogo from "@/public/footer/enamaad.svg";
 import styles from "./footer.module.css";
+import FooterNewsLetter from "./FooterNewsLetter";
 function Footer() {
   // bg:#ECF3F9,#FCFBFC,#EAEFF6,#4866CF
   return (
     <div className="text-[#000000] bg-slate-100 pt-7">
       <div
-        className="grid lg:grid-cols-4 md:max-lg:grid-cols-2 grid-cols-1 w-[80%] gap-5 mx-auto"
+        className="grid lg:grid-cols-6 md:max-lg:grid-cols-2 grid-cols-1 w-[80%] gap-5 mx-auto"
         dir="rtl"
       >
-        <div className="hidden md:flex">
-          <Logo />
+        <div className="hidden md:flex col-span-2">
+          {/* <Logo /> */}
+          <FooterNewsLetter />
         </div>
         <Contact />
-        <QuickNavigation />
         <AuthLogos />
       </div>
       <Copyright />
@@ -34,11 +35,11 @@ export default Footer;
 
 const Contact = () => {
   return (
-    <div className="flex flex-col justify-stretch gap-3">
+    <div className="flex flex-col justify-stretch gap-3 col-span-2">
       <p className={`${styles["footer-section-title"]}`}>تماس با ما</p>
       <div className="flex flex-row items-center gap-1">
         <Image src={LocationIcon} alt="location" width={16} />
-        <p className="font-faNum text-[16px]">
+        <p className="font-faNum text-[16px] max-w-[22rem]">
           تهران،خیابان قائم مقام فراهانی،کوچه ماگنولیا، پلاک 30 ،واحد 12
         </p>
       </div>
@@ -56,20 +57,9 @@ const Contact = () => {
   );
 };
 
-const QuickNavigation = () => {
-  return (
-    <div className="flex flex-col justify-stretch gap-3">
-      <p className={`${styles["footer-section-title"]}`}>دسترسی سریع</p>
-      <p className="text-[16px]">سفارش سایت</p>
-      <p className="text-[16px]">دریافت پشتیبانی</p>
-      <p className="text-[16px]">دریافت مشاوره</p>
-    </div>
-  );
-};
-
 const AuthLogos = () => {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 col-span-2">
       <SocialMedia />
       <div className="flex justify-around items-center">
         <Link

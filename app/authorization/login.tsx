@@ -78,19 +78,21 @@ const Login = ({
         dir="rtl"
       >
         <div className="py-[5%] w-full relative px-[5%]">
-          <Modal
-            showModal={showModal}
-            data={values.PhoneNumber ? values.PhoneNumber : ""}
-            text={
-              values.PhoneNumber
-                ? "شماره تماس زیر مورد تایید است؟"
-                : "شماره همراه خود را وارد کنید."
-            }
-            setSteps={setAuthSteps}
-            isLoggingIn={isLoggingIn}
-            isLoggedIn={isLoggedIn}
-            showOnErrorOrSuccess={false}
-          />
+          {errorMessage === "" && successMessage === "" && (
+            <Modal
+              showModal={showModal}
+              data={values.PhoneNumber ? values.PhoneNumber : ""}
+              text={
+                values.PhoneNumber
+                  ? "شماره تماس زیر مورد تایید است؟"
+                  : "شماره همراه خود را وارد کنید."
+              }
+              setSteps={setAuthSteps}
+              isLoggingIn={isLoggingIn}
+              isLoggedIn={isLoggedIn}
+              showOnErrorOrSuccess={false}
+            />
+          )}
           {errorMessage !== "" && !errorOnProfileHandler && (
             <Modal
               showModal={showModal}

@@ -13,6 +13,8 @@ import TicketInfoField from "./components/ticket-info-filed";
 import Chat from "./components/chat";
 import { Bounce, toast } from "react-toastify";
 import { IoArrowBack } from "react-icons/io5";
+import { getTicektDetail } from "@/utils/utils";
+import app from "@/services/service";
 const moment = require("moment-jalaali");
 function TicketDetail() {
   const [ticketDetail, setTicketDetail] = useState({
@@ -31,74 +33,69 @@ function TicketDetail() {
   });
   const [fileSelected, setFileSelected] = useState(false);
   const [textInput, setTextInput] = useState("");
-  const { localToken, localUserId } = useSelector(
+  const { token, localUserId, userProfile } = useSelector(
     (state: any) => state.userData
   );
   const [path, setPath] = useState("");
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getIdFromLocal());
-    dispatch(getTokenFromLocal());
-    dispatch<any>(fetchUserProfile());
-  }, []);
+
   const params = useSearchParams();
   const id = params.get("id");
   const router = useRouter();
-  const getTicketInfo = async () => {
+  const getTicketDetail = async () => {
     try {
       setTicketDetailStatus((prevStatus) => ({ ...prevStatus, loading: true }));
-      const { data } = await axios(
-        `https://keykavoos.liara.run/Client/OneTicket/${localUserId}/${id}`,
-        {
-          headers: {
-            authorization: `Bearer ${localToken}`,
-          },
-        }
-      );
+      const { data } = await app(`/ticket/show/${id}`, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
       setTicketDetail({
-        Title: data.data.Title,
-        RelavantUnit: data.data.RelevantUnit,
+        Title: data.data.title,
+        RelavantUnit: data.data.department.name_fa,
         Responser: "ادمین",
-        Sender: data.data.PhoneNumber,
+        Sender:
+          data.data.register_user.name + " " + data.data.register_user.surname,
         DateSend: moment(
-          data.data.createdAt,
+          data.data.created_at,
           "YYYY-MM-DDTHH:mm:ss.SSSZ"
         ).format("jYYYY/jM/jD"),
         DateAnswered: "-",
-        SenderText: data.data.text,
-        Blocked: data.data.Blocked,
+        SenderText: [data.data.description],
+        Blocked: data.data.status.title_en,
       });
       setTicketDetailStatus((prevStatus) => ({
         ...prevStatus,
         loading: false,
       }));
-      console.log(data);
+      console.log("ticketdetail", data);
     } catch (error) {
       setTicketDetailStatus({ error: "", loading: false });
     }
   };
-  useEffect(() => {
-    if (localUserId) {
-      getTicketInfo();
-    }
-  }, [localUserId]);
 
   const [File, setFile] = useState<any>(null);
   const handleFileChange = (file: File) => {
     setFile(file);
     setFileSelected(true);
   };
-  const sendResponseTicket = async (textInput: string) => {
+  
+  const sendResponseTicket = async () => {
     try {
-      const { data } = await axios.post(
-        `https://keykavoos.liara.run/Client/ResponseTicket/${localUserId}/${id}`,
+      const { data } = await app.post(
+        `/ticket/store`,
         {
-          text: textInput,
-          path,
+          title: ticketDetail.Title,
+          description: ticketDetail.SenderText,
+          status_id: 1,
+          priority_id: 1,
+          register_user_id: userProfile.id,
+          dept_id: ticketDetail.RelavantUnit,
+          ticket_id: Number(id),
         },
         {
           headers: {
-            authorization: `Bearer ${localToken}`,
+            authorization: `Bearer ${token}`,
           },
         }
       );
@@ -120,7 +117,7 @@ function TicketDetail() {
         rtl: true,
       });
       console.log(data);
-    } catch (error) {
+    } catch (error: any) {
       toast.error("خطا در آپدیت تیکت.", {
         position: "top-right",
         autoClose: 3000,
@@ -133,61 +130,20 @@ function TicketDetail() {
         transition: Bounce,
         rtl: true,
       });
-      console.log(error);
+      console.log(error.response.data.message);
     }
   };
-  const handleFileUpload = async () => {
-    const formData = new FormData();
-    formData.append("File", File);
-    try {
-      const { data } = await axios.post(
-        `https://keykavoos.liara.run/Client/UploadFileResponseTicket/${localUserId}`,
-        formData,
-        {
-          headers: {
-            authorization: `Bearer ${localToken}`,
-          },
-        }
-      );
-      setPath(data.data);
-      toast.success("آپلود فایل موفق بود.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        rtl: true,
-      });
-      setFile("");
-      console.log("upload file response ticket", data);
-    } catch (error) {
-      toast.error("خطا در آپلود فایل، لطفا مجدد آپلود کنید.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        rtl: true,
-      });
-      console.log(error);
-    }
-  };
+  const handleFileUpload = async () => {};
 
   const updateSenderBox = (newText: string) => {
-    const updatedSenderText = [
-      ...ticketDetail.SenderText,
-      { content: newText, sender: "user", timestamp: new Date().getTime() },
-    ];
+    const updatedSenderText = [...ticketDetail.SenderText, newText];
     return updatedSenderText;
   };
+
+  useEffect(() => {
+    getTicketDetail();
+  }, []);
+
   return (
     <div className="relative">
       <div
@@ -231,30 +187,26 @@ function TicketDetail() {
             ticketDetailStatus={ticketDetailStatus.loading}
           />
         </div>
-        {ticketDetail.Blocked === "false" && (
-          <div
-            style={{
-              border: "none",
-              borderTop: "3px solid",
-              borderImage:
-                "linear-gradient(to right, #FFFFFF 0%, #4866CE 45% ,#4866CE 55% , #FFFFFF 100%) 1",
-              margin: "5% 0",
-            }}
-          ></div>
-        )}
-        {ticketDetail.Blocked === "false" && (
-          <Chat
-            senderText={ticketDetail.SenderText}
-            recieverText={"this is the reciever text"}
-            textInput={textInput}
-            setTextInput={setTextInput}
-            File={File}
-            handleFileChange={handleFileChange}
-            handleFileUpload={handleFileUpload}
-            sendResponseTicket={sendResponseTicket}
-            fileSelected={fileSelected}
-          />
-        )}
+        <div
+          style={{
+            border: "none",
+            borderTop: "3px solid",
+            borderImage:
+              "linear-gradient(to right, #FFFFFF 0%, #4866CE 45% ,#4866CE 55% , #FFFFFF 100%) 1",
+            margin: "5% 0",
+          }}
+        ></div>
+        <Chat
+          senderText={ticketDetail.SenderText}
+          recieverText={"this is the reciever text"}
+          textInput={textInput}
+          setTextInput={setTextInput}
+          File={File}
+          handleFileChange={handleFileChange}
+          handleFileUpload={handleFileUpload}
+          sendResponseTicket={sendResponseTicket}
+          fileSelected={fileSelected}
+        />
       </div>
     </div>
   );

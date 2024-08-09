@@ -19,14 +19,16 @@ import ValueIdContextWrapper from "./admin/plan-management/context/ValueIdContex
 import DepartmentContextWrapper from "./admin/context/department-context/DepartmentContextWrapper";
 import PermissionContextWrapper from "./admin/context/permission-context/PermissionContextWrapper";
 import UserContextWrapper from "./admin/context/user-context/UserContextWrapper";
-import { getAllPlans, getAllSiteTypes } from "@/utils/utils";
+import { getAllDepartments, getAllPlans, getAllSiteTypes } from "@/utils/utils";
 import { OrderSubmissionContext } from "./context/order-submission-contexts/OrderSubmissionContext";
 import OrderSubmissionContextWrapper from "./context/order-submission-contexts/OrderSubmissionContextWrapper";
+import { DepartmentContext } from "./admin/context/department-context/DepartmentContext";
 
 const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   const { token, userProfile, status, numberOfAnnouncements, role } =
     useSelector((store: any) => store.userData);
   const { setAllPlans, setSiteTypes } = useContext(OrderSubmissionContext);
+  const { setDepartments } = useContext(DepartmentContext);
   const [showAnnouncementDropdown, setShowAnnouncementDropdown] =
     useState(false);
   const dispatch = useDispatch();
@@ -44,7 +46,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
         : prevPage
     );
   };
-  
+
   const handlePrevClick = () => {
     setCurrentPage((prevPage) => (prevPage > 0 ? prevPage - 1 : prevPage));
   };
@@ -55,8 +57,11 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    getAllPlans(token, setAllPlans);
-    getAllSiteTypes(token, setSiteTypes);
+    Promise.all([
+      getAllPlans(token, setAllPlans),
+      getAllSiteTypes(token, setSiteTypes),
+      getAllDepartments(token, setDepartments),
+    ]);
   }, []);
 
   // useEffect(() => {
@@ -65,7 +70,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   //     router.push("/");
   //   }
   // }, [token]);
-  
+
   return (
     <OrderSubmissionContextWrapper>
       <UserContextWrapper>

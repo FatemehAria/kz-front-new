@@ -1,16 +1,12 @@
 "use client";
-import {
-  fetchUserProfile,
-  getIdFromLocal,
-  getTokenFromLocal,
-} from "@/redux/features/user/userSlice";
-import axios from "axios";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import NotFound from "../../admin/components/NotFound";
 import { getAllProjects } from "@/utils/utils";
+import vieweye from "@/public/ViewUsers/vieweye.svg";
+import Image from "next/image";
 
 function AllProjects() {
   const [allProjects, setAllProjects] = useState([]);
@@ -19,11 +15,6 @@ function AllProjects() {
     loading: false,
   });
   const { token } = useSelector((state: any) => state.userData);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getTokenFromLocal());
-    dispatch<any>(fetchUserProfile());
-  }, []);
 
   useEffect(() => {
     getAllProjects(token, setAllProjects, setProjectStatus);
@@ -34,9 +25,8 @@ function AllProjects() {
       <div className="grid grid-cols-4 text-center">
         <p>ردیف</p>
         <p>عنوان پروژه</p>
-        <p>وضعیت پیشرفت پروژه</p>
-        <p>وضعیت مالی پروژه</p>
-        {/* <p>درخواست فاکتور</p> */}
+        <p>وضعیت پروژه</p>
+        <p>مشاهده</p>
       </div>
       {projectStatus.loading ? (
         <SkeletonTheme>
@@ -46,22 +36,32 @@ function AllProjects() {
         <NotFound text={projectStatus.error} />
       ) : (
         allProjects.map((item: any, index) => (
-          <Link
+          <div
             key={item.id}
-            className="grid grid-cols-4 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
-            href={`/panel/user/project-management/project-detail?id=${item.id}`}
+            className="grid grid-cols-4 text-center py-1 bg-[#EAEFF6] rounded-[4px]"
           >
             <p>{index + 1}</p>
             <p>{item.title}</p>
-            <p>
-              {item.status === "processing"
-                ? "در حال بررسی"
-                : item.status === "verified"
-                ? "تایید شده"
-                : "تایید نشده"}
+            <p className="font-semibold">
+              <span className="text-red-600">
+                {(item.rejected_projects.length !== 0 ||
+                  item.status === "not-verified") &&
+                  "رد شده"}
+              </span>
+              <span className="text-green-600">{item.status === "verified" && "تایید شده"}</span>
+              <span>
+                {item.status === "processing" &&
+                  item.rejected_projects.length === 0 &&
+                  "در حال بررسی"}
+              </span>
             </p>
-            <p>{item.final_price === null ? "نامعلوم" : ""}</p>
-          </Link>
+            <Link
+              href={`/panel/user/project-management/project-detail?id=${item.id}`}
+              className="flex justify-center"
+            >
+              <Image src={vieweye} alt="مشاهده" width={20} height={20} />
+            </Link>
+          </div>
         ))
       )}
     </div>

@@ -2,13 +2,9 @@
 import React, { useEffect, useState } from "react";
 import FinanceInput from "./components/finance-input";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchUserProfile,
-  getIdFromLocal,
-  getTokenFromLocal,
-} from "@/redux/features/user/userSlice";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import app from "@/services/service";
 
 function Finance() {
   const [amount, setAmount] = useState<string | number>("");
@@ -17,15 +13,12 @@ function Finance() {
   const [remainedPay, setRemainedPay] = useState(0);
   const dispatch = useDispatch();
   const router = useRouter();
-  const { localToken, userProfile, localUserId } = useSelector(
+  const { localToken, userProfile, token } = useSelector(
     (state: any) => state.userData
   );
-  useEffect(() => {
-    dispatch(getTokenFromLocal());
-    dispatch(getIdFromLocal());
-    dispatch<any>(fetchUserProfile());
-  }, []);
 
+  const params = useSearchParams();
+  const id = params.get("id");
   const sendAmount = async (amount: number) => {
     try {
       const { data } = await axios(
@@ -48,43 +41,44 @@ function Finance() {
   };
   const getAllProjects = async () => {
     try {
-      const { data } = await axios(
-        `https://keykavoos.liara.run/Client/AllProject/${localUserId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localToken}`,
-          },
-        }
-      );
-      console.log(data);
-      setProjectsData(data.data);
+      const { data } = await app(`/project/show/${Number(id)}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("fianace projects", data);
+      setProjectsData([data.data]);
+      setTotalProjectCost(data.data.final_price);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    if (localUserId) {
-      getAllProjects();
-    }
-  }, [localUserId]);
+    getAllProjects();
+  }, []);
 
-  const calculateTotalCost = () => {
-    let totalCost = 0;
-    projectsData.forEach((item: any) => {
-      const budget = parseInt(item.budget);
-      if (!isNaN(budget)) {
-        totalCost += budget;
-      }
-    });
-    setTotalProjectCost(totalCost);
+  // const calculateTotalCost = () => {
+  //   let totalCost = 0;
+  //   projectsData.forEach((item: any) => {
+  //     const budget = parseInt(item.budget);
+  //     if (!isNaN(budget)) {
+  //       totalCost += budget;
+  //     }
+  //   });
+  //   setTotalProjectCost(totalCost);
+  // };
+
+  // useEffect(() => {
+  //   calculateTotalCost();
+  //   console.log(totalProjectCost);
+  // }, [projectsData]);
+
+  const handleBudegtChange = (value: string) => {
+    const rawValue = value.replace(/,/g, "");
+    const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return formattedValue;
   };
-
-  useEffect(() => {
-    calculateTotalCost();
-    console.log(totalProjectCost);
-  }, [projectsData]);
-
   return (
     <form
       onSubmit={(e) => handleSubmission(e)}
@@ -94,19 +88,23 @@ function Finance() {
         <FinanceInput
           label="مبلغ پروژه:"
           disable={true}
-          value={`${totalProjectCost.toLocaleString()} ریال`}
+          value={`${handleBudegtChange(String(totalProjectCost))} ریال`}
+          // value={`${totalProjectCost.toLocaleString()} ریال`}
         />
         <FinanceInput
-          label="نوع باقی مانده:"
+          label="مبلغ باقی مانده:"
           disable={true}
-          value={`${(
-            totalProjectCost - userProfile.Paid
+          value={`${(totalProjectCost - userProfile.Paid
+            ? userProfile.Paid
+            : 0
           ).toLocaleString()} ریال`}
         />
         <FinanceInput
           label="مبلغ پرداخت شده:"
           disable={true}
-          value={`${userProfile.Paid?.toLocaleString()} ریال`}
+          value={`${
+            userProfile.Paid ? userProfile.Paid?.toLocaleString() : 0
+          } ریال`}
         />
         <FinanceInput
           label="مبلغ پرداختی شما:"
