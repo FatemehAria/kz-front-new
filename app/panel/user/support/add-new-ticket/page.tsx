@@ -9,13 +9,12 @@ import { createTicket } from "@/utils/utils";
 import { DepartmentContext } from "@/app/panel/admin/context/department-context/DepartmentContext";
 import {
   DepartmentFinalType,
-  DepartmentType,
 } from "@/app/panel/admin/org_management/departments/page";
 
 function AddNewTicket() {
   const { userProfile, token } = useSelector((state: any) => state.userData);
   const { departments, setDepartments } = useContext(DepartmentContext);
-
+  const typedDepartments: DepartmentFinalType[] = departments as DepartmentFinalType[];  
   useEffect(() => {
     if (typeof window !== "undefined") {
       const localDepartments = JSON.parse(
@@ -27,7 +26,7 @@ function AddNewTicket() {
   }, []);
 
   // console.log(departments);
-  const departmentInfo = departments.map(
+  const departmentInfo = typedDepartments?.map(
     (item) => String(item.department.id) + " - " + item.department.name_fa
   );
 
@@ -40,12 +39,12 @@ function AddNewTicket() {
     status_id: "",
     priority_id: "کم",
     register_user_id: "",
-    dept_id: "1",
+    dept_id: "",
   });
 
-  const departmentId = departments
-    .filter((item) => item.department.id === Number(ticket.dept_id))
-    .map((item) => item.department.id)[0];
+  const departmentId = typedDepartments
+    ?.filter((item) => item.department.id === Number(ticket.dept_id))
+    ?.map((item) => item.department.id)[0];
 
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

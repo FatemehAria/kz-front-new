@@ -42,6 +42,7 @@ function TicketDetail() {
   const params = useSearchParams();
   const id = params.get("id");
   const router = useRouter();
+
   const getTicketDetail = async () => {
     try {
       setTicketDetailStatus((prevStatus) => ({ ...prevStatus, loading: true }));
@@ -51,18 +52,20 @@ function TicketDetail() {
         },
       });
       setTicketDetail({
-        Title: data.data.title,
-        RelavantUnit: data.data.department.name_fa,
+        Title: data.data?.title,
+        RelavantUnit: data.data?.department?.name_fa,
         Responser: "ادمین",
         Sender:
-          data.data.register_user.name + " " + data.data.register_user.surname,
+          data.data?.register_user.name +
+          " " +
+          data.data?.register_user.surname,
         DateSend: moment(
-          data.data.created_at,
+          data.data?.created_at,
           "YYYY-MM-DDTHH:mm:ss.SSSZ"
         ).format("jYYYY/jM/jD"),
         DateAnswered: "-",
-        SenderText: [data.data.description],
-        Blocked: data.data.status.title_en,
+        SenderText: [data.data?.description] as never[],
+        Blocked: data.data?.status.title_en,
       });
       setTicketDetailStatus((prevStatus) => ({
         ...prevStatus,
@@ -134,7 +137,49 @@ function TicketDetail() {
       console.log(error.response.data.message);
     }
   };
-  const handleFileUpload = async () => {};
+  // file upload in ticket
+  const handleFileUpload = async () => {
+    const formData = new FormData();
+    formData.append("file", File);
+    try {
+      const { data } = await app.post(
+        `/ticket/file/upload/${id}`,
+        { formData, register_user_id: userProfile.id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      toast.success("آپلود فایل موفق بود.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
+      console.log(data);
+    } catch (error: any) {
+      toast.error("خطا در آپلود فایل، لطفا مجدد آپلود کنید.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
+      console.log(error.response.data.message);
+    }
+  };
 
   const updateSenderBox = (newText: string) => {
     const updatedSenderText = [...ticketDetail.SenderText, newText];
@@ -169,7 +214,7 @@ function TicketDetail() {
           />
           <TicketInfoField
             label="واحد مربوطه تیکت:"
-            text={ticketDetail.RelavantUnit}
+            text={ticketDetail.RelavantUnit ? ticketDetail.RelavantUnit : "-"}
             ticketDetailStatus={ticketDetailStatus.loading}
           />
           <TicketInfoField

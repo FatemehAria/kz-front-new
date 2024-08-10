@@ -31,7 +31,8 @@ export type DepartmentFinalType = {
   };
 };
 function Departments() {
-  const { departments, setDepartments } = useContext(DepartmentContext);
+  const { departments } = useContext(DepartmentContext);
+  const typedDepartments: DepartmentType[] = departments as DepartmentType[];  
   const { token } = useSelector((state: any) => state.userData);
   const [departmentIsDeleted, setDepartmentIsDeleted] = useState(false);
 
@@ -88,7 +89,7 @@ function Departments() {
           <div>عملیات</div>
         </div>
 
-        {departments.map((item, index) => (
+        {typedDepartments.map((item, index: number) => (
           <div
             className={`${
               departmentIsDeleted && item.deleted_at

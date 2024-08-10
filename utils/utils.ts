@@ -1140,58 +1140,7 @@ export const getAllProjects = async (
     setProjectStatus((last) => ({ ...last, loading: false }));
   }
 };
-// submit project by user
-export const submitProject = async (
-  token: string,
-  title: string,
-  description: string,
-  budget_cost: string,
-  price: string,
-  discount_code: string,
-  discount_percentage: string,
-  final_price: string,
-  status: string,
-  priority: string,
-  register_user_id: string,
-  plan_id: string,
-  consultation_id: string,
-  lookslike: string,
-  org_color: string,
-  plugin: string,
-  template: string
-) => {
-  try {
-    const { data } = await app.post(
-      "/project/store",
-      {
-        title,
-        description,
-        budget_cost,
-        price,
-        discount_code: discount_code || "",
-        discount_percentage,
-        final_price,
-        status,
-        priority,
-        register_user_id,
-        plan_id,
-        consultation_id,
-        lookslike: lookslike || "",
-        org_color: org_color || "",
-        plugin: plugin || "",
-        template: template || "",
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    console.log(data);
-  } catch (error) {
-    console.log(error);
-  }
-};
+
 // file upload in project
 export const uploadProjectFile = async (
   token: string,

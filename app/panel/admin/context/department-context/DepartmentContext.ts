@@ -1,10 +1,10 @@
 "use client";
 import { createContext } from "react";
-import { DepartmentType } from "../../org_management/departments/page";
+import { DepartmentFinalType, DepartmentType } from "../../org_management/departments/page";
 
 export interface DepartmentTypeInterface {
-  departments: DepartmentType[];
-  setDepartments: React.Dispatch<React.SetStateAction<DepartmentType[]>>;
+  departments: DepartmentFinalType[] | DepartmentType[];
+  setDepartments: React.Dispatch<React.SetStateAction<DepartmentFinalType[] | DepartmentType[]>>;
 }
 export const DepartmentContext = createContext<DepartmentTypeInterface>({
   departments: [],
