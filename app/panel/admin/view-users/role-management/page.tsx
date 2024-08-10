@@ -20,14 +20,22 @@ export type RoleType = {
   };
 };
 function RoleManagement() {
-  // const [roles, setRoles] = useState<RoleType[]>([]);
-  const { setRoles, roles } = useContext(RoleContext);
+  const [roles, setRoles] = useState<RoleType[]>([]);
+  // const { setRoles, roles } = useContext(RoleContext);
   const { token } = useSelector((state: any) => state.userData);
   const [roleIsDeleted, setRoleIsDeleted] = useState(false);
 
-  // useEffect(() => {
-  //   getAllRole(token, setRoles);
-  // }, []);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const localRoles = JSON.parse(
+        window.localStorage.getItem("roles") as string
+      );
+      console.log(localRoles);
+      setRoles(localRoles);
+    }
+  }, []);
+
+  console.log("roles", roles);
 
   const [editField, setEditField] = useState({
     showEditField: false,
@@ -35,35 +43,35 @@ function RoleManagement() {
     name_fa: "",
   });
 
-  const handleRoleEdit = async (id: number) => {
-    const selectedPermission = roles.find(
-      (item: RoleType) => item.role.id === id
-    );
-    // check
-    if (selectedPermission) {
-      setRoles((last) =>
-        last.map((item: RoleType) =>
-          item.role.id === id
-            ? {
-                ...item,
-                role: {
-                  ...item.role,
-                  name_en:
-                    editField.name_en !== ""
-                      ? editField.name_en
-                      : item.role.name_en,
-                  name_fa:
-                    editField.name_fa !== ""
-                      ? editField.name_fa
-                      : item.role.name_fa,
-                },
-              }
-            : item
-        )
-      );
-    }
-    await updateRole(token, id, editField.name_en, editField.name_fa);
-  };
+  // const handleRoleEdit = async (id: number) => {
+  //   const selectedPermission = roles.find(
+  //     (item: RoleType) => item.role.id === id
+  //   );
+  //   // check
+  //   if (selectedPermission) {
+  //     setRoles((last) =>
+  //       last.map((item: RoleType) =>
+  //         item.role.id === id
+  //           ? {
+  //               ...item,
+  //               role: {
+  //                 ...item.role,
+  //                 name_en:
+  //                   editField.name_en !== ""
+  //                     ? editField.name_en
+  //                     : item.role.name_en,
+  //                 name_fa:
+  //                   editField.name_fa !== ""
+  //                     ? editField.name_fa
+  //                     : item.role.name_fa,
+  //               },
+  //             }
+  //           : item
+  //       )
+  //     );
+  //   }
+  //   await updateRole(token, id, editField.name_en, editField.name_fa);
+  // };
 
   console.log(roles);
   return (
@@ -80,7 +88,7 @@ function RoleManagement() {
         <div className="grid grid-cols-4">
           <div>ردیف</div>
           <div>نام نقش به فارسی</div>
-          <div>نام تقش به انگلیسی</div>
+          <div>نام نقش به انگلیسی</div>
           <div>عملیات</div>
         </div>
 
@@ -96,35 +104,41 @@ function RoleManagement() {
             <p>{index + 1}</p>
             <input
               value={
-                editField.showEditField ? editField.name_en : item.role.name_en
+                // editField.showEditField ? editField.name_en : item.role.name_en
+                item.role.name_en
               }
-              onChange={(e) =>
-                setEditField((last) => ({
-                  ...last,
-                  name_en: e.target.value,
-                }))
-              }
-              className={`${
-                editField.showEditField
-                  ? "bg-white"
-                  : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
-              } outline-none`}
+              // onChange={(e) =>
+              //   setEditField((last) => ({
+              //     ...last,
+              //     name_en: e.target.value,
+              //   }))
+              // }
+              // className={`${
+              //   editField.showEditField
+              //     ? "bg-white"
+              //     : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
+              // } outline-none`}
+              className="bg-[#EAEFF6] caret-transparent cursor-default text-center"
+              readOnly={true}
             />
             <input
               value={
-                editField.showEditField ? editField.name_fa : item.role.name_fa
+                // editField.showEditField ? editField.name_fa : item.role.name_fa
+                item.role.name_fa
               }
-              onChange={(e) =>
-                setEditField((last) => ({
-                  ...last,
-                  name_fa: e.target.value,
-                }))
-              }
-              className={`${
-                editField.showEditField
-                  ? "bg-white"
-                  : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
-              } outline-none`}
+              // onChange={(e) =>
+              //   setEditField((last) => ({
+              //     ...last,
+              //     name_fa: e.target.value,
+              //   }))
+              // }
+              // className={`${
+              //   editField.showEditField
+              //     ? "bg-white"
+              //     : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
+              // } outline-none`}
+              className="bg-[#EAEFF6] caret-transparent cursor-default text-center"
+              readOnly={true}
             />
             <div className="flex flex-row items-center justify-center gap-3">
               <Link
@@ -148,7 +162,7 @@ function RoleManagement() {
               >
                 <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg" />
               </span>
-              <span
+              {/* <span
                 onClick={() =>
                   setEditField((last) => ({
                     ...last,
@@ -165,7 +179,7 @@ function RoleManagement() {
                 ) : (
                   <AiOutlineEdit className="text-green-600 text-lg" />
                 )}
-              </span>
+              </span> */}
             </div>
           </div>
         ))}

@@ -51,33 +51,29 @@ function LegalUsers({
           <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
         </SkeletonTheme>
       ) : LegalUsersData.length > 0 ? (
-        LegalUsersData.map((item, index) => (
-          <div
-            key={item._id}
-            className="grid grid-cols-6 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
-          >
-            <p className="font-faNum">{index + 1}</p>
-            <p>{item.name_of_Organization}</p>
-            <p>{item.National_ID}</p>
-            <p>{item.PhoneNumber}</p>
-            <p>{item.registration_Number}</p>
-            <span
-              onClick={() =>
-                deleteUser(
-                  item.id,
-                  token,
-                  setAllUsers,
-                  setDataStatus,
-                  AllUsersData
-                )
-              }
-              className="flex justify-center"
+        LegalUsersData.filter((item) => item.mobile.includes(searchUsers)).map(
+          (item, index) => (
+            <div
+              key={item.id}
+              className="grid grid-cols-6 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
             >
-              <RxCross1 />
-              {/* <Image src={vieweye} alt="مشاهده" width={20} height={20} /> */}
-            </span>
-          </div>
-        ))
+              <p className="font-faNum">{index + 1}</p>
+              <p>{item.org_name}</p>
+              <p>{item.ncode}</p>
+              <p>{item.mobile}</p>
+              <p>{item.org_registration_Number}</p>
+              <span
+                onClick={() =>
+                  deleteUser(item.id, token, setAllUsers, AllUsersData)
+                }
+                className="flex justify-center"
+              >
+                <RxCross1 />
+                {/* <Image src={vieweye} alt="مشاهده" width={20} height={20} /> */}
+              </span>
+            </div>
+          )
+        )
       ) : (
         <NotFound text="کاربری یافت نشد." />
       )}

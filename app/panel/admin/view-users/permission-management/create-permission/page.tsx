@@ -1,7 +1,8 @@
 "use client";
-import { createNewPermission } from "@/utils/utils";
-import React, { useState } from "react";
+import { createNewPermission, getAllPermissions } from "@/utils/utils";
+import React, { useContext, useState } from "react";
 import { useSelector } from "react-redux";
+import { PermissionContext } from "../../../context/permission-context/PermissionContext";
 
 function CreatePermission() {
   const { token } = useSelector((state: any) => state.userData);
@@ -9,13 +10,18 @@ function CreatePermission() {
     name_en: "",
     name_fa: "",
   });
+  const { setPermissions, setPermissionStatus } = useContext(PermissionContext);
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await createNewPermission(
-      token,
-      createPermission.name_en,
-      createPermission.name_fa
-    );
+    Promise.all([
+      await createNewPermission(
+        token,
+        createPermission.name_en,
+        createPermission.name_fa
+      ),
+      await getAllPermissions(token, setPermissions, setPermissionStatus),
+    ]);
+
     setCreatePermission({ name_en: "", name_fa: "" });
   };
   return (
@@ -30,7 +36,10 @@ function CreatePermission() {
           type="text"
           value={createPermission.name_en}
           onChange={(e) =>
-            setCreatePermission((last) => ({ ...last, name_en: e.target.value }))
+            setCreatePermission((last) => ({
+              ...last,
+              name_en: e.target.value,
+            }))
           }
           className="bg-[#D0DBEC] border-[#D0DBEC] mx-auto outline-none rounded-md px-2 py-2 text-lg w-full border-[0.3px]"
         />
@@ -40,7 +49,10 @@ function CreatePermission() {
           type="text"
           value={createPermission.name_fa}
           onChange={(e) =>
-            setCreatePermission((last) => ({ ...last, name_fa: e.target.value }))
+            setCreatePermission((last) => ({
+              ...last,
+              name_fa: e.target.value,
+            }))
           }
           className="bg-[#D0DBEC] border-[#D0DBEC]mx-auto outline-none rounded-md px-2 py-2 text-lg w-full border-[0.3px]"
         />

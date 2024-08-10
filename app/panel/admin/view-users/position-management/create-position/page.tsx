@@ -1,28 +1,71 @@
 "use client";
-import {
-  createNewPermission,
-  createNewPosition,
-  createNewRole,
-} from "@/utils/utils";
-import React, { useState } from "react";
+import SubmitOrderDropdown from "@/app/panel/user/submit-order/components/submit-order-dropdown";
+import { createNewPosition } from "@/utils/utils";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 function CreatePosition() {
   const { token } = useSelector((state: any) => state.userData);
+  const [usersInfo, setUsersInfo] = useState([]);
+  const [departmentsInfo, setDepartmentsInfo] = useState([]);
   const [createPosition, setCreatePosition] = useState({
     title_en: "",
     title_fa: "",
     dept_id: "",
     user_id: "",
   });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const localUsers = JSON.parse(
+        window.localStorage.getItem("users") as string
+      );
+      setUsersInfo(localUsers);
+
+      const localDepartments = JSON.parse(
+        window.localStorage.getItem("departments") as string
+      );
+
+      setDepartmentsInfo(localDepartments);
+
+      if (localUsers.length === 1) {
+        setCreatePosition((prev) => ({ ...prev, user_id: localUsers[0].name }));
+      }
+      if (localDepartments.length === 1) {
+        const departments = localDepartments.map(
+          (item: { department: { name_fa: string } }) => item.department.name_fa
+        );
+        setCreatePosition((prev) => ({ ...prev, dept_id: departments[0] }));
+      }
+    }
+  }, []);
+
+  const usersDropDownInfo = usersInfo.map(
+    (item: { name: string }) => item.name
+  );
+  const selectedUsersId = usersInfo
+    .filter((item: { name: string }) => item.name === createPosition.user_id)
+    .map((item: { id: number }) => item.id)?.[0];
+
+  const departmentsDropdownInfo = departmentsInfo.map(
+    (item: { department: { name_fa: string } }) => item.department.name_fa
+  );
+  const selectedDepartmentsId = departmentsInfo.filter(
+    (item: { department: { name_fa: string; id: number } }) =>
+      item.department.name_fa === createPosition.dept_id
+  )[0]?.department?.id;
+
+  // console.log("dept_id",selectedDepartmentsId);
+  // console.log("user_id",selectedUsersId);
+
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await createNewPosition(
       token,
       createPosition.title_en,
       createPosition.title_fa,
-      Number(createPosition.dept_id),
-      Number(createPosition.user_id)
+      Number(selectedDepartmentsId),
+      Number(selectedUsersId)
     );
     setCreatePosition({ title_en: "", title_fa: "", dept_id: "", user_id: "" });
   };
@@ -54,16 +97,24 @@ function CreatePosition() {
         />
 
         {/* user id */}
-        <select name="" id="" value={createPosition.user_id}>
-          <option>1</option>
-          <option>2</option>
-        </select>
+        <SubmitOrderDropdown
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+            setCreatePosition((last) => ({ ...last, user_id: e.target.value }))
+          }
+          value={createPosition.user_id}
+          dropdownItems={usersDropDownInfo}
+          dropDownTitle="کاربران:"
+        />
 
         {/* department id */}
-        <select name="" id="" value={createPosition.dept_id}>
-          <option>1</option>
-          <option>2</option>
-        </select>
+        <SubmitOrderDropdown
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+            setCreatePosition((last) => ({ ...last, dept_id: e.target.value }))
+          }
+          value={createPosition.dept_id}
+          dropdownItems={departmentsDropdownInfo}
+          dropDownTitle="دپارتمان ها:"
+        />
 
         <div className="flex justify-end my-5">
           <button className="p-2 w-[80px] bg-[#4866CF] rounded-[4px] text-white">

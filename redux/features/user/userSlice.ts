@@ -79,7 +79,7 @@ const verifyUserByOTPInLoginAndRegistration = createAsyncThunk(
         otp_code,
         mobile,
       });
-      console.log("verifyotp",data);
+      console.log("verifyotp", data);
       return {
         token: data.data?.token,
         userProfile: data.data?.user,
@@ -127,7 +127,7 @@ const fetchUserProfile = createAsyncThunk<
         authorization: `Bearer ${getState().userData.token}`,
       },
     });
-    console.log("userprofile",data);
+    console.log("userprofile", data);
     return {
       data: data.data,
       FirstName: data.data.name,
@@ -200,6 +200,7 @@ const userSlice = createSlice({
       state.userId = action.payload.userId;
       sessionStorage.setItem("userId", state.userId);
       state.userType = action.payload.userType;
+      localStorage.setItem("role", JSON.stringify(state.role));
       state.role = state.userType?.find(
         (item: userRoleType) => item.name_en.toLowerCase() === "admin"
       )
@@ -231,6 +232,7 @@ const userSlice = createSlice({
         state.LastName = action.payload.LastName;
         state.type = action.payload.type;
         state.userType = action.payload.userType;
+        localStorage.setItem("role", JSON.stringify(state.role));
         state.role = state.userType?.find(
           (item: userRoleType) => item.name_en.toLowerCase() === "admin"
         )
@@ -278,6 +280,7 @@ const userSlice = createSlice({
       } عزیز با موفقیت وارد پنل کاربری خود شدید.`;
       state.errorMessage = "";
       state.type = action.payload.type;
+      localStorage.setItem("role", JSON.stringify(state.role));
       state.role = state.userType?.find(
         (item: userRoleType) => item.name_en.toLowerCase() === "admin"
       )

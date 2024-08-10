@@ -1,83 +1,100 @@
 "use client";
-import React, { useContext, useEffect, useState } from "react";
-
+import React, { useEffect, useState } from "react";
 import {
   giveRolePermission,
   removeRolePermission,
 } from "@/utils/relation-utils";
 import { useSelector } from "react-redux";
-import { PermissionContext } from "../../../context/permission-context/PermissionContext";
-import { RoleContext } from "../../../context/role-context/RoleContext";
+import SubmitOrderDropdown from "@/app/panel/user/submit-order/components/submit-order-dropdown";
 
 function RolePermission() {
   const { token } = useSelector((state: any) => state.userData);
-  const { permissions, permissionId, setPermissionId } =
-    useContext(PermissionContext);
-  const { roles, roleId, setRoleId, setRoles } = useContext(RoleContext);
-  const permissionIds = permissions.filter((item) => item.id);
-  const roleIds = roles.filter((item) => item.role.id);
   const [isAttaching, setIsAttaching] = useState(false);
+  const [roleInfos, setRoleInfos] = useState([]);
+  const [permissionInfos, setPermissionInfos] = useState([]);
+  const [rolePerId, setRolePerId] = useState({ perId: "", roleId: "" });
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      let localRoles = JSON.parse(
+      const localRoles = JSON.parse(
         window.localStorage.getItem("roles") as string
       );
-      setRoles(localRoles);
+      const roleInfo = localRoles.map(
+        (item: { role: { id: number; name_fa: string } }) =>
+          item.role.id + "-" + item.role.name_fa
+      );
+      setRoleInfos(roleInfo);
+
+      const localPermissions = JSON.parse(
+        window.localStorage.getItem("permissions") as string
+      );
+      const perInfo = localPermissions.map(
+        (item: { id: number; name_fa: string; name_en: string }) =>
+          item.id + "-" + item.name_en
+      );
+      setPermissionInfos(perInfo);
     }
   }, []);
+
+  const selectedRole = roleInfos
+    .filter((item: string[]) => item.includes(rolePerId.roleId))[0]
+    ?.split("-")[0];
+  const selectedPermission = permissionInfos
+    .filter((item: string[]) => item.includes(rolePerId.perId))[0]
+    ?.split("-")[0];
 
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isAttaching) {
-      await giveRolePermission(token, Number(roleId), Number(permissionId));
+      await removeRolePermission(
+        token,
+        Number(selectedRole),
+        Number(selectedPermission)
+      );
     } else {
-      await removeRolePermission(token, Number(roleId), Number(permissionId));
+      await giveRolePermission(
+        token,
+        Number(selectedRole),
+        Number(selectedPermission)
+      );
     }
   };
 
-  //   console.log("permissions", permissions);
-  //   console.log("roles", roles);
-  //   console.log("permissionId", permissionId);
-  //   console.log("roleId", roleId);
   return (
     <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] space-y-3">
-      <div className="flex gap-3 items-center justify-center">
-        <p
-          className={`appearance-none border-2 border-black rounded-sm w-4 h-4 ${
-            isAttaching ? "bg-[#4866CF]" : "bg-white"
-          }`}
-          onClick={() => setIsAttaching(!isAttaching)}
+      <form
+        onSubmit={(e) => handleSubmission(e)}
+        className="grid grid-cols-1 gap-8"
+      >
+        <SubmitOrderDropdown
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+            setRolePerId((last) => ({ ...last, perId: e.target.value }))
+          }
+          value={rolePerId.perId}
+          dropdownItems={permissionInfos}
+          dropDownTitle="دسترسی ها:"
         />
-      </div>
-      <form onSubmit={(e) => handleSubmission(e)}>
-        <label htmlFor="permissions">دسترسی ها</label>
-        <select
-          name="permissions"
-          id="permissions"
-          value={permissionId}
-          onChange={(e) => setPermissionId(e.target.value)}
+        <SubmitOrderDropdown
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+            setRolePerId((last) => ({ ...last, roleId: e.target.value }))
+          }
+          value={rolePerId.roleId}
+          dropdownItems={roleInfos}
+          dropDownTitle="نقش ها:"
+        />
+        <button
+          className="flex gap-3 items-center justify-end"
+          onClick={() => setIsAttaching(!isAttaching)}
         >
-          {permissionIds.map((item) => (
-            <option key={item.id} value={item.id}>
-              {item.id}
-            </option>
-          ))}
-        </select>
-
-        <label htmlFor="roles">نقش ها</label>
-        <select
-          name="roles"
-          id="roles"
-          value={roleId}
-          onChange={(e) => setRoleId(e.target.value)}
-        >
-          {roleIds.map((item) => (
-            <option key={item.role.id} value={item.role.id}>
-              {item.role.id}
-            </option>
-          ))}
-        </select>
+          <p
+            className={`appearance-none border-2 border-black rounded-sm w-4 h-4 ${
+              isAttaching ? "bg-[#4866CF]" : "bg-white"
+            }`}
+          />
+          <span>
+            {isAttaching ? "دادن دسترسی به نقش" : "گرفتن دسترسی از نقش"}
+          </span>
+        </button>
       </form>
     </div>
   );

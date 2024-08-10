@@ -43,6 +43,7 @@ const PanelNav = ({
     dispatch(openModal(false));
   };
 
+  console.log(userProfile.pic_path);
   // console.log("userprofile in nav",userProfile);
   return (
     <div

@@ -1,13 +1,7 @@
 "use client";
 import {
   deletePosition,
-  deleteRole,
-  getAllPositions,
-  getAllRole,
   restorePosition,
-  restoreRole,
-  updatePosition,
-  updateRole,
 } from "@/utils/utils";
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
@@ -16,8 +10,6 @@ import vieweye from "@/public/ViewUsers/vieweye.svg";
 import Image from "next/image";
 import { RxCross1 } from "react-icons/rx";
 import { MdOutlineSettingsBackupRestore } from "react-icons/md";
-import { FaCheck } from "react-icons/fa6";
-import { AiOutlineEdit } from "react-icons/ai";
 import { PositionContext } from "../../context/position-context/PositionContext";
 
 export type PositionType = {
@@ -36,9 +28,17 @@ function PositionManagement() {
   const { token } = useSelector((state: any) => state.userData);
   const [positionIsDeleted, setPositionIsDeleted] = useState(false);
 
-  // useEffect(() => {
-  //   getAllPositions(token, setPositions);
-  // }, []);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const localPositions = JSON.parse(
+        window.localStorage.getItem("positions") as string
+      );
+      setPositions(localPositions);
+    }
+  }, []);
+
+  console.log("positions", positions);
+
 
   const [editField, setEditField] = useState({
     showEditField: false,
@@ -48,50 +48,50 @@ function PositionManagement() {
     user_id: "",
   });
 
-  const handlePositionEdit = async (id: number) => {
-    const selectedPosition = positions.find(
-      (item: PositionType) => item.position.id === id
-    );
-    // check
-    if (selectedPosition) {
-      setPositions((last) =>
-        last.map((item: PositionType) =>
-          item.position.id === id
-            ? {
-                ...item,
-                position: {
-                  ...item.position,
-                  title_en:
-                    editField.title_en !== ""
-                      ? editField.title_en
-                      : item.position.title_en,
-                  title_fa:
-                    editField.title_fa !== ""
-                      ? editField.title_fa
-                      : item.position.title_fa,
-                  dept_id:
-                    editField.dept_id !== ""
-                      ? editField.dept_id
-                      : item.position.dept_id,
-                  user_id:
-                    editField.user_id !== ""
-                      ? editField.user_id
-                      : item.position.user_id,
-                },
-              }
-            : item
-        )
-      );
-    }
-    await updatePosition(
-      token,
-      id,
-      editField.title_en,
-      editField.title_fa,
-      Number(editField.dept_id),
-      Number(editField.user_id)
-    );
-  };
+  // const handlePositionEdit = async (id: number) => {
+  //   const selectedPosition = positions.find(
+  //     (item: PositionType) => item.position.id === id
+  //   );
+  //   // check
+  //   if (selectedPosition) {
+  //     setPositions((last) =>
+  //       last.map((item: PositionType) =>
+  //         item.position.id === id
+  //           ? {
+  //               ...item,
+  //               position: {
+  //                 ...item.position,
+  //                 title_en:
+  //                   editField.title_en !== ""
+  //                     ? editField.title_en
+  //                     : item.position.title_en,
+  //                 title_fa:
+  //                   editField.title_fa !== ""
+  //                     ? editField.title_fa
+  //                     : item.position.title_fa,
+  //                 dept_id:
+  //                   editField.dept_id !== ""
+  //                     ? editField.dept_id
+  //                     : item.position.dept_id,
+  //                 user_id:
+  //                   editField.user_id !== ""
+  //                     ? editField.user_id
+  //                     : item.position.user_id,
+  //               },
+  //             }
+  //           : item
+  //       )
+  //     );
+  //   }
+  //   await updatePosition(
+  //     token,
+  //     id,
+  //     editField.title_en,
+  //     editField.title_fa,
+  //     Number(editField.dept_id),
+  //     Number(editField.user_id)
+  //   );
+  // };
 
   return (
     <div className="grid grid-cols-1 gap-5">
@@ -179,7 +179,7 @@ function PositionManagement() {
               >
                 <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg" />
               </span>
-              <span
+              {/* <span
                 onClick={() =>
                   setEditField((last) => ({
                     ...last,
@@ -196,7 +196,7 @@ function PositionManagement() {
                 ) : (
                   <AiOutlineEdit className="text-green-600 text-lg" />
                 )}
-              </span>
+              </span> */}
             </div>
           </div>
         ))}

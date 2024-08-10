@@ -5,7 +5,7 @@ import PositionPermission from "./position-permission";
 
 function ChangePermission() {
   return (
-    <div>
+    <div className="grid grid-cols-1 gap-5">
       <RolePermission />
       <PositionPermission />
     </div>

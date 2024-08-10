@@ -1,6 +1,9 @@
 import { BrandDetailType } from "@/app/panel/admin/org_management/departments/department-detail/page";
 import { BrandType } from "@/app/panel/admin/org_management/brands/page";
-import { DepartmentType } from "@/app/panel/admin/org_management/departments/page";
+import {
+  DepartmentFinalType,
+  DepartmentType,
+} from "@/app/panel/admin/org_management/departments/page";
 import { ValueType } from "@/app/panel/admin/plan-management/components/value-component";
 import { PlanType } from "@/app/panel/admin/plan-management/page";
 import { PlanAttrType } from "@/app/panel/admin/plan-management/plan-detail/page";
@@ -164,8 +167,13 @@ export const getAllUsers = async (
     });
     window.localStorage.setItem("users", JSON.stringify(data.data));
     setAllUsers(data.data);
-  } catch (error) {
-    console.log(error);
+    console.log("all users data", data);
+  } catch (error: any) {
+    console.log(error.response.data.message);
+    setDataStatus((last) => ({
+      ...last,
+      error: "خطا در دریافت اطلاعات کاربران.",
+    }));
   } finally {
     setDataStatus((last) => ({ ...last, loading: false }));
   }
@@ -230,8 +238,8 @@ export const getAllPositions = async (
     setPositions(data.data);
     console.log(data);
     window.localStorage.setItem("positions", JSON.stringify(data.data));
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    console.log(error.response.data.message);
   }
 };
 // update position by admin
@@ -434,7 +442,7 @@ export const createNewPosition = async (
       rtl: true,
     });
     console.log(data);
-  } catch (error) {
+  } catch (error: any) {
     toast.error("خطا در ایجاد موقعیت", {
       position: "top-right",
       autoClose: 5000,
@@ -447,15 +455,22 @@ export const createNewPosition = async (
       transition: Bounce,
       rtl: true,
     });
-    console.log(error);
+    console.log(error.response.data.message);
   }
 };
 // get all roles
 export const getAllRole = async (
   token: string,
-  setRoles: React.Dispatch<React.SetStateAction<RoleType[]>>
+  setRoles: React.Dispatch<React.SetStateAction<RoleType[]>>,
+  setDataLoading?: Dispatch<
+    SetStateAction<{
+      loading: boolean;
+      error: string;
+    }>
+  >
 ) => {
   try {
+    setDataLoading && setDataLoading((last) => ({ ...last, loading: true }));
     const { data } = await app("/roles", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -464,8 +479,12 @@ export const getAllRole = async (
     setRoles(data.data);
     window.localStorage.setItem("roles", JSON.stringify(data.data));
     console.log(data);
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    setDataLoading &&
+      setDataLoading((last) => ({ ...last, error: "نقشی یافت نشد." }));
+    console.log(error.response.data.message);
+  } finally {
+    setDataLoading && setDataLoading((last) => ({ ...last, loading: false }));
   }
 };
 // update role by admin
@@ -676,9 +695,16 @@ export const createNewRole = async (
 // get all permissions
 export const getAllPermissions = async (
   token: string,
-  setPermissions: React.Dispatch<React.SetStateAction<PermissionType[]>>
+  setPermissions: React.Dispatch<React.SetStateAction<PermissionType[]>>,
+  setDataStatus: Dispatch<
+    SetStateAction<{
+      loading: boolean;
+      error: string;
+    }>
+  >
 ) => {
   try {
+    setDataStatus((last) => ({ ...last, loading: true }));
     const { data } = await app("/permissions", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -687,8 +713,15 @@ export const getAllPermissions = async (
     setPermissions(data.data);
     window.localStorage.setItem("permissions", JSON.stringify(data.data));
     console.log(data);
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    console.log(error.response.data.message);
+    if (error.response.data.message === "permission-notFound") {
+      setDataStatus((last) => ({ ...last, error: "دسترسی ای یافت نشد." }));
+    } else {
+      setDataStatus((last) => ({ ...last, error: "خطا در دریافت اطلاعات." }));
+    }
+  } finally {
+    setDataStatus((last) => ({ ...last, loading: false }));
   }
 };
 // get permission detail
@@ -1888,8 +1921,8 @@ export const getAllSiteTypes = async (
     setSiteTypes(data.data);
     console.log(data);
     window.localStorage.setItem("site-types", JSON.stringify(data.data));
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    console.log(error.response.data.message);
   }
 };
 // update site type by admin
@@ -2269,7 +2302,9 @@ export const getNewsLetterDetail = async (
 // get departments
 export const getAllDepartments = async (
   token: string,
-  setDepartments: Dispatch<SetStateAction<DepartmentType[]>>
+  setDepartments: Dispatch<
+    SetStateAction<DepartmentType[] | DepartmentFinalType[]>
+  >
 ) => {
   try {
     const { data } = await app("/departments", {
@@ -2280,8 +2315,8 @@ export const getAllDepartments = async (
     console.log(data);
     setDepartments(data.data);
     window.localStorage.setItem("departments", JSON.stringify(data.data));
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    console.log(error.response.data.message);
   }
 };
 // update department by admin

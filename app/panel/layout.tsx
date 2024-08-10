@@ -19,16 +19,34 @@ import ValueIdContextWrapper from "./admin/plan-management/context/ValueIdContex
 import DepartmentContextWrapper from "./admin/context/department-context/DepartmentContextWrapper";
 import PermissionContextWrapper from "./admin/context/permission-context/PermissionContextWrapper";
 import UserContextWrapper from "./admin/context/user-context/UserContextWrapper";
-import { getAllDepartments, getAllPlans, getAllSiteTypes } from "@/utils/utils";
+import {
+  getAllDepartments,
+  getAllPermissions,
+  getAllPlans,
+  getAllPositions,
+  getAllRole,
+  getAllSiteTypes,
+  getAllUsers,
+} from "@/utils/utils";
 import { OrderSubmissionContext } from "./context/order-submission-contexts/OrderSubmissionContext";
 import OrderSubmissionContextWrapper from "./context/order-submission-contexts/OrderSubmissionContextWrapper";
 import { DepartmentContext } from "./admin/context/department-context/DepartmentContext";
+import { RoleContext } from "./admin/context/role-context/RoleContext";
+import { PermissionContext } from "./admin/context/permission-context/PermissionContext";
+import { PositionContext } from "./admin/context/position-context/PositionContext";
+import { UserContext } from "./admin/context/user-context/UserContext";
 
 const PanelLayout = ({ children }: { children: React.ReactNode }) => {
-  const { token, userProfile, status, numberOfAnnouncements, role } =
-    useSelector((store: any) => store.userData);
+  const { token, userProfile, status, numberOfAnnouncements } = useSelector(
+    (store: any) => store.userData
+  );
+  const [role, setRole] = useState("");
   const { setAllPlans, setSiteTypes } = useContext(OrderSubmissionContext);
+  const { setRoles, setDataLoading } = useContext(RoleContext);
+  const { setPermissions, setPermissionStatus } = useContext(PermissionContext);
+  const { setPositions } = useContext(PositionContext);
   const { setDepartments } = useContext(DepartmentContext);
+  const { setAllUsersData, setUsersStatus } = useContext(UserContext);
   const [showAnnouncementDropdown, setShowAnnouncementDropdown] =
     useState(false);
   const dispatch = useDispatch();
@@ -57,12 +75,38 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    Promise.all([
-      getAllPlans(token, setAllPlans),
-      getAllSiteTypes(token, setSiteTypes),
-      getAllDepartments(token, setDepartments),
-    ]);
+    if (typeof window !== "undefined") {
+      const role = JSON.parse(window.localStorage.getItem("role") as string);
+      setRole(role);
+    }
   }, []);
+
+  useEffect(() => {
+    console.log("token", token);
+    if (typeof window !== "undefined" && token) {
+      Promise.all([
+        getAllPlans(token, setAllPlans),
+        getAllSiteTypes(token, setSiteTypes),
+        getAllDepartments(token, setDepartments),
+        getAllUsers(token, setAllUsersData, setUsersStatus),
+        getAllPositions(token, setPositions),
+        getAllPermissions(token, setPermissions, setPermissionStatus),
+        getAllRole(token, setRoles, setDataLoading),
+        getAllDepartments(token, setDepartments),
+      ]);
+    }
+  }, [
+    token,
+    setAllPlans,
+    setSiteTypes,
+    setDepartments,
+    setPermissions,
+    setUsersStatus,
+    setPositions,
+    setRoles,
+    setAllUsersData,
+    setPermissionStatus,
+  ]);
 
   // useEffect(() => {
   //   if (!token) {
