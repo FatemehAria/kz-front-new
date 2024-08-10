@@ -15,7 +15,7 @@ import { signOut, useSession } from "next-auth/react";
 type NavProps = {
   userProfile: any;
   status: string;
-  userType: string[];
+  userType: string;
   numberOfAnnouncements: number;
   setShowAnnouncementDropdown: Dispatch<SetStateAction<boolean>>;
   showAnnouncementDropdown: boolean;
@@ -43,6 +43,7 @@ const PanelNav = ({
     dispatch(openModal(false));
   };
 
+  // console.log("userprofile in nav",userProfile);
   return (
     <div
       className="flex flex-col items-end relative justify-center"
@@ -53,7 +54,7 @@ const PanelNav = ({
         <div className="flex flex-row gap-3 items-center py-1">
           <Link
             href={`${
-              userType.includes("Admin")
+              userType === "Admin"
                 ? "/panel/admin/support"
                 : "/panel/user/support"
             }`}

@@ -15,9 +15,9 @@ function Consultation() {
         <div>
           <Image src={ConsultImage} alt="consultation" />
         </div>
-        <div className="text-right">
-          <p>مشاوره رایگان</p>
-          <p>
+        <div className="text-right flex flex-col gap-5">
+          <p className="text-[25px] font-bold">مشاوره رایگان</p>
+          <p className="leading-9 text-[18px] text-justify" dir="rtl">
             وقتی ثروت‌ های بزرگ به دست برخی مردم می‌افتد در پرتو آن نیرومند
             می‌شوند و در سایهٔ نیرومندی و ثروت خیال می‌ کنند که می‌توانند در
             خارج از وطن خود زندگی نمایند و خوشبخت و سرافراز باشند ولی به زودی
@@ -35,7 +35,7 @@ function Consultation() {
         <Link href="/panel/user/submit-order/consultation/submit-consultation" className="border-[2px] border-[#4866CE] bg-[#F9F9F9] p-3 rounded-[12px] flex flex-row items-center gap-[17rem]">
           <Image src={TicketIcon} alt="phone-icon" width={30} />
           <p>
-            ارتباط از طریق تیکت
+            ثبت مشاوره از طریق تیکت
           </p>
         </Link>
       </div>

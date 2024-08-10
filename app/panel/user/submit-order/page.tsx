@@ -30,7 +30,7 @@ function SubmitOrder() {
   const { allPlans, setAllPlans, siteTypes, setSiteTypes } = useContext(
     OrderSubmissionContext
   );
-
+  const [consultationId, setConsultationId] = useState("");
   useEffect(() => {
     if (typeof window !== "undefined") {
       const localPlans = JSON.parse(
@@ -39,6 +39,7 @@ function SubmitOrder() {
       const localSiteTypes = JSON.parse(
         window.localStorage.getItem("site-types") as string
       );
+
       setSiteTypes(localSiteTypes);
       setAllPlans(localPlans);
     }
@@ -108,6 +109,15 @@ function SubmitOrder() {
     setProjectFields((last) => ({ ...last, budget: formattedValue }));
   };
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const consultation_id = JSON.parse(
+        window.localStorage.getItem("consultation_id") as string
+      );
+      setConsultationId(consultation_id);
+    }
+  }, []);
+  
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await createProject(
@@ -119,6 +129,7 @@ function SubmitOrder() {
       projectFields.priority === "کم" ? "low" : "high",
       userProfile.id,
       Number(plansId),
+      Number(consultationId),
       similarSiteData,
       colorsData,
       pluginData,
@@ -286,7 +297,10 @@ function SubmitOrder() {
           <PanelFields
             label="کد تخفیف:"
             onChange={(e) =>
-              setProjectFields((last) => ({ ...last, discount_code: e.target.value }))
+              setProjectFields((last) => ({
+                ...last,
+                discount_code: e.target.value,
+              }))
             }
             value={projectFields.discount_code}
             name="discount_code"

@@ -42,7 +42,7 @@ function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
           },
         }
       );
-      console.log(data);
+      console.log("success avatr" , data);
       // check
       dispatch(
         updateUserProfile({

@@ -2508,9 +2508,7 @@ export const submitConsultation = async (
   description: string,
   date: string,
   type: string,
-  status: string,
-  register_user_id: string,
-  responser_user_id: string
+  register_user_id: string
 ) => {
   try {
     const { data } = await app.post(
@@ -2520,9 +2518,7 @@ export const submitConsultation = async (
         description,
         date,
         type,
-        status,
         register_user_id,
-        responser_user_id,
       },
       {
         headers: {
@@ -2530,9 +2526,13 @@ export const submitConsultation = async (
         },
       }
     );
-    console.log(data);
-  } catch (error) {
-    console.log(error);
+    console.log("consultation created", data);
+    window.localStorage.setItem(
+      "consultation_id",
+      JSON.stringify(data.data.id)
+    );
+  } catch (error: any) {
+    console.log(error.response.data.message);
   }
 };
 // delete consult by admin
@@ -2778,6 +2778,7 @@ export const createProject = async (
   priority: string,
   register_user_id: number,
   planId: number,
+  consultation_id: number | null,
   lookslike: SimilarSiteType[] | null,
   org_color: ColorType[] | null,
   plugin: PluginType[] | null,
@@ -2794,6 +2795,7 @@ export const createProject = async (
         priority,
         register_user_id,
         plan_id: planId,
+        consultation_id: consultation_id || null,
         lookslike: lookslike || null,
         org_color: org_color || null,
         plugin: plugin || null,
@@ -3092,7 +3094,7 @@ export const getOrders = async (
   } catch (error: any) {
     setOrderStatus((last) => ({ ...last, error: "سفارشی یافت نشد." }));
     console.log(error.response.data.message);
-  }finally{
+  } finally {
     setOrderStatus((last) => ({ ...last, loading: false }));
   }
 };
