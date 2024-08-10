@@ -55,7 +55,7 @@ const fetchUserInLoginWithPassword = createAsyncThunk(
         FirstName: data.data?.user.name,
         LastName: data.data.user?.surname,
         userId: data.data?.user.id,
-        // userType: [...data.data?.user.roles],
+        userType: [...data.data?.user.roles],
         type: data.data?.user.type,
         isLoggedIn: true,
       };
@@ -269,7 +269,7 @@ const userSlice = createSlice({
       });
       state.FirstName = action.payload.FirstName;
       state.LastName = action.payload.LastName;
-      // state.userType = action.payload.userType;
+      state.userType = action.payload.userType;
       state.userId = action.payload.userId;
       state.isLoggedIn = action.payload.isLoggedIn;
       sessionStorage.setItem("userId", state.userId);
@@ -278,11 +278,11 @@ const userSlice = createSlice({
       } عزیز با موفقیت وارد پنل کاربری خود شدید.`;
       state.errorMessage = "";
       state.type = action.payload.type;
-      // state.role = state.userType?.find(
-      //   (item: userRoleType) => item.name_en.toLowerCase() === "admin"
-      // )
-      //   ? "Admin"
-      //   : "User";
+      state.role = state.userType?.find(
+        (item: userRoleType) => item.name_en.toLowerCase() === "admin"
+      )
+        ? "Admin"
+        : "User";
     });
     builder.addCase(fetchUserInLoginWithPassword.rejected, (state, action) => {
       state.status = "failed";

@@ -18,17 +18,7 @@ import AdditionalInfoOnRegister from "./additional-info-onregister";
 const Auth = () => {
   const { authSteps, setAuthSteps } = useContext(AuthContext);
   const [loginApproach, setLoginApproach] = useState(0);
-  const { token, userId, userType, showModal } = useSelector(
-    (state: any) => state.userData
-  );
-  const dispatch = useDispatch();
   const [isLoggingIn, setIsLoggingIn] = useState(false);
-
-  useEffect(() => {
-    dispatch(getTokenFromLocal());
-    dispatch(getIdFromLocal());
-    dispatch<any>(fetchUserProfile());
-  }, []);
 
   const renderSteps = () => {
     switch (authSteps) {

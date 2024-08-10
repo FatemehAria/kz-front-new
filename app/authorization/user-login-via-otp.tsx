@@ -120,7 +120,7 @@ const UserLoginViaOTP = () => {
                 inputType="tel"
                 shouldAutoFocus={true}
               />
-              {errorMessage === "" && showModal && !errorOnProfileHandler && (
+              {errorMessage !== "" && showModal && (
                 <Modal
                   showModal={showModal}
                   mainButtonText="ارسال مجدد کد یکبارمصرف"

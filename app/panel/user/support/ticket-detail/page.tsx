@@ -69,7 +69,8 @@ function TicketDetail() {
         loading: false,
       }));
       console.log("ticketdetail", data);
-    } catch (error) {
+    } catch (error: any) {
+      console.log(error.response.data.message);
       setTicketDetailStatus({ error: "", loading: false });
     }
   };
@@ -79,7 +80,7 @@ function TicketDetail() {
     setFile(file);
     setFileSelected(true);
   };
-  
+
   const sendResponseTicket = async () => {
     try {
       const { data } = await app.post(

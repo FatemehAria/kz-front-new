@@ -109,6 +109,7 @@ const Login = ({
               text={successMessage}
               mainButtonText="متوجه شدم"
               showOnErrorOrSuccess={true}
+              isLoggedIn={isLoggedIn}
             />
           )}
           <Logo />
