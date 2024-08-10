@@ -753,7 +753,7 @@ export const userSidebarOptions = [
 ];
 export const mainAdminSidebarOptions = [
   {
-    text: "مشاهده کاربران",
+    text: "مدیریت کاربران",
     imgSrc: "/Panel/dashboard.svg",
     address: "/panel/admin/view-users",
     path: [

@@ -1,17 +1,22 @@
 "use client";
-import { createNewBrand } from "@/utils/utils";
+import { createNewBrand, getAllBrands } from "@/utils/utils";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { BrandType } from "../page";
 
 function CreateBrand() {
   const { token } = useSelector((state: any) => state.userData);
+  const [allBrands, setAllBrands] = useState<BrandType[]>([]);
   const [createBrand, setCreateBrand] = useState({
     title: "",
     description: "",
   });
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await createNewBrand(token, createBrand.title, createBrand.description);
+    Promise.all([
+      await createNewBrand(token, createBrand.title, createBrand.description),
+      await getAllBrands(setAllBrands),
+    ]);
     setCreateBrand({ title: "", description: "" });
   };
 

@@ -951,7 +951,7 @@ export const getBrandDetail = async (
 ) => {
   try {
     const { data } = await app.get(`/brand/show/${brandId ? brandId : ""}`);
-    console.log(data);
+    console.log("brand detail", data);
     setBrandDetail(data.data);
   } catch (error) {
     console.log(error);
@@ -3131,5 +3131,138 @@ export const getOrders = async (
     console.log(error.response.data.message);
   } finally {
     setOrderStatus((last) => ({ ...last, loading: false }));
+  }
+};
+// get all organizations
+export const getOrganizations = async (
+  token: string,
+  setOrganizations: React.Dispatch<React.SetStateAction<never[]>>,
+  setOrganizationstatus: React.Dispatch<
+    React.SetStateAction<{
+      error: string;
+      loading: boolean;
+    }>
+  >
+) => {
+  try {
+    setOrganizationstatus((last) => ({ ...last, loading: true }));
+    const { data } = await app("/organizations", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("organizations", data);
+    setOrganizations(data.data);
+  } catch (error: any) {
+    setOrganizationstatus((last) => ({ ...last, error: "سازمانی یافت نشد." }));
+    console.log(error.response.data.message);
+  } finally {
+    setOrganizationstatus((last) => ({ ...last, loading: false }));
+  }
+};
+// restore position by admin
+export const restoreOrganization = async (
+  organizationId: number | null,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/organization/restore/${organizationId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    toast.success("سازمان با موفقیت بازگردانی شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(false);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در بازگردانی سازمان", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// deleting organization by admin
+export const deleteOrgan = async (
+  organId: number,
+  token: string,
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  try {
+    const { data } = await app.get(`/organization/delete/${organId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    toast.success("سازمان با موفقیت حذف شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setIsDeleted(true);
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+    toast.error("خطا در حذف سازمان", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// get permission detail
+export const getOrganizationDetail = async (
+  token: string,
+  organizationId: string | null,
+  setorganizationDetail: React.Dispatch<React.SetStateAction<any>>
+) => {
+  try {
+    const { data } = await app.get(
+      `/organization/show/${organizationId ? organizationId : ""}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log("org detail", data);
+    setorganizationDetail(data.data);
+  } catch (error: any) {
+    console.log(error.response.data.message);
   }
 };

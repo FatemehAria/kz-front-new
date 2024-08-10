@@ -145,7 +145,7 @@ function Brands() {
               />
               <div className="flex flex-row items-center justify-center gap-3">
                 <Link
-                  href={`/panel/admin/brands/brand-detail?id=${item.brand.id}`}
+                  href={`/panel/admin/org_management/brands/brand-detail?id=${item.brand.id}`}
                   className="flex justify-center"
                 >
                   <Image src={vieweye} alt="مشاهده" width={20} height={20} />
@@ -165,7 +165,7 @@ function Brands() {
                 >
                   <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg" />
                 </span>
-                <span
+                {/* <span
                   onClick={() =>
                     setEditField((last) => ({
                       ...last,
@@ -182,7 +182,7 @@ function Brands() {
                   ) : (
                     <AiOutlineEdit className="text-green-600 text-lg" />
                   )}
-                </span>
+                </span> */}
               </div>
             </div>
           )
