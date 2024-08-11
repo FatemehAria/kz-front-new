@@ -2530,10 +2530,10 @@ export const getAllConsultations = async (
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(data);
+    console.log("all consultations", data);
     setAllConsults(data.data);
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    console.log(error.response.data.message);
   }
 };
 // submit consultation
@@ -3060,18 +3060,23 @@ export const getTemplates = async (
 // reject project
 export const rejectProject = async (
   token: string,
-  title: string,
   reason: string,
   projectId: number,
   userId: number
 ) => {
   try {
-    const { data } = await app.post("/project/rejected/store", {
-      title,
-      reason,
-      project_id: projectId,
-      user_id: userId,
-    });
+    const { data } = await app.post(
+      `/project/reject/${projectId}`,
+      {
+        reason,
+        user_id: userId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     console.log(data);
     toast.success("پروژه با موفقیت رد شد", {
       position: "top-right",
@@ -3245,7 +3250,7 @@ export const deleteOrgan = async (
     });
   }
 };
-// get permission detail
+// get organization detail
 export const getOrganizationDetail = async (
   token: string,
   organizationId: string | null,
@@ -3262,6 +3267,123 @@ export const getOrganizationDetail = async (
     );
     console.log("org detail", data);
     setorganizationDetail(data.data);
+  } catch (error: any) {
+    console.log(error.response.data.message);
+  }
+};
+// confirm project
+export const confirmProjectByAdmin = async (
+  token: string,
+  projectId: number
+) => {
+  try {
+    const { data } = await app(`/project/verify/${projectId}`);
+    console.log("pro verification", data);
+    toast.success("پروژه با موفقیت تایید شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  } catch (error: any) {
+    console.log(error.response.data.message);
+    toast.error("خطا در تایید پروژه", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// change order status by admin
+export const changeOrderStatus = async (
+  token: string,
+  orderId: number,
+  statusId: number
+) => {
+  try {
+    const { data } = await app.post(
+      `/order/change_order_status/${orderId}`,
+      { status_id: statusId || 1 },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log("status change verification", data);
+    toast.success("وضعیت پروژه با موفقیت تغییر داده شد.", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  } catch (error: any) {
+    console.log(error.response.data.message);
+    toast.error("خطا در تغییر وضعیت پروژه", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// get order detail
+export const getOrderDetail = async (
+  token: string,
+  orderId: number,
+  setOrderDetail: React.Dispatch<React.SetStateAction<never[]>>
+) => {
+  try {
+    const { data } = await app(`/order/show/${orderId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("order detail", data);
+    setOrderDetail(data.data);
+  } catch (error: any) {
+    console.log(error.response.data.message);
+  }
+};
+// get all order statuses
+export const getAllOrderStatuses = async (
+  token: string,
+  orderId: number,
+  setOrderStatuses: React.Dispatch<React.SetStateAction<never[]>>
+) => {
+  try {
+    const { data } = await app(`/order/get_all_status/${orderId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("all order statuses", data);
+    setOrderStatuses(data.data);
   } catch (error: any) {
     console.log(error.response.data.message);
   }

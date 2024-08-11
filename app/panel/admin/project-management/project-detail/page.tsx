@@ -1,6 +1,10 @@
 "use client";
 import FileUpload from "@/app/panel/user/submit-order/components/file-upload";
-import { getProjectDetail, rejectProject } from "@/utils/utils";
+import {
+  confirmProjectByAdmin,
+  getProjectDetail,
+  rejectProject,
+} from "@/utils/utils";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -32,7 +36,6 @@ function ProjectDetail() {
     loading: false,
     error: "",
   });
-  console.log("projectDetail", projectDetail);
 
   useEffect(() => {
     getProjectDetail(token, id, setProjectDetail);
@@ -222,7 +225,7 @@ function ProjectDetail() {
               </button>
               <button
                 className="bg-[#4866CE] text-white rounded-lg p-1"
-                // onClick={() => ConfirmProject()}
+                onClick={() => confirmProjectByAdmin(token, Number(id))}
               >
                 تایید پروژه
               </button>
@@ -247,7 +250,6 @@ function ProjectDetail() {
                 onClick={() =>
                   rejectProject(
                     token,
-                    "",
                     rejection.rejection_reason,
                     Number(id),
                     userProfile.id

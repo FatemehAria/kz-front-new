@@ -41,8 +41,8 @@ function AllProjects() {
           <div
             key={item.id}
             className={`grid grid-cols-7 text-center py-1 rounded-[4px] ${
-              (item.rejected_projects.length !== 0 ||
-              item.status === "not-verified")
+              item.rejected_projects.length !== 0 ||
+              item.status === "not-verified"
                 ? "bg-red-500"
                 : " bg-[#EAEFF6] text-black"
             }`}
@@ -54,14 +54,20 @@ function AllProjects() {
               {Number(item.final_price).toLocaleString()}
             </p>
             <p>{item.plan.title}</p>
-            <p>
-              {(item.rejected_projects.length !== 0 ||
-                item.status === "not-verified") &&
-                "رد شده"}
-              {item.status === "processing" &&
-              item.rejected_projects.length === 0
-                ? "در حال بررسی"
-                : item.status === "verified" && "تایید شده"}
+            <p className="font-semibold">
+              <span className="text-red-600">
+                {(item.rejected_projects.length !== 0 ||
+                  item.status === "not-verified") &&
+                  "رد شده"}
+              </span>
+              <span className="text-green-600">
+                {item.status === "verified" && "تایید شده"}
+              </span>
+              <span>
+                {item.status === "processing" &&
+                  item.rejected_projects.length === 0 &&
+                  "در حال بررسی"}
+              </span>
             </p>
             <Link
               href={`/panel/admin/project-management/project-detail?id=${item.id}`}

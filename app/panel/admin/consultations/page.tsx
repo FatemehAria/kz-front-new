@@ -22,9 +22,11 @@ function Consultations() {
   const { token } = useSelector((state: any) => state.userData);
   const [allConsults, setAllConsults] = useState<ConsultTypes[]>([]);
   const [consultIsDeleted, setConsultIsDeleted] = useState(false);
+
   useEffect(() => {
     getAllConsultations(token, setAllConsults);
   }, []);
+  
   return (
     <div className="grid grid-cols-1 gap-5">
       <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center space-y-3">
