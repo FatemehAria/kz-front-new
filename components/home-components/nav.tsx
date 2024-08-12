@@ -10,10 +10,9 @@ import {
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import NavMobile from "./nav-mobile";
 import { useSession } from "next-auth/react";
-import { useGetUserRoles } from "@/hooks/useGetUserRoles";
 
 const Nav = () => {
-  const { data, status } = useSession();
+  // const { data, status } = useSession();
   const [active, setActive] = useState(false);
   const [showOne, setShowOne] = useState(false);
   const [showTwo, setShowTwo] = useState(false);
@@ -21,10 +20,9 @@ const Nav = () => {
   const [showFour, setShowFour] = useState(false);
   const [activeColorChange, setActiveColorChange] = useState(false);
   const dispatch = useDispatch();
-  const { token, FirstName, userProfile, role } = useSelector(
+  const { FirstName, userProfile, role, status , token } = useSelector(
     (state: any) => state.userData
   );
-  const userRoles = useGetUserRoles();
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -34,13 +32,24 @@ const Nav = () => {
     });
   });
 
-  console.log("role", role);
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      dispatch(getTokenFromLocal());
-      dispatch<any>(fetchUserProfile());
-    }
+    dispatch<any>(fetchUserProfile());
   }, []);
+
+  const routing = () => {
+    if (token === null) {
+      return "/authorization";
+    } else {
+      if (role === "Admin") {
+        return "/panel/admin/view-users";
+      } else {
+        return "/panel/user/dashboard";
+      }
+    }
+  };
+  const route = routing();
+
+  console.dir(token);
 
   return (
     <div
@@ -71,20 +80,13 @@ const Nav = () => {
           showFour={showFour}
         />
         {/* Large Screen */}
-        <Link
-          href={
-            !token
-              ? "/authorization"
-              : role === "Admin"
-              ? "/panel/admin/view-users"
-              : "/panel/user/dashboard"
-          }
-        >
-          {status === "loading" ? (
-            <SkeletonTheme width={140}>
-              <Skeleton count={1} className="p-2" baseColor="#4866CF" />
-            </SkeletonTheme>
-          ) : (
+
+        {status === "loading" ? (
+          <SkeletonTheme width={140}>
+            <Skeleton count={1} className="p-2" baseColor="#4866CF" />
+          </SkeletonTheme>
+        ) : (
+          <Link href={route}>
             <button className="hidden lg:inline-block font-semibold bg-[#4866CF] text-white rounded-[4px] py-1 px-5 text-base">
               {!token && "ثبت نام / ورود"}
               {token && FirstName}
@@ -92,8 +94,9 @@ const Nav = () => {
                 <Skeleton width={100} baseColor="#4866CF" />
               )}
             </button>
-          )}
-        </Link>
+          </Link>
+        )}
+
         <div className="lg:flex gap-6 hidden">
           <ul className="hidden lg:flex justify-center items-center gap-8 z-10">
             <li className="bg-[#C9D6E9] text-[#4866CF] p-2 rounded-[4px]">

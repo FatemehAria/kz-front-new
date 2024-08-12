@@ -36,20 +36,20 @@ function OrderManagement() {
       ) : orderStatus.error ? (
         <NotFound text={`${orderStatus.error}`} />
       ) : (
-        orders.map((item: any, index) => (
+        orders?.map((item: any, index) => (
           <div
             key={item.id}
             className={`grid grid-cols-6 text-center py-1 rounded-[4px] bg-[#EAEFF6] text-black`}
           >
             <p className="font-faNum">{index + 1}</p>
-            <p className="font-faNum">{item.id}</p>
-            <p>{item.project.title}</p>
+            <p className="font-faNum">{item?.id}</p>
+            <p>{item.project?.title}</p>
             <p className="font-faNum">
-              {Number(item.project.final_price).toLocaleString()}
+              {Number(item.project?.final_price).toLocaleString()}
             </p>
-            <p>{item.status.title}</p>
+            <p>{item.status?.title ? item.status?.title :"نامعلوم"}</p>
             <Link
-              href={`/panel/admin/project-management/order-management/order-detail?id=${item.id}`}
+              href={`/panel/admin/project-management/order-management/order-detail?id=${item?.id}`}
               className="flex justify-center"
             >
               <Image src={vieweye} alt="مشاهده" width={20} height={20} />

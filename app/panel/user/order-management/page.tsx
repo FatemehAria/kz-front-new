@@ -51,7 +51,7 @@ function OrderManagement() {
               className="grid grid-cols-4 text-center py-1 bg-[#EAEFF6] rounded-[4px]"
             >
               <p>{index + 1}</p>
-              <p>{item.project?.title}</p>
+              <p>{item.project?.title ? item.project?.title : "-"}</p>
               <p>{item.status?.title ? item.status?.title : "در حال بررسی"}</p>
               <div className="flex flex-row gap-3 justify-center items-center">
                 <Link
@@ -62,7 +62,7 @@ function OrderManagement() {
                 <Link
                   href={`/panel/user/order-management/order-payment?id=${item?.id}`}
                 >
-                  <MdOutlinePayment className="text-xl text-green-800 font-semibold"/>
+                  <MdOutlinePayment className="text-xl text-green-800 font-semibold" />
                 </Link>
               </div>
             </div>

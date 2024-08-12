@@ -779,13 +779,17 @@ export const mainAdminSidebarOptions = [
       "/panel/admin/org_management/brands",
       "/panel/admin/org_management/brands/brand-detail",
       "/panel/admin/org_management/brands/create-brand",
+      "/panel/admin/org_management/org-detail",
+      "/panel/admin/org_management/departments",
+      "/panel/admin/org_management/departments/create-department",
+      "/panel/admin/org_management/departments/department-detail",
     ],
   },
   {
     text: "مشاوره ها",
     imgSrc: "/Panel/searchuserssidebar.svg", //عکس ادیت شه
     address: "/panel/admin/consultations",
-    path: ["/panel/admin/consultations"],
+    path: ["/panel/admin/consultations","/panel/admin/consultations/consult-detail"],
   },
   {
     text: "مدیریت پروژه ها",
@@ -794,6 +798,7 @@ export const mainAdminSidebarOptions = [
     path: [
       "/panel/admin/project-management",
       "/panel/admin/project-management/project-detail",
+      "/panel/admin/project-management/order-management",
     ],
   },
   {

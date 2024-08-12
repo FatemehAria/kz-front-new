@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Image from "next/image";
 import React from "react";
 import vieweye from "../../../../public/ViewUsers/vieweye.svg";
@@ -37,6 +37,7 @@ function LegalUsers({
   searchUsers,
   setSearchUsers,
 }: LegalUsersProps) {
+  console.log(LegalUsersData);
   return (
     <div className="flex flex-col gap-5">
       <SearchInput
@@ -59,10 +60,14 @@ function LegalUsers({
               className="grid grid-cols-6 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
             >
               <p className="font-faNum">{index + 1}</p>
-              <p>{item.org_name}</p>
+              <p>{item.org_name ? item.org_name : "-"}</p>
               <p>{item.ncode}</p>
               <p>{item.mobile}</p>
-              <p>{item.org_registration_Number}</p>
+              <p>
+                {item.org_registration_Number
+                  ? item.org_registration_Number
+                  : "-"}
+              </p>
               <span
                 onClick={() =>
                   deleteUser(item.id, token, setAllUsers, AllUsersData)

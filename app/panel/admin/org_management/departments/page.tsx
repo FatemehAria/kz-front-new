@@ -36,7 +36,6 @@ function Departments() {
   const [departments, setDepartments] = useState([]);
   const { token } = useSelector((state: any) => state.userData);
   const [departmentIsDeleted, setDepartmentIsDeleted] = useState(false);
-
   const [editField, setEditField] = useState({
     showEditField: false,
     name_en: "",
@@ -91,7 +90,7 @@ function Departments() {
           + ایجاد دپارتمان
         </Link>
       </div>
-      <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center space-y-3">
+      <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center grid grid-cols-1 gap-5">
         <div className="grid grid-cols-4">
           <div>ردیف</div>
           <div>نام دپارتمان به انگلیسی</div>
@@ -150,7 +149,7 @@ function Departments() {
               />
               <div className="flex flex-row items-center justify-center gap-3">
                 <Link
-                  href={`/panel/admin/org_department/departments/department-detail?id=${item.department.id}`}
+                  href={`/panel/admin/org_management/departments/department-detail?id=${item.department.id}`}
                   className="flex justify-center"
                 >
                   <Image src={vieweye} alt="مشاهده" width={20} height={20} />

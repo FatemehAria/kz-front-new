@@ -11,15 +11,19 @@ import {
   fetchUserProfile,
   getIdFromLocal,
   getTokenFromLocal,
+  updateStatus,
 } from "@/redux/features/user/userSlice";
 import { AuthContext } from "./context/AuthContext";
 import AdditionalInfoOnRegister from "./additional-info-onregister";
 
 const Auth = () => {
+  const { successMessage, errorMessage, status, token } = useSelector(
+    (state: any) => state.userData
+  );
   const { authSteps, setAuthSteps } = useContext(AuthContext);
   const [loginApproach, setLoginApproach] = useState(0);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
-
+  const dispatch = useDispatch();
   const renderSteps = () => {
     switch (authSteps) {
       case 1:
@@ -44,7 +48,14 @@ const Auth = () => {
     }
   };
 
-  const router = useRouter();
+  useEffect(() => {
+    dispatch(updateStatus());
+  }, []);
+
+  console.log("success message", successMessage);
+  console.log("error message", errorMessage);
+  console.log("status", status);
+  // const router = useRouter();
   // if (token) {
   //   router.replace("/");
   // }

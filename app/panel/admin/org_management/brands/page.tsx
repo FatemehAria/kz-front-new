@@ -14,6 +14,8 @@ import { RxCross1 } from "react-icons/rx";
 import { MdOutlineSettingsBackupRestore } from "react-icons/md";
 import { AiOutlineEdit } from "react-icons/ai";
 import { FaCheck } from "react-icons/fa6";
+import NotFound from "../../components/NotFound";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 export type BrandType = {
   brand: {
@@ -27,9 +29,12 @@ function Brands() {
   const [brands, setBrands] = useState<BrandType[]>([]);
   const { token } = useSelector((state: any) => state.userData);
   const [brandIsDeleted, setBrandIsDeleted] = useState(false);
-
+  const [brandStatus, setBrandStatus] = useState({
+    loading: false,
+    error: "",
+  });
   useEffect(() => {
-    getAllBrands(setBrands);
+    getAllBrands(setBrands, setBrandStatus);
   }, []);
 
   const [editField, setEditField] = useState({
@@ -78,94 +83,106 @@ function Brands() {
           + ایجاد برند
         </Link>
       </div>
-      <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center space-y-3">
+      <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center grid grid-cols-1 gap-5">
         <div className="grid grid-cols-4">
           <div>ردیف</div>
           <div>نام برند</div>
           <div>توضیحات</div>
           <div>عملیات</div>
         </div>
-
-        {brands.map(
-          (
-            item: {
-              brand: {
-                title: string;
-                description: string;
-                id: number;
-                deleted_at: string;
-              };
-            },
-            index
-          ) => (
-            <div
-              className={`${
-                brandIsDeleted && item.brand.deleted_at
-                  ? "bg-red-300"
-                  : "bg-[#EAEFF6]"
-              } grid grid-cols-4 gap-x-5 text-center py-1 rounded-[4px] cursor-pointer`}
-              key={index}
-            >
-              <p>{index + 1}</p>
-              <input
-                value={
-                  editField.showEditField
-                    ? editField.editTitle
-                    : item.brand.title
-                }
-                onChange={(e) =>
-                  setEditField((last) => ({
-                    ...last,
-                    editTitle: e.target.value,
-                  }))
-                }
-                className={`${
-                  editField.showEditField
-                    ? "bg-white"
-                    : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
-                } outline-none`}
-              />
-              <input
-                value={
-                  editField.showEditField
-                    ? editField.editDesc
-                    : item.brand.description
-                }
-                onChange={(e) =>
-                  setEditField((last) => ({
-                    ...last,
-                    editDesc: e.target.value,
-                  }))
-                }
-                className={`${
-                  editField.showEditField
-                    ? "bg-white"
-                    : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
-                } outline-none`}
-              />
-              <div className="flex flex-row items-center justify-center gap-3">
-                <Link
-                  href={`/panel/admin/org_management/brands/brand-detail?id=${item.brand.id}`}
-                  className="flex justify-center"
+        {brandStatus.loading ? (
+          <SkeletonTheme>
+            <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
+          </SkeletonTheme>
+        ) : brandStatus.error ? (
+          <NotFound text={`${brandStatus.error}`} />
+        ) : (
+          <div>
+            {brands.map(
+              (
+                item: {
+                  brand: {
+                    title: string;
+                    description: string;
+                    id: number;
+                    deleted_at: string;
+                  };
+                },
+                index
+              ) => (
+                <div
+                  className={`${
+                    brandIsDeleted && item.brand.deleted_at
+                      ? "bg-red-300"
+                      : "bg-[#EAEFF6]"
+                  } grid grid-cols-4 gap-x-5 text-center py-1 rounded-[4px] cursor-pointer`}
+                  key={index}
                 >
-                  <Image src={vieweye} alt="مشاهده" width={20} height={20} />
-                </Link>
-                <span
-                  onClick={() =>
-                    deleteBrand(item.brand.id, token, setBrandIsDeleted)
-                  }
-                  className="flex justify-center"
-                >
-                  <RxCross1 className="text-red-600 text-lg" />
-                </span>
-                <span
-                  onClick={() =>
-                    restoreBrand(item.brand.id, token, setBrandIsDeleted)
-                  }
-                >
-                  <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg" />
-                </span>
-                {/* <span
+                  <p>{index + 1}</p>
+                  <input
+                    value={
+                      editField.showEditField
+                        ? editField.editTitle
+                        : item.brand.title
+                    }
+                    onChange={(e) =>
+                      setEditField((last) => ({
+                        ...last,
+                        editTitle: e.target.value,
+                      }))
+                    }
+                    className={`${
+                      editField.showEditField
+                        ? "bg-white"
+                        : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
+                    } outline-none`}
+                  />
+                  <input
+                    value={
+                      editField.showEditField
+                        ? editField.editDesc
+                        : item.brand.description
+                    }
+                    onChange={(e) =>
+                      setEditField((last) => ({
+                        ...last,
+                        editDesc: e.target.value,
+                      }))
+                    }
+                    className={`${
+                      editField.showEditField
+                        ? "bg-white"
+                        : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
+                    } outline-none`}
+                  />
+                  <div className="flex flex-row items-center justify-center gap-3">
+                    <Link
+                      href={`/panel/admin/org_management/brands/brand-detail?id=${item.brand.id}`}
+                      className="flex justify-center"
+                    >
+                      <Image
+                        src={vieweye}
+                        alt="مشاهده"
+                        width={20}
+                        height={20}
+                      />
+                    </Link>
+                    <span
+                      onClick={() =>
+                        deleteBrand(item.brand.id, token, setBrandIsDeleted)
+                      }
+                      className="flex justify-center"
+                    >
+                      <RxCross1 className="text-red-600 text-lg" />
+                    </span>
+                    <span
+                      onClick={() =>
+                        restoreBrand(item.brand.id, token, setBrandIsDeleted)
+                      }
+                    >
+                      <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg" />
+                    </span>
+                    {/* <span
                   onClick={() =>
                     setEditField((last) => ({
                       ...last,
@@ -183,9 +200,11 @@ function Brands() {
                     <AiOutlineEdit className="text-green-600 text-lg" />
                   )}
                 </span> */}
-              </div>
-            </div>
-          )
+                  </div>
+                </div>
+              )
+            )}
+          </div>
         )}
       </div>
     </div>

@@ -48,8 +48,8 @@ const UserLoginViaOTP = () => {
     if (errorMessage && !showModal && !errorOnProfileHandler) {
       sendOTPCodeMain(PhoneNumber, setAuthSteps);
     }
-    console.log(!showModal);
-    console.log(errorMessage);
+    // console.log(!showModal);
+    // console.log(errorMessage);
   }, [showModal]);
 
   const handleSubmission = async (e: FormEvent<HTMLFormElement>) => {

@@ -14,6 +14,7 @@ import FormInput from "../contact-us/components/form/form-inputs";
 import {
   fetchUserInLoginWithPassword,
   openModal,
+  updateStatus,
 } from "@/redux/features/user/userSlice";
 import { sendOTPCodeMain } from "@/utils/utils";
 
@@ -37,24 +38,16 @@ const Login = ({
     errorMessage,
     successMessage,
     errorOnProfileHandler,
+    status,
+    token,
   } = useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
-
+  const [logwithOTP, setLogwithOTP] = useState(false);
+  const [loginwithPass, setLoginwithPass] = useState(false);
+  
   const handleSubmission = async () => {
-    // login ba phone
     setIsLoggingIn(true);
     dispatch(openModal(true));
-    if (result && loginApproach === 0) {
-      await sendOTPCodeMain(values.PhoneNumber, setAuthSteps);
-      // lagin ba password
-    } else if (result && loginApproach === 1) {
-      dispatch<any>(
-        fetchUserInLoginWithPassword({
-          mobile: values.PhoneNumber,
-          password: values.Password,
-        })
-      );
-    }
   };
 
   const { values, errors, handleSubmit, handleChange, isValid } = useFormik({
@@ -70,8 +63,41 @@ const Login = ({
   const { result, setAnswer, answer, mathProblem, wrongAnswerMessage } =
     useCaptcha(values.PhoneNumber);
   useStoreNumInLocal(values.PhoneNumber);
-console.log(successMessage);
-console.log(errorOnProfileHandler);
+
+  useEffect(() => {
+    if (result && loginApproach === 0 && logwithOTP && !token) {
+      sendOTPCodeMain(values.PhoneNumber, setAuthSteps);
+    }
+    return;
+  }, [
+    loginApproach,
+    logwithOTP,
+    result,
+    setAuthSteps,
+    values.PhoneNumber,
+    dispatch,
+    token,
+  ]);
+
+  useEffect(() => {
+    if (result && loginApproach === 1 && loginwithPass && !token) {
+      dispatch<any>(
+        fetchUserInLoginWithPassword({
+          mobile: values.PhoneNumber,
+          password: values.Password,
+        })
+      );
+    }
+    return;
+  }, [
+    loginApproach,
+    loginwithPass,
+    result,
+    values.Password,
+    values.PhoneNumber,
+    token,
+  ]);
+
   return (
     <React.Fragment>
       <div
@@ -92,6 +118,8 @@ console.log(errorOnProfileHandler);
               isLoggingIn={isLoggingIn}
               isLoggedIn={isLoggedIn}
               showOnErrorOrSuccess={false}
+              setLogWithOTP={setLogwithOTP}
+              setLoginWithPass={setLoginwithPass}
             />
           )}
           {errorMessage !== "" && !errorOnProfileHandler && (
@@ -103,7 +131,7 @@ console.log(errorOnProfileHandler);
               showOnErrorOrSuccess={true}
             />
           )}
-          {successMessage !== "" && errorOnProfileHandler && (
+          {successMessage !== "" && !errorOnProfileHandler && (
             <Modal
               showModal={showModal}
               data=""
@@ -170,8 +198,6 @@ console.log(errorOnProfileHandler);
               />
             </OtpLoginMain>
           )}
-
-          {/* <ReCAPTCHA sitekey={`${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`} onChange={(value) => console.log(value)} /> */}
         </div>
       </div>
     </React.Fragment>

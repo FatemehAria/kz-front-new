@@ -27,16 +27,20 @@ function Consultation() {
         </div>
       </div>
 
-      <div className="flex flex-row-reverse justify-between text-[#4866CE]">
-        <div className="border-[2px] border-[#4866CE] bg-[#F9F9F9] p-3 rounded-[12px] flex flex-row items-center gap-[10rem]">
-          <Image src={PhoneIcon} alt="phone-icon" width={30} />
+      <div
+        className="text-[#4866CE] flex flex-row justify-between items-center gap-5"
+        dir="rtl"
+      >
+        <div className="border-[2px] border-[#4866CE] bg-[#F9F9F9] p-3 rounded-[12px] flex flex-row items-center justify-between w-[50%]">
           <p>ارتباط از طریق شماره تماس 91691650</p>
+          <Image src={PhoneIcon} alt="phone-icon" width={30} />
         </div>
-        <Link href="/panel/user/submit-order/consultation/submit-consultation" className="border-[2px] border-[#4866CE] bg-[#F9F9F9] p-3 rounded-[12px] flex flex-row items-center gap-[17rem]">
+        <Link
+          href="/panel/user/submit-order/consultation/submit-consultation"
+          className="border-[2px] border-[#4866CE] bg-[#F9F9F9] p-3 rounded-[12px] flex flex-row items-center justify-between w-[50%] h-full"
+        >
+          <p>ثبت مشاوره از طریق تیکت</p>
           <Image src={TicketIcon} alt="phone-icon" width={30} />
-          <p>
-            ثبت مشاوره از طریق تیکت
-          </p>
         </Link>
       </div>
     </div>

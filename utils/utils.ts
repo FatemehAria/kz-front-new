@@ -223,7 +223,7 @@ export const getAllUsers = async (
     setDataStatus &&
       setDataStatus((last) => ({
         ...last,
-        error: "خطا در دریافت اطلاعات کاربران.",
+        error: "کاربری یافت نشد.",
       }));
   } finally {
     setDataStatus && setDataStatus((last) => ({ ...last, loading: false }));
@@ -985,28 +985,52 @@ export const restorePermission = async (
 };
 // get all brands
 export const getAllBrands = async (
-  setBrands: React.Dispatch<React.SetStateAction<BrandType[]>>
+  setBrands: React.Dispatch<React.SetStateAction<BrandType[]>>,
+  setBrandStatus?: React.Dispatch<
+    React.SetStateAction<{
+      loading: boolean;
+      error: string;
+    }>
+  >
 ) => {
   try {
+    setBrandStatus && setBrandStatus((last) => ({ ...last, loading: true }));
     const { data } = await app("/brands");
     setBrands(data.data);
     console.log(data);
     window.localStorage.setItem("brands", JSON.stringify(data.data));
   } catch (error) {
     console.log(error);
+    setBrandStatus &&
+      setBrandStatus((last) => ({ ...last, error: "برندی یافت نشد." }));
+  } finally {
+    setBrandStatus && setBrandStatus((last) => ({ ...last, loading: false }));
   }
 };
 // get brand details
 export const getBrandDetail = async (
   brandId: string | null,
-  setBrandDetail: React.Dispatch<React.SetStateAction<BrandDetailType>>
+  setBrandDetail: React.Dispatch<React.SetStateAction<BrandDetailType>>,
+  setBrandDetailStatus?: React.Dispatch<
+    React.SetStateAction<{
+      loading: boolean;
+      error: string;
+    }>
+  >
 ) => {
   try {
+    setBrandDetailStatus &&
+      setBrandDetailStatus((last) => ({ ...last, loading: true }));
     const { data } = await app.get(`/brand/show/${brandId ? brandId : ""}`);
     console.log("brand detail", data);
     setBrandDetail(data.data);
   } catch (error) {
     console.log(error);
+    setBrandDetailStatus &&
+      setBrandDetailStatus((last) => ({ ...last, error: "برندی یافت نشد." }));
+  } finally {
+    setBrandDetailStatus &&
+      setBrandDetailStatus((last) => ({ ...last, loading: false }));
   }
 };
 // delete brand by admin
@@ -1325,9 +1349,16 @@ export const createNewplan = async (
 // get all plans by admin
 export const getAllPlans = async (
   token: string,
-  setPlans: React.Dispatch<React.SetStateAction<PlanType[]>>
+  setPlans: React.Dispatch<React.SetStateAction<PlanType[]>>,
+  setPlansStatus?: React.Dispatch<
+    React.SetStateAction<{
+      loading: boolean;
+      error: string;
+    }>
+  >
 ) => {
   try {
+    setPlansStatus && setPlansStatus((last) => ({ ...last, loading: true }));
     const { data } = await app("/plans", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1338,6 +1369,9 @@ export const getAllPlans = async (
     window.localStorage.setItem("plans", JSON.stringify(data.data));
   } catch (error) {
     console.log(error);
+    setPlansStatus && setPlansStatus((last) => ({ ...last, error: "پلنی بافت نشد." }));
+  }finally{
+    setPlansStatus && setPlansStatus((last) => ({ ...last, loading: false }));
   }
 };
 // update a plan by admin
@@ -2574,9 +2608,17 @@ export const createNewDepartment = async (
 // get all consultations
 export const getAllConsultations = async (
   token: string,
-  setAllConsults: React.Dispatch<React.SetStateAction<ConsultTypes[]>>
+  setAllConsults: React.Dispatch<React.SetStateAction<ConsultTypes[]>>,
+  setConsultStatus?: React.Dispatch<
+    React.SetStateAction<{
+      loading: boolean;
+      erorr: string;
+    }>
+  >
 ) => {
   try {
+    setConsultStatus &&
+      setConsultStatus((last) => ({ ...last, loading: true }));
     const { data } = await app("/consults", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -2586,6 +2628,11 @@ export const getAllConsultations = async (
     setAllConsults(data.data);
   } catch (error: any) {
     console.log(error.response.data.message);
+    setConsultStatus &&
+      setConsultStatus((last) => ({ ...last, erorr: "مشاوره ای یافت نشد." }));
+  } finally {
+    setConsultStatus &&
+      setConsultStatus((last) => ({ ...last, loading: false }));
   }
 };
 // submit consultation
@@ -2741,9 +2788,17 @@ export const getConsultationDetail = async (
       description: string;
       date: string;
     }>
+  >,
+  setConsultDetailStatus?: React.Dispatch<
+    React.SetStateAction<{
+      loading: boolean;
+      erorr: string;
+    }>
   >
 ) => {
   try {
+    setConsultDetailStatus &&
+      setConsultDetailStatus((last) => ({ ...last, loading: true }));
     const { data } = await app.get(`/consult/show/${consultationId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -2753,6 +2808,14 @@ export const getConsultationDetail = async (
     setConsultationDetail(data.data);
   } catch (error) {
     console.log(error);
+    setConsultDetailStatus &&
+      setConsultDetailStatus((last) => ({
+        ...last,
+        error: "مشاوره ای یافت نشد.",
+      }));
+  } finally {
+    setConsultDetailStatus &&
+      setConsultDetailStatus((last) => ({ ...last, loading: false }));
   }
 };
 // create ticket
@@ -3099,7 +3162,7 @@ export const getProjectDetail = async (
     setProjectDetailStatus &&
       setProjectDetailStatus((last) => ({
         ...last,
-        error: "خطا در دریافت اطلاعات",
+        error: "پروژه ای یافت نشد.",
       }));
     console.log(error.response.data.message);
   } finally {
@@ -3355,9 +3418,17 @@ export const deleteOrgan = async (
 export const getOrganizationDetail = async (
   token: string,
   organizationId: string | null,
-  setorganizationDetail: React.Dispatch<React.SetStateAction<any>>
+  setorganizationDetail: React.Dispatch<React.SetStateAction<any>>,
+  setOrgDetailStatus?: React.Dispatch<
+    React.SetStateAction<{
+      loading: boolean;
+      error: string;
+    }>
+  >
 ) => {
   try {
+    setOrgDetailStatus &&
+      setOrgDetailStatus((last) => ({ ...last, loading: true }));
     const { data } = await app.get(
       `/organization/show/${organizationId ? organizationId : ""}`,
       {
@@ -3370,6 +3441,14 @@ export const getOrganizationDetail = async (
     setorganizationDetail(data.data);
   } catch (error: any) {
     console.log(error.response.data.message);
+    setOrgDetailStatus &&
+      setOrgDetailStatus((last) => ({
+        ...last,
+        error: "سازمانی یافت نشد.",
+      }));
+  } finally {
+    setOrgDetailStatus &&
+      setOrgDetailStatus((last) => ({ ...last, loading: false }));
   }
 };
 // confirm project

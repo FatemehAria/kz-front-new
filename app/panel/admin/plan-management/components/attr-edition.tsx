@@ -85,36 +85,7 @@ function AttrEdition({
   const [planAttrs, setPlanAttrs] = useState<PlanAttrType[]>([]);
   const [planValues, setPlanValues] = useState<ValueType[]>([]);
   const [planValue, setPlanValue] = useState("");
-  const { attrId, setAttrId } = useContext(AttrIdContext);
-  const handlePlanEdit = async (id: number) => {
-    const selectedPlan = planAttrs.find((item: PlanAttrType) => item.id === id);
-    if (selectedPlan) {
-      setPlanAttrs((last) =>
-        last.map((item: PlanAttrType) =>
-          item.id === id
-            ? {
-                ...item,
-                title:
-                  editAttrAndValue.editAttr.editTitle !== ""
-                    ? editAttrAndValue.editAttr.editTitle
-                    : item.title,
-                description:
-                  editAttrAndValue.editAttr.editDesc !== ""
-                    ? editAttrAndValue.editAttr.editDesc
-                    : item.description,
-              }
-            : item
-        )
-      );
-    }
-    await updatePlanAttr(
-      id,
-      token,
-      Number(planId),
-      editAttrAndValue.editAttr.editTitle,
-      editAttrAndValue.editAttr.editDesc
-    );
-  };
+  const [attrId, setAttrId] = useState("");
   useEffect(() => {
     getPlanAttrs(token, setPlanAttrs);
   }, [addAtrrAndValue.addAttr]);
@@ -123,20 +94,25 @@ function AttrEdition({
     getPlanValues(token, setPlanValues);
   }, [addAtrrAndValue.addValue]);
 
-  const handleAddingValue = (id: number) => {
-    const planValue = planValues
-      .filter((item) => item.attr_id === id)
-      .map((item) => item.title);
-    setPlanValue(planValue[0]);
-    console.log("planValue", planValue);
+  // useEffect(() => {
+  //   if (attrId) {
+  //     const val = planValues
+  //       .filter((item) => item.attr_id === Number(attrId))
+  //       .map((item) => item.title)?.[0];
+  //     setPlanValue(val);
+  //   }
+  //   console.log(attrId);
+  // }, [attrId, planValues]);
 
-    // setAttrId(String(id));
+  const handleAddingValue = (id: number) => {
+    setAttrId(String(id));
     setAddAttrAndValue((last) => ({
       ...last,
       addValue: { ...last.addValue, add: true },
     }));
   };
 
+  // console.log(planValue);
   return (
     <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center">
       <div className={`grid grid-cols-4`}>
@@ -155,19 +131,25 @@ function AttrEdition({
             key={item.id}
           >
             <input
-              value={item.title}
+              value={item?.title}
               readOnly={true}
               className="bg-[#EAEFF6] caret-transparent cursor-default text-center"
             />
             <input
-              value={item.description}
+              value={item?.description}
               readOnly={true}
               className="bg-[#EAEFF6] caret-transparent cursor-default text-center"
             />
-            <p>{planValue}</p>
+            <p>
+              {item.values?.length > 0
+                ? item.values
+                    .filter((val) => val.attr_id === item.id)
+                    .map((item) => item.title)[0]
+                : "-"}
+            </p>
             <div className="flex flex-row items-center justify-center gap-3">
               <span
-                onClick={() => deletePlanAttr(item.id, token, setAttrIsDeleted)}
+                onClick={() => deletePlanAttr(item?.id, token, setAttrIsDeleted)}
                 className="flex justify-center"
               >
                 <RxCross1 className="text-red-600 text-lg" />
@@ -179,7 +161,7 @@ function AttrEdition({
               >
                 <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg" />
               </span>
-              <span onClick={() => handleAddingValue(item.id)}>
+              <span onClick={() => handleAddingValue(item?.id)}>
                 <FaPlus />
               </span>
             </div>

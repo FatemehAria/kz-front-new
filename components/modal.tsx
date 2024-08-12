@@ -27,6 +27,8 @@ type ModalProps = {
   changeNumber?: boolean;
   isLoggedIn?: boolean;
   redirect?: boolean;
+  setLogWithOTP?: React.Dispatch<React.SetStateAction<boolean>>;
+  setLoginWithPass?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 function Modal({
   showModal,
@@ -38,6 +40,8 @@ function Modal({
   showOnErrorOrSuccess,
   setShowModalOnError,
   mainButtonText,
+  setLogWithOTP,
+  setLoginWithPass,
   // setStartLogin,
   buttonText,
   executeFunction,
@@ -46,7 +50,7 @@ function Modal({
   changeNumber,
   redirect,
 }: ModalProps) {
-  const { token, role, status, successMessage, userType } = useSelector(
+  const { token, role, status, successMessage, userType , errorMessage} = useSelector(
     (state: any) => state.userData
   );
   const dispatch = useDispatch();
@@ -56,18 +60,17 @@ function Modal({
   }, []);
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && token !== null) {
       if (role === "Admin") router.replace("/panel/admin/view-users");
       else router.replace("/panel/user/dashboard");
     }
   }, [isLoggedIn]);
 
-  // console.log(role);
-
   const handleMainButtonClick = () => {
     dispatch(openModal(false));
     setShowModalOnError && setShowModalOnError(false);
-    // ثبت نام
+    setLogWithOTP && setLogWithOTP(true);
+    setLoginWithPass && setLoginWithPass(true);
     if (!isLoggingIn) {
       setSteps?.(3);
     }
@@ -76,7 +79,7 @@ function Modal({
   const handlePrimaryButtonClick = () => {
     dispatch(openModal(false));
   };
-  
+
   return (
     <div
       id="default-modal"
@@ -117,7 +120,7 @@ function Modal({
                   type="button"
                   // check it after login
                   className={
-                    isLoggedIn
+                    isLoggedIn || data.length === 0
                       ? "hidden"
                       : "text-white bg-[#4866CF] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm md:px-5 md:py-2.5 text-center"
                   }
@@ -140,7 +143,7 @@ function Modal({
                         : " bg-white text-[#4866CF]"
                     }`}
                   >
-                    تغییر شماره همراه
+                    {data.length === 0 ? "تایید" :  "تغییر شماره همراه"}
                   </button>
                 )}
               </div>

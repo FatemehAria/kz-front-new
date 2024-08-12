@@ -41,7 +41,7 @@ function AllProjects() {
             className="grid grid-cols-4 text-center py-1 bg-[#EAEFF6] rounded-[4px]"
           >
             <p>{index + 1}</p>
-            <p>{item.title}</p>
+            <p>{item.title ? item.title : "-"}</p>
             <p className="font-semibold">
               <span className="text-red-600">
                 {(item.rejected_projects.length !== 0 ||

@@ -3,7 +3,7 @@ export interface RTKUserState {
   userProfile: Record<string, any>;
   FirstName: string;
   LastName: string;
-  token: string | undefined;
+  token: string | null;
   errorMessage: string;
   successMessage: string;
   changePhoneNumber: boolean;

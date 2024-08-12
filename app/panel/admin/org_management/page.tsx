@@ -71,7 +71,10 @@ function OrgManagement() {
                   },
                   index
                 ) => (
-                  <div className="grid grid-cols-5 bg-[#EAEFF6] caret-transparent cursor-default text-center gap-x-5 py-1 rounded-[4px]">
+                  <div
+                    className="grid grid-cols-5 bg-[#EAEFF6] caret-transparent cursor-default text-center gap-x-5 py-1 rounded-[4px]"
+                    key={item.id}
+                  >
                     <p>{index + 1}</p>
                     <p>{item.name}</p>
                     <p>{item.phone}</p>
@@ -92,7 +95,7 @@ function OrgManagement() {
                         onClick={() =>
                           deleteOrgan(item.id, token, setOrganIsDeleted)
                         }
-                        className="flex justify-center"
+                        className="flex justify-center cursor-pointer"
                       >
                         <RxCross1 className="text-red-600 text-lg" />
                       </span>
@@ -101,7 +104,7 @@ function OrgManagement() {
                           restoreOrganization(item.id, token, setOrganIsDeleted)
                         }
                       >
-                        <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg" />
+                        <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg cursor-pointer" />
                       </span>
                     </div>
                   </div>

@@ -2,7 +2,8 @@ import Image from "next/image";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
-  deleteDataFromCookie,
+  deleteDataFromStorage,
+  logoutUser,
   openModal,
 } from "@/redux/features/user/userSlice";
 import { useRouter } from "next/navigation";
@@ -31,20 +32,6 @@ const PanelNav = ({
 }: NavProps) => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { data } = useSession();
-
-  const handleExit = () => {
-    if (data?.user) {
-      signOut({ callbackUrl: "http://localhost:3000/" });
-      data.expires = JSON.stringify(Date.now());
-    }
-    dispatch(deleteDataFromCookie());
-    router.replace("/");
-    dispatch(openModal(false));
-  };
-
-  // console.log(userProfile.pic_path);
-  // console.log("userprofile in nav",userProfile);
   return (
     <div
       className="flex flex-col items-end relative justify-center"
@@ -95,7 +82,7 @@ const PanelNav = ({
               )}
               <div
                 className="rounded-full bg-[#EAEFF6] flex justify-center items-center p-3 cursor-pointer"
-                onClick={handleExit}
+                onClick={() => (dispatch(logoutUser()), router.replace("/"))}
               >
                 <Image src={exit} alt="exit" width={35} />
               </div>
