@@ -3,7 +3,8 @@ import { createNewPlanAttr, createNewPlanValue } from "@/utils/utils";
 import { useSearchParams } from "next/navigation";
 import React, { useContext, useState } from "react";
 import { useSelector } from "react-redux";
-import { PlanContext } from "../context/PlanContext";
+import { PlanContext } from "../context/ValueContext";
+import { AttrIdContext } from "../context/AttrIdContext";
 
 type AttrAdditionFormProps = {
   setAddAttrAndValue: React.Dispatch<
@@ -41,7 +42,7 @@ function AttrAdditionForm({
   const { token } = useSelector((state: any) => state.userData);
   const params = useSearchParams();
   const planId = params.get("id");
-  const { attrId } = useContext(PlanContext);
+  const { attrId } = useContext(AttrIdContext);
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await createNewPlanAttr(

@@ -50,7 +50,7 @@ function GenuineUsers({
         <SkeletonTheme>
           <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
         </SkeletonTheme>
-      ) : GenuineUsersData.length > 0 ? (
+      ) : GenuineUsersData?.length > 0 ? (
         GenuineUsersData.filter((item) =>
           item.mobile.includes(searchUsers)
         ).map((item, index) => (

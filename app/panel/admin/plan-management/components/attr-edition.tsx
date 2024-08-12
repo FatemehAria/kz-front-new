@@ -12,10 +12,10 @@ import {
   updatePlanAttr,
 } from "@/utils/utils";
 import { PlanAttrType } from "../plan-detail/page";
-import { PlanContext } from "../context/PlanContext";
+import { PlanContext } from "../context/ValueContext";
 import ValueComponent, { ValueType } from "./value-component";
-import { ValueIdContext } from "../context/ValueIdContext";
 import { createActionCreatorInvariantMiddleware } from "@reduxjs/toolkit";
+import { AttrIdContext } from "../context/AttrIdContext";
 
 type AttrEditionProps = {
   token: string;
@@ -83,9 +83,9 @@ function AttrEdition({
 }: AttrEditionProps) {
   const [attrIsDeleted, setAttrIsDeleted] = useState(false);
   const [planAttrs, setPlanAttrs] = useState<PlanAttrType[]>([]);
-  const { setAttrId, attrId } = useContext(PlanContext);
   const [planValues, setPlanValues] = useState<ValueType[]>([]);
-  const { setValueId, valueId } = useContext(ValueIdContext);
+  const [planValue, setPlanValue] = useState("");
+  const { attrId, setAttrId } = useContext(AttrIdContext);
   const handlePlanEdit = async (id: number) => {
     const selectedPlan = planAttrs.find((item: PlanAttrType) => item.id === id);
     if (selectedPlan) {
@@ -124,27 +124,25 @@ function AttrEdition({
   }, [addAtrrAndValue.addValue]);
 
   const handleAddingValue = (id: number) => {
-    setAttrId(String(id));
-    setValueId(String(id));
-    console.log(attrId === valueId);
-    if (attrId === valueId) {
-      setAddAttrAndValue((last) => ({
-        ...last,
-        addValue: { ...last.addValue, add: true },
-      }));
-    }
+    const planValue = planValues
+      .filter((item) => item.attr_id === id)
+      .map((item) => item.title);
+    setPlanValue(planValue[0]);
+    console.log("planValue", planValue);
+
+    // setAttrId(String(id));
+    setAddAttrAndValue((last) => ({
+      ...last,
+      addValue: { ...last.addValue, add: true },
+    }));
   };
 
   return (
     <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center">
-      <div
-        className={`grid  ${
-          valueId === attrId ? "grid-cols-4" : "grid-cols-3"
-        }`}
-      >
+      <div className={`grid grid-cols-4`}>
         <div>نام ویژگی</div>
         <div>توضیحات ویژگی</div>
-        {attrId === valueId ? <div>مقدار ویژگی</div> : ""}
+        <div>مقدار ویژگی</div>
         <div>عملیات</div>
       </div>
 
@@ -153,65 +151,20 @@ function AttrEdition({
           <div
             className={`${
               attrIsDeleted && item.deleted_at ? "bg-red-300" : "bg-[#EAEFF6]"
-            } grid ${
-              valueId === attrId ? "grid-cols-4" : "grid-cols-3"
-            } gap-x-5 text-center py-1 rounded-[4px] cursor-pointer`}
+            } grid grid-cols-4 gap-x-5 text-center py-1 rounded-[4px] cursor-pointer`}
             key={item.id}
           >
             <input
-              value={
-                editAttrAndValue.editAttr.showEditField
-                  ? editAttrAndValue.editAttr.editTitle
-                  : item.title
-              }
-              onChange={(e) =>
-                setEditAttrAndValue((last) => ({
-                  ...last,
-                  editAttr: {
-                    ...last.editAttr,
-                    editTitle: e.target.value,
-                  },
-                }))
-              }
-              className={`${
-                editAttrAndValue.editAttr.showEditField
-                  ? "bg-white"
-                  : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
-              } outline-none`}
+              value={item.title}
+              readOnly={true}
+              className="bg-[#EAEFF6] caret-transparent cursor-default text-center"
             />
             <input
-              value={
-                editAttrAndValue.editAttr.showEditField
-                  ? editAttrAndValue.editAttr.editDesc
-                  : item.description
-              }
-              onChange={(e) =>
-                setEditAttrAndValue((last) => ({
-                  ...last,
-                  editAttr: {
-                    ...last.editAttr,
-                    editDesc: e.target.value,
-                  },
-                }))
-              }
-              className={`${
-                editAttrAndValue.editAttr.showEditField
-                  ? "bg-white"
-                  : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
-              } outline-none`}
+              value={item.description}
+              readOnly={true}
+              className="bg-[#EAEFF6] caret-transparent cursor-default text-center"
             />
-
-            {attrId === valueId ? (
-              <ValueComponent
-                addAtrrAndValue={addAtrrAndValue}
-                setEditAttrAndValue={setEditAttrAndValue}
-                setAddAttrAndValue={setAddAttrAndValue}
-                planValues={planValues}
-              />
-            ) : (
-              ""
-            )}
-
+            <p>{planValue}</p>
             <div className="flex flex-row items-center justify-center gap-3">
               <span
                 onClick={() => deletePlanAttr(item.id, token, setAttrIsDeleted)}
@@ -226,27 +179,6 @@ function AttrEdition({
               >
                 <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg" />
               </span>
-              {/* <span
-                onClick={() =>
-                  setEditAttrAndValue((last) => ({
-                    ...last,
-                    editAttr: {
-                      ...last.editAttr,
-                      showEditField: !last.editAttr.showEditField,
-                    },
-                  }))
-                }
-                className="flex justify-center items-center"
-              >
-                {editAttrAndValue.editAttr.showEditField ? (
-                  <FaCheck
-                    onClick={() => handlePlanEdit(item.id)}
-                    className="text-green-600 text-lg"
-                  />
-                ) : (
-                  <AiOutlineEdit className="text-green-600 text-lg" />
-                )}
-              </span> */}
               <span onClick={() => handleAddingValue(item.id)}>
                 <FaPlus />
               </span>

@@ -10,12 +10,9 @@ import {
   fetchUserProfile,
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import nextarrow from "@/public/forwardarrow.svg";
 import prevarrow from "@/public/backarrow.svg";
-import PlanContextWrapper from "./admin/plan-management/context/PlanContextWrapper";
-import ValueIdContextWrapper from "./admin/plan-management/context/ValueIdContextWrapper";
 import DepartmentContextWrapper from "./admin/context/department-context/DepartmentContextWrapper";
 import PermissionContextWrapper from "./admin/context/permission-context/PermissionContextWrapper";
 import UserContextWrapper from "./admin/context/user-context/UserContextWrapper";
@@ -35,6 +32,7 @@ import { RoleContext } from "./admin/context/role-context/RoleContext";
 import { PermissionContext } from "./admin/context/permission-context/PermissionContext";
 import { PositionContext } from "./admin/context/position-context/PositionContext";
 import { UserContext } from "./admin/context/user-context/UserContext";
+import AttrIdContextWrapper from "./admin/plan-management/context/AttrIdContextWrapper";
 
 const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   const { token, userProfile, status, numberOfAnnouncements } = useSelector(
@@ -82,7 +80,6 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    console.log("token", token);
     if (typeof window !== "undefined" && token) {
       Promise.all([
         getAllPlans(token, setAllPlans),
@@ -120,70 +117,68 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
       <UserContextWrapper>
         <DepartmentContextWrapper>
           <PermissionContextWrapper>
-            <ValueIdContextWrapper>
-              <PlanContextWrapper>
-                <div
-                  className="font-YekanBakh flex w-full flex-row relative min-h-screen"
-                  style={{ boxShadow: "0px 0px 90px 2px rgba(0, 0, 0, 0.25)" }}
-                  dir="rtl"
-                >
-                  {/* {token && ( */}
-                  <>
-                    <div className="hidden lg:block">
-                      <PanelSidebar
-                        sideOptions={
-                          role === "Admin"
-                            ? mainAdminSidebarOptions
-                            : userSidebarOptions
-                        }
+            <AttrIdContextWrapper>
+              <div
+                className="font-YekanBakh flex w-full flex-row relative min-h-screen"
+                style={{ boxShadow: "0px 0px 90px 2px rgba(0, 0, 0, 0.25)" }}
+                dir="rtl"
+              >
+                {/* {token && ( */}
+                <>
+                  <div className="hidden lg:block">
+                    <PanelSidebar
+                      sideOptions={
+                        role === "Admin"
+                          ? mainAdminSidebarOptions
+                          : userSidebarOptions
+                      }
+                      status={status}
+                    />
+                  </div>
+                  <div className="w-full lg:overflow-hidden">
+                    <div>
+                      <PanelNav
+                        userProfile={userProfile}
                         status={status}
+                        userType={role}
+                        numberOfAnnouncements={numberOfAnnouncements}
+                        setShowAnnouncementDropdown={
+                          setShowAnnouncementDropdown
+                        }
+                        showAnnouncementDropdown={showAnnouncementDropdown}
                       />
                     </div>
-                    <div className="w-full lg:overflow-hidden">
-                      <div>
-                        <PanelNav
-                          userProfile={userProfile}
-                          status={status}
-                          userType={role}
-                          numberOfAnnouncements={numberOfAnnouncements}
-                          setShowAnnouncementDropdown={
-                            setShowAnnouncementDropdown
-                          }
-                          showAnnouncementDropdown={showAnnouncementDropdown}
-                        />
-                      </div>
-                      <div
-                        className="bg-[#EAEFF6] h-full p-[5%]"
-                        onMouseEnter={() => setShowAnnouncementDropdown(false)}
-                      >
-                        {children}
-                      </div>
-                      <div className="md:hidden flex flex-row bg-[#4866CF] transition-all rounded-md w-full">
-                        <Image
-                          src={prevarrow}
-                          alt=""
-                          onClick={() => handlePrevClick()}
-                          className={`${currentPage === 0 ? "hidden" : "flex"}`}
-                        />
-                        <PanelSidebarSmall sideOptions={displayedItems} />
-                        <Image
-                          src={nextarrow}
-                          alt=""
-                          onClick={() => handleNextClick()}
-                          className={`${
-                            currentPage + 1 ===
-                            Math.ceil(userSidebarOptions.length / itemsPerPage)
-                              ? "hidden"
-                              : "flex"
-                          }`}
-                        />
-                      </div>
+                    <div
+                      className="bg-[#EAEFF6] h-full p-[5%]"
+                      onMouseEnter={() => setShowAnnouncementDropdown(false)}
+                    >
+                      {children}
                     </div>
-                  </>
-                  {/* )} */}
-                </div>
-              </PlanContextWrapper>
-            </ValueIdContextWrapper>
+                    <div className="md:hidden flex flex-row bg-[#4866CF] transition-all rounded-md w-full">
+                      <Image
+                        src={prevarrow}
+                        alt=""
+                        onClick={() => handlePrevClick()}
+                        className={`${currentPage === 0 ? "hidden" : "flex"}`}
+                      />
+                      <PanelSidebarSmall sideOptions={displayedItems} />
+                      <Image
+                        src={nextarrow}
+                        alt=""
+                        onClick={() => handleNextClick()}
+                        className={`${
+                          currentPage + 1 ===
+                          Math.ceil(userSidebarOptions.length / itemsPerPage)
+                            ? "hidden"
+                            : "flex"
+                        }`}
+                      />
+                    </div>
+                  </div>
+                </>
+                {/* )} */}
+              </div>
+            </AttrIdContextWrapper>
           </PermissionContextWrapper>
         </DepartmentContextWrapper>
       </UserContextWrapper>

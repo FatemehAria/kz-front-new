@@ -70,7 +70,8 @@ const Login = ({
   const { result, setAnswer, answer, mathProblem, wrongAnswerMessage } =
     useCaptcha(values.PhoneNumber);
   useStoreNumInLocal(values.PhoneNumber);
-
+console.log(successMessage);
+console.log(errorOnProfileHandler);
   return (
     <React.Fragment>
       <div
@@ -102,7 +103,7 @@ const Login = ({
               showOnErrorOrSuccess={true}
             />
           )}
-          {successMessage !== "" && (
+          {successMessage !== "" && errorOnProfileHandler && (
             <Modal
               showModal={showModal}
               data=""

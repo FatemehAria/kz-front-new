@@ -1,15 +1,18 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TicketFields from "../../support/add-new-placard/components/ticket-fields";
 import CostumSelect from "@/app/panel/components/costum-select";
 import { createNewsLetter } from "@/utils/utils";
 import { useSelector } from "react-redux";
+import SubmitOrderDropdown from "@/app/panel/user/submit-order/components/submit-order-dropdown";
 
 // test
 const userIds = ["1", "2", "3"];
 
 function CreateNewsletter() {
   const { token } = useSelector((state: any) => state.userData);
+  const [users, setUsers] = useState([]);
+  const [departments, setDepartments] = useState([]);
   const [newsletterInfo, setNewsLetteInfo] = useState({
     title: "",
     description: "",
@@ -17,14 +20,57 @@ function CreateNewsletter() {
     dept_id: "",
   });
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const localUsers = JSON.parse(
+        window.localStorage.getItem("users") as string
+      );
+      setUsers(localUsers);
+
+      const localDepartments = JSON.parse(
+        window.localStorage.getItem("departments") as string
+      );
+      setDepartments(localDepartments);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (users.length > 0) {
+      const firstUserId = users.find((item) =>
+        newsletterInfo.user_id.includes(item.name)
+      )?.id;
+      console.log("first id",firstUserId);
+      setNewsLetteInfo((last) => ({ ...last, user_id: firstUserId }));
+    }
+  }, []);
+  
+
+  const departmentsInfo = departments.map(
+    (item: { department: { name_fa: string; id: number } }) =>
+      item.department.name_fa + "-" + item.department.id
+  );
+  const usersInfo = users.map(
+    (item: { name: string; surname: string }) => item.name + "-" + item.surname
+  );
+
+  const depId = departments
+    .filter((item) => newsletterInfo?.dept_id?.includes(item.department.name_fa))
+    .map((item) => item.department.id)[0];
+  const userId = users
+    .filter((item) => newsletterInfo?.user_id?.includes(item.name))
+    .map((item) => item.id)[0];
+  // console.log("departmentsInfo", departmentsInfo);
+  console.log("userId", userId);
+  console.log("depId", depId);
+
   const handleNewsLetterSubmission = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
     await createNewsLetter(
       token,
-      Number(newsletterInfo.user_id),
-      Number(newsletterInfo.dept_id),
+      Number(userId),
+      Number(depId),
       newsletterInfo.title,
       newsletterInfo.description
     );
@@ -48,23 +94,23 @@ function CreateNewsletter() {
         direction="flex-row items-center"
       />
       <div className="grid grid-cols-2 gap-5">
-        <CostumSelect
-          label="به کاربر:"
-          selectOptions={userIds}
-          value={newsletterInfo.user_id}
-          name={newsletterInfo.user_id}
-          changeHandler={(e: React.ChangeEvent<HTMLSelectElement>) =>
+        <SubmitOrderDropdown
+          dropDownTitle="به کاربر:"
+          dropdownItems={usersInfo}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
             setNewsLetteInfo((last) => ({ ...last, user_id: e.target.value }))
           }
+          value={newsletterInfo.user_id}
+          name={newsletterInfo.user_id}
         />
-        <CostumSelect
-          label="دپارتمان:"
-          selectOptions={userIds}
-          value={newsletterInfo.dept_id}
-          name={newsletterInfo.dept_id}
-          changeHandler={(e: React.ChangeEvent<HTMLSelectElement>) =>
+        <SubmitOrderDropdown
+          dropDownTitle="به دپارتمان:"
+          dropdownItems={departmentsInfo}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
             setNewsLetteInfo((last) => ({ ...last, dept_id: e.target.value }))
           }
+          value={newsletterInfo.dept_id}
+          name={newsletterInfo.dept_id}
         />
       </div>
       <div

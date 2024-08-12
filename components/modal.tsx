@@ -62,20 +62,21 @@ function Modal({
     }
   }, [isLoggedIn]);
 
-  console.log(role);
+  // console.log(role);
+
   const handleMainButtonClick = () => {
     dispatch(openModal(false));
     setShowModalOnError && setShowModalOnError(false);
     // ثبت نام
     if (!isLoggingIn) {
       setSteps?.(3);
-      // کاربر وارد شد یا ثبت نام موفق داشت
     }
   };
 
   const handlePrimaryButtonClick = () => {
     dispatch(openModal(false));
   };
+  
   return (
     <div
       id="default-modal"

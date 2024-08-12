@@ -738,12 +738,12 @@ export const userSidebarOptions = [
     address: "/panel/user/order-management",
     path: ["/panel/user/order-management","/panel/user/order-management/order-payment"],
   },
-  {
-    text: "وضعیت مالی",
-    imgSrc: Images.FinancialStatusIcon,
-    address: "/panel/user/finance",
-    path: "/finance",
-  },
+  // {
+  //   text: "وضعیت مالی",
+  //   imgSrc: Images.FinancialStatusIcon,
+  //   address: "/panel/user/finance",
+  //   path: "/finance",
+  // },
   {
     text: "تنظیمات",
     imgSrc: Images.SettingsIcon,
@@ -845,7 +845,7 @@ export const UserDashboardInfo = [
   {
     id: 1,
     title: "وضعیت سفارش",
-    link: "/panel/user/project-management",
+    link: "/panel/user/order-management",
     imgUrl: Images.OrderUserDashboard,
     width: 210,
   },

@@ -17,11 +17,10 @@ import {
 } from "@/utils/utils";
 import { createActionCreatorInvariantMiddleware } from "@reduxjs/toolkit";
 import { PlanAttrType } from "../page";
-import { PlanContext } from "../../context/PlanContext";
 import { ValueType } from "../../components/value-component";
-import { ValueIdContext } from "../../context/ValueIdContext";
 import { useSearchParams } from "next/navigation";
 import { useSelector } from "react-redux";
+import { AttrIdContext } from "../../context/AttrIdContext";
 
 function ManageValues() {
   const [valueIsDeleted, setValueIsDeleted] = useState(false);
@@ -29,8 +28,7 @@ function ManageValues() {
   const { token } = useSelector((state: any) => state.userData);
   const params = useSearchParams();
   const planId = params.get("plan_id");
-  const { valueId, setValueId } = useContext(ValueIdContext);
-  const { setAttrId, attrId } = useContext(PlanContext);
+  const { attrId, setAttrId } = useContext(AttrIdContext);
   const [editValue, setEditValue] = useState({
     showField: false,
     title: "",
@@ -38,7 +36,7 @@ function ManageValues() {
   });
 
   useEffect(() => {
-    getPlanValueDetail(token, setPlanValueDetail, valueId);
+    getPlanValueDetail(token, setPlanValueDetail, attrId);
   }, []);
 
   const handlePlanValueEdit = async (id: number) => {
@@ -73,13 +71,11 @@ function ManageValues() {
   return (
     <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center">
       <div
-        className={`grid  ${
-          valueId === attrId ? "grid-cols-4" : "grid-cols-3"
-        }`}
+        className={`grid grid-cols-4`}
       >
         <div>نام ویژگی</div>
         <div>توضیحات ویژگی</div>
-        {attrId === valueId ? <div>مقدار ویژگی</div> : ""}
+        <div>مقدار ویژگی</div>
         <div>عملیات</div>
       </div>
 
@@ -88,9 +84,7 @@ function ManageValues() {
           <div
             className={`${
               valueIsDeleted && item.deleted_at ? "bg-red-300" : "bg-[#EAEFF6]"
-            } grid ${
-              valueId === attrId ? "grid-cols-4" : "grid-cols-3"
-            } gap-x-5 text-center py-1 rounded-[4px] cursor-pointer`}
+            } grid grid-cols-4 gap-x-5 text-center py-1 rounded-[4px] cursor-pointer`}
             key={item.id}
           >
             <input
@@ -126,7 +120,9 @@ function ManageValues() {
 
             <div className="flex flex-row items-center justify-center gap-3">
               <span
-                onClick={() => deletePlanValue(item.id, token, setValueIsDeleted)}
+                onClick={() =>
+                  deletePlanValue(item.id, token, setValueIsDeleted)
+                }
                 className="flex justify-center"
               >
                 <RxCross1 className="text-red-600 text-lg" />

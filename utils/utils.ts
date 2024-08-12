@@ -23,6 +23,12 @@ import {
   TemplateType,
 } from "@/app/panel/user/submit-order/page";
 
+// budget seperation
+export const handleBudegtChange = (value: string) => {
+  const rawValue = value.replace(/,/g, "");
+  const formattedValue = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return formattedValue;
+};
 // Logout
 export const logout = async () => {
   try {
@@ -1282,7 +1288,7 @@ export const getAllPlans = async (
       },
     });
     setPlans(data.data);
-    console.log(data);
+    console.log("all plans", data);
     window.localStorage.setItem("plans", JSON.stringify(data.data));
   } catch (error) {
     console.log(error);
@@ -1446,7 +1452,7 @@ export const getPlanAttrs = async (
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(data);
+    console.log("plan attrs", data);
     setPlanAttrs(data.data);
   } catch (error) {
     console.log(error);
@@ -1702,7 +1708,7 @@ export const getPlanValues = async (
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(data);
+    console.log("plan values", data);
     setPlanValues(data.data);
   } catch (error) {
     console.log(error);
@@ -2246,7 +2252,7 @@ export const restoreNewsletter = async (
   setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   try {
-    const { data } = await app.get(`/attr/restore/${newsletterId}`, {
+    const { data } = await app.get(`/newsletter/restore/${newsletterId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -2566,7 +2572,31 @@ export const submitConsultation = async (
       "consultation_id",
       JSON.stringify(data.data.id)
     );
+    toast.success("درخواست مشاوره با موفقیت ایجاد شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
   } catch (error: any) {
+    toast.error("خطا در ایجاد مشاوره", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
     console.log(error.response.data.message);
   }
 };
@@ -2709,8 +2739,32 @@ export const createTicket = async (
       }
     );
     console.log(data);
+    toast.success("تیکت با موفقیت ایجاد شد", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
   } catch (error: any) {
     console.log(error.response.data.message);
+    toast.error("خطا در ایجاد تیکت", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
   }
 };
 // get all tickets
@@ -2854,6 +2908,7 @@ export const createProject = async (
       transition: Bounce,
       rtl: true,
     });
+    window.localStorage.removeItem("consultation_id");
     console.log(data);
   } catch (error: any) {
     console.log(error.response.data.message);
@@ -3384,6 +3439,127 @@ export const getAllOrderStatuses = async (
     });
     console.log("all order statuses", data);
     setOrderStatuses(data.data);
+  } catch (error: any) {
+    console.log(error.response.data.message);
+  }
+};
+// close ticket
+export const closeTicket = async (
+  token: string,
+  status_id: number,
+  ticketId: number,
+  setAllTickets: React.Dispatch<React.SetStateAction<never[]>>
+) => {
+  try {
+    const { data } = await app.post(
+      `/ticket/update/${ticketId}`,
+      {
+        status_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log("closed ticket", data);
+    toast.success("تیکت با موفقیت بسته شد.", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    setAllTickets(data.data);
+  } catch (error: any) {
+    console.log(error.response.data.message);
+    toast.error("خطا در بستن تیکت", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  }
+};
+// payment file upload
+export const handlePaymentFileUpload = async (
+  File: File,
+  token: string,
+  paymentId: number
+) => {
+  const formData = new FormData();
+  formData.append("file", File);
+  try {
+    const { data } = await app.post(
+      `/payment/file/upload/${paymentId}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    console.log("payment file", data);
+    toast.success("آپلود فایل موفق بود.", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  } catch (error: any) {
+    toast.error("خطا در آپلود فایل، لطفا مجدد آپلود کنید.", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(error.response.data.message);
+  }
+};
+// pay
+export const sendAmount = async (
+  token: string,
+  amount: number,
+  paymentId: number,
+) => {
+  try {
+    const { data } = await app.post(
+      `/pay/post`,
+      {
+        amount,
+        payment_id: paymentId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log("paid", data);
   } catch (error: any) {
     console.log(error.response.data.message);
   }

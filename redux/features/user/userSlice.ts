@@ -241,7 +241,7 @@ const userSlice = createSlice({
         state.userId = action.payload.userId;
         sessionStorage.setItem("userId", state.userId);
         state.successMessage = `${
-          state.FirstName + state.LastName
+          state.FirstName + " " + state.LastName
         } عزیز با موفقیت وارد پنل کاربری خود شدید.`;
         state.errorMessage = "";
         state.isLoggedIn = action.payload.isLoggedIn;
@@ -249,11 +249,12 @@ const userSlice = createSlice({
     );
     builder.addCase(
       verifyUserByOTPInLoginAndRegistration.rejected,
-      (state, action) => {
+      (state) => {
         state.status = "failed";
         state.errorMessage = "کد وارد شده صحیح نمی باشد.";
         state.showModal = true;
         state.isLoggedIn = false;
+        state.errorOnProfileHandler = false;
       }
     );
     // fetchUserInLoginWithPassword
@@ -261,7 +262,7 @@ const userSlice = createSlice({
       state.status = "loading";
     });
     builder.addCase(fetchUserInLoginWithPassword.fulfilled, (state, action) => {
-      state.showModal = false;
+      state.showModal = true;
       state.status = "success";
       state.token = action.payload.token;
       setCookie("token", state.token, {
@@ -291,6 +292,7 @@ const userSlice = createSlice({
       state.status = "failed";
       state.errorMessage = "رمز عبور اشتباه است.";
       state.showModal = true;
+      state.errorOnProfileHandler = false;
     });
   },
 });

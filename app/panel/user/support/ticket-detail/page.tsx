@@ -15,7 +15,16 @@ import { Bounce, toast } from "react-toastify";
 import { IoArrowBack } from "react-icons/io5";
 import { getTicektDetail } from "@/utils/utils";
 import app from "@/services/service";
+import NotFound from "@/app/panel/admin/components/NotFound";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 const moment = require("moment-jalaali");
+
+type SenderTextItem = {
+  childId?: number;
+  description: string;
+  mainDescription: string;
+};
+
 function TicketDetail() {
   const [ticketDetail, setTicketDetail] = useState({
     Title: "",
@@ -24,8 +33,9 @@ function TicketDetail() {
     Sender: "",
     DateSend: "",
     DateAnswered: "",
-    SenderText: [],
+    SenderText: [] as SenderTextItem[],
     Blocked: "",
+    RelavantUnitId: "",
   });
   const [ticketDetailStatus, setTicketDetailStatus] = useState({
     error: "",
@@ -38,10 +48,10 @@ function TicketDetail() {
   );
   const [path, setPath] = useState("");
   const dispatch = useDispatch();
-
   const params = useSearchParams();
   const id = params.get("id");
   const router = useRouter();
+  const [ticketId, setTicketId] = useState("");
 
   const getTicketDetail = async () => {
     try {
@@ -51,9 +61,24 @@ function TicketDetail() {
           authorization: `Bearer ${token}`,
         },
       });
-      setTicketDetail({
+      const newSenderTexts =
+        data?.data.children.length === 0
+          ? [{ mainDescription: data.data.description }]
+          : data.data?.children.map(
+              (child: { id: number; description: string }) => ({
+                childId: child.id,
+                description: child.description,
+                mainDescription: data.data.description,
+                register_user_id: data.data.reg_user_id,
+                responser_user_id: data.data.register_user_id,
+              })
+            );
+
+      setTicketDetail((last) => ({
+        ...last,
         Title: data.data?.title,
         RelavantUnit: data.data?.department?.name_fa,
+        RelavantUnitId: data.data?.department?.id,
         Responser: "ادمین",
         Sender:
           data.data?.register_user.name +
@@ -64,14 +89,14 @@ function TicketDetail() {
           "YYYY-MM-DDTHH:mm:ss.SSSZ"
         ).format("jYYYY/jM/jD"),
         DateAnswered: "-",
-        SenderText: [data.data?.description] as never[],
+        SenderText: [...newSenderTexts],
         Blocked: data.data?.status.title_en,
-      });
+      }));
       setTicketDetailStatus((prevStatus) => ({
         ...prevStatus,
         loading: false,
       }));
-      console.log("ticketdetail", data);
+      console.log("ticket  detail", data);
     } catch (error: any) {
       console.log(error.response.data.message);
       setTicketDetailStatus({ error: "", loading: false });
@@ -84,18 +109,14 @@ function TicketDetail() {
     setFileSelected(true);
   };
 
-  const sendResponseTicket = async () => {
+  const sendResponseTicket = async (description: string, ticketId: number) => {
     try {
       const { data } = await app.post(
         `/ticket/store`,
         {
-          title: ticketDetail.Title,
-          description: ticketDetail.SenderText,
-          status_id: 1,
-          priority_id: 1,
+          description,
           register_user_id: userProfile.id,
-          dept_id: ticketDetail.RelavantUnit,
-          ticket_id: Number(id),
+          ticket_id: ticketId,
         },
         {
           headers: {
@@ -103,40 +124,13 @@ function TicketDetail() {
           },
         }
       );
-      const updatedSenderText = updateSenderBox(textInput);
-      setTicketDetail((prevTicketDetail: any) => ({
-        ...prevTicketDetail,
-        SenderText: updatedSenderText,
-      }));
-      toast.success("تیکت با موفقیت آپدیت شد.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        rtl: true,
-      });
-      console.log(data);
+      console.log("sent ticket", data);
+      getTicketDetail();
     } catch (error: any) {
-      toast.error("خطا در آپدیت تیکت.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-        rtl: true,
-      });
       console.log(error.response.data.message);
     }
   };
+
   // file upload in ticket
   const handleFileUpload = async () => {
     const formData = new FormData();
@@ -181,15 +175,18 @@ function TicketDetail() {
     }
   };
 
-  const updateSenderBox = (newText: string) => {
-    const updatedSenderText = [...ticketDetail.SenderText, newText];
-    return updatedSenderText;
-  };
-
   useEffect(() => {
     getTicketDetail();
   }, []);
 
+  useEffect(() => {
+    const prevId = ticketDetail.SenderText.map((item) =>
+      item.childId ? item.childId : id
+    );
+    setTicketId(prevId[0] as string);
+  }, [ticketDetail.SenderText]);
+
+  console.log(ticketId);
   return (
     <div className="relative">
       <div
@@ -201,38 +198,46 @@ function TicketDetail() {
         </div>
       </div>
       <div className="bg-white shadow mx-auto rounded-2xl py-[3%] px-[3%] w-full relative">
-        <div className="grid grid-cols-2 gap-5">
-          <TicketInfoField
-            label="عنوان تیکت:"
-            text={ticketDetail.Title}
-            ticketDetailStatus={ticketDetailStatus.loading}
-          />
-          <TicketInfoField
-            label="مسئول پاسخگویی:"
-            text={ticketDetail.Responser}
-            ticketDetailStatus={ticketDetailStatus.loading}
-          />
-          <TicketInfoField
-            label="واحد مربوطه تیکت:"
-            text={ticketDetail.RelavantUnit ? ticketDetail.RelavantUnit : "-"}
-            ticketDetailStatus={ticketDetailStatus.loading}
-          />
-          <TicketInfoField
-            label="فرستنده تیکت:"
-            text={ticketDetail.Sender}
-            ticketDetailStatus={ticketDetailStatus.loading}
-          />
-          <TicketInfoField
-            label="تاریخ ارسال تیکت:"
-            text={ticketDetail.DateSend}
-            ticketDetailStatus={ticketDetailStatus.loading}
-          />
-          <TicketInfoField
-            label="تاریخ پاسخگویی:"
-            text={ticketDetail.DateAnswered}
-            ticketDetailStatus={ticketDetailStatus.loading}
-          />
-        </div>
+        {ticketDetailStatus.loading ? (
+          <SkeletonTheme>
+            <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
+          </SkeletonTheme>
+        ) : ticketDetailStatus.error ? (
+          <NotFound text={`${ticketDetailStatus.error}`} />
+        ) : (
+          <div className="grid grid-cols-2 gap-5">
+            <TicketInfoField
+              label="عنوان تیکت:"
+              text={ticketDetail.Title}
+              ticketDetailStatus={ticketDetailStatus.loading}
+            />
+            <TicketInfoField
+              label="مسئول پاسخگویی:"
+              text={ticketDetail.Responser}
+              ticketDetailStatus={ticketDetailStatus.loading}
+            />
+            <TicketInfoField
+              label="واحد مربوطه تیکت:"
+              text={ticketDetail.RelavantUnit ? ticketDetail.RelavantUnit : "-"}
+              ticketDetailStatus={ticketDetailStatus.loading}
+            />
+            <TicketInfoField
+              label="فرستنده تیکت:"
+              text={ticketDetail.Sender}
+              ticketDetailStatus={ticketDetailStatus.loading}
+            />
+            <TicketInfoField
+              label="تاریخ ارسال تیکت:"
+              text={ticketDetail.DateSend}
+              ticketDetailStatus={ticketDetailStatus.loading}
+            />
+            <TicketInfoField
+              label="تاریخ پاسخگویی:"
+              text={ticketDetail.DateAnswered}
+              ticketDetailStatus={ticketDetailStatus.loading}
+            />
+          </div>
+        )}
         <div
           style={{
             border: "none",
@@ -252,6 +257,7 @@ function TicketDetail() {
           handleFileUpload={handleFileUpload}
           sendResponseTicket={sendResponseTicket}
           fileSelected={fileSelected}
+          ticketId={ticketId}
         />
       </div>
     </div>

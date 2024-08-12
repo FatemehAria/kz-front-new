@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 
 import AttrEdition from "../components/attr-edition";
 import Link from "next/link";
+import ValueAddition from "../components/value-addition";
 
 export type PlanDetailType = {
   title: string;
@@ -67,7 +68,7 @@ function PlanDetail() {
     <div className="flex flex-col gap-5">
       {/* attr info form */}
       <div className="flex flex-row items-center gap-5">
-        <span
+        <button
           className="text-white bg-[#4866CF] p-2 rounded-[5px] w-[130px]"
           onClick={() =>
             setAddAttrAndValue((last) => ({
@@ -77,8 +78,8 @@ function PlanDetail() {
           }
         >
           + افزودن ویژگی
-        </span>
-        <Link
+        </button>
+        {/* <Link
           href={`/panel/admin/plan-management/plan-detail/manage-values?plan_id=${planId}`}
           className="text-white bg-[#4866CF] p-2 rounded-[5px] w-[140px]"
           onClick={() =>
@@ -89,7 +90,7 @@ function PlanDetail() {
           }
         >
           مدیریت ویژگی ها
-        </Link>
+        </Link> */}
       </div>
       {addAtrrAndValue.addAttr.add && (
         <AttrAdditionForm
@@ -106,7 +107,7 @@ function PlanDetail() {
 
         <div className="grid grid-cols-2 py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer">
           <p>{planDetail.title}</p>
-          <p>{planDetail.description}</p>
+          <p>{planDetail.description ? planDetail.description : "-"}</p>
         </div>
       </div>
       {/* att info */}
@@ -118,6 +119,17 @@ function PlanDetail() {
         addAtrrAndValue={addAtrrAndValue}
         setAddAttrAndValue={setAddAttrAndValue}
       />
+      {/* value */}
+      {addAtrrAndValue.addValue.add && (
+        <ValueAddition
+          editAttrAndValue={editAttrAndValue}
+          token={token}
+          planId={planId}
+          setEditAttrAndValue={setEditAttrAndValue}
+          addAtrrAndValue={addAtrrAndValue}
+          setAddAttrAndValue={setAddAttrAndValue}
+        />
+      )}
     </div>
   );
 }

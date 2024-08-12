@@ -3,8 +3,8 @@ import { createNewPlanValue, getPlanValues } from "@/utils/utils";
 import { useSearchParams } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { PlanContext } from "../context/PlanContext";
-import { ValueIdContext } from "../context/ValueIdContext";
+import { PlanContext } from "../context/ValueContext";
+import { AttrIdContext, ValueIdContext } from "../context/AttrIdContext";
 import { FaCheck } from "react-icons/fa6";
 
 type ValueComponentProps = {
@@ -67,8 +67,7 @@ function ValueComponent({
   const { token } = useSelector((state: any) => state.userData);
   const params = useSearchParams();
   const planId = params.get("id");
-  const { setValueId, valueId } = useContext(ValueIdContext);
-  const { attrId } = useContext(PlanContext);
+  const { attrId, setAttrId } = useContext(AttrIdContext);
   const [planValue, setPlanValue] = useState("");
   const handleValueSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

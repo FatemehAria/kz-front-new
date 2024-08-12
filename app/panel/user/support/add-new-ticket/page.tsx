@@ -7,14 +7,14 @@ import { useRouter } from "next/navigation";
 import SubmitOrderDropdown from "../../submit-order/components/submit-order-dropdown";
 import { createTicket } from "@/utils/utils";
 import { DepartmentContext } from "@/app/panel/admin/context/department-context/DepartmentContext";
-import {
-  DepartmentFinalType,
-} from "@/app/panel/admin/org_management/departments/page";
+import { DepartmentFinalType } from "@/app/panel/admin/org_management/departments/page";
 
 function AddNewTicket() {
   const { userProfile, token } = useSelector((state: any) => state.userData);
-  const { departments, setDepartments } = useContext(DepartmentContext);
-  const typedDepartments: DepartmentFinalType[] = departments as DepartmentFinalType[];  
+  const [departments, setDepartments] = useState([]);
+  const typedDepartments: DepartmentFinalType[] =
+    departments as DepartmentFinalType[];
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const localDepartments = JSON.parse(
@@ -25,7 +25,15 @@ function AddNewTicket() {
     }
   }, []);
 
-  // console.log(departments);
+  useEffect(() => {
+    if (typedDepartments.length > 0) {
+      const firstDepId = typedDepartments?.map(
+        (item) => item.department.id
+      )?.[0];
+      setTicket((last) => ({ ...last, dept_id: String(firstDepId) }));
+    }
+  }, [typedDepartments]);
+
   const departmentInfo = typedDepartments?.map(
     (item) => String(item.department.id) + " - " + item.department.name_fa
   );
@@ -41,7 +49,6 @@ function AddNewTicket() {
     register_user_id: "",
     dept_id: "",
   });
-
   const departmentId = typedDepartments
     ?.filter((item) => item.department.id === Number(ticket.dept_id))
     ?.map((item) => item.department.id)[0];
@@ -58,6 +65,7 @@ function AddNewTicket() {
       Number(departmentId),
       null
     );
+    setTicket((last) => ({ ...last, title: "", description: "" }));
   };
   return (
     <div className="relative">

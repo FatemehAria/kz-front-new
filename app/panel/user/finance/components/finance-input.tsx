@@ -24,7 +24,7 @@ function FinanceInput({
         value={value}
         onChange={onChange}
         disabled={disable}
-        readOnly={disable === true ? true : false}
+        readOnly={disable === true || !onChange ? true : false}
       />
     </div>
   );

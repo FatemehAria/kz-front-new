@@ -116,8 +116,8 @@ function SubmitOrder() {
       );
       setConsultationId(consultation_id);
     }
-  }, []);
-  
+  }, [consultationId]);
+
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await createProject(
@@ -129,12 +129,23 @@ function SubmitOrder() {
       projectFields.priority === "کم" ? "low" : "high",
       userProfile.id,
       Number(plansId),
-      Number(consultationId),
+      consultationId ? Number(consultationId) : null,
       similarSiteData,
       colorsData,
       pluginData,
       templatesData
     );
+    setProjectFields((last) => ({
+      ...last,
+      budget: "",
+      Description: "",
+      discount_code: "",
+      title: "",
+    }));
+    setSimilarSiteData([]);
+    setColorsData([]);
+    setPluginData([]);
+    setTemplatesData([]);
   };
 
   return (
@@ -314,7 +325,17 @@ function SubmitOrder() {
               >
                 <span>درخواست مشاوره رایگان</span>
               </Link>
-              <button className="bg-[#4866CE] text-white rounded-lg p-1 w-[80px] flex justify-center items-center">
+              <button
+                type={
+                  !showColorsModal &&
+                  !showPluginModal &&
+                  !showSimilarModal &&
+                  !showTemplatesModal
+                    ? "submit"
+                    : "button"
+                }
+                className="bg-[#4866CE] text-white rounded-lg p-1 w-[80px] flex justify-center items-center"
+              >
                 <span>ثبت</span>
               </button>
             </div>

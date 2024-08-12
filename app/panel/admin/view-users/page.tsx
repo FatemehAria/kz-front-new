@@ -9,7 +9,8 @@ import { UserContext } from "../context/user-context/UserContext";
 
 function ViewUsers() {
   const { token } = useSelector((state: any) => state.userData);
-  const { setAllUsersData, AllUsersData } = useContext(UserContext);
+  const [AllUsersData, setAllUsersData] = useState([]);
+  // const { setAllUsersData, AllUsersData } = useContext(UserContext);
   const [type, setType] = useState("Genuine");
   const [searchUsers, setSearchUsers] = useState("");
   const [legalUsers, setLegalUsers] = useState<any>([]);

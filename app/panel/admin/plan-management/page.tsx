@@ -100,38 +100,34 @@ function PlanManagement() {
           >
             <p>{index + 1}</p>
             <input
-              value={
-                editField.showEditField ? editField.editTitle : item.plan.title
-              }
-              onChange={(e) =>
-                setEditField((last) => ({
-                  ...last,
-                  editTitle: e.target.value,
-                }))
-              }
+              value={item.plan.title}
+              // onChange={(e) =>
+              //   setEditField((last) => ({
+              //     ...last,
+              //     editTitle: e.target.value,
+              //   }))
+              // }
               className={`${
                 editField.showEditField
                   ? "bg-white"
                   : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
               } outline-none`}
+              readOnly={true}
             />
             <input
-              value={
-                editField.showEditField
-                  ? editField.editDesc
-                  : item.plan.description
-              }
-              onChange={(e) =>
-                setEditField((last) => ({
-                  ...last,
-                  editDesc: e.target.value,
-                }))
-              }
+              value={item.plan.description ? item.plan.description : "-"}
+              // onChange={(e) =>
+              //   setEditField((last) => ({
+              //     ...last,
+              //     editDesc: e.target.value,
+              //   }))
+              // }
               className={`${
                 editField.showEditField
                   ? "bg-white"
                   : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
               } outline-none`}
+              readOnly={true}
             />
             <div className="flex flex-row items-center justify-center gap-3">
               <Link

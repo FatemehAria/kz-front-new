@@ -7,6 +7,7 @@ import NotFound from "../../admin/components/NotFound";
 import { getAllProjects, getOrders } from "@/utils/utils";
 import vieweye from "@/public/ViewUsers/vieweye.svg";
 import Image from "next/image";
+import { MdOutlinePayment } from "react-icons/md";
 
 function OrderManagement() {
   const [projects, setAllProjects] = useState<any>([]);
@@ -14,17 +15,18 @@ function OrderManagement() {
     error: "",
     loading: false,
   });
+  const [orders, setOrders] = useState([]);
   const { token } = useSelector((state: any) => state.userData);
-  const orders = projects
-    .filter(
-      (item: { status: string; rejected_projects: [] }) =>
-        item.status === "verified" && item.rejected_projects.length === 0
-    )
-    .map((item: any) => item);
+  // const orders = projects
+  //   .filter(
+  //     (item: { status: string; rejected_projects: [] }) =>
+  //       item.status === "verified" && item.rejected_projects.length === 0
+  //   )
+  //   .map((item: any) => item);
 
   useEffect(() => {
-    // getOrders(token, setOrders, setOrderStatus);
-    getAllProjects(token, setAllProjects, setOrderStatus);
+    getOrders(token, setOrders, setOrderStatus);
+    // getAllProjects(token, setAllProjects, setOrderStatus);
   }, []);
 
   return (
@@ -45,20 +47,23 @@ function OrderManagement() {
         <div className="grid grid-cols-1 gap-5">
           {orders.map((item: any, index: number) => (
             <div
-              key={item.id}
+              key={item?.id}
               className="grid grid-cols-4 text-center py-1 bg-[#EAEFF6] rounded-[4px]"
-              // check
             >
               <p>{index + 1}</p>
-              <p>{item.title}</p>
-              <p>{"order status"}</p>
+              <p>{item.project?.title}</p>
+              <p>{item.status?.title ? item.status?.title : "در حال بررسی"}</p>
               <div className="flex flex-row gap-3 justify-center items-center">
                 <Link
-                  href={`/panel/user/project-management/project-detail?id=${item.id}`}
+                  href={`/panel/user/project-management/project-detail?id=${item?.id}`}
                 >
                   <Image src={vieweye} alt="مشاهده" width={20} height={20} />
                 </Link>
-                <Link href={`/panel/user/order-management/order-payment`}>پرداخت</Link>
+                <Link
+                  href={`/panel/user/order-management/order-payment?id=${item?.id}`}
+                >
+                  <MdOutlinePayment className="text-xl text-green-800 font-semibold"/>
+                </Link>
               </div>
             </div>
           ))}

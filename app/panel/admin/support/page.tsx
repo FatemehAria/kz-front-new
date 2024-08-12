@@ -15,7 +15,7 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import vieweye from "../../../../public/ViewUsers/vieweye.svg";
 import CloseTicketModal from "./components/close-ticket-modal";
 import NotFound from "../components/NotFound";
-import { getAllTickets } from "@/utils/utils";
+import { closeTicket, getAllTickets } from "@/utils/utils";
 const moment = require("moment-jalaali");
 
 const Support = () => {
@@ -55,7 +55,7 @@ const Support = () => {
             <p>شماره</p>
             <p>عنوان</p>
             <p>وضعیت</p>
-            <p>تاریخ بروزرسانی</p>
+            <p>تاریخ به روزرسانی</p>
             <p>عملیات</p>
           </div>
           {allTicketsStatus.loading ? (
@@ -65,9 +65,9 @@ const Support = () => {
           ) : allTicketsStatus.error ? (
             <NotFound text={`${allTicketsStatus.error}`} />
           ) : (
-            allTickets.map((item: any, index) => (
+            allTickets?.map((item: any, index) => (
               <div
-                key={item._id}
+                key={item.id}
                 className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px]"
               >
                 <p>{index + 1}</p>
@@ -88,28 +88,31 @@ const Support = () => {
                   )}
                 </div>
                 <p>
-                  {item.updated_at ? moment(item.updated_at, "YYYY-MM-DDTHH:mm:ss.SSSZ").format(
-                    "jYYYY/jM/jD"
-                  ) : "-"}
+                  {item.updated_at
+                    ? moment(
+                        item.updated_at,
+                        "YYYY-MM-DDTHH:mm:ss.SSSZ"
+                      ).format("jYYYY/jM/jD")
+                    : "-"}
                 </p>
-                <div className="flex flex-row justify-center gap-2">
-                  {item.Blocked !== "true" && (
-                    <div>
+                <div>
+                  <div className="flex flex-row justify-center gap-2">
+                    <Link
+                      href={`/panel/admin/support/ticket-detail?id=${item.id}`}
+                    >
+                      <Image src={vieweye} alt="مشاهده" width={20} />
+                    </Link>
+                    {item.status_id !== 2 && (
                       <div
-                        // onClick={() => (
-                        //   setShowModal(true), setCloseTicketId(item._id)
-                        // )}
+                        onClick={() =>
+                          closeTicket(token, 2, item.id, setAllTickets)
+                        }
                         className="cursor-pointer"
                       >
                         <Image src={checkmark} alt="بستن" width={20} />
                       </div>
-                    </div>
-                  )}
-                  <Link
-                    href={`/panel/admin/support/ticket-detail?id=${item._id}`}
-                  >
-                    <Image src={vieweye} alt="مشاهده" width={20} />
-                  </Link>
+                    )}
+                  </div>
                 </div>
               </div>
             ))

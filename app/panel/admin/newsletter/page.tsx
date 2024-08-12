@@ -4,6 +4,7 @@ import {
   deleteNewsLetter,
   getAllNewsletters,
   restoreBrand,
+  restoreNewsletter,
 } from "@/utils/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -98,9 +99,7 @@ function NewsLetter() {
               <p>{index + 1}</p>
               <input
                 value={
-                  editField.showEditField
-                    ? editField.editTitle
-                    : item.brand.title
+                  editField.showEditField ? editField.editTitle : item.title
                 }
                 onChange={(e) =>
                   setEditField((last) => ({
@@ -118,7 +117,7 @@ function NewsLetter() {
                 value={
                   editField.showEditField
                     ? editField.editDesc
-                    : item.brand.description
+                    : item.description
                 }
                 onChange={(e) =>
                   setEditField((last) => ({
@@ -133,12 +132,6 @@ function NewsLetter() {
                 } outline-none`}
               />
               <div className="flex flex-row items-center justify-center gap-3">
-                <Link
-                  href={`/panel/admin/brands/brand-detail?id=${item.brand.id}`}
-                  className="flex justify-center"
-                >
-                  <Image src={vieweye} alt="مشاهده" width={20} height={20} />
-                </Link>
                 <span
                   onClick={() =>
                     deleteNewsLetter(token, item.id, setNewsLetterIsDeleted)
@@ -149,28 +142,10 @@ function NewsLetter() {
                 </span>
                 <span
                   onClick={() =>
-                    restoreBrand(item.id, token, setNewsLetterIsDeleted)
+                    restoreNewsletter(item.id, token, setNewsLetterIsDeleted)
                   }
                 >
                   <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg" />
-                </span>
-                <span
-                  onClick={() =>
-                    setEditField((last) => ({
-                      ...last,
-                      showEditField: !last.showEditField,
-                    }))
-                  }
-                  className="flex justify-center"
-                >
-                  {editField.showEditField ? (
-                    <FaCheck
-                      onClick={() => handleNewsletterEdit(item.brand.id)}
-                      className="text-green-600 text-lg"
-                    />
-                  ) : (
-                    <AiOutlineEdit className="text-green-600 text-lg" />
-                  )}
                 </span>
               </div>
             </div>

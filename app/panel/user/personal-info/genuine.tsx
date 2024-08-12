@@ -34,16 +34,21 @@ function Genuine({ userProfile }: GenuineProps) {
             label="ایمیل:"
             value={userProfile.email ? userProfile.email : "-"}
             name="email"
+            disable={true}
             readonly={true}
           />
         </div>
         <div className="flex flex-col gap-5">
           <div className="self-center">
             <Image
-              // src={userProfile.pic_path ? userProfile.pic_path : malegender}
-              src={malegender}
+              src={
+                userProfile.pic_path
+                  ? `http://localhost:8000/storage/${userProfile.pic_path}`
+                  : malegender
+              }
               alt="profile"
               width={200}
+              height={200}
             />
           </div>
           <div className="flex justify-center">

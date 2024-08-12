@@ -19,17 +19,10 @@ type SideOptionsProps = {
 
 const PanelSidebar = ({ sideOptions, status }: PanelSidebarProps) => {
   const pathname = usePathname();
-  {
-    /* <SkeletonTheme>
-            <Skeleton width={260} className="h-full" baseColor="#EAEFF6" />
-          </SkeletonTheme> */
-  }
+
   return (
     <div className="flex flex-col">
-      <div
-        className="w-[260px] font-YekanBakh py-6 border-l-[0.3px] relative h-full"
-        // style={{ boxShadow: "-9px 0px 61px 0px rgba(0, 0, 0, 0.07)" }}
-      >
+      <div className="w-[260px] font-YekanBakh py-6 border-l-[0.3px] relative h-full">
         <div className="flex justify-center">
           <Logo />
         </div>

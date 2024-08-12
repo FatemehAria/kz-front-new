@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import styles from "./chat.module.css";
 import ChatFileUpload from "./chat-file-upload";
 const moment = require("moment-jalaali");
@@ -12,6 +13,7 @@ type ChatProps = {
   handleFileUpload: any;
   sendResponseTicket: any;
   fileSelected: boolean;
+  ticketId: string;
 };
 
 function Chat({
@@ -23,23 +25,25 @@ function Chat({
   handleFileUpload,
   sendResponseTicket,
   fileSelected,
+  ticketId,
 }: ChatProps) {
+  console.log("sender text", senderText);
   const userMessages = senderText.filter(
-    (item: any) => item.sender !== "Admin"
+    (item: any) => item.register_user_id !== null
   );
   const adminMessages = senderText.filter(
-    (item: any) => item.sender === "Admin"
+    (item: any) => item.responser_user_id !== null
   );
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (File && textInput) {
       Promise.all([
         await handleFileUpload(),
-        await sendResponseTicket(textInput),
+        await sendResponseTicket(textInput, ticketId),
       ]);
       setTextInput("");
     } else if (textInput && !File) {
-      await sendResponseTicket(textInput);
+      await sendResponseTicket(textInput, ticketId);
       setTextInput("");
     } else if (!textInput && File) {
       await handleFileUpload();
@@ -52,28 +56,48 @@ function Chat({
       day: "2-digit",
     }).format(timestamp);
   };
-  const combinedMessages = [...userMessages, ...adminMessages];
-  const sortedMessages = combinedMessages.sort(
-    (a, b) => a.timestamp - b.timestamp
-  );
+  // const combinedMessages = [...userMessages, ...adminMessages];
+  // const sortedMessages = combinedMessages.sort(
+  //   (a, b) => a.timestamp - b.timestamp
+  // );
+
   return (
     <div className="flex flex-col">
       <div>
-        {sortedMessages.map((item: any, index: number) => (
-          <div
-            key={index}
-            className={`${styles.chatBubble} ${
-              item.sender !== "Admin" ? styles.sender : styles.receiver
-            }`}
-          >
-            <p>{item}</p>
-            <span
-              className={`flex ${
-                item.sender === "Admin" ? "justify-start" : "justify-end"
-              } `}
-            >
-              {timestampConversion(item.timestamp)}
-            </span>
+        {senderText.map((item: any, index: number) => (
+          <div key={index}>
+            {item.mainDescription && (
+              <p
+                className={`${styles.chatBubble} flex flex-col gap-5 ${
+                  item.sender !== "Admin" ? styles.sender : styles.receiver
+                }`}
+              >
+                {item.mainDescription}
+                <span
+                  className={`flex ${
+                    item.sender === "Admin" ? "justify-start" : "justify-end"
+                  } `}
+                >
+                  {timestampConversion(item.timestamp)}
+                </span>
+              </p>
+            )}
+            {item.description && (
+              <p
+                className={`${styles.chatBubble} flex flex-col gap-5 ${
+                  item.sender !== "Admin" ? styles.sender : styles.receiver
+                }`}
+              >
+                {item.description}
+                <span
+                  className={`flex ${
+                    item.sender === "Admin" ? "justify-start" : "justify-end"
+                  } `}
+                >
+                  {timestampConversion(item.timestamp)}
+                </span>
+              </p>
+            )}
           </div>
         ))}
       </div>
