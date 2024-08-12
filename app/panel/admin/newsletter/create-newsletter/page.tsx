@@ -2,12 +2,9 @@
 import React, { useEffect, useState } from "react";
 import TicketFields from "../../support/add-new-placard/components/ticket-fields";
 import CostumSelect from "@/app/panel/components/costum-select";
-import { createNewsLetter } from "@/utils/utils";
+import { createNewsLetter, getAllUsers } from "@/utils/utils";
 import { useSelector } from "react-redux";
 import SubmitOrderDropdown from "@/app/panel/user/submit-order/components/submit-order-dropdown";
-
-// test
-const userIds = ["1", "2", "3"];
 
 function CreateNewsletter() {
   const { token } = useSelector((state: any) => state.userData);
@@ -35,22 +32,27 @@ function CreateNewsletter() {
   }, []);
 
   useEffect(() => {
-    if (users.length > 0) {
-      const firstUserId = users.find((item) =>
-        newsletterInfo.user_id.includes(item.name)
-      )?.id;
-      console.log("first id",firstUserId);
-      setNewsLetteInfo((last) => ({ ...last, user_id: firstUserId }));
+    if (users.length > 0 && !newsletterInfo.user_id) {
+      const firstUser = users[0]; // Get the first user
+      setNewsLetteInfo((prev) => ({ ...prev, user_id: firstUser.name })); // Set the user_id to the first user's name
     }
-  }, []);
+  }, [users]);
+
+  // Automatically select the first department if available
+  useEffect(() => {
+    if (departments.length > 0 && !newsletterInfo.dept_id) {
+      const firstDepartment = departments[0].department.name_fa; // Get the first department name
+      setNewsLetteInfo((prev) => ({ ...prev, dept_id: firstDepartment })); // Set the dept_id to the first department name
+    }
+  }, [departments]);
   
 
   const departmentsInfo = departments.map(
     (item: { department: { name_fa: string; id: number } }) =>
-      item.department.name_fa + "-" + item.department.id
+      item.department.id + "-" + item.department.name_fa
   );
   const usersInfo = users.map(
-    (item: { name: string; surname: string }) => item.name + "-" + item.surname
+    (item: { name: string; surname: string }) => item.name + " " + item.surname
   );
 
   const depId = departments
@@ -59,10 +61,8 @@ function CreateNewsletter() {
   const userId = users
     .filter((item) => newsletterInfo?.user_id?.includes(item.name))
     .map((item) => item.id)[0];
-  // console.log("departmentsInfo", departmentsInfo);
-  console.log("userId", userId);
-  console.log("depId", depId);
 
+    console.log(userId);
   const handleNewsLetterSubmission = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {

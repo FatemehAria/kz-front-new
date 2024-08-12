@@ -831,7 +831,7 @@ export const mainAdminSidebarOptions = [
     text: "خبرنامه",
     imgSrc: "/Panel/newsletter.svg",
     address: "/panel/admin/newsletter",
-    path: ["/panel/admin/newsletter"],
+    path: ["/panel/admin/newsletter","/panel/admin/newsletter/create-newsletter"],
   },
 ];
 export const UserDashboardInfo = [

@@ -6,6 +6,7 @@ import GenuineUsers from "./genuine-users";
 import { useSelector } from "react-redux";
 import Link from "next/link";
 import { UserContext } from "../context/user-context/UserContext";
+import { getAllUsers } from "@/utils/utils";
 
 function ViewUsers() {
   const { token } = useSelector((state: any) => state.userData);
@@ -18,6 +19,10 @@ function ViewUsers() {
   const [usersStatus, setUsersStatus] = useState({
     loading: false,
   });
+
+  useEffect(() => {
+    getAllUsers(token, setAllUsersData, setUsersStatus);
+  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -72,7 +77,7 @@ function ViewUsers() {
     }
   };
   return (
-    <div className="grid grid-cols-1 gap-5">
+    <div className="grid grid-cols-1 gap-8">
       <div className="flex flex-row gap-5">
         <Link
           href={"/panel/admin/view-users/permission-management"}

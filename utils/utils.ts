@@ -158,14 +158,14 @@ export const saveToLocalStorage = (key: string, value: string) => {
 export const getAllUsers = async (
   token: string,
   setAllUsers: React.Dispatch<any>,
-  setDataStatus: React.Dispatch<
+  setDataStatus?: React.Dispatch<
     React.SetStateAction<{
       loading: boolean;
     }>
   >
 ) => {
   try {
-    setDataStatus((last) => ({ ...last, loading: true }));
+    setDataStatus && setDataStatus((last) => ({ ...last, loading: true }));
     const { data } = await app.get("/users", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -176,12 +176,12 @@ export const getAllUsers = async (
     console.log("all users data", data);
   } catch (error: any) {
     console.log(error.response.data.message);
-    setDataStatus((last) => ({
+    setDataStatus && setDataStatus((last) => ({
       ...last,
       error: "خطا در دریافت اطلاعات کاربران.",
     }));
   } finally {
-    setDataStatus((last) => ({ ...last, loading: false }));
+    setDataStatus && setDataStatus((last) => ({ ...last, loading: false }));
   }
 };
 // deleting user by admin

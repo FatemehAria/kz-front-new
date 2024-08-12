@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 import vieweye from "../../../../public/ViewUsers/vieweye.svg";
@@ -64,12 +65,7 @@ function GenuineUsers({
             <p>{item.email ? item.email : "-"}</p>
             <span
               onClick={() =>
-                deleteUser(
-                  item.id,
-                  token,
-                  setAllUsers,
-                  AllUsersData
-                )
+                deleteUser(item.id, token, setAllUsers, AllUsersData)
               }
               className="flex justify-center"
             >
