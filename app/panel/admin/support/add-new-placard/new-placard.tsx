@@ -10,45 +10,96 @@ import {
 } from "@/redux/features/user/userSlice";
 import { FcCheckmark } from "react-icons/fc";
 import CostumSelect from "@/app/panel/components/costum-select";
-import { createTicket } from "@/utils/utils";
+import { createNotification, createTicket } from "@/utils/utils";
 import { DepartmentContext } from "../../context/department-context/DepartmentContext";
 import FormInput from "@/app/contact-us/components/form/form-inputs";
 type NewPlacardProps = {
   setSteps: React.Dispatch<React.SetStateAction<number>>;
 };
 function NewPlacard({ setSteps }: NewPlacardProps) {
-  const { departments } = useContext(DepartmentContext);
+  const { token } = useSelector((state: any) => state.userData);
+  const [users, setUsers] = useState([]);
+  const [departments, setDepartments] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [annonceInfo, setAnnounceInfo] = useState({
+    description: "",
+    dept_id: "",
+    user_id: "",
+    brand_id: "",
+  });
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const localUsers = JSON.parse(
+        window.localStorage.getItem("users") as string
+      );
+      setUsers(localUsers);
+
+      const localDepartments = JSON.parse(
+        window.localStorage.getItem("departments") as string
+      );
+      setDepartments(localDepartments);
+
+      const localBrands = JSON.parse(
+        window.localStorage.getItem("brands") as string
+      );
+      setBrands(localBrands);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (users.length > 0 && !annonceInfo.user_id) {
+      const firstUser = users[0]; // Get the first user
+      setAnnounceInfo((prev) => ({ ...prev, user_id: firstUser.name })); // Set the user_id to the first user's name
+    }
+  }, [users]);
+
+  // Automatically select the first department if available
+  useEffect(() => {
+    if (departments.length > 0 && !annonceInfo.dept_id) {
+      const firstDepartment = departments[0].department.name_fa; // Get the first department name
+      setAnnounceInfo((prev) => ({ ...prev, dept_id: firstDepartment })); // Set the dept_id to the first department name
+    }
+  }, [departments]);
+
+  useEffect(() => {
+    if (brands.length > 0 && !annonceInfo.brand_id) {
+      const firstBrand = brands[0].brand.title;
+      setAnnounceInfo((prev) => ({ ...prev, dept_id: firstBrand }));
+    }
+  }, [departments]);
+
   const departmentInfo = departments.map(
     (item) => item.department.id + "-" + item.department.name_fa
   );
-  const { token, userId } = useSelector((state: any) => state.userData);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getTokenFromLocal());
-    dispatch(getIdFromLocal());
-    dispatch<any>(fetchUserProfile());
-  }, []);
 
-  const [annonceInfo, setAnnounceInfo] = useState({
-    title: "",
-    description: "",
-    status_id: false,
-    priority_id: "",
-    dept_id: "",
-  });
+  const usersInfo = users.map(
+    (item: { name: string; surname: string }) => item.name + " " + item.surname
+  );
+
+  const brandInfo = brands.map((item) => item.brand?.title);
+
+  const depId = departments
+    .filter((item) => annonceInfo?.dept_id?.includes(item.department.name_fa))
+    .map((item) => item.department.id)[0];
+
+  const userId = users
+    .filter((item) => annonceInfo?.user_id?.includes(item.name))
+    .map((item) => item.id)[0];
+
+  const brandId = brands
+    .filter((item) => item.brand?.title.includes(annonceInfo.brand_id))
+    .map((item) => item.brand?.id)?.[0];
 
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await createTicket(
+    await createNotification(
       token,
-      annonceInfo.title,
-      annonceInfo.description,
-      Number(annonceInfo.status_id === true ? "1" : "2"),
-      Number(annonceInfo.priority_id === "کم" ? "1" : "2"),
+      Number(depId),
+      Number(brandId),
       Number(userId),
-      Number(annonceInfo.dept_id.split("")[0]),
-      null
+      annonceInfo.description
     );
+    setAnnounceInfo((last) => ({ ...last, description: "" }));
   };
 
   return (
@@ -56,18 +107,6 @@ function NewPlacard({ setSteps }: NewPlacardProps) {
       onSubmit={(e) => handleSubmission(e)}
       className="grid grid-cols-1 gap-3"
     >
-      <TicketFields
-        label="عنوان:"
-        width="100%"
-        value={annonceInfo.title}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setAnnounceInfo((last) => ({
-            ...last,
-            title: e.target.value,
-          }))
-        }
-        direction="flex-row items-center"
-      />
       <div className="grid grid-cols-2 gap-8">
         <CostumSelect
           changeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -79,16 +118,22 @@ function NewPlacard({ setSteps }: NewPlacardProps) {
           value={annonceInfo.dept_id}
         />
         <CostumSelect
-          label="اولویت:"
-          value={annonceInfo.priority_id}
           changeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setAnnounceInfo((last) => ({
-              ...last,
-              priority_id: e.target.value,
-            }))
+            setAnnounceInfo((last) => ({ ...last, user_id: e.target.value }))
           }
-          name="priority_id"
-          selectOptions={["کم", "زیاد"]}
+          label="ایجاد اعلان به:"
+          name="user_id"
+          selectOptions={usersInfo}
+          value={annonceInfo.user_id}
+        />
+        <CostumSelect
+          changeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setAnnounceInfo((last) => ({ ...last, brand_id: e.target.value }))
+          }
+          label="ایجاد اعلان به:"
+          name="brand_id"
+          selectOptions={brandInfo}
+          value={annonceInfo.brand_id}
         />
       </div>
       <div
@@ -102,7 +147,7 @@ function NewPlacard({ setSteps }: NewPlacardProps) {
       ></div>
       <div className="flex flex-col gap-5">
         <div className="flex flex-row gap-2">
-          <label htmlFor="">متن تیکت:</label>
+          <label htmlFor="">متن اعلان:</label>
           <textarea
             name=""
             id=""
@@ -119,21 +164,7 @@ function NewPlacard({ setSteps }: NewPlacardProps) {
           ></textarea>
         </div>
       </div>
-      <div className="flex items-center w-[37%] justify-between">
-        <div className="flex gap-3 items-center">
-          <div
-            className={`border-2 border-black rounded-sm w-4 h-4 ${
-              annonceInfo.status_id ? "bg-[#4866CF]" : "bg-white"
-            }`}
-            onClick={() =>
-              setAnnounceInfo((last) => ({
-                ...last,
-                status_id: !last.status_id,
-              }))
-            }
-          ></div>
-          <span>قابلیت رد اعلان</span>
-        </div>
+      <div className="flex items-center w-[37%] justify-end">
         <button className="bg-[#4866CE] text-white p-2 rounded-[4px]">
           ارسال اعلان
         </button>

@@ -10,11 +10,13 @@ function CreateNewsletter() {
   const { token } = useSelector((state: any) => state.userData);
   const [users, setUsers] = useState([]);
   const [departments, setDepartments] = useState([]);
+  const [brands, setBrands] = useState([]);
   const [newsletterInfo, setNewsLetteInfo] = useState({
     title: "",
     description: "",
     user_id: "",
     dept_id: "",
+    brand_id: "",
   });
 
   useEffect(() => {
@@ -28,6 +30,11 @@ function CreateNewsletter() {
         window.localStorage.getItem("departments") as string
       );
       setDepartments(localDepartments);
+
+      const localBrands = JSON.parse(
+        window.localStorage.getItem("brands") as string
+      );
+      setDepartments(localBrands);
     }
   }, []);
 
@@ -45,7 +52,6 @@ function CreateNewsletter() {
       setNewsLetteInfo((prev) => ({ ...prev, dept_id: firstDepartment })); // Set the dept_id to the first department name
     }
   }, [departments]);
-  
 
   const departmentsInfo = departments.map(
     (item: { department: { name_fa: string; id: number } }) =>
@@ -56,13 +62,15 @@ function CreateNewsletter() {
   );
 
   const depId = departments
-    .filter((item) => newsletterInfo?.dept_id?.includes(item.department.name_fa))
+    .filter((item) =>
+      newsletterInfo?.dept_id?.includes(item.department.name_fa)
+    )
     .map((item) => item.department.id)[0];
   const userId = users
     .filter((item) => newsletterInfo?.user_id?.includes(item.name))
     .map((item) => item.id)[0];
 
-    console.log(userId);
+  console.log(userId);
   const handleNewsLetterSubmission = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {

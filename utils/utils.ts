@@ -23,6 +23,50 @@ import {
   TemplateType,
 } from "@/app/panel/user/submit-order/page";
 
+// create notification
+export const createNotification = async (
+  token: string,
+  dept_id: number,
+  brand_id: number,
+  user_id: number,
+  text: string
+) => {
+  try {
+    const { data } = await app.post("/notification/store", {
+      dept_id,
+      brand_id,
+      user_id,
+      text,
+    });
+    console.log(data);
+    toast.success("نوتیفیکیشن با موفقیت ارسال شد.", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+  } catch (error: any) {
+    toast.error("خطا در ارسال نوتیفیکیشن", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+      rtl: true,
+    });
+    console.log(error.response.data.message);
+  }
+};
 // budget seperation
 export const handleBudegtChange = (value: string) => {
   const rawValue = value.replace(/,/g, "");
@@ -176,10 +220,11 @@ export const getAllUsers = async (
     console.log("all users data", data);
   } catch (error: any) {
     console.log(error.response.data.message);
-    setDataStatus && setDataStatus((last) => ({
-      ...last,
-      error: "خطا در دریافت اطلاعات کاربران.",
-    }));
+    setDataStatus &&
+      setDataStatus((last) => ({
+        ...last,
+        error: "خطا در دریافت اطلاعات کاربران.",
+      }));
   } finally {
     setDataStatus && setDataStatus((last) => ({ ...last, loading: false }));
   }
@@ -946,6 +991,7 @@ export const getAllBrands = async (
     const { data } = await app("/brands");
     setBrands(data.data);
     console.log(data);
+    window.localStorage.setItem("brands", JSON.stringify(data.data));
   } catch (error) {
     console.log(error);
   }
@@ -3544,7 +3590,7 @@ export const handlePaymentFileUpload = async (
 export const sendAmount = async (
   token: string,
   amount: number,
-  paymentId: number,
+  paymentId: number
 ) => {
   try {
     const { data } = await app.post(

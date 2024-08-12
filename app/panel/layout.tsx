@@ -17,6 +17,7 @@ import DepartmentContextWrapper from "./admin/context/department-context/Departm
 import PermissionContextWrapper from "./admin/context/permission-context/PermissionContextWrapper";
 import UserContextWrapper from "./admin/context/user-context/UserContextWrapper";
 import {
+  getAllBrands,
   getAllDepartments,
   getAllPermissions,
   getAllPlans,
@@ -45,6 +46,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   const { setPositions } = useContext(PositionContext);
   const { setDepartments } = useContext(DepartmentContext);
   const { setAllUsersData, setUsersStatus } = useContext(UserContext);
+  const [brands, setBrands] = useState([]);
   const [showAnnouncementDropdown, setShowAnnouncementDropdown] =
     useState(false);
   const dispatch = useDispatch();
@@ -90,6 +92,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
         getAllPermissions(token, setPermissions, setPermissionStatus),
         getAllRole(token, setRoles, setDataLoading),
         getAllDepartments(token, setDepartments),
+        getAllBrands(setBrands),
       ]);
     }
   }, [
