@@ -64,7 +64,7 @@ const Support = () => {
             </SkeletonTheme>
           ) : allTicketsStatus.error ? (
             <NotFound text={`${allTicketsStatus.error}`} />
-          ) : (
+          ) : allTickets.length !== 0 ? (
             allTickets?.map((item: any, index) => (
               <div
                 key={item.id}
@@ -116,6 +116,8 @@ const Support = () => {
                 </div>
               </div>
             ))
+          ) : (
+            <NotFound text="تیکتی یافت نشد" />
           )}
         </div>
       </div>

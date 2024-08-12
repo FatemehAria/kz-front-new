@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import TicketInfoField from "@/app/panel/user/support/ticket-detail/components/ticket-info-filed";
-import { useRouter, useSearchParams } from "next/navigation";
+import TicketFields from "../add-new-ticket/components/ticket-fields";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchUserProfile,
@@ -9,146 +8,185 @@ import {
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
 import axios from "axios";
-import { IoArrowBack } from "react-icons/io5";
+import { useRouter, useSearchParams } from "next/navigation";
+import TicketInfoField from "./components/ticket-info-filed";
 import Chat from "./components/chat";
 import { Bounce, toast } from "react-toastify";
+import { IoArrowBack } from "react-icons/io5";
 import { getTicektDetail } from "@/utils/utils";
+import app from "@/services/service";
+import NotFound from "@/app/panel/admin/components/NotFound";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 const moment = require("moment-jalaali");
+
+type SenderTextItem = {
+  childId?: number;
+  description: string;
+  mainDescription: string;
+};
 
 function TicketDetail() {
   const [ticketDetail, setTicketDetail] = useState({
     Title: "",
-    Responsor: "",
-    RelativeUnit: "",
-    SentDate: "",
-    RespondDate: "",
-    SenderText: [],
+    RelavantUnit: "",
+    Responser: "",
+    Sender: "",
+    DateSend: "",
+    DateAnswered: "",
+    SenderText: [] as SenderTextItem[],
     Blocked: "",
+    RelavantUnitId: "",
   });
   const [ticketDetailStatus, setTicketDetailStatus] = useState({
     error: "",
     loading: false,
   });
+  const [fileSelected, setFileSelected] = useState(false);
   const [textInput, setTextInput] = useState("");
-  const { localUserId, token } = useSelector((state: any) => state.userData);
-  const router = useRouter();
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getIdFromLocal());
-    dispatch(getTokenFromLocal());
-    dispatch<any>(fetchUserProfile());
-  }, []);
+  const { token, localUserId, userProfile } = useSelector(
+    (state: any) => state.userData
+  );
   const [path, setPath] = useState("");
+  const dispatch = useDispatch();
   const params = useSearchParams();
   const id = params.get("id");
+  const router = useRouter();
+  const [ticketId, setTicketId] = useState("");
+
+  const getTicketDetail = async () => {
+    try {
+      setTicketDetailStatus((prevStatus) => ({ ...prevStatus, loading: true }));
+      const { data } = await app(`/ticket/show/${id}`, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      const newSenderTexts =
+        data?.data.children.length === 0
+          ? [{ mainDescription: data.data.description }]
+          : data.data?.children.map(
+              (child: { id: number; description: string }) => ({
+                childId: child.id,
+                description: child.description,
+                mainDescription: data.data.description,
+                register_user_id: data.data.reg_user_id,
+                responser_user_id: data.data.register_user_id,
+              })
+            );
+
+      setTicketDetail((last) => ({
+        ...last,
+        Title: data.data?.title,
+        RelavantUnit: data.data?.department?.name_fa,
+        RelavantUnitId: data.data?.department?.id,
+        Responser: "ادمین",
+        Sender:
+          data.data?.register_user.name +
+          " " +
+          data.data?.register_user.surname,
+        DateSend: moment(
+          data.data?.created_at,
+          "YYYY-MM-DDTHH:mm:ss.SSSZ"
+        ).format("jYYYY/jM/jD"),
+        DateAnswered: "-",
+        SenderText: [...newSenderTexts],
+        Blocked: data.data?.status.title_en,
+      }));
+      setTicketDetailStatus((prevStatus) => ({
+        ...prevStatus,
+        loading: false,
+      }));
+      console.log("ticket  detail", data);
+    } catch (error: any) {
+      console.log(error.response.data.message);
+      setTicketDetailStatus({ error: "", loading: false });
+    }
+  };
+
   const [File, setFile] = useState<any>(null);
   const handleFileChange = (file: File) => {
     setFile(file);
+    setFileSelected(true);
+  };
+
+  const sendResponseTicket = async (description: string, ticketId: number) => {
+    try {
+      const { data } = await app.post(
+        `/ticket/store`,
+        {
+          description,
+          register_user_id: userProfile.id,
+          ticket_id: ticketId,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("sent ticket", data);
+      getTicketDetail();
+    } catch (error: any) {
+      console.log(error.response.data.message);
+    }
+  };
+
+  // file upload in ticket
+  const handleFileUpload = async () => {
+    const formData = new FormData();
+    formData.append("file", File);
+    try {
+      const { data } = await app.post(
+        `/ticket/file/upload/${id}`,
+        { formData, register_user_id: userProfile.id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      toast.success("آپلود فایل موفق بود.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
+      console.log(data);
+    } catch (error: any) {
+      toast.error("خطا در آپلود فایل، لطفا مجدد آپلود کنید.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        rtl: true,
+      });
+      console.log(error.response.data.message);
+    }
   };
 
   useEffect(() => {
-    getTicektDetail(token, id, setTicketDetail);
+    getTicketDetail();
   }, []);
 
-  const handleFileUpload = async () => {
-    // const formData = new FormData();
-    // formData.append("File", File);
-    // try {
-    //   const { data } = await axios.post(
-    //     `https://keykavoos.liara.run/Client/UploadFileResponseTicket/${localUserId}`,
-    //     formData,
-    //     {
-    //       headers: {
-    //         authorization: `Bearer ${localToken}`,
-    //       },
-    //     }
-    //   );
-    //   setPath(data.data);
-    //   toast.success("آپلود فایل موفق بود.", {
-    //     position: "top-right",
-    //     autoClose: 3000,
-    //     hideProgressBar: true,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     draggable: true,
-    //     progress: undefined,
-    //     theme: "light",
-    //     transition: Bounce,
-    //     rtl: true,
-    //   });
-    //   setFile("");
-    // } catch (error) {
-    //   toast.error("خطا در آپلود فایل، لطفا مجدد آپلود کنید.", {
-    //     position: "top-right",
-    //     autoClose: 3000,
-    //     hideProgressBar: false,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     draggable: true,
-    //     progress: undefined,
-    //     theme: "light",
-    //     transition: Bounce,
-    //     rtl: true,
-    //   });
-    //   console.log(error);
-    // }
-  };
-  const sendResponseTicket = async (textInput: string) => {
-    // try {
-    //   const { data } = await axios.post(
-    //     `https://keykavoos.liara.run/Admin/ResponseTicket/${localUserId}/${id}`,
-    //     {
-    //       text: textInput,
-    //       path,
-    //     },
-    //     {
-    //       headers: {
-    //         authorization: `Bearer ${localToken}`,
-    //       },
-    //     }
-    //   );
-    //   const updatedSenderText = updateSenderBox(textInput);
-    //   setTicketDetail((prevTicketDetail: any) => ({
-    //     ...prevTicketDetail,
-    //     SenderText: updatedSenderText,
-    //   }));
-    //   toast.success("تیکت با موفقیت آپدیت شد.", {
-    //     position: "top-right",
-    //     autoClose: 3000,
-    //     hideProgressBar: true,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     draggable: true,
-    //     progress: undefined,
-    //     theme: "light",
-    //     transition: Bounce,
-    //     rtl: true,
-    //   });
-    //   console.log(data);
-    // } catch (error) {
-    //   toast.error("خطا در آپدیت تیکت.", {
-    //     position: "top-right",
-    //     autoClose: 3000,
-    //     hideProgressBar: false,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     draggable: true,
-    //     progress: undefined,
-    //     theme: "light",
-    //     transition: Bounce,
-    //     rtl: true,
-    //   });
-    //   console.log(error);
-    // }
-  };
-  const updateSenderBox = (newText: string) => {
-    const updatedSenderText = [
-      ...ticketDetail.SenderText,
-      { content: newText, sender: "Admin", timestamp: new Date().getTime() },
-    ];
-    return updatedSenderText;
-  };
+  useEffect(() => {
+    const prevId = ticketDetail.SenderText.map((item) =>
+      item.childId ? item.childId : id
+    );
+    setTicketId(prevId[0] as string);
+  }, [ticketDetail.SenderText]);
 
+  console.log(ticketId);
   return (
     <div className="relative">
       <div
@@ -159,58 +197,68 @@ function TicketDetail() {
           <IoArrowBack />
         </div>
       </div>
-
-      <div className="bg-white shadow mx-auto rounded-2xl py-[3%] px-[3%] w-full">
-        <div className="grid grid-cols-2 gap-[5%]">
-          <TicketInfoField
-            label="عنوان تیکت:"
-            text={ticketDetail.Title}
-            ticketDetailStatus={ticketDetailStatus.loading}
-          />
-          <TicketInfoField
-            label="مسئول پاسخگویی:"
-            text={ticketDetail.Responsor}
-            ticketDetailStatus={ticketDetailStatus.loading}
-          />
-          <TicketInfoField
-            label="واحد مربوطه تیکت:"
-            text={ticketDetail.RelativeUnit}
-            ticketDetailStatus={ticketDetailStatus.loading}
-          />
-          <TicketInfoField
-            label="تاریخ ارسال تیکت:"
-            text={ticketDetail.SentDate}
-            ticketDetailStatus={ticketDetailStatus.loading}
-          />
-          <TicketInfoField
-            label="تاریخ پاسخگویی:"
-            text={ticketDetail.RespondDate}
-            ticketDetailStatus={ticketDetailStatus.loading}
-          />
-        </div>
-        {ticketDetail.Blocked === "false" && (
-          <div
-            style={{
-              border: "none",
-              borderTop: "3px solid",
-              borderImage:
-                "linear-gradient(to right, #FFFFFF 0%, #4866CE 45% ,#4866CE 55% , #FFFFFF 100%) 1",
-              margin: "5% 0",
-            }}
-          ></div>
+      <div className="bg-white shadow mx-auto rounded-2xl py-[3%] px-[3%] w-full relative">
+        {ticketDetailStatus.loading ? (
+          <SkeletonTheme>
+            <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
+          </SkeletonTheme>
+        ) : ticketDetailStatus.error ? (
+          <NotFound text={`${ticketDetailStatus.error}`} />
+        ) : (
+          <div className="grid grid-cols-2 gap-5">
+            <TicketInfoField
+              label="عنوان تیکت:"
+              text={ticketDetail.Title}
+              ticketDetailStatus={ticketDetailStatus.loading}
+            />
+            <TicketInfoField
+              label="مسئول پاسخگویی:"
+              text={ticketDetail.Responser}
+              ticketDetailStatus={ticketDetailStatus.loading}
+            />
+            <TicketInfoField
+              label="واحد مربوطه تیکت:"
+              text={ticketDetail.RelavantUnit ? ticketDetail.RelavantUnit : "-"}
+              ticketDetailStatus={ticketDetailStatus.loading}
+            />
+            <TicketInfoField
+              label="فرستنده تیکت:"
+              text={ticketDetail.Sender}
+              ticketDetailStatus={ticketDetailStatus.loading}
+            />
+            <TicketInfoField
+              label="تاریخ ارسال تیکت:"
+              text={ticketDetail.DateSend}
+              ticketDetailStatus={ticketDetailStatus.loading}
+            />
+            <TicketInfoField
+              label="تاریخ پاسخگویی:"
+              text={ticketDetail.DateAnswered}
+              ticketDetailStatus={ticketDetailStatus.loading}
+            />
+          </div>
         )}
-        {ticketDetail.Blocked === "false" && (
-          <Chat
-            senderText={ticketDetail.SenderText}
-            textInput={textInput}
-            setTextInput={setTextInput}
-            sendResponseTicket={sendResponseTicket}
-            handleFileChange={handleFileChange}
-            handleFileUpload={handleFileUpload}
-            File={File}
-            updateSenderText={updateSenderBox}
-          />
-        )}
+        <div
+          style={{
+            border: "none",
+            borderTop: "3px solid",
+            borderImage:
+              "linear-gradient(to right, #FFFFFF 0%, #4866CE 45% ,#4866CE 55% , #FFFFFF 100%) 1",
+            margin: "5% 0",
+          }}
+        ></div>
+        <Chat
+          senderText={ticketDetail.SenderText}
+          recieverText={"this is the reciever text"}
+          textInput={textInput}
+          setTextInput={setTextInput}
+          File={File}
+          handleFileChange={handleFileChange}
+          handleFileUpload={handleFileUpload}
+          sendResponseTicket={sendResponseTicket}
+          fileSelected={fileSelected}
+          ticketId={ticketId}
+        />
       </div>
     </div>
   );

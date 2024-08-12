@@ -44,15 +44,6 @@ const Support = () => {
   // }, [localUserId]);
   return (
     <div className="flex flex-col gap-3">
-      {showModal && (
-        <CloseTicketModal
-          showModal={showModal}
-          setShowModal={setShowModal}
-          text={`آیا از بستن تیکت مطمئنید؟`}
-          setAllTickets={setAllTickets}
-          closeTicketId={closeTicketId}
-        />
-      )}
       <Link
         href="/panel/user/support/add-new-ticket"
         className="flex flex-row gap-2 bg-[#4866CE] text-white p-2 rounded-[4px] w-[120px]"
