@@ -39,12 +39,11 @@ import { useRouter } from "next/navigation";
 import { BrandType } from "./admin/org_management/brands/page";
 
 const PanelLayout = ({ children }: { children: React.ReactNode }) => {
-  const { token, userProfile, status, numberOfAnnouncements } = useSelector(
+  const { token, userProfile, status, numberOfAnnouncements , role } = useSelector(
     (store: any) => store.userData
   );
-  console.log(token);
   const router = useRouter();
-  const [role, setRole] = useState("");
+  // const [role, setRole] = useState("");
   const { setAllPlans, setSiteTypes } = useContext(OrderSubmissionContext);
   const { setRoles, setDataLoading } = useContext(RoleContext);
   const { setPermissions, setPermissionStatus } = useContext(PermissionContext);
@@ -79,12 +78,12 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
     dispatch<any>(fetchUserProfile());
   }, []);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const role = JSON.parse(window.localStorage.getItem("role") as string);
-      setRole(role);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     const role = JSON.parse(window.localStorage.getItem("role") as string);
+  //     setRole(role);
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined" && token) {
@@ -119,7 +118,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   //     router.push("/");
   //   }
   // }, [token]);
-
+console.log(role);
   return (
     <OrderSubmissionContextWrapper>
       <UserContextWrapper>

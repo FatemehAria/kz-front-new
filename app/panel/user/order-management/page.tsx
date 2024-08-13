@@ -17,12 +17,6 @@ function OrderManagement() {
   });
   const [orders, setOrders] = useState([]);
   const { token } = useSelector((state: any) => state.userData);
-  // const orders = projects
-  //   .filter(
-  //     (item: { status: string; rejected_projects: [] }) =>
-  //       item.status === "verified" && item.rejected_projects.length === 0
-  //   )
-  //   .map((item: any) => item);
 
   useEffect(() => {
     getOrders(token, setOrders, setOrderStatus);

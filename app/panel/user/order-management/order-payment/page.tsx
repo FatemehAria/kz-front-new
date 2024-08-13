@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 import FirstPayment from "./first-payment";
 import SecondPayment from "./second-payment";
 import ThirdPayment from "./third-payment";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import NotFound from "@/app/panel/admin/components/NotFound";
 
 function OrderPayment() {
   const { token } = useSelector((state: any) => state.userData);
@@ -16,7 +18,10 @@ function OrderPayment() {
   const [fileSelected, setFileSelected] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
   const [isPaid, setIsPaid] = useState(false);
-  
+  const [orderDetailStatus, seOrderDetailStatus] = useState({
+    loading: false,
+    error: "",
+  });
   const handleChangingFile = (file: File) => {
     setFile(file);
     setFileSelected(true);
@@ -29,7 +34,7 @@ function OrderPayment() {
   };
 
   useEffect(() => {
-    getOrderDetail(token, Number(orderId), setOrderDetail);
+    getOrderDetail(token, Number(orderId), setOrderDetail, seOrderDetailStatus);
   }, []);
 
   const firstOrderPayment = orderDetail.payments?.[0];
@@ -38,34 +43,44 @@ function OrderPayment() {
   const totalPaid =
     Number(firstOrderPayment?.amount) + Number(secondOrderPayment?.amount);
 
-    const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      await sendAmount(token, firstOrderPayment.amount, firstOrderPayment.id);
-    };
-  
+  const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await sendAmount(token, firstOrderPayment.amount, firstOrderPayment.id);
+  };
+
   return (
     <div className="bg-white shadow mx-auto rounded-2xl py-[3%] px-[3%] grid grid-cols-1 gap-5">
-      <div className="flex flex-row gap-3 bg-[#4866CE] text-white w-[200px] px-2 py-2 justify-center items-center font-semibold">
-        <p>شماره سفارش:</p>
-        <span>{orderId}</span>
-      </div>
-      <div className="grid grid-cols-1 gap-8">
-        <FirstPayment firstOrderPayment={firstOrderPayment} token={token} />
-        <SecondPayment
-          paidAmount={firstOrderPayment?.amount}
-          handleFileChange={handleFileChange}
-          secondOrderPayment={secondOrderPayment}
-          File={File}
-          token={token}
-        />
-        <ThirdPayment
-          thirdOrderPayment={thirdOrderPayment}
-          totalPaid={totalPaid}
-          handleFileChange={handleFileChange}
-          File={File}
-          token={token}
-        />
-      </div>
+      {orderDetailStatus.loading ? (
+        <SkeletonTheme>
+          <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
+        </SkeletonTheme>
+      ) : orderDetailStatus.error ? (
+        <NotFound text={`${orderDetailStatus.error}`} />
+      ) : (
+        <div>
+          <div className="flex flex-row gap-3 bg-[#4866CE] text-white w-[200px] px-2 py-2 justify-center items-center font-semibold">
+            <p>شماره سفارش:</p>
+            <span>{orderId}</span>
+          </div>
+          <div className="grid grid-cols-1 gap-8">
+            <FirstPayment firstOrderPayment={firstOrderPayment} token={token} />
+            <SecondPayment
+              paidAmount={firstOrderPayment?.amount}
+              handleFileChange={handleFileChange}
+              secondOrderPayment={secondOrderPayment}
+              File={File}
+              token={token}
+            />
+            <ThirdPayment
+              thirdOrderPayment={thirdOrderPayment}
+              totalPaid={totalPaid}
+              handleFileChange={handleFileChange}
+              File={File}
+              token={token}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1369,8 +1369,9 @@ export const getAllPlans = async (
     window.localStorage.setItem("plans", JSON.stringify(data.data));
   } catch (error) {
     console.log(error);
-    setPlansStatus && setPlansStatus((last) => ({ ...last, error: "پلنی بافت نشد." }));
-  }finally{
+    setPlansStatus &&
+      setPlansStatus((last) => ({ ...last, error: "پلنی بافت نشد." }));
+  } finally {
     setPlansStatus && setPlansStatus((last) => ({ ...last, loading: false }));
   }
 };
@@ -3536,9 +3537,17 @@ export const changeOrderStatus = async (
 export const getOrderDetail = async (
   token: string,
   orderId: number,
-  setOrderDetail: React.Dispatch<React.SetStateAction<never[]>>
+  setOrderDetail: React.Dispatch<React.SetStateAction<never[]>>,
+  seOrderDetailStatus?: React.Dispatch<
+    React.SetStateAction<{
+      loading: boolean;
+      error: string;
+    }>
+  >
 ) => {
   try {
+    seOrderDetailStatus &&
+      seOrderDetailStatus((last) => ({ ...last, loading: true }));
     const { data } = await app(`/order/show/${orderId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -3547,7 +3556,15 @@ export const getOrderDetail = async (
     console.log("order detail", data);
     setOrderDetail(data.data);
   } catch (error: any) {
+    seOrderDetailStatus &&
+      seOrderDetailStatus((last) => ({
+        ...last,
+        error: "حطا در ردیافت اطلاعات",
+      }));
     console.log(error.response.data.message);
+  } finally {
+    seOrderDetailStatus &&
+      seOrderDetailStatus((last) => ({ ...last, loading: false }));
   }
 };
 // get all order statuses

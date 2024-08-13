@@ -28,12 +28,20 @@ function Chat({
   ticketId,
 }: ChatProps) {
   console.log("sender text", senderText);
-  const userMessages = senderText.filter(
-    (item: any) => item.register_user_id !== null
+
+  const userMsgs = senderText[0]?.messages?.filter(
+    (item: any) =>
+      item.register_user_id !== null && item.responser_user_id === null
   );
-  const adminMessages = senderText.filter(
+  const userMessages = userMsgs ? userMsgs : [];
+
+  const adminMsgs = senderText[0]?.messages.filter(
     (item: any) => item.responser_user_id !== null
   );
+  const adminMessages = adminMsgs ? adminMsgs : [];
+
+  // console.log("user messages", userMessages);
+  // console.log("admin Messages", adminMessages);
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (File && textInput) {
@@ -49,57 +57,91 @@ function Chat({
       await handleFileUpload();
     }
   };
-  const timestampConversion = (timestamp: number | Date | undefined) => {
-    return new Intl.DateTimeFormat("fa-IR", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    }).format(timestamp);
-  };
-  // const combinedMessages = [...userMessages, ...adminMessages];
-  // const sortedMessages = combinedMessages.sort(
-  //   (a, b) => a.timestamp - b.timestamp
-  // );
 
+  const timestampConversion = (timestamp: number | Date | undefined) => {
+    return moment(timestamp, "YYYY-MM-DDTHH:mm:ss.SSSZ").format("jYYYY/jM/jD");
+  };
+  const combinedMessages = [[...userMessages], [...adminMessages]];
+  const sortedCombinedMessages = combinedMessages.flat().sort((a, b) => {
+    return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+  });
+
+  console.log("combined", combinedMessages);
   return (
-    <div>
-      <div className="flex flex-col gap-5">
-        {senderText.map((item: any, index: number) => (
-          <div key={index}>
-            {/* Render the main message description if available */}
-            {item.mainDescription && (
-              <p
-                className={`${styles.chatBubble} flex flex-col gap-1 ${
-                  item.sender !== "Admin" ? styles.sender : styles.receiver
+    <div className="grid grid-cols-1">
+      <div className="grid grid-cols-1">
+        <div
+          className={`${styles.chatBubble} ${`${styles.sender}`} flex flex-col gap-5`}
+        >
+          <p className="justify-end">{senderText[0]?.mainDescription}</p>
+          <span className={`flex justify-end`}>
+            {timestampConversion(senderText[0]?.created_at)}
+          </span>
+        </div>
+        {/* Render all messages */}
+        <div className={`flex flex-col gap-5`}>
+          {sortedCombinedMessages.map((item, index) => (
+            <div
+              key={index}
+              className={`${styles.chatBubble} ${
+                item.responser_user_id
+                  ? `${styles.receiver} items-start`
+                  : styles.sender
+              }`}
+            >
+              <p>{item.description}</p>
+              <span
+                className={`flex ${
+                  item.responser_user_id ? "justify-start" : "justify-end"
                 }`}
               >
-                {item.mainDescription}
-                <span
-                  className={`flex ${
-                    item.sender === "Admin" ? "justify-start" : "justify-end"
-                  }`}
-                >
-                  {timestampConversion(item.timestamp)}
-                </span>
-              </p>
-            )}
-            
-            {/* Render nested messages */}
-            {item.messages.length > 0 && (
-              item.messages.map((msg: { childId: number; description: string; register_user_id: number | undefined; responser_user_id: number }, msgIndex: number) => (
-                <div key={msgIndex} className={`${styles.chatBubble} ${styles.sender}`}>
-                  <p>{msg.description}</p>
-                  <span
-                    className={`flex justify-end`}
-                  >
-                    {timestampConversion(msg.timestamp)} {/* Ensure you have a timestamp for each message */}
-                  </span>
-                </div>
-              ))
-            )}
-          </div>
-        ))}
+                {timestampConversion(item.created_at)}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
+      {/* user */}
+      {/* <div className={`flex flex-col gap-5`}>
+        <div>
+          <div className={`${styles.chatBubble} ${styles.sender}`}>
+            {senderText[0]?.mainDescription}
+            <span
+              className={`flex justify-end
+          }`}
+            >
+              {timestampConversion(senderText[0]?.created_at)}
+            </span>
+          </div>
+          {combinedMessages[0].map((item, index) => (
+            <div
+              key={index}
+              className={`${styles.chatBubble} ${styles.sender}`}
+            >
+              <p>{item.description}</p>
+              <span className={`flex justify-end`}>
+                {timestampConversion(item.created_at)}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div> */}
+      {/* admin */}
+      {/* <div className={`flex flex-col gap-5`}>
+        <div>
+          {combinedMessages[1].map((item, index) => (
+            <div
+              key={index}
+              className={`${styles.chatBubble} ${styles.receiver}`}
+            >
+              <p>{item.description}</p>
+              <span className={`flex justify-start`}>
+                {timestampConversion(item.created_at)}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div> */}
       <form
         onSubmit={(e) => handleSubmission(e)}
         className="bg-[#4866CE] rounded-[4px] flex"
@@ -128,7 +170,6 @@ function Chat({
       </form>
     </div>
   );
-  
 }
 
 export default Chat;

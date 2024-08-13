@@ -23,6 +23,10 @@ type SenderTextItem = {
   childId?: number;
   description: string;
   mainDescription: string;
+  register_user_id: string;
+  responser_user_id: string;
+  created_at: string;
+  messages: [];
 };
 
 function TicketDetail() {
@@ -43,15 +47,16 @@ function TicketDetail() {
   });
   const [fileSelected, setFileSelected] = useState(false);
   const [textInput, setTextInput] = useState("");
-  const { token, localUserId, userProfile } = useSelector(
-    (state: any) => state.userData
-  );
-  const [path, setPath] = useState("");
-  const dispatch = useDispatch();
+  const { token, userProfile } = useSelector((state: any) => state.userData);
   const params = useSearchParams();
   const id = params.get("id");
   const router = useRouter();
   const [ticketId, setTicketId] = useState("");
+  const [File, setFile] = useState<any>(null);
+  const handleFileChange = (file: File) => {
+    setFile(file);
+    setFileSelected(true);
+  };
 
   const getTicketDetail = async () => {
     try {
@@ -61,20 +66,42 @@ function TicketDetail() {
           authorization: `Bearer ${token}`,
         },
       });
-      const newSenderTexts = data.data?.children.length === 0 
-      ? [{ mainDescription: data.data.description, messages: [] }]
-      : [{
-          mainDescription: data.data.description,
-          messages: data.data.children.map((child: { id: number; description: string }) => ({
-            childId: child.id,
-            description: child.description,
-            register_user_id: data.data.reg_user_id,
-            responser_user_id: data.data.register_user_id,
-          }))
-        }];
+      const newSenderTexts =
+        data.data?.children.length === 0
+          ? [
+              {
+                mainDescription: data.data?.description,
+                register_user_id: data.data?.register_user_id,
+                responser_user_id: data.data?.responser_user_id,
+                created_at: data.data.created_at,
+                messages: [],
+              },
+            ]
+          : [
+              {
+                mainDescription: data.data?.description,
+                register_user_id: data.data?.register_user_id,
+                responser_user_id: data.data?.responser_user_id,
+                created_at: data.data.created_at,
+                messages: data.data.children.map(
+                  (child: {
+                    id: number;
+                    description: string;
+                    register_user_id: string;
+                    responser_user_id: string;
+                    created_at: string;
+                  }) => ({
+                    childId: child.id,
+                    description: child.description,
+                    register_user_id: child?.register_user_id,
+                    responser_user_id: child?.responser_user_id,
+                    created_at: child.created_at,
+                  })
+                ),
+              },
+            ];
 
-
-      setTicketDetail((last) => ({
+      setTicketDetail((last: any) => ({
         ...last,
         Title: data.data?.title,
         RelavantUnit: data.data?.department?.name_fa,
@@ -96,17 +123,11 @@ function TicketDetail() {
         ...prevStatus,
         loading: false,
       }));
-      console.log("ticket  detail", data);
+      // console.log(data);
     } catch (error: any) {
       console.log(error.response.data.message);
       setTicketDetailStatus({ error: "", loading: false });
     }
-  };
-
-  const [File, setFile] = useState<any>(null);
-  const handleFileChange = (file: File) => {
-    setFile(file);
-    setFileSelected(true);
   };
 
   const sendResponseTicket = async (description: string, ticketId: number) => {
@@ -180,13 +201,16 @@ function TicketDetail() {
   }, []);
 
   useEffect(() => {
-    const prevId = ticketDetail.SenderText.map((item) =>
-      item.childId ? item.childId : id
-    );
-    setTicketId(prevId[0] as string);
+    const childsId = ticketDetail.SenderText[0]?.messages.map(
+      (child: { childId: string }) => child.childId
+    )[0];
+    setTicketId(childsId);
+    // const prevId = childsId ? childsId : id;
+    const prevId = id as string;
+    setTicketId(prevId);
   }, [ticketDetail.SenderText]);
 
-  console.log(ticketId);
+  // console.log(ticketId);
   return (
     <div className="relative">
       <div
