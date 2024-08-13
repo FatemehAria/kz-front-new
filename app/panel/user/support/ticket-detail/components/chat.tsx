@@ -62,13 +62,14 @@ function Chat({
   // );
 
   return (
-    <div className="flex flex-col">
-      <div>
+    <div>
+      <div className="flex flex-col gap-5">
         {senderText.map((item: any, index: number) => (
           <div key={index}>
+            {/* Render the main message description if available */}
             {item.mainDescription && (
               <p
-                className={`${styles.chatBubble} flex flex-col gap-5 ${
+                className={`${styles.chatBubble} flex flex-col gap-1 ${
                   item.sender !== "Admin" ? styles.sender : styles.receiver
                 }`}
               >
@@ -76,27 +77,25 @@ function Chat({
                 <span
                   className={`flex ${
                     item.sender === "Admin" ? "justify-start" : "justify-end"
-                  } `}
+                  }`}
                 >
                   {timestampConversion(item.timestamp)}
                 </span>
               </p>
             )}
-            {item.description && (
-              <p
-                className={`${styles.chatBubble} flex flex-col gap-5 ${
-                  item.sender !== "Admin" ? styles.sender : styles.receiver
-                }`}
-              >
-                {item.description}
-                <span
-                  className={`flex ${
-                    item.sender === "Admin" ? "justify-start" : "justify-end"
-                  } `}
-                >
-                  {timestampConversion(item.timestamp)}
-                </span>
-              </p>
+            
+            {/* Render nested messages */}
+            {item.messages.length > 0 && (
+              item.messages.map((msg: { childId: number; description: string; register_user_id: number | undefined; responser_user_id: number }, msgIndex: number) => (
+                <div key={msgIndex} className={`${styles.chatBubble} ${styles.sender}`}>
+                  <p>{msg.description}</p>
+                  <span
+                    className={`flex justify-end`}
+                  >
+                    {timestampConversion(msg.timestamp)} {/* Ensure you have a timestamp for each message */}
+                  </span>
+                </div>
+              ))
             )}
           </div>
         ))}
@@ -106,8 +105,6 @@ function Chat({
         className="bg-[#4866CE] rounded-[4px] flex"
       >
         <textarea
-          name=""
-          id=""
           cols={30}
           rows={4}
           className="p-[1%] text-white w-[85%] placeholder:text-[#EAEFF6A1]"
@@ -131,6 +128,7 @@ function Chat({
       </form>
     </div>
   );
+  
 }
 
 export default Chat;

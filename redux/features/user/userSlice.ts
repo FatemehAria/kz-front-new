@@ -306,7 +306,7 @@ const userSlice = createSlice({
     });
     builder.addCase(fetchUserInLoginWithPassword.rejected, (state, action) => {
       state.status = "failed";
-      state.errorMessage = "رمز عبور اشتباه است.";
+      state.errorMessage = "رمز عبور یا شماره همراه اشتباه است.";
       state.successMessage = "";
       state.showModal = true;
       state.errorOnProfileHandler = false;

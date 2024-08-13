@@ -1,7 +1,14 @@
 "use client";
+import { updateStatus } from "@/redux/features/user/userSlice";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-export const useCaptcha = (PhoneNumber: string) => {
+export const useCaptcha = (
+  PhoneNumber: string,
+  setLoginwithPass: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  const { status } = useSelector((state: any) => state.userData);
+  const dispatch = useDispatch();
   const [answer, setAnswer] = useState("");
   const [mathProblem, setMathProblem] = useState("");
   const [wrongAnswerMessage, setWrongAnswerMessage] = useState("");
@@ -16,18 +23,27 @@ export const useCaptcha = (PhoneNumber: string) => {
 
   useEffect(() => {
     setMathProblem(`${firstNumber} + ${secondNumber}`);
-
+    // if (status === "failed") {
+    //   // Generate a new math problem
+    //   setFirstNumber(Math.floor(Math.random() * 10) + 1);
+    //   setSecondNumber(Math.floor(Math.random() * 10) + 1);
+    //   setMathProblem(`${firstNumber} + ${secondNumber}`);
+    //   dispatch(updateStatus());
+    //   setAnswer("");
+    // } else {
+    //   setWrongAnswerMessage("");
+    // }
     if (answer === "") {
       setWrongAnswerMessage("");
-    } else if (parseInt(answer) !== correctAnswer && PhoneNumber) {
+    } else if (parseInt(answer) !== correctAnswer) {
       setWrongAnswerMessage("پاسخ صحیح نیست.");
     } else if (parseInt(answer) === correctAnswer) {
       setWrongAnswerMessage("");
     }
-  }, [answer, PhoneNumber, firstNumber, secondNumber]);
+  }, [answer, firstNumber, secondNumber, status]);
 
-  let result = parseInt(answer) === correctAnswer
-  
+  let result = parseInt(answer) === correctAnswer;
+
   return {
     mathProblem,
     wrongAnswerMessage,
@@ -36,6 +52,6 @@ export const useCaptcha = (PhoneNumber: string) => {
     setAnswer,
     setSecondNumber,
     setFirstNumber,
-    result
+    result,
   };
 };

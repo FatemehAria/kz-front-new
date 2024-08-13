@@ -3,7 +3,7 @@ import {
   getIdFromLocal,
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
-import { getProjectDetail } from "@/utils/utils";
+import { getOrderDetail, getProjectDetail } from "@/utils/utils";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -35,9 +35,11 @@ function ProjectDetail() {
   const id = params.get("id");
 
   useEffect(() => {
-    getProjectDetail(token, id, setProjectDetail);
+    getOrderDetail(token, Number(id), setProjectDetail);
   }, []);
-
+  console.log(projectDetail);
+  const projectCurrentState = projectDetail.status?.title;
+  console.log(projectCurrentState);
   return (
     <div className="relative">
       <div
@@ -52,7 +54,9 @@ function ProjectDetail() {
         {ProjectDetailNav.map((item, index) => (
           <li
             key={index}
-            className="hover:bg-[#EAEFF6] p-5 hover:text-[#4866CE] border border-[#4866CE]"
+            className={`${
+              item === projectCurrentState ? "bg-[#EAEFF6] text-[#4866CE]" : ""
+            }  p-5  border border-[#4866CE]`}
           >
             {item}
           </li>

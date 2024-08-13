@@ -61,18 +61,18 @@ function TicketDetail() {
           authorization: `Bearer ${token}`,
         },
       });
-      const newSenderTexts =
-        data?.data.children.length === 0
-          ? [{ mainDescription: data.data.description }]
-          : data.data?.children.map(
-              (child: { id: number; description: string }) => ({
-                childId: child.id,
-                description: child.description,
-                mainDescription: data.data.description,
-                register_user_id: data.data.reg_user_id,
-                responser_user_id: data.data.register_user_id,
-              })
-            );
+      const newSenderTexts = data.data?.children.length === 0 
+      ? [{ mainDescription: data.data.description, messages: [] }]
+      : [{
+          mainDescription: data.data.description,
+          messages: data.data.children.map((child: { id: number; description: string }) => ({
+            childId: child.id,
+            description: child.description,
+            register_user_id: data.data.reg_user_id,
+            responser_user_id: data.data.register_user_id,
+          }))
+        }];
+
 
       setTicketDetail((last) => ({
         ...last,
@@ -89,7 +89,7 @@ function TicketDetail() {
           "YYYY-MM-DDTHH:mm:ss.SSSZ"
         ).format("jYYYY/jM/jD"),
         DateAnswered: "-",
-        SenderText: [...newSenderTexts],
+        SenderText: newSenderTexts,
         Blocked: data.data?.status.title_en,
       }));
       setTicketDetailStatus((prevStatus) => ({

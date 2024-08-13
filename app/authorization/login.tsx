@@ -44,7 +44,7 @@ const Login = ({
   const dispatch = useDispatch();
   const [logwithOTP, setLogwithOTP] = useState(false);
   const [loginwithPass, setLoginwithPass] = useState(false);
-  
+
   const handleSubmission = async () => {
     setIsLoggingIn(true);
     dispatch(openModal(true));
@@ -61,7 +61,7 @@ const Login = ({
   });
 
   const { result, setAnswer, answer, mathProblem, wrongAnswerMessage } =
-    useCaptcha(values.PhoneNumber);
+    useCaptcha(values.PhoneNumber, setLoginwithPass);
   useStoreNumInLocal(values.PhoneNumber);
 
   useEffect(() => {
@@ -88,15 +88,12 @@ const Login = ({
         })
       );
     }
+    // if (status === "idle") {
+    //   values.PhoneNumber = "";
+    //   values.Password = "";
+    // }
     return;
-  }, [
-    loginApproach,
-    loginwithPass,
-    result,
-    values.Password,
-    values.PhoneNumber,
-    token,
-  ]);
+  }, [loginApproach, loginwithPass, token, dispatch,result]);
 
   return (
     <React.Fragment>
@@ -125,7 +122,7 @@ const Login = ({
           {errorMessage !== "" && !errorOnProfileHandler && (
             <Modal
               showModal={showModal}
-              data=""
+              data=" "
               text={errorMessage}
               mainButtonText="متوجه شدم"
               showOnErrorOrSuccess={true}

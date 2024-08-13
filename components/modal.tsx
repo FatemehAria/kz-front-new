@@ -50,9 +50,8 @@ function Modal({
   changeNumber,
   redirect,
 }: ModalProps) {
-  const { token, role, status, successMessage, userType , errorMessage} = useSelector(
-    (state: any) => state.userData
-  );
+  const { token, role, status, successMessage, userType, errorMessage } =
+    useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
   const router = useRouter();
   useEffect(() => {
@@ -71,6 +70,7 @@ function Modal({
     setShowModalOnError && setShowModalOnError(false);
     setLogWithOTP && setLogWithOTP(true);
     setLoginWithPass && setLoginWithPass(true);
+    dispatch(updateStatus())
     if (!isLoggingIn) {
       setSteps?.(3);
     }
@@ -143,7 +143,7 @@ function Modal({
                         : " bg-white text-[#4866CF]"
                     }`}
                   >
-                    {data.length === 0 ? "تایید" :  "تغییر شماره همراه"}
+                    {data.length === 0 ? "تایید" : "تغییر شماره همراه"}
                   </button>
                 )}
               </div>
