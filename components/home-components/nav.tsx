@@ -20,7 +20,7 @@ const Nav = () => {
   const [showFour, setShowFour] = useState(false);
   const [activeColorChange, setActiveColorChange] = useState(false);
   const dispatch = useDispatch();
-  const { FirstName, userProfile, role, status , token } = useSelector(
+  const { FirstName, userProfile, role, status, token } = useSelector(
     (state: any) => state.userData
   );
 
@@ -33,6 +33,7 @@ const Nav = () => {
   });
 
   useEffect(() => {
+    dispatch(getTokenFromLocal());
     dispatch<any>(fetchUserProfile());
   }, []);
 

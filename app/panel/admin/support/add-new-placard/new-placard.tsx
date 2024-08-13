@@ -1,18 +1,9 @@
 "use client";
-import React, { useContext, useEffect, useState } from "react";
-import TicketFields from "./components/ticket-fields";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchUserProfile,
-  getIdFromLocal,
-  getTokenFromLocal,
-} from "@/redux/features/user/userSlice";
-import { FcCheckmark } from "react-icons/fc";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import CostumSelect from "@/app/panel/components/costum-select";
-import { createNotification, createTicket } from "@/utils/utils";
-import { DepartmentContext } from "../../context/department-context/DepartmentContext";
-import FormInput from "@/app/contact-us/components/form/form-inputs";
+import { createNotification } from "@/utils/utils";
+
 type NewPlacardProps = {
   setSteps: React.Dispatch<React.SetStateAction<number>>;
 };
@@ -69,26 +60,35 @@ function NewPlacard({ setSteps }: NewPlacardProps) {
   }, [departments]);
 
   const departmentInfo = departments.map(
-    (item) => item.department.id + "-" + item.department.name_fa
+    (item: { department: { id: number; name_fa: string } }) =>
+      item.department.id + "-" + item.department.name_fa
   );
 
   const usersInfo = users.map(
     (item: { name: string; surname: string }) => item.name + " " + item.surname
   );
 
-  const brandInfo = brands.map((item) => item.brand?.title);
+  const brandInfo = brands.map(
+    (item: { brand: { title: string } }) => item.brand?.title
+  );
 
   const depId = departments
-    .filter((item) => annonceInfo?.dept_id?.includes(item.department.name_fa))
-    .map((item) => item.department.id)[0];
+    .filter((item: { department: { name_fa: string } }) =>
+      annonceInfo?.dept_id?.includes(item.department.name_fa)
+    )
+    .map((item: { department: { id: number } }) => item.department.id)[0];
 
   const userId = users
-    .filter((item) => annonceInfo?.user_id?.includes(item.name))
-    .map((item) => item.id)[0];
+    .filter((item: { name: string }) =>
+      annonceInfo?.user_id?.includes(item.name)
+    )
+    .map((item: { id: number }) => item.id)[0];
 
   const brandId = brands
-    .filter((item) => item.brand?.title.includes(annonceInfo.brand_id))
-    .map((item) => item.brand?.id)?.[0];
+    .filter((item: { brand: { title: string } }) =>
+      item.brand?.title.includes(annonceInfo.brand_id)
+    )
+    .map((item: { brand: { id: number } }) => item.brand?.id)?.[0];
 
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

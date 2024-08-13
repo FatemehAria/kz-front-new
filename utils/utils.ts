@@ -32,12 +32,23 @@ export const createNotification = async (
   text: string
 ) => {
   try {
-    const { data } = await app.post("/notification/store", {
-      dept_id,
-      brand_id,
-      user_id,
-      text,
-    });
+    // console.log("user_id", user_id);
+    // console.log("text", text);
+    const { data } = await app.post(
+      "/notification/store",
+      {
+        dept_id,
+        brand_id,
+        user_id,
+        text,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     console.log(data);
     toast.success("نوتیفیکیشن با موفقیت ارسال شد.", {
       position: "top-right",
@@ -64,6 +75,59 @@ export const createNotification = async (
       transition: Bounce,
       rtl: true,
     });
+    console.log(error.response.data.message);
+  }
+};
+// get user notification
+export const getUserNotification = async (
+  token: string,
+  userId: number,
+  setUserNotifications: Dispatch<SetStateAction<never[]>>
+) => {
+  try {
+    // console.log("user_id", userId);
+    const { data } = await app(`/notification/getUserNotification/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setUserNotifications(data.data);
+    console.log("notif", data);
+  } catch (error: any) {
+    console.log(error.response.data.message);
+  }
+};
+// get all notifs
+export const getAllNotifications = async (token: string) => {
+  try {
+    const { data } = await app(`/notifications`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("notifs", data);
+  } catch (error: any) {
+    console.log(error.response.data.message);
+  }
+};
+export const changeNotificationStatus = async (
+  token: string,
+  notif_id: number
+) => {
+  try {
+    const { data } = await app.post(
+      `/notification/change_status`,
+      {
+        notif_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log("notifs", data);
+  } catch (error: any) {
     console.log(error.response.data.message);
   }
 };

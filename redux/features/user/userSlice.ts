@@ -17,6 +17,7 @@ const initialState: RTKUserState = {
   userProfile: {},
   FirstName: "",
   LastName: "",
+  // token: window.localStorage.getItem("token") || null,
   token: null,
   errorMessage: "",
   successMessage: "",

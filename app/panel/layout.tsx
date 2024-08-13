@@ -9,6 +9,7 @@ import PanelSidebarSmall from "@/components/panel/panel-sidebar-small";
 import {
   deleteDataFromStorage,
   fetchUserProfile,
+  getIdFromLocal,
   getTokenFromLocal,
 } from "@/redux/features/user/userSlice";
 import Image from "next/image";
@@ -26,6 +27,7 @@ import {
   getAllRole,
   getAllSiteTypes,
   getAllUsers,
+  getUserNotification,
 } from "@/utils/utils";
 import { OrderSubmissionContext } from "./context/order-submission-contexts/OrderSubmissionContext";
 import OrderSubmissionContextWrapper from "./context/order-submission-contexts/OrderSubmissionContextWrapper";
@@ -39,10 +41,10 @@ import { useRouter } from "next/navigation";
 import { BrandType } from "./admin/org_management/brands/page";
 
 const PanelLayout = ({ children }: { children: React.ReactNode }) => {
-  const { token, userProfile, status, numberOfAnnouncements , role } = useSelector(
-    (store: any) => store.userData
-  );
+  const { token, userProfile, status, numberOfAnnouncements, role, userId } =
+    useSelector((store: any) => store.userData);
   const router = useRouter();
+  const [userNotifications, setUserNotifications] = useState([]);
   // const [role, setRole] = useState("");
   const { setAllPlans, setSiteTypes } = useContext(OrderSubmissionContext);
   const { setRoles, setDataLoading } = useContext(RoleContext);
@@ -54,7 +56,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   const [showAnnouncementDropdown, setShowAnnouncementDropdown] =
     useState(false);
   const dispatch = useDispatch();
-
+  // console.log(userNotifications);
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 3;
   const startIndex = currentPage * itemsPerPage;
@@ -76,6 +78,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     dispatch(getTokenFromLocal());
     dispatch<any>(fetchUserProfile());
+    dispatch(getIdFromLocal());
   }, []);
 
   // useEffect(() => {
@@ -89,14 +92,15 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
     if (typeof window !== "undefined" && token) {
       Promise.all([
         getAllPlans(token, setAllPlans),
+        getUserNotification(token, Number(userId), setUserNotifications),
         getAllSiteTypes(token, setSiteTypes),
+        // getAllDepartments(token, setDepartments),
+        // getAllUsers(token, setAllUsersData, setUsersStatus),
+        // getAllPositions(token, setPositions),
+        // getAllPermissions(token, setPermissions, setPermissionStatus),
+        // getAllRole(token, setRoles, setDataLoading),
         getAllDepartments(token, setDepartments),
-        getAllUsers(token, setAllUsersData, setUsersStatus),
-        getAllPositions(token, setPositions),
-        getAllPermissions(token, setPermissions, setPermissionStatus),
-        getAllRole(token, setRoles, setDataLoading),
-        getAllDepartments(token, setDepartments),
-        getAllBrands(setBrands),
+        // getAllBrands(setBrands),
       ]);
     }
   }, [
@@ -104,12 +108,13 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
     setAllPlans,
     setSiteTypes,
     setDepartments,
-    setPermissions,
-    setUsersStatus,
-    setPositions,
-    setRoles,
-    setAllUsersData,
-    setPermissionStatus,
+    userId,
+    // setPermissions,
+    // setUsersStatus,
+    // setPositions,
+    // setRoles,
+    // setAllUsersData,
+    // setPermissionStatus,
   ]);
 
   // useEffect(() => {
@@ -118,7 +123,6 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   //     router.push("/");
   //   }
   // }, [token]);
-console.log(role);
   return (
     <OrderSubmissionContextWrapper>
       <UserContextWrapper>
@@ -148,7 +152,7 @@ console.log(role);
                           userProfile={userProfile}
                           status={status}
                           userType={role}
-                          numberOfAnnouncements={numberOfAnnouncements}
+                          numberOfAnnouncements={userNotifications}
                           setShowAnnouncementDropdown={
                             setShowAnnouncementDropdown
                           }
