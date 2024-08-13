@@ -135,7 +135,7 @@ function TicketDetail() {
         `/ticket/store`,
         {
           description,
-          register_user_id: userProfile.id,
+          responser_user_id: userProfile.id,
           ticket_id: ticketId,
         },
         {
@@ -158,7 +158,7 @@ function TicketDetail() {
     try {
       const { data } = await app.post(
         `/ticket/file/upload/${id}`,
-        { formData, register_user_id: id },
+        { formData, responser_user_id: id },
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -41,7 +41,7 @@ function Chat({
   const adminMessages = adminMsgs ? adminMsgs : [];
 
   // console.log("user messages", userMessages);
-  // console.log("admin Messages", adminMessages);
+  console.log("admin Messages", adminMessages);
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (File && textInput) {
@@ -65,24 +65,37 @@ function Chat({
   const sortedCombinedMessages = combinedMessages.flat().sort((a, b) => {
     return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
   });
-  
+
   console.log("combined", combinedMessages);
   return (
-    <div>
-      <div>
-        {/* Render all messages */}
+    <div className="grid grid-cols-1">
+      <div className="grid grid-cols-1">
+        <div className="flex flex-col items-end">
+          <div
+            className={`${
+              styles.chatBubble
+            } ${`${styles.sender}`} flex flex-col gap-5`}
+          >
+            <p className="justify-start">{senderText[0]?.mainDescription}</p>
+            <span className={`flex justify-end`}>
+              {timestampConversion(senderText[0]?.created_at)}
+            </span>
+          </div>
+        </div>
         <div className={`flex flex-col gap-5`}>
           {sortedCombinedMessages.map((item, index) => (
             <div
               key={index}
               className={`${styles.chatBubble} ${
-                item.responser_user_id ? `${styles.receiver} items-start` : styles.sender
+                item.responser_user_id
+                  ? `${styles.receiver} items-start`
+                  : styles.sender
               }`}
             >
               <p>{item.description}</p>
               <span
                 className={`flex ${
-                  item.responser_user_id ? "justify-start" : "justify-end"
+                  item.responser_user_id ? "justify-end" : "justify-end"
                 }`}
               >
                 {timestampConversion(item.created_at)}

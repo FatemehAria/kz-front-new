@@ -142,13 +142,13 @@ const Login = ({
           <div className="flex flex-row justify-between items-center mb-8">
             <span
               onClick={() => setLoginApproach(0)}
-              className={loginApproach === 0 ? styles.approach : "border-none"}
+              className={loginApproach === 0 ? `${styles.approach} cursor-default` : "border-none cursor-pointer"}
             >
               ورود با کد تایید
             </span>
             <span
               onClick={() => setLoginApproach(1)}
-              className={loginApproach === 1 ? styles.approach : "border-none"}
+              className={loginApproach === 1 ? `${styles.approach} cursor-default` : "border-none cursor-pointer"}
             >
               ورود با رمز عبور
             </span>

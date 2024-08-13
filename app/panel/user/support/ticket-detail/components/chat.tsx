@@ -71,7 +71,9 @@ function Chat({
     <div className="grid grid-cols-1">
       <div className="grid grid-cols-1">
         <div
-          className={`${styles.chatBubble} ${`${styles.sender}`} flex flex-col gap-5`}
+          className={`${
+            styles.chatBubble
+          } ${`${styles.sender}`} flex flex-col gap-5`}
         >
           <p className="justify-end">{senderText[0]?.mainDescription}</p>
           <span className={`flex justify-end`}>
@@ -81,22 +83,23 @@ function Chat({
         {/* Render all messages */}
         <div className={`flex flex-col gap-5`}>
           {sortedCombinedMessages.map((item, index) => (
-            <div
-              key={index}
-              className={`${styles.chatBubble} ${
-                item.responser_user_id
-                  ? `${styles.receiver} items-start`
-                  : styles.sender
-              }`}
-            >
-              <p>{item.description}</p>
-              <span
-                className={`flex ${
-                  item.responser_user_id ? "justify-start" : "justify-end"
+            <div key={index} className={`${
+              item.responser_user_id ? `flex justify-end` : "flex justify-start"
+            }`}>
+              <div
+                className={`${styles.chatBubble} ${
+                  item.responser_user_id ? `${styles.receiver}` : styles.sender
                 }`}
               >
-                {timestampConversion(item.created_at)}
-              </span>
+                <p>{item.description}</p>
+                <span
+                  className={`flex ${
+                    item.responser_user_id ? "justify-start" : "justify-end"
+                  }`}
+                >
+                  {timestampConversion(item.created_at)}
+                </span>
+              </div>
             </div>
           ))}
         </div>

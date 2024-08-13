@@ -3617,7 +3617,7 @@ export const closeTicket = async (
       transition: Bounce,
       rtl: true,
     });
-    setAllTickets(data.data);
+    // setAllTickets(data.data);
   } catch (error: any) {
     console.log(error.response.data.message);
     toast.error("خطا در بستن تیکت", {
