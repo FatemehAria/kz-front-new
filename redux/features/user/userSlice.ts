@@ -168,6 +168,7 @@ const userSlice = createSlice({
     },
     logoutUser: (state) => {
       window.localStorage.clear();
+      window.sessionStorage.clear();
       state.FirstName = "";
       state.token = null;
       state.localToken = null;
@@ -198,7 +199,9 @@ const userSlice = createSlice({
       state.userId = sessionStorage.getItem("userId") || "";
     },
     getTokenFromLocal: (state) => {
-      state.localToken = JSON.parse(window.localStorage.getItem("token") as string);
+      state.token = JSON.parse(
+        window.sessionStorage.getItem("token") as string
+      );
     },
     changeUserInfo: (state, action) => {
       state.FirstName = action.payload;
@@ -254,13 +257,13 @@ const userSlice = createSlice({
         state.showModal = true;
         state.status = "success";
         state.token = action.payload.token;
-        window.localStorage.setItem("token", JSON.stringify(state.token));
+        sessionStorage.setItem("token", JSON.stringify(state.token));
+        // window.localStorage.setItem("token", JSON.stringify(state.token));
         state.FirstName = action.payload.FirstName;
         state.LastName = action.payload.LastName;
         state.type = action.payload.type;
         state.userType = action.payload.userType;
         state.errorMessage = "";
-        localStorage.setItem("role", JSON.stringify(state.role));
         state.role = state.userType?.find(
           (item: userRoleType) => item.name_en.toLowerCase() === "admin"
         )
@@ -294,7 +297,8 @@ const userSlice = createSlice({
       state.showModal = true;
       state.status = "success";
       state.token = action.payload.token;
-      window.localStorage.setItem("token", JSON.stringify(state.token));
+      sessionStorage.setItem("token", JSON.stringify(state.token));
+      // window.localStorage.setItem("token", JSON.stringify(state.token));
       state.FirstName = action.payload.FirstName;
       state.LastName = action.payload.LastName;
       state.userType = action.payload.userType;
@@ -337,7 +341,7 @@ export const {
   getIdFromLocal,
   deleteDataFromStorage,
   logoutUser,
-  setLocalStorageToken
+  setLocalStorageToken,
 } = userSlice.actions;
 export {
   fetchUserProfile,

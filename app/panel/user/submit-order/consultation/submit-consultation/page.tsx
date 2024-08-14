@@ -45,7 +45,7 @@ function SubmitConsultation() {
       userId
     );
   };
-  console.log(ticket.type);
+  // console.log(ticket.type);
   return (
     <div className="relative">
       <div

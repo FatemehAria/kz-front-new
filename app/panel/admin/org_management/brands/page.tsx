@@ -16,6 +16,7 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { FaCheck } from "react-icons/fa6";
 import NotFound from "../../components/NotFound";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import NewInfoOnEachPageBtn from "@/app/panel/user/components/NewInfoOnEachPageBtn";
 
 export type BrandType = {
   brand: {
@@ -76,12 +77,10 @@ function Brands() {
   return (
     <div className="grid grid-cols-1 gap-5">
       <div className="flex">
-        <Link
-          href={`/panel/admin/org_management/brands/create-brand`}
-          className="text-white bg-[#4866CF] p-2 rounded-[5px]"
-        >
-          + ایجاد برند
-        </Link>
+        <NewInfoOnEachPageBtn
+          btnText="ایجاد برند"
+          src="/panel/admin/org_management/brands/create-brand"
+        />
       </div>
       <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center grid grid-cols-1 gap-5">
         <div className="grid grid-cols-4">

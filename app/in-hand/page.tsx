@@ -6,7 +6,7 @@ import Image from "next/image";
 import board from "../../public/in-hand/board.svg";
 import { useStopwatch } from "react-timer-hook";
 const { inHandBackground } = styles;
-
+import SmileIcon from "@/public/in-hand/smile.svg";
 const InHand = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [heightReached, setHeightReached] = useState(false);
@@ -109,16 +109,19 @@ const InHand = () => {
               top: hookSpring.y.to((value) => `${value}px`),
               left: "50%",
               transform: "translateX(-50%)",
-              width: "250px",
+              width: "210px",
               height: "250px",
             }}
           >
             <div className="relative">
               <Image src={board} alt="board" />
-              <span className="font-bold absolute top-[8rem] left-12 text-[18px]">
+              <span className="font-bold absolute text-center top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 w-full text-[18px]">
                 به زودی حاضر میشه
               </span>
-              <div className="absolute top-[10rem] left-1/2 -translate-x-1/2">
+              <span className="absolute text-center top-[60%] left-1/2 -translate-x-1/2 w-full flex justify-center">
+                <Image src={SmileIcon} alt="smile" />
+              </span>
+              {/* <div className="absolute top-[10rem] left-1/2 -translate-x-1/2">
                 <div className="text-[18px] font-bold flex">
                   <span className="px-1 rounded-sm text-yellow-600 flex gap-1">
                     {String(time.days)
@@ -168,12 +171,11 @@ const InHand = () => {
                           className="border border-black px-2 rounded-[4px] relative"
                         >
                           {digit}
-                          {/* <span className="absolute h-[1px] bg-black w-[3rem] bottom-5 left-0"></span> */}
                         </span>
                       ))}
                   </span>
                 </div>
-              </div>
+              </div> */}
             </div>
           </animated.div>
           <animated.div

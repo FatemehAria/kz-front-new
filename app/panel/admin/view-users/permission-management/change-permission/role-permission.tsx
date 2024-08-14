@@ -17,7 +17,7 @@ function RolePermission() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const localRoles = JSON.parse(
-        window.localStorage.getItem("roles") as string
+        window.sessionStorage.getItem("roles") as string
       );
       const roleInfo = localRoles.map(
         (item: { role: { id: number; name_fa: string } }) =>
@@ -26,7 +26,7 @@ function RolePermission() {
       setRoleInfos(roleInfo);
 
       const localPermissions = JSON.parse(
-        window.localStorage.getItem("permissions") as string
+        window.sessionStorage.getItem("permissions") as string
       );
       const perInfo = localPermissions.map(
         (item: { id: number; name_fa: string; name_en: string }) =>

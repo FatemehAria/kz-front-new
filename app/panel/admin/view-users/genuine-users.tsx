@@ -11,7 +11,7 @@ import { deleteUser } from "@/utils/utils";
 import SearchInput from "../components/SearchInput";
 
 type GenuineUsersProps = {
-  GenuineUsersData: any[];
+  GenuineUsersData: never[];
   usersStatus: {
     loading: boolean;
   };
@@ -52,28 +52,34 @@ function GenuineUsers({
           <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
         </SkeletonTheme>
       ) : GenuineUsersData?.length > 0 ? (
-        GenuineUsersData.filter((item) =>
-          item.mobile.includes(searchUsers)
-        ).map((item, index) => (
-          <div
-            key={item.id}
-            className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
-          >
-            <p>{index + 1}</p>
-            <p className="font-faNum">{item.mobile}</p>
-            <p>{item.name}</p>
-            <p>{item.email ? item.email : "-"}</p>
-            <span
-              onClick={() =>
-                deleteUser(item.id, token, setAllUsers, AllUsersData)
-              }
-              className="flex justify-center"
+        GenuineUsersData.filter(
+          (item: { id: number; mobile: string; name: string; email: string }) =>
+            item.mobile.includes(searchUsers)
+        ).map(
+          (
+            item: { id: number; mobile: string; name: string; email: string },
+            index: number
+          ) => (
+            <div
+              key={item.id}
+              className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
             >
-              <RxCross1 />
-              {/* <Image src={vieweye} alt="مشاهده" width={20} height={20} /> */}
-            </span>
-          </div>
-        ))
+              <p>{index + 1}</p>
+              <p className="font-faNum">{item.mobile}</p>
+              <p>{item.name}</p>
+              <p>{item.email ? item.email : "-"}</p>
+              <span
+                onClick={() =>
+                  deleteUser(item.id, token, setAllUsers, AllUsersData)
+                }
+                className="flex justify-center"
+              >
+                <RxCross1 />
+                {/* <Image src={vieweye} alt="مشاهده" width={20} height={20} /> */}
+              </span>
+            </div>
+          )
+        )
       ) : (
         <NotFound text="کاربری یافت نشد." />
       )}

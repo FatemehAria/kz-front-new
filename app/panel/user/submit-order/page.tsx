@@ -34,10 +34,10 @@ function SubmitOrder() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const localPlans = JSON.parse(
-        window.localStorage.getItem("plans") as string
+        window.sessionStorage.getItem("plans") as string
       );
       const localSiteTypes = JSON.parse(
-        window.localStorage.getItem("site-types") as string
+        window.sessionStorage.getItem("site-types") as string
       );
 
       setSiteTypes(localSiteTypes);
@@ -112,7 +112,7 @@ function SubmitOrder() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const consultation_id = JSON.parse(
-        window.localStorage.getItem("consultation_id") as string
+        window.sessionStorage.getItem("consultation_id") as string
       );
       setConsultationId(consultation_id);
     }

@@ -772,7 +772,7 @@ export const mainAdminSidebarOptions = [
   },
   {
     text: "مدیریت سازمان ها",
-    imgSrc: "/Panel/searchuserssidebar.svg", //عکس ادیت شه
+    imgSrc: "/Panel/orgmanagement.svg", //عکس ادیت شه
     address: "/panel/admin/org_management",
     path: [
       "/panel/admin/org_management",

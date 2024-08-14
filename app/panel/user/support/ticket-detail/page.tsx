@@ -158,8 +158,8 @@ function TicketDetail() {
     formData.append("file", File);
     try {
       const { data } = await app.post(
-        `/ticket/file/upload/${id}`,
-        { formData, register_user_id: id },
+        `/ticket/file/upload/${Number(id)}`,
+        { formData, register_user_id: Number(id) },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -221,7 +221,7 @@ function TicketDetail() {
           <IoArrowBack />
         </div>
       </div>
-      <div className="bg-white shadow mx-auto rounded-2xl py-[3%] px-[3%] w-full relative">
+      <div className="bg-white shadow mx-auto rounded-2xl py-[3%] px-[3%] w-full relative grid grid-cols-1 gap-8">
         {ticketDetailStatus.loading ? (
           <SkeletonTheme>
             <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
@@ -262,27 +262,39 @@ function TicketDetail() {
             />
           </div>
         )}
-        <div
-          style={{
-            border: "none",
-            borderTop: "3px solid",
-            borderImage:
-              "linear-gradient(to right, #FFFFFF 0%, #4866CE 45% ,#4866CE 55% , #FFFFFF 100%) 1",
-            margin: "5% 0",
-          }}
-        ></div>
-        <Chat
-          senderText={ticketDetail.SenderText}
-          recieverText={"this is the reciever text"}
-          textInput={textInput}
-          setTextInput={setTextInput}
-          File={File}
-          handleFileChange={handleFileChange}
-          handleFileUpload={handleFileUpload}
-          sendResponseTicket={sendResponseTicket}
-          fileSelected={fileSelected}
-          ticketId={ticketId}
-        />
+        {ticketDetailStatus.loading ? (
+          <SkeletonTheme>
+            <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
+          </SkeletonTheme>
+        ) : ticketDetailStatus.error ? (
+          <NotFound text={`${ticketDetailStatus.error}`} />
+        ) : (
+          ticketDetail.Blocked !== "close" && (
+            <div>
+              <div
+                style={{
+                  border: "none",
+                  borderTop: "3px solid",
+                  borderImage:
+                    "linear-gradient(to right, #FFFFFF 0%, #4866CE 45% ,#4866CE 55% , #FFFFFF 100%) 1",
+                  margin: "5% 0",
+                }}
+              ></div>
+              <Chat
+                senderText={ticketDetail.SenderText}
+                recieverText={"this is the reciever text"}
+                textInput={textInput}
+                setTextInput={setTextInput}
+                File={File}
+                handleFileChange={handleFileChange}
+                handleFileUpload={handleFileUpload}
+                sendResponseTicket={sendResponseTicket}
+                fileSelected={fileSelected}
+                ticketId={ticketId}
+              />
+            </div>
+          )
+        )}
       </div>
     </div>
   );

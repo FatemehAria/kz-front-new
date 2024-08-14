@@ -44,7 +44,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && token) {
+    if (typeof window !== "undefined") {
       Promise.all([
         // getUserNotification(token, Number(userId), setUserNotifications),
         // getAllSiteTypes(token, setSiteTypes),

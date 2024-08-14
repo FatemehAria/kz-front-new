@@ -41,7 +41,7 @@ function FooterNewsLetter() {
             placeholder="ایمیل خودرا وارد کنید..."
             type="email"
             value={email}
-            className="bg-[#4866CF] placeholder:text-white rounded-md w-full py-3 px-2 outline-none"
+            className="bg-[#4682B4] placeholder:text-white rounded-md w-full py-2 px-2 outline-none"
             aria-describedby="emailnote"
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -56,9 +56,9 @@ function FooterNewsLetter() {
             ایمیل معتبر نیست.
           </p>
         </div>
-        <button className="flex gap-1 p-1 text-white bg-[#4866CF] rounded-md items-center whitespace-nowrap lg:w-[160px] w-[120px] lg:h-[48px]">
-          مشترک شوید
-          <img src="/white-arrow.svg" className="w-4 h-4" />
+        <button className="flex gap-1 p-1 text-white bg-[#4682B4] rounded-md items-center whitespace-nowrap lg:w-[160px] w-[120px] lg:h-[40px]">
+          <span>مشترک شوید</span>
+          <img src="/white-arrow.svg" className="w-3 h-3" />
         </button>
       </form>
       {emailSuccess !== "" && emailSuccess && (

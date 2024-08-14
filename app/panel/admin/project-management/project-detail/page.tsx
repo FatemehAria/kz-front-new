@@ -22,6 +22,7 @@ export type ProjectDetailType = {
   description: string;
   Templates: { id: number; template_name: string }[];
   Colors: { id: number; color: string }[];
+  status?: string;
 };
 function ProjectDetail() {
   const [rejection, setRejection] = useState({
@@ -38,7 +39,7 @@ function ProjectDetail() {
   });
 
   useEffect(() => {
-    getProjectDetail(token, id, setProjectDetail);
+    getProjectDetail(token, id, setProjectDetail, setProjectDetailStatus);
   }, []);
 
   return (
@@ -65,11 +66,11 @@ function ProjectDetail() {
               <p>عنوان پروژه:</p>
               {projectDetailStatus.loading ? (
                 <SkeletonTheme>
-                  <Skeleton count={3} className="p-2" baseColor="#EAEFF6" />
+                  <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
                 </SkeletonTheme>
               ) : (
                 <div className="bg-[#EAEFF6] p-2 rounded-[4px]">
-                  {projectDetail.title}
+                  {projectDetail.title ? projectDetail.title : "-"}
                 </div>
               )}
             </div>
@@ -77,11 +78,11 @@ function ProjectDetail() {
               <label htmlFor="">نوع پروژه:</label>
               {projectDetailStatus.loading ? (
                 <SkeletonTheme>
-                  <Skeleton count={3} className="p-2" baseColor="#EAEFF6" />
+                  <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
                 </SkeletonTheme>
               ) : (
                 <div className="bg-[#EAEFF6] p-2 rounded-[4px]">
-                  {projectDetail.plan?.title}
+                  {projectDetail.plan?.title ? projectDetail.plan?.title : "-"}
                 </div>
               )}
             </div>
@@ -91,11 +92,11 @@ function ProjectDetail() {
               <label htmlFor="">پلن انتخابی:</label>
               {projectDetailStatus.loading ? (
                 <SkeletonTheme>
-                  <Skeleton count={3} className="p-2" baseColor="#EAEFF6" />
+                  <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
                 </SkeletonTheme>
               ) : (
                 <div className="bg-[#EAEFF6] p-2 rounded-[4px]">
-                  {projectDetail.plan?.title}
+                  {projectDetail.plan?.title ? projectDetail.plan?.title : "-"}
                 </div>
               )}
             </div>
@@ -103,7 +104,7 @@ function ProjectDetail() {
               <label htmlFor="">بودجه مورد نظر:</label>
               {projectDetailStatus.loading ? (
                 <SkeletonTheme>
-                  <Skeleton count={3} className="p-2" baseColor="#EAEFF6" />
+                  <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
                 </SkeletonTheme>
               ) : (
                 <div className="bg-[#EAEFF6] p-2 rounded-[4px] font-faNum">
@@ -118,7 +119,7 @@ function ProjectDetail() {
             <label htmlFor="">سایت مشابه مورد نظر شماست:</label>
             {projectDetailStatus.loading ? (
               <SkeletonTheme>
-                <Skeleton count={3} className="p-2" baseColor="#EAEFF6" />
+                <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
               </SkeletonTheme>
             ) : (
               <div className="bg-[#EAEFF6] p-2 rounded-[4px]">
@@ -142,7 +143,7 @@ function ProjectDetail() {
               <label>توضیحات پروژه:</label>
               {projectDetailStatus.loading ? (
                 <SkeletonTheme>
-                  <Skeleton count={3} className="p-2" baseColor="#EAEFF6" />
+                  <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
                 </SkeletonTheme>
               ) : (
                 <div className="bg-[#EAEFF6] p-2 rounded-[4px]">
@@ -155,7 +156,7 @@ function ProjectDetail() {
             <label htmlFor="">قالب و افزونه های مورد نیاز:</label>
             {projectDetailStatus.loading ? (
               <SkeletonTheme>
-                <Skeleton count={3} className="p-2" baseColor="#EAEFF6" />
+                <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
               </SkeletonTheme>
             ) : (
               <div className="bg-[#EAEFF6] p-2 rounded-[4px]">
@@ -180,7 +181,7 @@ function ProjectDetail() {
             <label htmlFor="">رنگ سازمانی:</label>
             {projectDetailStatus.loading ? (
               <SkeletonTheme>
-                <Skeleton count={3} className="p-2" baseColor="#EAEFF6" />
+                <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
               </SkeletonTheme>
             ) : (
               <div className="bg-[#EAEFF6] p-2 rounded-[4px]">
@@ -214,22 +215,24 @@ function ProjectDetail() {
                 </div>
               )}
             </div>
-            <div className="w-full flex justify-end items-center gap-3">
-              <button
-                className="bg-[#EAEFF6] text-[#4866CE] rounded-lg py-1 px-3"
-                onClick={() =>
-                  setRejection((last) => ({ ...last, isRejected: true }))
-                }
-              >
-                رد پروژه
-              </button>
-              <button
-                className="bg-[#4866CE] text-white rounded-lg p-1"
-                onClick={() => confirmProjectByAdmin(token, Number(id))}
-              >
-                تایید پروژه
-              </button>
-            </div>
+            {projectDetail.status === "processing" && (
+              <div className="w-full flex justify-end items-center gap-3">
+                <button
+                  className="bg-[#EAEFF6] text-[#4866CE] rounded-lg py-1 px-3"
+                  onClick={() =>
+                    setRejection((last) => ({ ...last, isRejected: true }))
+                  }
+                >
+                  رد پروژه
+                </button>
+                <button
+                  className="bg-[#4866CE] text-white rounded-lg p-1"
+                  onClick={() => confirmProjectByAdmin(token, Number(id))}
+                >
+                  تایید پروژه
+                </button>
+              </div>
+            )}
           </div>
           {rejection.isRejected && (
             <div className="relative">

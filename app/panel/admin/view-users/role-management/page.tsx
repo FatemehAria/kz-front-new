@@ -10,6 +10,9 @@ import { MdOutlineSettingsBackupRestore } from "react-icons/md";
 import { FaCheck } from "react-icons/fa6";
 import { AiOutlineEdit } from "react-icons/ai";
 import { RoleContext } from "../../context/role-context/RoleContext";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import NotFound from "../../components/NotFound";
+import NewInfoOnEachPageBtn from "@/app/panel/user/components/NewInfoOnEachPageBtn";
 
 export type RoleType = {
   role: {
@@ -22,67 +25,40 @@ export type RoleType = {
 function RoleManagement() {
   const [roles, setRoles] = useState<RoleType[]>([]);
   // const { setRoles, roles } = useContext(RoleContext);
+  const [roleLoading, setRoleLoading] = useState({
+    loading: false,
+    error: "",
+  });
   const { token } = useSelector((state: any) => state.userData);
   const [roleIsDeleted, setRoleIsDeleted] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const localRoles = JSON.parse(
-        window.localStorage.getItem("roles") as string
+        window.sessionStorage.getItem("roles") as string
       );
       console.log(localRoles);
       setRoles(localRoles);
     }
   }, []);
 
-  console.log("roles", roles);
+  useEffect(() => {
+    getAllRole(token, setRoles, setRoleLoading);
+  }, []);
 
   const [editField, setEditField] = useState({
     showEditField: false,
     name_en: "",
     name_fa: "",
   });
-
-  // const handleRoleEdit = async (id: number) => {
-  //   const selectedPermission = roles.find(
-  //     (item: RoleType) => item.role.id === id
-  //   );
-  //   // check
-  //   if (selectedPermission) {
-  //     setRoles((last) =>
-  //       last.map((item: RoleType) =>
-  //         item.role.id === id
-  //           ? {
-  //               ...item,
-  //               role: {
-  //                 ...item.role,
-  //                 name_en:
-  //                   editField.name_en !== ""
-  //                     ? editField.name_en
-  //                     : item.role.name_en,
-  //                 name_fa:
-  //                   editField.name_fa !== ""
-  //                     ? editField.name_fa
-  //                     : item.role.name_fa,
-  //               },
-  //             }
-  //           : item
-  //       )
-  //     );
-  //   }
-  //   await updateRole(token, id, editField.name_en, editField.name_fa);
-  // };
-
   console.log(roles);
   return (
     <div className="grid grid-cols-1 gap-5">
       <div className="flex">
-        <Link
-          href={`/panel/admin/view-users/role-management/create-role`}
-          className="text-white bg-[#4866CF] p-2 rounded-[5px]"
-        >
-          + ایجاد نقش
-        </Link>
+        <NewInfoOnEachPageBtn
+          btnText="ایجاد نقش"
+          src="/panel/admin/view-users/role-management/create-role"
+        />
       </div>
       <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center space-y-3">
         <div className="grid grid-cols-4">
@@ -92,77 +68,56 @@ function RoleManagement() {
           <div>عملیات</div>
         </div>
 
-        {roles.map((item: any, index) => (
-          <div
-            className={`${
-              roleIsDeleted && item.role.deleted_at
-                ? "bg-red-300"
-                : "bg-[#EAEFF6]"
-            } grid grid-cols-4 gap-x-5 text-center py-1 rounded-[4px] cursor-pointer`}
-            key={index}
-          >
-            <p>{index + 1}</p>
-            <input
-              value={
-                // editField.showEditField ? editField.name_en : item.role.name_en
-                item.role.name_en
-              }
-              // onChange={(e) =>
-              //   setEditField((last) => ({
-              //     ...last,
-              //     name_en: e.target.value,
-              //   }))
-              // }
-              // className={`${
-              //   editField.showEditField
-              //     ? "bg-white"
-              //     : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
-              // } outline-none`}
-              className="bg-[#EAEFF6] caret-transparent cursor-default text-center"
-              readOnly={true}
-            />
-            <input
-              value={
-                // editField.showEditField ? editField.name_fa : item.role.name_fa
-                item.role.name_fa
-              }
-              // onChange={(e) =>
-              //   setEditField((last) => ({
-              //     ...last,
-              //     name_fa: e.target.value,
-              //   }))
-              // }
-              // className={`${
-              //   editField.showEditField
-              //     ? "bg-white"
-              //     : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
-              // } outline-none`}
-              className="bg-[#EAEFF6] caret-transparent cursor-default text-center"
-              readOnly={true}
-            />
-            <div className="flex flex-row items-center justify-center gap-3">
-              <Link
-                href={`/panel/admin/view-users/role-management/role-detail?id=${item.role.id}`}
-                className="flex justify-center"
-              >
-                <Image src={vieweye} alt="مشاهده" width={20} height={20} />
-              </Link>
-              <span
-                onClick={() =>
-                  deleteRole(item.role.id, token, setRoleIsDeleted)
-                }
-                className="flex justify-center"
-              >
-                <RxCross1 className="text-red-600 text-lg" />
-              </span>
-              <span
-                onClick={() =>
-                  restoreRole(item.role.id, token, setRoleIsDeleted)
-                }
-              >
-                <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg" />
-              </span>
-              {/* <span
+        {roleLoading.loading ? (
+          <SkeletonTheme>
+            <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
+          </SkeletonTheme>
+        ) : roleLoading.error ? (
+          <NotFound text={`${roleLoading.error}`} />
+        ) : (
+          roles.map((item: any, index) => (
+            <div
+              className={`${
+                roleIsDeleted && item.role.deleted_at
+                  ? "bg-red-300"
+                  : "bg-[#EAEFF6]"
+              } grid grid-cols-4 gap-x-5 text-center py-1 rounded-[4px] cursor-pointer`}
+              key={index}
+            >
+              <p>{index + 1}</p>
+              <input
+                value={item.role.name_en}
+                className="bg-[#EAEFF6] caret-transparent cursor-default text-center"
+                readOnly={true}
+              />
+              <input
+                value={item.role.name_fa}
+                className="bg-[#EAEFF6] caret-transparent cursor-default text-center"
+                readOnly={true}
+              />
+              <div className="flex flex-row items-center justify-center gap-3">
+                <Link
+                  href={`/panel/admin/view-users/role-management/role-detail?id=${item.role.id}`}
+                  className="flex justify-center"
+                >
+                  <Image src={vieweye} alt="مشاهده" width={20} height={20} />
+                </Link>
+                <span
+                  onClick={() =>
+                    deleteRole(item.role.id, token, setRoleIsDeleted)
+                  }
+                  className="flex justify-center"
+                >
+                  <RxCross1 className="text-red-600 text-lg" />
+                </span>
+                <span
+                  onClick={() =>
+                    restoreRole(item.role.id, token, setRoleIsDeleted)
+                  }
+                >
+                  <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg" />
+                </span>
+                {/* <span
                 onClick={() =>
                   setEditField((last) => ({
                     ...last,
@@ -180,9 +135,10 @@ function RoleManagement() {
                   <AiOutlineEdit className="text-green-600 text-lg" />
                 )}
               </span> */}
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );

@@ -11,7 +11,7 @@ function IntroBtns() {
     <div className="flex md:justify-end justify-center w-full gap-3">
       <Link
         href={`${
-          token && role === "User"
+          role === "User"
             ? "/panel/user/submit-order"
             : "/authorization"
         }`}

@@ -18,12 +18,12 @@ function CreatePosition() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const localUsers = JSON.parse(
-        window.localStorage.getItem("users") as string
+        window.sessionStorage.getItem("users") as string
       );
       setUsersInfo(localUsers);
 
       const localDepartments = JSON.parse(
-        window.localStorage.getItem("departments") as string
+        window.sessionStorage.getItem("departments") as string
       );
 
       setDepartmentsInfo(localDepartments);

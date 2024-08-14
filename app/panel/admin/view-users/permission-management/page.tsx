@@ -17,6 +17,7 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { PermissionContext } from "../../context/permission-context/PermissionContext";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import NotFound from "../../components/NotFound";
+import NewInfoOnEachPageBtn from "@/app/panel/user/components/NewInfoOnEachPageBtn";
 
 export type PermissionType = {
   name_en: string;
@@ -24,7 +25,7 @@ export type PermissionType = {
   id: number;
 };
 function PermissionManagement() {
-  const { permissions, setPermissions, permissionStatus } =
+  const { permissions, setPermissions, permissionStatus, setPermissionStatus } =
     useContext(PermissionContext);
   const { token } = useSelector((state: any) => state.userData);
   const [permissionIsDeleted, setPermissionIsDeleted] = useState(false);
@@ -38,7 +39,7 @@ function PermissionManagement() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const localPermissions = JSON.parse(
-        window.localStorage.getItem("permissions") as string
+        window.sessionStorage.getItem("permissions") as string
       );
       setPermissions(localPermissions);
     }
@@ -46,6 +47,9 @@ function PermissionManagement() {
 
   // console.log("permissions",permissions);
 
+  useEffect(() => {
+    getAllPermissions(token, setPermissions, setPermissionStatus);
+  }, []);
   const handlePermissionEdit = async (id: number) => {
     const selectedPermission = permissions.find(
       (item: PermissionType) => item.id === id
@@ -72,17 +76,15 @@ function PermissionManagement() {
   return (
     <div className="grid grid-cols-1 gap-5">
       <div className="flex gap-5">
-        <Link
-          href={`/panel/admin/view-users/permission-management/create-permission`}
-          className="text-white bg-[#4866CF] p-2 rounded-[5px]"
-        >
-          + ایجاد دسترسی
-        </Link>
+        <NewInfoOnEachPageBtn
+          btnText="ایجاد دسترسی"
+          src="/panel/admin/view-users/permission-management/create-permission"
+        />
         <Link
           href={`/panel/admin/view-users/permission-management/change-permission`}
           className="text-white bg-[#4866CF] p-2 rounded-[5px]"
         >
-          + تغییر و مدیریت دسترسی ها
+          تغییر و مدیریت دسترسی ها
         </Link>
       </div>
       <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center space-y-3">

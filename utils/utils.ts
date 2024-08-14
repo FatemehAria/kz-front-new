@@ -85,7 +85,7 @@ export const getUserNotification = async (
   setUserNotifications: Dispatch<SetStateAction<never[]>>
 ) => {
   try {
-    // console.log("user_id", userId);
+    console.log("user_id", token);
     const { data } = await app(`/notification/getUserNotification/${userId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -279,11 +279,11 @@ export const getAllUsers = async (
         Authorization: `Bearer ${token}`,
       },
     });
-    window.localStorage.setItem("users", JSON.stringify(data.data));
+    window.sessionStorage.setItem("users", JSON.stringify(data.data));
     setAllUsers(data.data);
-    console.log("all users data", data);
+    // console.log("all users data", data);
   } catch (error: any) {
-    console.log(error.response.data.message);
+    // console.log(error.response.data.message);
     setDataStatus &&
       setDataStatus((last) => ({
         ...last,
@@ -342,9 +342,17 @@ export const deleteUser = async (
 // get all positions
 export const getAllPositions = async (
   token: string,
-  setPositions: React.Dispatch<React.SetStateAction<PositionType[]>>
+  setPositions: React.Dispatch<React.SetStateAction<PositionType[]>>,
+  setPositionsStatus?: React.Dispatch<
+    React.SetStateAction<{
+      loading: boolean;
+      error: string;
+    }>
+  >
 ) => {
   try {
+    setPositionsStatus &&
+      setPositionsStatus((last) => ({ ...last, loading: true }));
     const { data } = await app("/positions", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -352,9 +360,14 @@ export const getAllPositions = async (
     });
     setPositions(data.data);
     console.log(data);
-    window.localStorage.setItem("positions", JSON.stringify(data.data));
+    window.sessionStorage.setItem("positions", JSON.stringify(data.data));
   } catch (error: any) {
     console.log(error.response.data.message);
+    setPositionsStatus &&
+      setPositionsStatus((last) => ({ ...last, error: "جایگاهی یافت نشد." }));
+  } finally {
+    setPositionsStatus &&
+      setPositionsStatus((last) => ({ ...last, loading: false }));
   }
 };
 // update position by admin
@@ -556,7 +569,7 @@ export const createNewPosition = async (
       transition: Bounce,
       rtl: true,
     });
-    console.log(data);
+    // console.log(data);
   } catch (error: any) {
     toast.error("خطا در ایجاد موقعیت", {
       position: "top-right",
@@ -570,7 +583,7 @@ export const createNewPosition = async (
       transition: Bounce,
       rtl: true,
     });
-    console.log(error.response.data.message);
+    // console.log(error.response.data.message);
   }
 };
 // get all roles
@@ -592,7 +605,7 @@ export const getAllRole = async (
       },
     });
     setRoles(data.data);
-    window.localStorage.setItem("roles", JSON.stringify(data.data));
+    window.sessionStorage.setItem("roles", JSON.stringify(data.data));
     console.log(data);
   } catch (error: any) {
     setDataLoading &&
@@ -826,7 +839,7 @@ export const getAllPermissions = async (
       },
     });
     setPermissions(data.data);
-    window.localStorage.setItem("permissions", JSON.stringify(data.data));
+    window.sessionStorage.setItem("permissions", JSON.stringify(data.data));
     console.log(data);
   } catch (error: any) {
     console.log(error.response.data.message);
@@ -974,7 +987,7 @@ export const deletePermission = async (
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(data);
+    // console.log(data);
     toast.success("دسترسی با موفقیت حذف شد", {
       position: "top-right",
       autoClose: 5000,
@@ -988,9 +1001,9 @@ export const deletePermission = async (
       rtl: true,
     });
     setIsDeleted(true);
-    console.log(data);
+    // console.log(data);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     toast.error("خطا در حذف دسترسی", {
       position: "top-right",
       autoClose: 5000,
@@ -1061,10 +1074,10 @@ export const getAllBrands = async (
     setBrandStatus && setBrandStatus((last) => ({ ...last, loading: true }));
     const { data } = await app("/brands");
     setBrands(data.data);
-    console.log(data);
-    window.localStorage.setItem("brands", JSON.stringify(data.data));
+    // console.log(data);
+    window.sessionStorage.setItem("brands", JSON.stringify(data.data));
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     setBrandStatus &&
       setBrandStatus((last) => ({ ...last, error: "برندی یافت نشد." }));
   } finally {
@@ -1300,7 +1313,7 @@ export const getAllProjects = async (
     console.log("all projects", data);
     setAllProjects(data.data);
   } catch (error: any) {
-    console.log(error.response.data.message);
+    // console.log(error.response.data.message);
     if (error.response.data.message === "project-notFound") {
       setProjectStatus((last) => ({ ...last, error: "پروژه ای یافت نشد." }));
     } else {
@@ -1429,10 +1442,10 @@ export const getAllPlans = async (
       },
     });
     setPlans(data.data);
-    console.log("all plans", data);
-    window.localStorage.setItem("plans", JSON.stringify(data.data));
+    // console.log("all plans", data);
+    window.sessionStorage.setItem("plans", JSON.stringify(data.data));
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     setPlansStatus &&
       setPlansStatus((last) => ({ ...last, error: "پلنی بافت نشد." }));
   } finally {
@@ -1829,7 +1842,7 @@ export const createNewPlanValue = async (
       rtl: true,
     });
     getPlanAttrs(token, setPlanAttrs);
-    console.log(data);
+    // console.log(data);
   } catch (error: any) {
     toast.error("خطا در ایجاد مقدار", {
       position: "top-right",
@@ -1843,7 +1856,7 @@ export const createNewPlanValue = async (
       transition: Bounce,
       rtl: true,
     });
-    console.log(error.response.data.message);
+    // console.log(error.response.data.message);
   }
 };
 // get all values of the plan
@@ -2074,10 +2087,10 @@ export const getAllSiteTypes = async (
   try {
     const { data } = await app("/types");
     setSiteTypes(data.data);
-    console.log(data);
-    window.localStorage.setItem("site-types", JSON.stringify(data.data));
+    // console.log(data);
+    window.sessionStorage.setItem("site-types", JSON.stringify(data.data));
   } catch (error: any) {
-    console.log(error.response.data.message);
+    // console.log(error.response.data.message);
   }
 };
 // update site type by admin
@@ -2461,19 +2474,35 @@ export const getAllDepartments = async (
   token: string,
   setDepartments: Dispatch<
     SetStateAction<DepartmentType[] | DepartmentFinalType[]>
+  >,
+  setDepartmentLoading?: React.Dispatch<
+    React.SetStateAction<{
+      loading: boolean;
+      error: string;
+    }>
   >
 ) => {
   try {
+    setDepartmentLoading &&
+      setDepartmentLoading((last) => ({ ...last, loading: true }));
     const { data } = await app("/departments", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(data);
+    // console.log(data);
     setDepartments(data.data);
-    window.localStorage.setItem("departments", JSON.stringify(data.data));
+    window.sessionStorage.setItem("departments", JSON.stringify(data.data));
   } catch (error: any) {
-    console.log(error.response.data.message);
+    // console.log(error.response.data.message);
+    setDepartmentLoading &&
+      setDepartmentLoading((last) => ({
+        ...last,
+        error: "دپارتمانی یافت نشد.",
+      }));
+  } finally {
+    setDepartmentLoading &&
+      setDepartmentLoading((last) => ({ ...last, loading: false }));
   }
 };
 // update department by admin
@@ -2732,7 +2761,7 @@ export const submitConsultation = async (
       }
     );
     console.log("consultation created", data);
-    window.localStorage.setItem(
+    window.sessionStorage.setItem(
       "consultation_id",
       JSON.stringify(data.data.id)
     );
@@ -2918,7 +2947,7 @@ export const createTicket = async (
         },
       }
     );
-    console.log(data);
+    console.log("new",data);
     toast.success("تیکت با موفقیت ایجاد شد", {
       position: "top-right",
       autoClose: 5000,
@@ -3088,7 +3117,7 @@ export const createProject = async (
       transition: Bounce,
       rtl: true,
     });
-    window.localStorage.removeItem("consultation_id");
+    window.sessionStorage.removeItem("consultation_id");
     console.log(data);
   } catch (error: any) {
     console.log(error.response.data.message);

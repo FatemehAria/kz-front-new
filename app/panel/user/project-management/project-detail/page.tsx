@@ -37,9 +37,9 @@ function ProjectDetail() {
   useEffect(() => {
     getOrderDetail(token, Number(id), setProjectDetail);
   }, []);
-  console.log(projectDetail);
+  // console.log(projectDetail);
   const projectCurrentState = projectDetail.status?.title;
-  console.log(projectCurrentState);
+  // console.log(projectCurrentState);
   return (
     <div className="relative">
       <div

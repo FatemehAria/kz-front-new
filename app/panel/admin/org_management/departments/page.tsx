@@ -15,6 +15,9 @@ import { MdOutlineSettingsBackupRestore } from "react-icons/md";
 import { FaCheck } from "react-icons/fa6";
 import { AiOutlineEdit } from "react-icons/ai";
 import { DepartmentContext } from "../../context/department-context/DepartmentContext";
+import NewInfoOnEachPageBtn from "@/app/panel/user/components/NewInfoOnEachPageBtn";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import NotFound from "../../components/NotFound";
 
 export type DepartmentType = {
   id: number;
@@ -33,7 +36,13 @@ export type DepartmentFinalType = {
 function Departments() {
   // const { departments } = useContext(DepartmentContext);
   // const typedDepartments: DepartmentType[] = departments as DepartmentType[];
-  const [departments, setDepartments] = useState([]);
+  const [departments, setDepartments] = useState<
+    DepartmentType[] | DepartmentFinalType[]
+  >([]);
+  const [departmentLoading, setDepartmentLoading] = useState({
+    loading: false,
+    error: "",
+  });
   const { token } = useSelector((state: any) => state.userData);
   const [departmentIsDeleted, setDepartmentIsDeleted] = useState(false);
   const [editField, setEditField] = useState({
@@ -45,50 +54,23 @@ function Departments() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const localDepartments = JSON.parse(
-        window.localStorage.getItem("departments") as string
+        window.sessionStorage.getItem("departments") as string
       );
       setDepartments(localDepartments);
     }
   }, []);
 
-  const handleBrandEdit = async (id: number) => {
-    // const selectedBrand = brands.find(
-    //   (item: BrandType) => item.brand.id === id
-    // );
+  useEffect(() => {
+    getAllDepartments(token, setDepartments, setDepartmentLoading);
+  }, []);
 
-    // if (selectedBrand) {
-    //   setBrands((last) =>
-    //     last.map((item: BrandType) =>
-    //       item.brand.id === id
-    //         ? {
-    //             ...item,
-    //             brand: {
-    //               ...item.brand,
-    //               title:
-    //                 editField.editTitle !== ""
-    //                   ? editField.editTitle
-    //                   : item.brand.title,
-    //               description:
-    //                 editField.editDesc !== ""
-    //                   ? editField.editDesc
-    //                   : item.brand.description,
-    //             },
-    //           }
-    //         : item
-    //     )
-    //   );
-    // }
-    await updateBrand(token, id, editField.name_en, editField.name_fa);
-  };
   return (
     <div className="grid grid-cols-1 gap-8">
-      <div className="">
-        <Link
-          href={`/panel/admin/org_management/departments/create-department`}
-          className="text-white bg-[#4866CF] p-2 rounded-[5px]"
-        >
-          + ایجاد دپارتمان
-        </Link>
+      <div className="flex">
+        <NewInfoOnEachPageBtn
+          btnText="ایجاد دپارتمان"
+          src="/panel/admin/org_management/departments/create-department"
+        />
       </div>
       <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center grid grid-cols-1 gap-5">
         <div className="grid grid-cols-4">
@@ -98,18 +80,14 @@ function Departments() {
           <div>عملیات</div>
         </div>
 
-        {departments.map(
-          (
-            item: {
-              department: {
-                deleted_at: string;
-                name_en: string;
-                name_fa: string;
-                id: number;
-              };
-            },
-            index: number
-          ) => (
+        {departmentLoading.loading ? (
+          <SkeletonTheme>
+            <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
+          </SkeletonTheme>
+        ) : departmentLoading.error ? (
+          <NotFound text={`${departmentLoading.error}`} />
+        ) : (
+          departments.map((item: any, index) => (
             <div
               className={`${
                 departmentIsDeleted && item.department.deleted_at
@@ -197,7 +175,7 @@ function Departments() {
               </span> */}
               </div>
             </div>
-          )
+          ))
         )}
       </div>
     </div>

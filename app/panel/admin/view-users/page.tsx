@@ -3,31 +3,34 @@ import React, { useContext, useEffect, useState } from "react";
 import PersonalInfoHeader from "../../user/personal-info/components/personal-info-header";
 import LegalUsers from "./legal-users";
 import GenuineUsers from "./genuine-users";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { UserContext } from "../context/user-context/UserContext";
 import { getAllUsers } from "@/utils/utils";
+import { getTokenFromLocal } from "@/redux/features/user/userSlice";
 
 function ViewUsers() {
-  const { token } = useSelector((state: any) => state.userData);
+  const { localToken } = useSelector((state: any) => state.userData);
   const [AllUsersData, setAllUsersData] = useState([]);
+  const dispatch = useDispatch();
   // const { setAllUsersData, AllUsersData } = useContext(UserContext);
   const [type, setType] = useState("Genuine");
   const [searchUsers, setSearchUsers] = useState("");
-  const [legalUsers, setLegalUsers] = useState<any>([]);
-  const [genuineUsers, setGenuineUsers] = useState<any>([]);
+  const [legalUsers, setLegalUsers] = useState<never[]>([]);
+  const [genuineUsers, setGenuineUsers] = useState<never[]>([]);
   const [usersStatus, setUsersStatus] = useState({
     loading: false,
   });
 
   useEffect(() => {
-    getAllUsers(token, setAllUsersData, setUsersStatus);
+    dispatch(getTokenFromLocal());
+    getAllUsers(localToken, setAllUsersData, setUsersStatus);
   }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const allUsers = JSON.parse(
-        window.localStorage.getItem("users") as string
+        window.sessionStorage.getItem("users") as string
       );
       setAllUsersData(allUsers);
     }
@@ -53,7 +56,7 @@ function ViewUsers() {
             usersStatus={usersStatus}
             setAllUsers={setAllUsersData}
             setDataStatus={setUsersStatus}
-            token={token}
+            token={localToken}
             AllUsersData={AllUsersData}
             searchUsers={searchUsers}
             setSearchUsers={setSearchUsers}
@@ -66,7 +69,7 @@ function ViewUsers() {
             usersStatus={usersStatus}
             setAllUsers={setAllUsersData}
             setDataStatus={setUsersStatus}
-            token={token}
+            token={localToken}
             AllUsersData={AllUsersData}
             searchUsers={searchUsers}
             setSearchUsers={setSearchUsers}

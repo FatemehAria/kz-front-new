@@ -18,7 +18,7 @@ function AddNewTicket() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const localDepartments = JSON.parse(
-        window.localStorage.getItem("departments") as string
+        window.sessionStorage.getItem("departments") as string
       );
 
       setDepartments(localDepartments);

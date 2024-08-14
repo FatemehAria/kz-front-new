@@ -32,6 +32,7 @@ function CreateSiteType() {
           onChange={(e) =>
             setCreateSiteType((last) => ({ ...last, title: e.target.value }))
           }
+          placeholder="الزامی"
           className="bg-[#D0DBEC] border-[#D0DBEC] mx-auto outline-none rounded-md px-2 py-2 text-lg w-full border-[0.3px]"
         />
 
@@ -42,6 +43,7 @@ function CreateSiteType() {
           onChange={(e) =>
             setCreateSiteType((last) => ({ ...last, description: e.target.value }))
           }
+          placeholder="الزامی"
           className="bg-[#D0DBEC] border-[#D0DBEC]mx-auto outline-none rounded-md px-2 py-2 text-lg w-full border-[0.3px]"
         />
 

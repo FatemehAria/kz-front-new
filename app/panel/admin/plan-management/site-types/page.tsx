@@ -1,5 +1,10 @@
 "use client";
-import { deleteSiteType, getAllSiteTypes, restoreSiteType, updateSiteType } from "@/utils/utils";
+import {
+  deleteSiteType,
+  getAllSiteTypes,
+  restoreSiteType,
+  updateSiteType,
+} from "@/utils/utils";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -9,6 +14,7 @@ import { RxCross1 } from "react-icons/rx";
 import { MdOutlineSettingsBackupRestore } from "react-icons/md";
 import { FaCheck } from "react-icons/fa6";
 import { AiOutlineEdit } from "react-icons/ai";
+import NewInfoOnEachPageBtn from "@/app/panel/user/components/NewInfoOnEachPageBtn";
 
 function SiteTypes() {
   const [siteTypes, setSiteTypes] = useState<never[]>([]);
@@ -25,44 +31,14 @@ function SiteTypes() {
     editDesc: "",
   });
 
-  const handleSiteTypeEdit = async (id: number) => {
-    const selectedSiteType = siteTypes.find(
-      //check
-      (item: any) => item.id === id
-    );
-
-    // if (selectedSiteType) {
-    //   setSiteTypes((last) =>
-    //     last.map((item: any) =>
-    //       item.id === id
-    //         ? {
-    //             ...item,
-    //             brand: {
-    //               ...item.brand,
-    //               title:
-    //                 editField.editTitle !== ""
-    //                   ? editField.editTitle
-    //                   : item.title,
-    //               description:
-    //                 editField.editDesc !== ""
-    //                   ? editField.editDesc
-    //                   : item.description,
-    //             },
-    //           }
-    //         : item
-    //     )
-    //   );
-    // }
-    await updateSiteType(token, id, editField.editTitle, editField.editDesc);
-  };
   return (
     <div className="grid grid-cols-1 gap-5">
-      <Link
-        href={`/panel/admin/plan-management/site-types/create-site-type`}
-        className="text-white bg-[#4866CF] p-2 rounded-[5px] w-[140px] whitespace-nowrap"
-      >
-        + ایجاد نوع طراحی
-      </Link>
+      <div className="flex">
+        <NewInfoOnEachPageBtn
+          btnText="ایجاد نوع طراحی"
+          src="/panel/admin/plan-management/site-types/create-site-type"
+        />
+      </div>
       <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center space-y-3">
         <div className="grid grid-cols-4">
           <div>ردیف</div>
@@ -82,13 +58,8 @@ function SiteTypes() {
           >
             <p>{index + 1}</p>
             <input
-              value={editField.showEditField ? editField.editTitle : item.title}
-              onChange={(e) =>
-                setEditField((last) => ({
-                  ...last,
-                  editTitle: e.target.value,
-                }))
-              }
+              value={item.title ? item.title : "-"}
+              readOnly={true}
               className={`${
                 editField.showEditField
                   ? "bg-white"
@@ -96,17 +67,8 @@ function SiteTypes() {
               } outline-none`}
             />
             <input
-              value={
-                editField.showEditField
-                  ? editField.editDesc
-                  : item.description
-              }
-              onChange={(e) =>
-                setEditField((last) => ({
-                  ...last,
-                  editDesc: e.target.value,
-                }))
-              }
+              value={item.description ? item.description : "-"}
+              readOnly={true}
               className={`${
                 editField.showEditField
                   ? "bg-white"
@@ -135,24 +97,6 @@ function SiteTypes() {
               >
                 <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg" />
               </span> */}
-              <span
-                onClick={() =>
-                  setEditField((last) => ({
-                    ...last,
-                    showEditField: !last.showEditField,
-                  }))
-                }
-                className="flex justify-center"
-              >
-                {editField.showEditField ? (
-                  <FaCheck
-                    onClick={() => handleSiteTypeEdit(item.id)}
-                    className="text-green-600 text-lg"
-                  />
-                ) : (
-                  <AiOutlineEdit className="text-green-600 text-lg" />
-                )}
-              </span>
             </div>
           </div>
         ))}

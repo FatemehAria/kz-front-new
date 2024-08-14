@@ -12,7 +12,6 @@ import {
   updatePlanAttr,
 } from "@/utils/utils";
 import { PlanAttrType } from "../plan-detail/page";
-import { PlanContext } from "../context/ValueContext";
 import ValueComponent, { ValueType } from "./value-component";
 import { createActionCreatorInvariantMiddleware } from "@reduxjs/toolkit";
 import { AttrIdContext } from "../context/AttrIdContext";
@@ -73,6 +72,7 @@ type AttrEditionProps = {
     }>
   >;
 };
+
 function AttrEdition({
   token,
   planId,

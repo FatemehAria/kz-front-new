@@ -37,11 +37,7 @@ const Support = () => {
   useEffect(() => {
     getAllTickets(token, setAllTickets, setSupportStatus);
   }, []);
-  // useEffect(() => {
-  //   if (localUserId) {
-  //     getAllTheTickets();
-  //   }
-  // }, [localUserId]);
+
   return (
     <div className="flex flex-col gap-3">
       <Link
@@ -76,7 +72,7 @@ const Support = () => {
                 <p className="font-faNum">{item.title}</p>
                 {/* item.priority_id */}
                 <div>
-                  {item.Blocked === "true" ? (
+                  {item.status_id === 2 ? (
                     <p>
                       بسته{" "}
                       <span className="text-emerald-600 font-semibold">

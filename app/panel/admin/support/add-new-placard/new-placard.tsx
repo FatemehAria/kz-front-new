@@ -21,17 +21,17 @@ function NewPlacard({ setSteps }: NewPlacardProps) {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const localUsers = JSON.parse(
-        window.localStorage.getItem("users") as string
+        window.sessionStorage.getItem("users") as string
       );
       setUsers(localUsers);
 
       const localDepartments = JSON.parse(
-        window.localStorage.getItem("departments") as string
+        window.sessionStorage.getItem("departments") as string
       );
       setDepartments(localDepartments);
 
       const localBrands = JSON.parse(
-        window.localStorage.getItem("brands") as string
+        window.sessionStorage.getItem("brands") as string
       );
       setBrands(localBrands);
     }

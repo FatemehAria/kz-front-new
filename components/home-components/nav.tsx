@@ -35,7 +35,7 @@ const Nav = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const locTok = JSON.parse(window.localStorage.getItem("token") as string);
+      const locTok = JSON.parse(window.sessionStorage.getItem("token") as string);
       setnavlocaltoken(locTok);
     }
   }, [dispatch]);
@@ -47,12 +47,6 @@ const Nav = () => {
     }
   }, [dispatch, navlocaltoken]);
 
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     dispatch(getTokenFromLocal());
-  //     dispatch<any>(fetchUserProfile());
-  //   }
-  // }, [dispatch]);
 
   const routing = () => {
     if (localToken === null) {
@@ -66,7 +60,6 @@ const Nav = () => {
     }
   };
   const route = routing();
-
   // console.dir("localToken", localToken);
 
   return (
@@ -99,7 +92,7 @@ const Nav = () => {
         />
         {/* Large Screen */}
 
-        {status === "loading" && !localToken ? (
+        {status === "loading" ? (
           <SkeletonTheme width={140}>
             <Skeleton count={1} className="p-2" baseColor="#4866CF" />
           </SkeletonTheme>

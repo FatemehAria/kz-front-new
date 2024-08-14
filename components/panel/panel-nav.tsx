@@ -61,7 +61,11 @@ const PanelNav = ({
             </div>
             {showAnnouncementDropdown && (
               <div
-                className="absolute -bottom-[1.25rem] bg-white w-[200px] rounded-[4px]"
+                className={`absolute ${
+                  numberOfAnnouncements.length !== 0
+                    ? "-bottom-[2.5rem] p-1"
+                    : "-bottom-[1.25rem]"
+                }  bg-white w-[200px] rounded-[4px]`}
                 onMouseLeave={() => setShowAnnouncementDropdown(false)}
               >
                 {numberOfAnnouncements.length === 0

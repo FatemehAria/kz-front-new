@@ -19,7 +19,7 @@ function PositionPermission() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const localPositions = JSON.parse(
-        window.localStorage.getItem("positions") as string
+        window.sessionStorage.getItem("positions") as string
       );
       const positionInfo = localPositions?.map(
         (item: { position: { id: number; name_fa: string } }) =>
@@ -28,7 +28,7 @@ function PositionPermission() {
       setPositionInfos(positionInfo);
 
       const localPermissions = JSON.parse(
-        window.localStorage.getItem("permissions") as string
+        window.sessionStorage.getItem("permissions") as string
       );
       const perInfo = localPermissions.map(
         (item: { id: number; name_fa: string; name_en: string }) =>
