@@ -40,16 +40,15 @@ function CreateNewsletter() {
 
   useEffect(() => {
     if (users.length > 0 && !newsletterInfo.user_id) {
-      const firstUser = users?.[0]; // Get the first user
-      setNewsLetteInfo((prev) => ({ ...prev, user_id: firstUser.name })); // Set the user_id to the first user's name
+      const firstUser: { name: string } = users?.[0];
+      setNewsLetteInfo((prev) => ({ ...prev, user_id: firstUser.name }));
     }
   }, [users]);
 
-  // Automatically select the first department if available
   useEffect(() => {
     if (departments.length > 0 && !newsletterInfo.dept_id) {
-      const firstDepartment = departments[0].department?.name_fa; // Get the first department name
-      setNewsLetteInfo((prev) => ({ ...prev, dept_id: firstDepartment })); // Set the dept_id to the first department name
+      const firstDepartment = departments[0].department?.name_fa;
+      setNewsLetteInfo((prev) => ({ ...prev, dept_id: firstDepartment }));
     }
   }, [departments]);
 
@@ -57,20 +56,24 @@ function CreateNewsletter() {
     (item: { department: { name_fa: string; id: number } }) =>
       item.department?.id + "-" + item.department?.name_fa
   );
+
   const usersInfo = users?.map(
-    (item: { name: string; surname: string }) => item?.name + " " + item?.surname
+    (item: { name: string; surname: string }) =>
+      item?.name + " " + item?.surname
   );
 
   const depId = departments
-    .filter((item) =>
+    .filter((item: { department: { name_fa: string } }) =>
       newsletterInfo?.dept_id?.includes(item.department?.name_fa)
     )
-    .map((item) => item.department.id)[0];
+    .map((item: { department: { id: number } }) => item.department.id)[0];
+    
   const userId = users
-    .filter((item) => newsletterInfo?.user_id?.includes(item?.name))
-    .map((item) => item?.id)[0];
+    .filter((item: { name: string }) =>
+      newsletterInfo?.user_id?.includes(item?.name)
+    )
+    .map((item: { id: number }) => item?.id)[0];
 
-  console.log(userId);
   const handleNewsLetterSubmission = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {
@@ -99,7 +102,7 @@ function CreateNewsletter() {
             title: e.target.value,
           }))
         }
-        direction="flex-row items-center"
+        // direction="flex-row items-center"
       />
       <div className="grid grid-cols-2 gap-5">
         <SubmitOrderDropdown

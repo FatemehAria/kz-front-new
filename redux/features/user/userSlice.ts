@@ -19,6 +19,7 @@ const initialState: RTKUserState = {
   LastName: "",
   // token: window.localStorage.getItem("token") || null,
   token: null,
+  localToken: null,
   errorMessage: "",
   successMessage: "",
   // to avoid conflict in auth and main page
@@ -121,11 +122,14 @@ const fetchUserProfile = createAsyncThunk<
   { state: RootState }
 >("userData/fetchUserProfile", async (_, { getState, rejectWithValue }) => {
   try {
-    // console.log(getState().userData.token);
-    if (getState().userData.token) {
+    if (getState().userData.token || getState().userData.localToken) {
       const { data } = await app.get(`/user/show`, {
         headers: {
-          authorization: `Bearer ${getState().userData.token}`,
+          authorization: `Bearer ${
+            getState().userData.token
+              ? getState().userData.token
+              : getState().userData.localToken
+          }`,
         },
       });
       console.log("userprofile", data);
@@ -159,10 +163,14 @@ const userSlice = createSlice({
   name: "userData",
   initialState,
   reducers: {
+    setLocalStorageToken: (state, action) => {
+      state.localToken = action.payload;
+    },
     logoutUser: (state) => {
       window.localStorage.clear();
       state.FirstName = "";
       state.token = null;
+      state.localToken = null;
       state.role = "";
       state.userId = "";
       state.showModal = false;
@@ -186,11 +194,11 @@ const userSlice = createSlice({
     readPhoneNumberFromLocalStroage: (state) => {
       state.PhoneNumber = localStorage.getItem("PhoneNumber");
     },
-    getTokenFromLocal: (state) => {
-      state.token = JSON.parse(window.localStorage.getItem("token") as string);
-    },
     getIdFromLocal: (state) => {
       state.userId = sessionStorage.getItem("userId") || "";
+    },
+    getTokenFromLocal: (state) => {
+      state.localToken = JSON.parse(window.localStorage.getItem("token") as string);
     },
     changeUserInfo: (state, action) => {
       state.FirstName = action.payload;
@@ -220,12 +228,12 @@ const userSlice = createSlice({
       state.userId = action.payload.userId;
       sessionStorage.setItem("userId", state.userId);
       state.userType = action.payload.userType;
-      localStorage.setItem("role", JSON.stringify(state.role));
       state.role = state.userType?.find(
         (item: userRoleType) => item.name_en.toLowerCase() === "admin"
       )
         ? "Admin"
         : "User";
+      localStorage.setItem("role", JSON.stringify(state.role));
     });
     builder.addCase(fetchUserProfile.rejected, (state, action) => {
       state.status = "failed";
@@ -258,6 +266,7 @@ const userSlice = createSlice({
         )
           ? "Admin"
           : "User";
+        localStorage.setItem("role", JSON.stringify(state.role));
         state.userId = action.payload.userId;
         sessionStorage.setItem("userId", state.userId);
         state.successMessage = `${
@@ -298,12 +307,12 @@ const userSlice = createSlice({
       } عزیز با موفقیت وارد پنل کاربری خود شدید.`;
       state.errorMessage = "";
       state.type = action.payload.type;
-      localStorage.setItem("role", JSON.stringify(state.role));
       state.role = state.userType?.find(
         (item: userRoleType) => item.name_en.toLowerCase() === "admin"
       )
         ? "Admin"
         : "User";
+      localStorage.setItem("role", JSON.stringify(state.role));
     });
     builder.addCase(fetchUserInLoginWithPassword.rejected, (state, action) => {
       state.status = "failed";
@@ -328,6 +337,7 @@ export const {
   getIdFromLocal,
   deleteDataFromStorage,
   logoutUser,
+  setLocalStorageToken
 } = userSlice.actions;
 export {
   fetchUserProfile,

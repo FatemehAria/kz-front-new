@@ -34,6 +34,9 @@ const PanelNav = ({
       changeNotificationStatus(token, notif_id);
     }
   };
+  const handleShowNotifDropdown = () => {
+    setShowAnnouncementDropdown(true)
+  }
   // console.log(numberOfAnnouncements);
   return (
     <div
@@ -49,7 +52,7 @@ const PanelNav = ({
             //     ? "/panel/admin/support"
             //     : "/panel/user/support"
             // }`}
-            onMouseEnter={() => setShowAnnouncementDropdown(true)}
+            onMouseEnter={() => handleShowNotifDropdown()}
           >
             <div className="rounded-full bg-[#EAEFF6] flex justify-center items-center p-2 relative">
               <Image

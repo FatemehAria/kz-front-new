@@ -29,6 +29,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const { token, userProfile, status, numberOfAnnouncements, role, userId } =
     useSelector((store: any) => store.userData);
   const dispatch = useDispatch();
+  const [userNotifications, setUserNotifications] = useState([]);
   const { setAllPlans, setSiteTypes } = useContext(OrderSubmissionContext);
   const { setRoles, setDataLoading } = useContext(RoleContext);
   const { setPermissions, setPermissionStatus } = useContext(PermissionContext);
@@ -49,6 +50,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
         // getAllSiteTypes(token, setSiteTypes),
         // getAllDepartments(token, setDepartments),
         getAllUsers(token, setAllUsersData, setUsersStatus),
+        getUserNotification(token, Number(userId), setUserNotifications),
         getAllPositions(token, setPositions),
         getAllPermissions(token, setPermissions, setPermissionStatus),
         getAllRole(token, setRoles, setDataLoading),

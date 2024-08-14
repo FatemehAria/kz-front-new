@@ -52,9 +52,9 @@ const Auth = () => {
     dispatch(updateStatus());
   }, []);
 
-  console.log("success message", successMessage);
-  console.log("error message", errorMessage);
-  console.log("status", status);
+  // console.log("success message", successMessage);
+  // console.log("error message", errorMessage);
+  // console.log("status", status);
   // const router = useRouter();
   // if (token) {
   //   router.replace("/");

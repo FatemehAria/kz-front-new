@@ -16,6 +16,7 @@ import { RxCross1 } from "react-icons/rx";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useSelector } from "react-redux";
 import NotFound from "../components/NotFound";
+import NewInfoOnEachPageBtn from "../../user/components/NewInfoOnEachPageBtn";
 
 function NewsLetter() {
   const [newsLetters, setNewsLetters] = useState([]);
@@ -65,12 +66,10 @@ function NewsLetter() {
   return (
     <div className="grid grid-cols-1 gap-5">
       <div className="flex">
-        <Link
-          href={`/panel/admin/newsletter/create-newsletter`}
-          className="text-white bg-[#4866CF] p-2 rounded-[5px]"
-        >
-          + ایجاد خبرنامه جدید
-        </Link>
+        <NewInfoOnEachPageBtn
+          btnText="ایجاد خبرنامه جدید"
+          src="/panel/admin/newsletter/create-newsletter"
+        />
       </div>
       <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center space-y-3">
         <div className="grid grid-cols-4">
@@ -90,51 +89,38 @@ function NewsLetter() {
           newsLetters.map((item: any, index) => (
             <div
               className={`${
-                newsletterIsDeleted && item.deleted_at
-                  ? "bg-red-300"
-                  : "bg-[#EAEFF6]"
-              } grid grid-cols-4 gap-x-5 text-center py-1 rounded-[4px] cursor-pointer`}
+                item.deleted_at ? "bg-red-100" : "bg-[#EAEFF6]"
+              } grid grid-cols-4 gap-x-5 text-center py-1 rounded-[4px]`}
               key={index}
             >
               <p>{index + 1}</p>
               <input
-                value={
-                  editField.showEditField ? editField.editTitle : item.title
-                }
-                onChange={(e) =>
-                  setEditField((last) => ({
-                    ...last,
-                    editTitle: e.target.value,
-                  }))
-                }
+                value={item.title}
+                readOnly={true}
                 className={`${
-                  editField.showEditField
-                    ? "bg-white"
+                  item.deleted_at
+                    ? "bg-transparent caret-transparent cursor-default text-center"
                     : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
                 } outline-none`}
               />
               <input
-                value={
-                  editField.showEditField
-                    ? editField.editDesc
-                    : item.description
-                }
-                onChange={(e) =>
-                  setEditField((last) => ({
-                    ...last,
-                    editDesc: e.target.value,
-                  }))
-                }
+                value={item.description}
+                readOnly={true}
                 className={`${
-                  editField.showEditField
-                    ? "bg-white"
+                  item.deleted_at
+                    ? "bg-transparent caret-transparent cursor-default text-center"
                     : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
                 } outline-none`}
               />
               <div className="flex flex-row items-center justify-center gap-3">
                 <span
                   onClick={() =>
-                    deleteNewsLetter(token, item.id, setNewsLetterIsDeleted)
+                    deleteNewsLetter(
+                      token,
+                      item.id,
+                      setNewsLetterIsDeleted,
+                      setNewsLetters
+                    )
                   }
                   className="flex justify-center"
                 >
@@ -142,10 +128,19 @@ function NewsLetter() {
                 </span>
                 <span
                   onClick={() =>
-                    restoreNewsletter(item.id, token, setNewsLetterIsDeleted)
+                    restoreNewsletter(
+                      token,
+                      item.id,
+                      setNewsLetterIsDeleted,
+                      setNewsLetters
+                    )
                   }
                 >
-                  <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg" />
+                  <MdOutlineSettingsBackupRestore
+                    className={`${
+                      item.deleted_at ? "text-green-600" : "text-yellow-600 "
+                    } text-lg`}
+                  />
                 </span>
               </div>
             </div>

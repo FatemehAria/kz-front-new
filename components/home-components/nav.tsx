@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchUserProfile,
   getTokenFromLocal,
+  setLocalStorageToken,
 } from "@/redux/features/user/userSlice";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import NavMobile from "./nav-mobile";
@@ -19,10 +20,10 @@ const Nav = () => {
   const [showThree, setShowThree] = useState(false);
   const [showFour, setShowFour] = useState(false);
   const [activeColorChange, setActiveColorChange] = useState(false);
+  const [navlocaltoken, setnavlocaltoken] = useState(null);
   const dispatch = useDispatch();
-  const { FirstName, userProfile, role, status, token } = useSelector(
-    (state: any) => state.userData
-  );
+  const { FirstName, userProfile, role, status, token, localToken } =
+    useSelector((state: any) => state.userData);
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -33,12 +34,28 @@ const Nav = () => {
   });
 
   useEffect(() => {
-    dispatch(getTokenFromLocal());
-    dispatch<any>(fetchUserProfile());
-  }, []);
+    if (typeof window !== "undefined") {
+      const locTok = JSON.parse(window.localStorage.getItem("token") as string);
+      setnavlocaltoken(locTok);
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      dispatch(setLocalStorageToken(navlocaltoken));
+      dispatch<any>(fetchUserProfile());
+    }
+  }, [dispatch, navlocaltoken]);
+
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     dispatch(getTokenFromLocal());
+  //     dispatch<any>(fetchUserProfile());
+  //   }
+  // }, [dispatch]);
 
   const routing = () => {
-    if (token === null) {
+    if (localToken === null) {
       return "/authorization";
     } else {
       if (role === "Admin") {
@@ -50,7 +67,7 @@ const Nav = () => {
   };
   const route = routing();
 
-  console.dir(token);
+  console.dir("localToken", localToken);
 
   return (
     <div
@@ -82,16 +99,16 @@ const Nav = () => {
         />
         {/* Large Screen */}
 
-        {status === "loading" ? (
+        {status === "loading" && !localToken ? (
           <SkeletonTheme width={140}>
             <Skeleton count={1} className="p-2" baseColor="#4866CF" />
           </SkeletonTheme>
         ) : (
           <Link href={route}>
             <button className="hidden lg:inline-block font-semibold bg-[#4866CF] text-white rounded-[4px] py-1 px-5 text-base">
-              {!token && "ثبت نام / ورود"}
-              {token && FirstName}
-              {!FirstName && token && (
+              {!localToken && "ثبت نام / ورود"}
+              {localToken && FirstName}
+              {!FirstName && localToken && (
                 <Skeleton width={100} baseColor="#4866CF" />
               )}
             </button>

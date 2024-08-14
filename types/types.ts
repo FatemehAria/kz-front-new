@@ -4,6 +4,7 @@ export interface RTKUserState {
   FirstName: string;
   LastName: string;
   token: string | null;
+  localToken: string | null;
   errorMessage: string;
   successMessage: string;
   changePhoneNumber: boolean;

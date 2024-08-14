@@ -2214,7 +2214,7 @@ export const restoreSiteType = async (
 export const getAllNewsletters = async (
   token: string,
   setNewsLetters: Dispatch<SetStateAction<never[]>>,
-  setNewsLetterStatus: Dispatch<
+  setNewsLetterStatus?: Dispatch<
     SetStateAction<{
       loading: boolean;
       erorr: string;
@@ -2222,24 +2222,27 @@ export const getAllNewsletters = async (
   >
 ) => {
   try {
-    setNewsLetterStatus((last) => ({ ...last, loading: true }));
+    setNewsLetterStatus &&
+      setNewsLetterStatus((last) => ({ ...last, loading: true }));
     const { data } = await app("/newsletters", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(data);
-    setNewsLetters(data.data);
+    // console.log(data);
+    setNewsLetters(data?.data);
   } catch (error: any) {
-    console.log(error);
+    // console.log(error);
     if (error.response.data.message == "newsletter-notFound") {
-      setNewsLetterStatus((last) => ({
-        ...last,
-        erorr: "خبرنامه ای یافت نشد.",
-      }));
+      setNewsLetterStatus &&
+        setNewsLetterStatus((last) => ({
+          ...last,
+          erorr: "خبرنامه ای یافت نشد.",
+        }));
     }
   } finally {
-    setNewsLetterStatus((last) => ({ ...last, loading: false }));
+    setNewsLetterStatus &&
+      setNewsLetterStatus((last) => ({ ...last, loading: false }));
   }
 };
 // update newsletter by admin
@@ -2330,7 +2333,7 @@ export const createNewsLetter = async (
       transition: Bounce,
       rtl: true,
     });
-    console.log(data);
+    // console.log(data);
   } catch (error) {
     toast.error("خطا در ایجاد خبرنامه", {
       position: "top-right",
@@ -2344,14 +2347,15 @@ export const createNewsLetter = async (
       transition: Bounce,
       rtl: true,
     });
-    console.log(error);
+    // console.log(error);
   }
 };
 // delete newsletter by admin
 export const deleteNewsLetter = async (
   token: string,
   newsletterId: number,
-  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>,
+  setNewsLetters: Dispatch<SetStateAction<never[]>>
 ) => {
   try {
     const { data } = await app.get(`/newsletter/delete/${newsletterId}`, {
@@ -2359,7 +2363,6 @@ export const deleteNewsLetter = async (
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(data);
     toast.success("خبرنامه موردنظر با موفقیت حذف شد", {
       position: "top-right",
       autoClose: 5000,
@@ -2373,9 +2376,8 @@ export const deleteNewsLetter = async (
       rtl: true,
     });
     setIsDeleted(true);
-    console.log(data);
+    getAllNewsletters(token, setNewsLetters);
   } catch (error) {
-    console.log(error);
     toast.error("خطا در حذف خبرنامه", {
       position: "top-right",
       autoClose: 5000,
@@ -2394,7 +2396,8 @@ export const deleteNewsLetter = async (
 export const restoreNewsletter = async (
   token: string,
   newsletterId: number,
-  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>,
+  setNewsLetters: Dispatch<SetStateAction<never[]>>
 ) => {
   try {
     const { data } = await app.get(`/newsletter/restore/${newsletterId}`, {
@@ -2415,9 +2418,8 @@ export const restoreNewsletter = async (
       rtl: true,
     });
     setIsDeleted(false);
-    console.log(data);
+    getAllNewsletters(token, setNewsLetters);
   } catch (error) {
-    console.log(error);
     toast.error("خطا در بازگردانی خبرنامه", {
       position: "top-right",
       autoClose: 5000,
