@@ -175,12 +175,6 @@ function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
             selectedFile={selectedFile}
             label="عکس کاربری:"
           />
-          <PanelFields
-            label="شماره همراه:"
-            onChange={handleChange}
-            value={values.mobile}
-            name="mobile"
-          />
         </div>
       </div>
       <div className="flex justify-end">

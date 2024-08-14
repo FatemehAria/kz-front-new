@@ -67,7 +67,7 @@ const Nav = () => {
   };
   const route = routing();
 
-  console.dir("localToken", localToken);
+  // console.dir("localToken", localToken);
 
   return (
     <div

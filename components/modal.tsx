@@ -54,6 +54,7 @@ function Modal({
     useSelector((state: any) => state.userData);
   const dispatch = useDispatch();
   const router = useRouter();
+  
   useEffect(() => {
     dispatch(getTokenFromLocal());
   }, []);
@@ -70,7 +71,7 @@ function Modal({
     setShowModalOnError && setShowModalOnError(false);
     setLogWithOTP && setLogWithOTP(true);
     setLoginWithPass && setLoginWithPass(true);
-    dispatch(updateStatus())
+    // dispatch(updateStatus())
     if (!isLoggingIn) {
       setSteps?.(3);
     }

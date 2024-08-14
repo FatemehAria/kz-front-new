@@ -49,7 +49,7 @@ export const createNotification = async (
         },
       }
     );
-    console.log(data);
+    // console.log(data);
     toast.success("نوتیفیکیشن با موفقیت ارسال شد.", {
       position: "top-right",
       autoClose: 5000,
@@ -75,7 +75,7 @@ export const createNotification = async (
       transition: Bounce,
       rtl: true,
     });
-    console.log(error.response.data.message);
+    // console.log(error.response.data.message);
   }
 };
 // get user notification
@@ -92,9 +92,9 @@ export const getUserNotification = async (
       },
     });
     setUserNotifications(data.data);
-    console.log("notif", data);
+    // console.log("notif", data);
   } catch (error: any) {
-    console.log(error.response.data.message);
+    // console.log(error.response.data.message);
   }
 };
 // get all notifs
@@ -105,9 +105,9 @@ export const getAllNotifications = async (token: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log("notifs", data);
+    // console.log("notifs", data);
   } catch (error: any) {
-    console.log(error.response.data.message);
+    // console.log(error.response.data.message);
   }
 };
 export const changeNotificationStatus = async (
@@ -126,7 +126,7 @@ export const changeNotificationStatus = async (
         },
       }
     );
-    console.log("notifs", data);
+    // console.log("notifs", data);
   } catch (error: any) {
     console.log(error.response.data.message);
   }

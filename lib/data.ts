@@ -787,7 +787,7 @@ export const mainAdminSidebarOptions = [
   },
   {
     text: "مشاوره ها",
-    imgSrc: "/Panel/searchuserssidebar.svg", //عکس ادیت شه
+    imgSrc: "/Panel/consultation.svg", //عکس ادیت شه
     address: "/panel/admin/consultations",
     path: ["/panel/admin/consultations","/panel/admin/consultations/consult-detail"],
   },

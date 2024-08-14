@@ -125,7 +125,7 @@ const UserLoginViaOTP = () => {
                   showModal={showModal}
                   mainButtonText="ارسال مجدد کد یکبارمصرف"
                   text={errorMessage}
-                  data=""
+                  data=" "
                   isLoggedIn={false}
                   isLoggingIn={false}
                   showOnErrorOrSuccess={true}

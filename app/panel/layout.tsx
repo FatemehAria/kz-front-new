@@ -81,15 +81,8 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
     dispatch(getIdFromLocal());
   }, []);
 
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     const role = JSON.parse(window.localStorage.getItem("role") as string);
-  //     setRole(role);
-  //   }
-  // }, []);
-
   useEffect(() => {
-    if (typeof window !== "undefined" && token) {
+    if (typeof window !== "undefined") {
       Promise.all([
         getAllPlans(token, setAllPlans),
         getUserNotification(token, Number(userId), setUserNotifications),
@@ -109,6 +102,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
     setSiteTypes,
     setDepartments,
     userId,
+    setUserNotifications
     // setPermissions,
     // setUsersStatus,
     // setPositions,
@@ -116,7 +110,6 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
     // setAllUsersData,
     // setPermissionStatus,
   ]);
-
   // useEffect(() => {
   //   if (!token) {
   //     dispatch(deleteDataFromStorage());

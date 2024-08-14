@@ -17,6 +17,7 @@ import {
   updateStatus,
 } from "@/redux/features/user/userSlice";
 import { sendOTPCodeMain } from "@/utils/utils";
+import { useDebounce } from "use-debounce";
 
 type LoginProps = {
   setLoginApproach: React.Dispatch<React.SetStateAction<number>>;
@@ -63,6 +64,7 @@ const Login = ({
   const { result, setAnswer, answer, mathProblem, wrongAnswerMessage } =
     useCaptcha(values.PhoneNumber, setLoginwithPass);
   useStoreNumInLocal(values.PhoneNumber);
+  const [debouncedAnswer] = useDebounce(answer, 700);
 
   useEffect(() => {
     if (result && loginApproach === 0 && logwithOTP && !token) {
@@ -81,6 +83,17 @@ const Login = ({
 
   useEffect(() => {
     if (result && loginApproach === 1 && loginwithPass && !token) {
+      console.log("first");
+      dispatch<any>(
+        fetchUserInLoginWithPassword({
+          mobile: values.PhoneNumber,
+          password: values.Password,
+        })
+      );
+      setAnswer("");
+    }
+    if (status === "failed" && loginApproach === 1 && loginwithPass) {
+      console.log("second");
       dispatch<any>(
         fetchUserInLoginWithPassword({
           mobile: values.PhoneNumber,
@@ -88,12 +101,7 @@ const Login = ({
         })
       );
     }
-    // if (status === "idle") {
-    //   values.PhoneNumber = "";
-    //   values.Password = "";
-    // }
-    return;
-  }, [loginApproach, loginwithPass, token, dispatch,result]);
+  }, [loginApproach, loginwithPass, token, dispatch, result, answer]);
 
   return (
     <React.Fragment>
@@ -142,13 +150,21 @@ const Login = ({
           <div className="flex flex-row justify-between items-center mb-8">
             <span
               onClick={() => setLoginApproach(0)}
-              className={loginApproach === 0 ? `${styles.approach} cursor-default` : "border-none cursor-pointer"}
+              className={
+                loginApproach === 0
+                  ? `${styles.approach} cursor-default`
+                  : "border-none cursor-pointer"
+              }
             >
               ورود با کد تایید
             </span>
             <span
               onClick={() => setLoginApproach(1)}
-              className={loginApproach === 1 ? `${styles.approach} cursor-default` : "border-none cursor-pointer"}
+              className={
+                loginApproach === 1
+                  ? `${styles.approach} cursor-default`
+                  : "border-none cursor-pointer"
+              }
             >
               ورود با رمز عبور
             </span>
@@ -188,7 +204,7 @@ const Login = ({
                 onChange={handleChange}
                 value={values.Password}
                 label="رمز عبور"
-                type="text"
+                type="password"
                 name="Password"
                 error={errors.Password}
                 autoFocus={false}

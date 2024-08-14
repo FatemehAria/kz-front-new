@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,9 +36,8 @@ const PanelNav = ({
     }
   };
   const handleShowNotifDropdown = () => {
-    setShowAnnouncementDropdown(true)
-  }
-  // console.log(numberOfAnnouncements);
+    setShowAnnouncementDropdown(true);
+  };
   return (
     <div
       className="flex flex-col items-end relative justify-center"
@@ -46,31 +46,25 @@ const PanelNav = ({
     >
       <div className="flex justify-end items-center font-YekanBakh font-bold w-full p-3 px-9 border-b-2 border-r-[0.3px] overflow-hidden rounded-lt-lg ">
         <div className="flex flex-row gap-3 items-center py-1">
-          <div
-            // href={`${
-            //   userType === "Admin"
-            //     ? "/panel/admin/support"
-            //     : "/panel/user/support"
-            // }`}
-            onMouseEnter={() => handleShowNotifDropdown()}
-          >
+          <div>
             <div className="rounded-full bg-[#EAEFF6] flex justify-center items-center p-2 relative">
               <Image
                 src={notification}
                 alt="notification-bell"
                 width={42}
                 className="cursor-pointer"
+                onMouseEnter={() => setShowAnnouncementDropdown(true)}
               />
               <p className="bg-[#4866CF] font-faNum text-white p-2 rounded-full flex items-center justify-center w-[20px] h-[20px] absolute top-0 right-0">
-                <span>{[numberOfAnnouncements.text].length}</span>
+                <span>{numberOfAnnouncements.length}</span>
               </p>
             </div>
             {showAnnouncementDropdown && (
               <div
-                className="absolute -bottom-[2.5rem] bg-white w-[200px] rounded-[4px]"
+                className="absolute -bottom-[1.25rem] bg-white w-[200px] rounded-[4px]"
                 onMouseLeave={() => setShowAnnouncementDropdown(false)}
               >
-                {numberOfAnnouncements === 0
+                {numberOfAnnouncements.length === 0
                   ? "اعلانی وجود ندارد."
                   : numberOfAnnouncements.map(
                       (announce: {
