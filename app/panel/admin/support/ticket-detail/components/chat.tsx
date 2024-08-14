@@ -41,7 +41,7 @@ function Chat({
   const adminMessages = adminMsgs ? adminMsgs : [];
 
   // console.log("user messages", userMessages);
-  console.log("admin Messages", adminMessages);
+  // console.log("admin Messages", adminMessages);
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (File && textInput) {
@@ -50,6 +50,7 @@ function Chat({
         await sendResponseTicket(textInput, ticketId),
       ]);
       setTextInput("");
+      File.name = "";
     } else if (textInput && !File) {
       await sendResponseTicket(textInput, ticketId);
       setTextInput("");
@@ -66,7 +67,7 @@ function Chat({
     return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
   });
 
-  console.log("combined", combinedMessages);
+  // console.log("combined", combinedMessages);
   return (
     <div className="grid grid-cols-1">
       <div className="grid grid-cols-1">

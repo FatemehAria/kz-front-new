@@ -25,6 +25,7 @@ const Support = () => {
     error: "",
     loading: false,
   });
+  const [isClosed, setIsClosed] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -73,7 +74,7 @@ const Support = () => {
                 <p>{index + 1}</p>
                 <p>{item.title}</p>
                 <div>
-                  {item.status_id === 2 ? (
+                  {item.status_id === 2 || isClosed ? (
                     <p>
                       بسته{" "}
                       <span className="text-emerald-600 font-semibold">
@@ -102,10 +103,16 @@ const Support = () => {
                     >
                       <Image src={vieweye} alt="مشاهده" width={20} />
                     </Link>
-                    {item.status_id !== 2 && (
+                    {item.status_id !== 2 && !isClosed && (
                       <div
                         onClick={() =>
-                          closeTicket(token, 2, item.id, setAllTickets)
+                          closeTicket(
+                            token,
+                            2,
+                            item.id,
+                            setAllTickets,
+                            setIsClosed
+                          )
                         }
                         className="cursor-pointer"
                       >

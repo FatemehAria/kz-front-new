@@ -2906,7 +2906,7 @@ export const createTicket = async (
         priority_id,
         register_user_id,
         dept_id,
-        ticket_id,
+        ticket_id: null,
       },
       {
         headers: {
@@ -3656,7 +3656,8 @@ export const closeTicket = async (
   token: string,
   status_id: number,
   ticketId: number,
-  setAllTickets: React.Dispatch<React.SetStateAction<never[]>>
+  setAllTickets: React.Dispatch<React.SetStateAction<never[]>>,
+  setIsClosed: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   try {
     const { data } = await app.post(
@@ -3683,6 +3684,7 @@ export const closeTicket = async (
       transition: Bounce,
       rtl: true,
     });
+    setIsClosed(true);
     // setAllTickets(data.data);
   } catch (error: any) {
     console.log(error.response.data.message);

@@ -1,18 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchUserProfile,
-  getIdFromLocal,
-  getTokenFromLocal,
-} from "@/redux/features/user/userSlice";
-import axios from "axios";
+import { useSelector } from "react-redux";
 import { useRouter, useSearchParams } from "next/navigation";
 import TicketInfoField from "./components/ticket-info-filed";
 import Chat from "./components/chat";
 import { Bounce, toast } from "react-toastify";
 import { IoArrowBack } from "react-icons/io5";
-import { getTicektDetail } from "@/utils/utils";
 import app from "@/services/service";
 import NotFound from "@/app/panel/admin/components/NotFound";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
@@ -118,14 +111,16 @@ function TicketDetail() {
         SenderText: newSenderTexts,
         Blocked: data.data?.status.title_en,
       }));
+
+      // console.log(data);
+    } catch (error: any) {
+      // console.log(error.response.data.message);
+      setTicketDetailStatus({ error: "", loading: false });
+    } finally {
       setTicketDetailStatus((prevStatus) => ({
         ...prevStatus,
         loading: false,
       }));
-      // console.log(data);
-    } catch (error: any) {
-      console.log(error.response.data.message);
-      setTicketDetailStatus({ error: "", loading: false });
     }
   };
 
@@ -144,10 +139,10 @@ function TicketDetail() {
           },
         }
       );
-      console.log("sent ticket", data);
+      // console.log("sent ticket", data);
       getTicketDetail();
     } catch (error: any) {
-      console.log(error.response.data.message);
+      // console.log(error.response.data.message);
     }
   };
 
@@ -204,12 +199,11 @@ function TicketDetail() {
       (child: { childId: string }) => child.childId
     )[0];
     setTicketId(childsId);
-    // const prevId = childsId ? childsId : id;
     const prevId = id as string;
     setTicketId(prevId);
   }, [ticketDetail.SenderText]);
 
-  console.log(ticketId);
+  // console.log(ticketId);
   return (
     <div className="relative">
       <div
@@ -270,18 +264,26 @@ function TicketDetail() {
             margin: "5% 0",
           }}
         ></div>
-        <Chat
-          senderText={ticketDetail.SenderText}
-          recieverText={"this is the reciever text"}
-          textInput={textInput}
-          setTextInput={setTextInput}
-          File={File}
-          handleFileChange={handleFileChange}
-          handleFileUpload={handleFileUpload}
-          sendResponseTicket={sendResponseTicket}
-          fileSelected={fileSelected}
-          ticketId={ticketId}
-        />
+        {ticketDetailStatus.loading ? (
+          <SkeletonTheme>
+            <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
+          </SkeletonTheme>
+        ) : ticketDetailStatus.error ? (
+          <NotFound text={`${ticketDetailStatus.error}`} />
+        ) : (
+          <Chat
+            senderText={ticketDetail.SenderText}
+            recieverText={"this is the reciever text"}
+            textInput={textInput}
+            setTextInput={setTextInput}
+            File={File}
+            handleFileChange={handleFileChange}
+            handleFileUpload={handleFileUpload}
+            sendResponseTicket={sendResponseTicket}
+            fileSelected={fileSelected}
+            ticketId={ticketId}
+          />
+        )}
       </div>
     </div>
   );
