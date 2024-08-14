@@ -1492,7 +1492,8 @@ export const updatePlan = async (
 export const deletePlan = async (
   planId: number,
   token: string,
-  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>,
+  setAllPlans: React.Dispatch<React.SetStateAction<PlanType[]>>
 ) => {
   try {
     const { data } = await app.get(`/plan/delete/${planId}`, {
@@ -1515,6 +1516,7 @@ export const deletePlan = async (
     });
     setIsDeleted(true);
     console.log(data);
+    getAllPlans(token, setAllPlans);
   } catch (error) {
     console.log(error);
     toast.error("خطا در حذف پلن", {
@@ -1795,7 +1797,8 @@ export const createNewPlanValue = async (
   planId: number,
   token: string,
   title: string,
-  description: string
+  description: string,
+  setPlanAttrs: React.Dispatch<React.SetStateAction<PlanAttrType[]>>
 ) => {
   try {
     console.log(attrId, planId, title, description);
@@ -1825,6 +1828,7 @@ export const createNewPlanValue = async (
       transition: Bounce,
       rtl: true,
     });
+    getPlanAttrs(token, setPlanAttrs);
     console.log(data);
   } catch (error: any) {
     toast.error("خطا در ایجاد مقدار", {

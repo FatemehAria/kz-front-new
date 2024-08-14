@@ -1,6 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-
+import add from "@/public/Panel/addticket.svg";
 const NewInfoOnEachPageBtn = ({
   btnText,
   src,
@@ -9,11 +10,12 @@ const NewInfoOnEachPageBtn = ({
   src: string;
 }) => {
   return (
-    <Link href={src} className="text-white bg-[#4866CF] p-2 rounded-[5px] flex flex-row gap-3 items-center">
-      <p className="w-[20px] h-[20px] bg-white rounded-full font-[16px] text-[#4866CF] flex justify-center items-center">
-        <span>+</span>
-      </p>
+    <Link
+      href={src}
+      className="text-white bg-[#4866CF] p-2 rounded-[5px] flex flex-row gap-3 items-center"
+    >
       {btnText}
+      <Image src={add} alt="add" />
     </Link>
   );
 };

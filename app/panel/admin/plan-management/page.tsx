@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import vieweye from "@/public/ViewUsers/vieweye.svg";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import NotFound from "../components/NotFound";
+import NewInfoOnEachPageBtn from "../../user/components/NewInfoOnEachPageBtn";
 
 export type PlanType = {
   plan: {
@@ -40,33 +41,6 @@ function PlanManagement() {
     editDesc: "",
   });
 
-  const handlePlanEdit = async (id: number) => {
-    const selectedPlan = allPlans.find((item: PlanType) => item.plan.id === id);
-    if (selectedPlan) {
-      setAllPlans((last) =>
-        last.map((item: PlanType) =>
-          item.plan.id === id
-            ? {
-                ...item,
-                plan: {
-                  ...item.plan,
-                  title:
-                    editField.editTitle !== ""
-                      ? editField.editTitle
-                      : item.plan.title,
-                  description:
-                    editField.editDesc !== ""
-                      ? editField.editDesc
-                      : item.plan.description,
-                },
-              }
-            : item
-        )
-      );
-    }
-    await updatePlan(token, id, editField.editTitle, editField.editDesc);
-  };
-
   useEffect(() => {
     getAllPlans(token, setAllPlans, setPlansStatus);
   }, []);
@@ -74,12 +48,10 @@ function PlanManagement() {
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-row items-center gap-5 whitespace-nowrap">
-        <Link
-          href={`/panel/admin/plan-management/create-plan`}
-          className="text-white bg-[#4866CF] p-2 rounded-[5px] w-[100px]"
-        >
-          + ایجاد پلن
-        </Link>
+        <NewInfoOnEachPageBtn
+          btnText="ایجاد پلن"
+          src="/panel/admin/plan-management/create-plan"
+        />
         <Link
           href={`/panel/admin/plan-management/site-types`}
           className="text-white bg-[#4866CF] p-2 rounded-[5px] w-[230px]"
@@ -106,7 +78,7 @@ function PlanManagement() {
               <div
                 className={`${
                   planIsDeleted && item.plan.deleted_at
-                    ? "bg-red-300"
+                    ? "bg-red-100"
                     : "bg-[#EAEFF6]"
                 } grid grid-cols-4 text-center py-1 rounded-[4px] cursor-pointer`}
                 key={index}
@@ -114,30 +86,18 @@ function PlanManagement() {
                 <p>{index + 1}</p>
                 <input
                   value={item.plan.title}
-                  // onChange={(e) =>
-                  //   setEditField((last) => ({
-                  //     ...last,
-                  //     editTitle: e.target.value,
-                  //   }))
-                  // }
                   className={`${
-                    editField.showEditField
-                      ? "bg-white"
+                    item.plan.deleted_at
+                      ? "bg-transparent caret-transparent cursor-default text-center"
                       : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
                   } outline-none`}
                   readOnly={true}
                 />
                 <input
                   value={item.plan.description ? item.plan.description : "-"}
-                  // onChange={(e) =>
-                  //   setEditField((last) => ({
-                  //     ...last,
-                  //     editDesc: e.target.value,
-                  //   }))
-                  // }
                   className={`${
-                    editField.showEditField
-                      ? "bg-white"
+                    item.plan.deleted_at
+                      ? "bg-transparent caret-transparent cursor-default text-center"
                       : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
                   } outline-none`}
                   readOnly={true}
@@ -151,7 +111,12 @@ function PlanManagement() {
                   </Link>
                   <span
                     onClick={() =>
-                      deletePlan(item.plan.id, token, setPlanIsDeleted)
+                      deletePlan(
+                        item.plan.id,
+                        token,
+                        setPlanIsDeleted,
+                        setAllPlans
+                      )
                     }
                     className="flex justify-center"
                   >
@@ -162,26 +127,14 @@ function PlanManagement() {
                       restorePlan(item.plan.id, token, setPlanIsDeleted)
                     }
                   >
-                    <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg" />
+                    <MdOutlineSettingsBackupRestore
+                      className={`${
+                        item.plan.deleted_at && planIsDeleted
+                          ? "text-green-600"
+                          : "text-yellow-600"
+                      }  text-lg`}
+                    />
                   </span>
-                  {/* <span
-                onClick={() =>
-                  setEditField((last) => ({
-                    ...last,
-                    showEditField: !last.showEditField,
-                  }))
-                }
-                className="flex justify-center"
-              >
-                {editField.showEditField ? (
-                  <FaCheck
-                    onClick={() => handlePlanEdit(item.plan.id)}
-                    className="text-green-600 text-lg"
-                  />
-                ) : (
-                  <AiOutlineEdit className="text-green-600 text-lg" />
-                )}
-              </span> */}
                 </div>
               </div>
             ))}

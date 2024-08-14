@@ -85,7 +85,8 @@ function AttrEdition({
   const [planAttrs, setPlanAttrs] = useState<PlanAttrType[]>([]);
   const [planValues, setPlanValues] = useState<ValueType[]>([]);
   const [planValue, setPlanValue] = useState("");
-  const [attrId, setAttrId] = useState("");
+  const { setAttrId } = useContext(AttrIdContext);
+
   useEffect(() => {
     getPlanAttrs(token, setPlanAttrs);
   }, [addAtrrAndValue.addAttr]);
@@ -93,16 +94,6 @@ function AttrEdition({
   useEffect(() => {
     getPlanValues(token, setPlanValues);
   }, [addAtrrAndValue.addValue]);
-
-  // useEffect(() => {
-  //   if (attrId) {
-  //     const val = planValues
-  //       .filter((item) => item.attr_id === Number(attrId))
-  //       .map((item) => item.title)?.[0];
-  //     setPlanValue(val);
-  //   }
-  //   console.log(attrId);
-  // }, [attrId, planValues]);
 
   const handleAddingValue = (id: number) => {
     setAttrId(String(id));
@@ -112,7 +103,6 @@ function AttrEdition({
     }));
   };
 
-  // console.log(planValue);
   return (
     <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center">
       <div className={`grid grid-cols-4`}>
@@ -143,13 +133,17 @@ function AttrEdition({
             <p>
               {item.values?.length > 0
                 ? item.values
-                    .filter((val) => val.attr_id === item.id)
-                    .map((item) => item.title)[0]
+                    .filter(
+                      (val: { attr_id: number }) => val.attr_id === item.id
+                    )
+                    .map((item: { title: string }) => item.title)[0]
                 : "-"}
             </p>
             <div className="flex flex-row items-center justify-center gap-3">
               <span
-                onClick={() => deletePlanAttr(item?.id, token, setAttrIsDeleted)}
+                onClick={() =>
+                  deletePlanAttr(item?.id, token, setAttrIsDeleted)
+                }
                 className="flex justify-center"
               >
                 <RxCross1 className="text-red-600 text-lg" />

@@ -3,6 +3,7 @@ import { useSearchParams } from "next/navigation";
 import React, { useContext, useState } from "react";
 import { AttrIdContext } from "../context/AttrIdContext";
 import { ValueType } from "./value-component";
+import { PlanAttrType } from "../plan-detail/page";
 
 type ValueAdditionProps = {
   token: string;
@@ -69,7 +70,7 @@ function ValueAddition({
   token,
 }: ValueAdditionProps) {
   const { attrId } = useContext(AttrIdContext);
-  const [value, setValue] = useState<ValueType>([]);
+  const [planAttrs, setPlanAttrs] = useState<PlanAttrType[]>([]);
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     Promise.all([
@@ -78,7 +79,8 @@ function ValueAddition({
         Number(planId),
         token,
         addAtrrAndValue.addValue.valueTitle,
-        addAtrrAndValue.addValue.valueDesc
+        addAtrrAndValue.addValue.valueDesc,
+        setPlanAttrs
       ),
     ]);
   };

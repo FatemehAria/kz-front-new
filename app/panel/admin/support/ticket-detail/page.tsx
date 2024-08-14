@@ -256,34 +256,38 @@ function TicketDetail() {
           </div>
         )}
         <div
-          style={{
-            border: "none",
-            borderTop: "3px solid",
-            borderImage:
-              "linear-gradient(to right, #FFFFFF 0%, #4866CE 45% ,#4866CE 55% , #FFFFFF 100%) 1",
-            margin: "5% 0",
-          }}
-        ></div>
-        {ticketDetailStatus.loading ? (
-          <SkeletonTheme>
-            <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
-          </SkeletonTheme>
-        ) : ticketDetailStatus.error ? (
-          <NotFound text={`${ticketDetailStatus.error}`} />
-        ) : (
-          <Chat
-            senderText={ticketDetail.SenderText}
-            recieverText={"this is the reciever text"}
-            textInput={textInput}
-            setTextInput={setTextInput}
-            File={File}
-            handleFileChange={handleFileChange}
-            handleFileUpload={handleFileUpload}
-            sendResponseTicket={sendResponseTicket}
-            fileSelected={fileSelected}
-            ticketId={ticketId}
-          />
-        )}
+          className={`${ticketDetail.Blocked === "close" ? "hidden" : "flex"}`}
+        >
+          <div
+            style={{
+              border: "none",
+              borderTop: "3px solid",
+              borderImage:
+                "linear-gradient(to right, #FFFFFF 0%, #4866CE 45% ,#4866CE 55% , #FFFFFF 100%) 1",
+              margin: "5% 0",
+            }}
+          ></div>
+          {ticketDetailStatus.loading ? (
+            <SkeletonTheme>
+              <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
+            </SkeletonTheme>
+          ) : ticketDetailStatus.error ? (
+            <NotFound text={`${ticketDetailStatus.error}`} />
+          ) : (
+            <Chat
+              senderText={ticketDetail.SenderText}
+              recieverText={"this is the reciever text"}
+              textInput={textInput}
+              setTextInput={setTextInput}
+              File={File}
+              handleFileChange={handleFileChange}
+              handleFileUpload={handleFileUpload}
+              sendResponseTicket={sendResponseTicket}
+              fileSelected={fileSelected}
+              ticketId={ticketId}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
