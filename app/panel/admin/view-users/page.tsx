@@ -8,6 +8,7 @@ import Link from "next/link";
 import { UserContext } from "../context/user-context/UserContext";
 import { getAllUsers } from "@/utils/utils";
 import { getTokenFromLocal } from "@/redux/features/user/userSlice";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 function ViewUsers() {
   const { localToken } = useSelector((state: any) => state.userData);
@@ -104,7 +105,13 @@ function ViewUsers() {
       <div className="grid grid-cols-1 gap-10 w-full">
         <PersonalInfoHeader step={type} setStep={setType} color="#ffffff" />
         <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%]">
-          {renderSteps()}
+          {usersStatus.loading ? (
+            <SkeletonTheme>
+              <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
+            </SkeletonTheme>
+          ) : (
+            renderSteps()
+          )}
         </div>
       </div>
     </div>

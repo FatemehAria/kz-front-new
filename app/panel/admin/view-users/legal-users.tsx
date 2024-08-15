@@ -52,8 +52,8 @@ function LegalUsers({
         <SkeletonTheme>
           <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
         </SkeletonTheme>
-      ) : LegalUsersData.length > 0 ? (
-        LegalUsersData.filter((item) => item.mobile.includes(searchUsers)).map(
+      ) : LegalUsersData?.length > 0 ? (
+        LegalUsersData?.filter((item) => item.mobile.includes(searchUsers)).map(
           (item, index) => (
             <div
               key={item.id}

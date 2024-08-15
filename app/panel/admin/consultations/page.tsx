@@ -50,7 +50,7 @@ function Consultations() {
         ) : consultStatus.erorr ? (
           <NotFound text={`${consultStatus.erorr}`} />
         ) : (
-          <div>
+          <div className="grid grid-cols-1 gap-5">
             {allConsults.map((item, index) => (
               <div
                 className={`${
