@@ -32,7 +32,7 @@ export const createNotification = async (
   text: string
 ) => {
   try {
-    // console.log("user_id", user_id);
+    console.log("user_id", user_id);
     // console.log("text", text);
     const { data } = await app.post(
       "/notification/store",
