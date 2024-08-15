@@ -11,7 +11,7 @@ import { getTokenFromLocal } from "@/redux/features/user/userSlice";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 function ViewUsers() {
-  const { localToken } = useSelector((state: any) => state.userData);
+  const { localToken, token } = useSelector((state: any) => state.userData);
   const [AllUsersData, setAllUsersData] = useState([]);
   const dispatch = useDispatch();
   // const { setAllUsersData, AllUsersData } = useContext(UserContext);
@@ -24,10 +24,13 @@ function ViewUsers() {
   });
 
   useEffect(() => {
-    dispatch(getTokenFromLocal());
-    getAllUsers(localToken, setAllUsersData, setUsersStatus);
+    if (typeof window !== "undefined") {
+      getAllUsers(token, setAllUsersData, setUsersStatus);
+    }
+    // dispatch(getTokenFromLocal());
   }, []);
 
+  // console.log("users token",localToken);
   useEffect(() => {
     if (typeof window !== "undefined") {
       const allUsers = JSON.parse(

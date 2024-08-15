@@ -47,6 +47,7 @@ function PlanDetail() {
       valueDesc: "",
     },
   });
+
   const [editAttrAndValue, setEditAttrAndValue] = useState({
     editAttr: {
       showEditField: false,
@@ -63,6 +64,8 @@ function PlanDetail() {
   useEffect(() => {
     getPlanDetail(planId, setPlanDetail);
   }, []);
+
+
 
   return (
     <div className="flex flex-col gap-5">

@@ -7,8 +7,10 @@ import { AiOutlineEdit } from "react-icons/ai";
 import {
   deletePlanAttr,
   getPlanAttrs,
+  getPlanDetail,
   getPlanValues,
   restorePlanAttr,
+  showPlanAttrInfo,
   updatePlanAttr,
 } from "@/utils/utils";
 import { PlanAttrType } from "../plan-detail/page";
@@ -85,8 +87,7 @@ function AttrEdition({
   const [planAttrs, setPlanAttrs] = useState<PlanAttrType[]>([]);
   const [planValues, setPlanValues] = useState<ValueType[]>([]);
   const [planValue, setPlanValue] = useState("");
-  const { setAttrId } = useContext(AttrIdContext);
-
+  const { setAttrId, attrId } = useContext(AttrIdContext);
   useEffect(() => {
     getPlanAttrs(token, setPlanAttrs);
   }, [addAtrrAndValue.addAttr]);

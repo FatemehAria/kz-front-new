@@ -1,17 +1,20 @@
 "use client";
+import { getTokenFromLocal } from "@/redux/features/user/userSlice";
 import Link from "next/link";
-import React from "react";
-import {  useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 function IntroBtns() {
-  const { token, role } = useSelector(
-    (state: any) => state.userData
-  );
+  const { localToken, role } = useSelector((state: any) => state.userData);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getTokenFromLocal());
+  }, []);
   return (
     <div className="flex md:justify-end justify-center w-full gap-3">
       <Link
         href={`${
-          role === "User"
+          role === "User" && localToken
             ? "/panel/user/submit-order"
             : "/authorization"
         }`}

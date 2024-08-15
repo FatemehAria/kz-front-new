@@ -85,7 +85,7 @@ export const getUserNotification = async (
   setUserNotifications: Dispatch<SetStateAction<never[]>>
 ) => {
   try {
-    console.log("user_id", token);
+    // console.log("user_id", token);
     const { data } = await app(`/notification/getUserNotification/${userId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -261,6 +261,19 @@ export const sendOTPCodeMain = async (
 // save info to local storage
 export const saveToLocalStorage = (key: string, value: string) => {
   window.localStorage.setItem(`${key}`, value);
+};
+// show plan detail
+export const showPlanAttrInfo = async (token: string, attrId: number) => {
+  try {
+    const { data } = await app(`/attr/show/${attrId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+  } catch (error: any) {
+    console.log(error.response.data.message);
+  }
 };
 // getting all the users
 export const getAllUsers = async (
@@ -1595,7 +1608,7 @@ export const getPlanDetail = async (
 ) => {
   try {
     const { data } = await app.get(`/plan/show/${planId ? planId : ""}`);
-    console.log(data);
+    console.log("plan detail",data);
     setPlanDetail(data.data);
   } catch (error) {
     console.log(error);
@@ -2947,7 +2960,7 @@ export const createTicket = async (
         },
       }
     );
-    console.log("new",data);
+    console.log("new", data);
     toast.success("تیکت با موفقیت ایجاد شد", {
       position: "top-right",
       autoClose: 5000,
