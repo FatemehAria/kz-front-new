@@ -152,8 +152,8 @@ function TicketDetail() {
     formData.append("file", File);
     try {
       const { data } = await app.post(
-        `/ticket/file/upload/${id}`,
-        { formData, responser_user_id: id },
+        `/ticket/file/upload/${Number(id)}`,
+        { formData, responser_user_id: Number(id) },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -256,7 +256,7 @@ function TicketDetail() {
           </div>
         )}
         <div
-          className={`${ticketDetail.Blocked === "close" ? "hidden" : "flex"}`}
+          className={`${ticketDetail.Blocked === "close" ? "hidden" : "grid grid-cols-1 gap-5"}`}
         >
           <div
             style={{
