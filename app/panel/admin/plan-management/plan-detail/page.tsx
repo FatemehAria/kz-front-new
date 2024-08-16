@@ -1,18 +1,10 @@
 "use client";
-import {
-  deletePlanAttr,
-  getPlanAttrs,
-  getPlanDetail,
-  restorePlanAttr,
-  updatePlanAttr,
-} from "@/utils/utils";
+import { getPlanDetail } from "@/utils/utils";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import AttrAdditionForm from "../components/attr-addition-form";
 import { useSelector } from "react-redux";
-
 import AttrEdition from "../components/attr-edition";
-import Link from "next/link";
 import ValueAddition from "../components/value-addition";
 
 export type PlanDetailType = {
@@ -46,19 +38,6 @@ function PlanDetail() {
       add: false,
       valueTitle: "",
       valueDesc: "",
-    },
-  });
-
-  const [editAttrAndValue, setEditAttrAndValue] = useState({
-    editAttr: {
-      showEditField: false,
-      editTitle: "",
-      editDesc: "",
-    },
-    editValue: {
-      showEditField: false,
-      editTitle: "",
-      editDesc: "",
     },
   });
 
@@ -103,10 +82,8 @@ function PlanDetail() {
       </div>
       {/* att info */}
       <AttrEdition
-        editAttrAndValue={editAttrAndValue}
         token={token}
         planId={planId}
-        setEditAttrAndValue={setEditAttrAndValue}
         addAtrrAndValue={addAtrrAndValue}
         setAddAttrAndValue={setAddAttrAndValue}
         setPlanAttrs={setPlanAttrs}
@@ -115,10 +92,8 @@ function PlanDetail() {
       {/* value */}
       {addAtrrAndValue.addValue.add && (
         <ValueAddition
-          editAttrAndValue={editAttrAndValue}
           token={token}
           planId={planId}
-          setEditAttrAndValue={setEditAttrAndValue}
           addAtrrAndValue={addAtrrAndValue}
           setAddAttrAndValue={setAddAttrAndValue}
         />

@@ -1,8 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import TicketFields from "../../support/add-new-placard/components/ticket-fields";
-import CostumSelect from "@/app/panel/components/costum-select";
-import { createNewsLetter, getAllUsers } from "@/utils/utils";
+import { createNewsLetter } from "@/utils/utils";
 import { useSelector } from "react-redux";
 import SubmitOrderDropdown from "@/app/panel/user/submit-order/components/submit-order-dropdown";
 

@@ -36,33 +36,6 @@ function NewsLetter() {
     editDesc: "",
   });
 
-  const handleNewsletterEdit = async (id: number) => {
-    // const selectedNewsLetter = newsLetters.find((item) => item.id === id);
-    // if (selectedNewsLetter) {
-    //   setNewsLetters((last) =>
-    //     last.map((item) =>
-    //       item.brand.id === id
-    //         ? {
-    //             ...item,
-    //             brand: {
-    //               ...item.brand,
-    //               title:
-    //                 editField.editTitle !== ""
-    //                   ? editField.editTitle
-    //                   : item.brand.title,
-    //               description:
-    //                 editField.editDesc !== ""
-    //                   ? editField.editDesc
-    //                   : item.brand.description,
-    //             },
-    //           }
-    //         : item
-    //     )
-    //   );
-    // }
-    // await updateNewsLetter(token, id, editField.editTitle, editField.editDesc);
-  };
-
   return (
     <div className="grid grid-cols-1 gap-5">
       <div className="flex">

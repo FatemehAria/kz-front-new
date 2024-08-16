@@ -2,38 +2,11 @@ import { createNewPlanValue, getPlanValues } from "@/utils/utils";
 import { useSearchParams } from "next/navigation";
 import React, { useContext, useState } from "react";
 import { AttrIdContext } from "../context/AttrIdContext";
-import { ValueType } from "./value-component";
 import { PlanAttrType } from "../plan-detail/page";
 
 type ValueAdditionProps = {
   token: string;
   planId: string | null;
-  editAttrAndValue: {
-    editAttr: {
-      showEditField: boolean;
-      editTitle: string;
-      editDesc: string;
-    };
-    editValue: {
-      showEditField: boolean;
-      editTitle: string;
-      editDesc: string;
-    };
-  };
-  setEditAttrAndValue: React.Dispatch<
-    React.SetStateAction<{
-      editAttr: {
-        showEditField: boolean;
-        editTitle: string;
-        editDesc: string;
-      };
-      editValue: {
-        showEditField: boolean;
-        editTitle: string;
-        editDesc: string;
-      };
-    }>
-  >;
   addAtrrAndValue: {
     addAttr: {
       add: boolean;
@@ -61,32 +34,29 @@ type ValueAdditionProps = {
     }>
   >;
 };
+
 function ValueAddition({
   addAtrrAndValue,
-  editAttrAndValue,
   planId,
   setAddAttrAndValue,
-  setEditAttrAndValue,
   token,
 }: ValueAdditionProps) {
   const { attrId } = useContext(AttrIdContext);
   const [planAttrs, setPlanAttrs] = useState<PlanAttrType[]>([]);
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    Promise.all([
-      await createNewPlanValue(
-        Number(attrId),
-        Number(planId),
-        token,
-        addAtrrAndValue.addValue.valueTitle,
-        addAtrrAndValue.addValue.valueDesc,
-        setPlanAttrs
-      ),
-    ]);
+    await createNewPlanValue(
+      Number(attrId),
+      Number(planId),
+      token,
+      addAtrrAndValue.addValue.valueTitle,
+      addAtrrAndValue.addValue.valueDesc,
+      setPlanAttrs
+    );
   };
   return (
     <form
-      className="bg-white shadow mx-auto rounded-2xl w-full p-[3%]"
+      className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] grid grid-cols-1 gap-3"
       onSubmit={(e) => handleSubmission(e)}
     >
       <label htmlFor="">عنوان مقدار</label>

@@ -1,9 +1,8 @@
 "use client";
 import { createNewPlanAttr, createNewPlanValue } from "@/utils/utils";
 import { useSearchParams } from "next/navigation";
-import React, { useContext, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
-import { AttrIdContext } from "../context/AttrIdContext";
 import { PlanAttrType } from "../plan-detail/page";
 
 type AttrAdditionFormProps = {
@@ -44,7 +43,6 @@ function AttrAdditionForm({
   const { token } = useSelector((state: any) => state.userData);
   const params = useSearchParams();
   const planId = params.get("id");
-  const { attrId } = useContext(AttrIdContext);
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await createNewPlanAttr(
@@ -57,7 +55,6 @@ function AttrAdditionForm({
     setAddAttrAndValue((last) => ({
       ...last,
       addAttr: { ...last.addAttr, attrDesc: "", attrTitle: "", add: false },
-      addValue: { ...last.addValue, valueTitle: "", valueDesc: "" },
     }));
   };
 

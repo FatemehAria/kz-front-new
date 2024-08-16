@@ -12,32 +12,6 @@ type AttrEditionProps = {
   planId: string | null;
   planAttrs: PlanAttrType[];
   setPlanAttrs: React.Dispatch<React.SetStateAction<PlanAttrType[]>>;
-  editAttrAndValue: {
-    editAttr: {
-      showEditField: boolean;
-      editTitle: string;
-      editDesc: string;
-    };
-    editValue: {
-      showEditField: boolean;
-      editTitle: string;
-      editDesc: string;
-    };
-  };
-  setEditAttrAndValue: React.Dispatch<
-    React.SetStateAction<{
-      editAttr: {
-        showEditField: boolean;
-        editTitle: string;
-        editDesc: string;
-      };
-      editValue: {
-        showEditField: boolean;
-        editTitle: string;
-        editDesc: string;
-      };
-    }>
-  >;
   addAtrrAndValue: {
     addAttr: {
       add: boolean;
@@ -69,15 +43,13 @@ type AttrEditionProps = {
 function AttrEdition({
   token,
   planId,
-  editAttrAndValue,
-  setEditAttrAndValue,
   addAtrrAndValue,
   setAddAttrAndValue,
   setPlanAttrs,
   planAttrs,
 }: AttrEditionProps) {
   const [attrIsDeleted, setAttrIsDeleted] = useState(false);
-  const { setAttrId, attrId } = useContext(AttrIdContext);
+  const { setAttrId } = useContext(AttrIdContext);
 
   useEffect(() => {
     getPlanAttrs(token, setPlanAttrs);
