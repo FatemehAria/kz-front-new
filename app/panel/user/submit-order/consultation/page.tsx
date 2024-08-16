@@ -2,8 +2,8 @@ import Order from "@/components/home-components/order";
 import Image from "next/image";
 import React from "react";
 import ConsultImage from "@/public/consult-image.svg";
-import PhoneIcon from "@/public/consult/phone.svg";
-import TicketIcon from "@/public/consult/ticket.svg";
+import PhoneIcon from "@/public/Consult/phone.svg";
+import TicketIcon from "@/public/Consult/ticket.svg";
 import Link from "next/link";
 function Consultation() {
   return (
