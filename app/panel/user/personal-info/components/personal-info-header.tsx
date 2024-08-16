@@ -25,6 +25,7 @@ function PersonalInfoHeader({
           borderImage:
             "linear-gradient(to left, rgba(72, 102, 207, 1) -5%, rgba(234, 239, 246, 1) 100%) 1",
         }}
+        className="hidden md:inline-block"
       ></div>
       <div
         style={{
@@ -38,6 +39,7 @@ function PersonalInfoHeader({
           borderImage:
             "linear-gradient(to left, rgba(234, 239, 246, 1) -5%, rgba(72, 102, 207, 1) 100%) 1",
         }}
+        className="hidden md:inline-block"
       ></div>
       <div className="text-center absolute -top-5 left-1/2 text-[20px] -translate-x-1/2 bg-transparent flex flex-row gap-5">
         <button

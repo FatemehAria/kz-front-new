@@ -37,7 +37,6 @@ function LegalUsers({
   searchUsers,
   setSearchUsers,
 }: LegalUsersProps) {
-  console.log(LegalUsersData);
   return (
     <div className="flex flex-col gap-5">
       <SearchInput

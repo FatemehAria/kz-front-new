@@ -85,7 +85,7 @@ function ViewUsers() {
   };
   return (
     <div className="grid grid-cols-1 gap-8">
-      <div className="flex flex-row gap-5">
+      <div className="flex flex-row gap-5 flex-wrap justify-center md:justify-normal">
         <Link
           href={"/panel/admin/view-users/permission-management"}
           className="text-white bg-[#4866CF] p-2 rounded-[5px] w-[160px] whitespace-nowrap"
@@ -107,7 +107,7 @@ function ViewUsers() {
       </div>
       <div className="grid grid-cols-1 gap-10 w-full">
         <PersonalInfoHeader step={type} setStep={setType} color="#ffffff" />
-        <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%]">
+        <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-xs md:text-base">
           {usersStatus.loading ? (
             <SkeletonTheme>
               <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />

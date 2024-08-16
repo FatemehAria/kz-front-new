@@ -153,7 +153,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
                         />
                       </div>
                       <div
-                        className="bg-[#EAEFF6] h-full p-[5%]"
+                        className="bg-[#EAEFF6] h-full md:p-[5%] py-[5%]"
                         onMouseEnter={() => setShowAnnouncementDropdown(false)}
                       >
                         {children}

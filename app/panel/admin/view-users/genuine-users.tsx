@@ -62,17 +62,17 @@ function GenuineUsers({
           ) => (
             <div
               key={item.id}
-              className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
+              className="grid md:grid-cols-5 grid-cols-9 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
             >
-              <p>{index + 1}</p>
-              <p className="font-faNum">{item.mobile}</p>
-              <p>{item.name}</p>
-              <p>{item.email ? item.email : "-"}</p>
+              <p className="col-span-1">{index + 1}</p>
+              <p className="font-faNum col-span-2 md:col-span-1">{item.mobile}</p>
+              <p className="col-span-2 md:col-span-1">{item.name}</p>
+              <p className="col-span-3 md:col-span-1">{item.email ? item.email : "-"}</p>
               <span
                 onClick={() =>
                   deleteUser(item.id, token, setAllUsers, AllUsersData)
                 }
-                className="flex justify-center"
+                className="flex justify-center col-span-1"
               >
                 <RxCross1 />
                 {/* <Image src={vieweye} alt="مشاهده" width={20} height={20} /> */}
