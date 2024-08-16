@@ -62,6 +62,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
   const startIndex = currentPage * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const displayedItems = userSidebarOptions.slice(startIndex, endIndex);
+  // const displayedItems = role === "Admin" ? mainAdminSidebarOptions.slice(startIndex, endIndex) : userSidebarOptions.slice(startIndex, endIndex);
 
   const handleNextClick = () => {
     setCurrentPage((prevPage) =>
@@ -102,7 +103,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
     setSiteTypes,
     setDepartments,
     userId,
-    setUserNotifications
+    setUserNotifications,
     // setPermissions,
     // setUsersStatus,
     // setPositions,
@@ -128,58 +129,58 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
                 dir="rtl"
               >
                 {/* {token && ( */}
-                  <>
-                    <div className="hidden lg:block">
-                      <PanelSidebar
-                        sideOptions={
-                          role === "Admin"
-                            ? mainAdminSidebarOptions
-                            : userSidebarOptions
-                        }
+                <>
+                  <div className="hidden lg:block">
+                    <PanelSidebar
+                      sideOptions={
+                        role === "Admin"
+                          ? mainAdminSidebarOptions
+                          : userSidebarOptions
+                      }
+                      status={status}
+                    />
+                  </div>
+                  <div className="w-full lg:overflow-hidden">
+                    <div>
+                      <PanelNav
+                        userProfile={userProfile}
                         status={status}
+                        userType={role}
+                        numberOfAnnouncements={userNotifications}
+                        setShowAnnouncementDropdown={
+                          setShowAnnouncementDropdown
+                        }
+                        showAnnouncementDropdown={showAnnouncementDropdown}
                       />
                     </div>
-                    <div className="w-full lg:overflow-hidden">
-                      <div>
-                        <PanelNav
-                          userProfile={userProfile}
-                          status={status}
-                          userType={role}
-                          numberOfAnnouncements={userNotifications}
-                          setShowAnnouncementDropdown={
-                            setShowAnnouncementDropdown
-                          }
-                          showAnnouncementDropdown={showAnnouncementDropdown}
-                        />
-                      </div>
-                      <div
-                        className="bg-[#EAEFF6] h-full md:p-[5%] py-[5%]"
-                        onMouseEnter={() => setShowAnnouncementDropdown(false)}
-                      >
-                        {children}
-                      </div>
-                      <div className="md:hidden flex flex-row bg-[#4866CF] transition-all rounded-md w-full">
-                        <Image
-                          src={prevarrow}
-                          alt=""
-                          onClick={() => handlePrevClick()}
-                          className={`${currentPage === 0 ? "hidden" : "flex"}`}
-                        />
-                        <PanelSidebarSmall sideOptions={displayedItems} />
-                        <Image
-                          src={nextarrow}
-                          alt=""
-                          onClick={() => handleNextClick()}
-                          className={`${
-                            currentPage + 1 ===
-                            Math.ceil(userSidebarOptions.length / itemsPerPage)
-                              ? "hidden"
-                              : "flex"
-                          }`}
-                        />
-                      </div>
+                    <div
+                      className="bg-[#EAEFF6] h-full md:p-[5%] py-[5%]"
+                      onMouseEnter={() => setShowAnnouncementDropdown(false)}
+                    >
+                      {children}
                     </div>
-                  </>
+                    <div className="md:hidden flex flex-row bg-[#4866CF] transition-all rounded-md w-full">
+                      <Image
+                        src={prevarrow}
+                        alt=""
+                        onClick={() => handlePrevClick()}
+                        className={`${currentPage === 0 ? "hidden" : "flex"}`}
+                      />
+                      <PanelSidebarSmall sideOptions={displayedItems} />
+                      <Image
+                        src={nextarrow}
+                        alt=""
+                        onClick={() => handleNextClick()}
+                        className={`${
+                          currentPage + 1 ===
+                          Math.ceil(userSidebarOptions.length / itemsPerPage)
+                            ? "hidden"
+                            : "flex"
+                        }`}
+                      />
+                    </div>
+                  </div>
+                </>
                 {/* )} */}
               </div>
             </AttrIdContextWrapper>

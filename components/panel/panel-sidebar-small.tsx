@@ -1,5 +1,4 @@
 "use client";
-import { deleteToken } from "@/redux/features/user/userSlice";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -15,7 +14,6 @@ const PanelSidebarSmall = ({
 }: {
   sideOptions: SideOptionsProps[];
 }) => {
-  const dispatch = useDispatch();
   const pathname = usePathname();
   return (
     <div className="flex justify-between w-full">

@@ -2,13 +2,13 @@ import React from "react";
 
 function LegalUserHeader() {
   return (
-    <div className="grid grid-cols-6 justify-between text-center">
-      <p>ردیف</p>
-      <p>نام سازمان</p>
-      <p>شماره ملی</p>
-      <p>شماره موبایل </p>
-      <p>شماره ثبت</p>
-      <p>عملیات</p>
+    <div className="grid md:grid-cols-6 grid-cols-12 justify-between text-center">
+      <p className="col-span-1">ردیف</p>
+      <p className="col-span-1">نام سازمان</p>
+      <p className="col-span-3">شماره ملی</p>
+      <p className="col-span-3">شماره موبایل </p>
+      <p className="col-span-3">شماره ثبت</p>
+      <p className="col-span-1">عملیات</p>
     </div>
   );
 }

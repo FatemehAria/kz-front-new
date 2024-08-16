@@ -56,13 +56,13 @@ function LegalUsers({
           (item, index) => (
             <div
               key={item.id}
-              className="grid grid-cols-6 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
+              className="grid md:grid-cols-6 grid-cols-12 text-center py-1 bg-[#EAEFF6] rounded-[4px] cursor-pointer"
             >
-              <p className="font-faNum">{index + 1}</p>
-              <p>{item.org_name ? item.org_name : "-"}</p>
-              <p>{item.ncode}</p>
-              <p>{item.mobile}</p>
-              <p>
+              <p className="font-faNum col-span-1">{index + 1}</p>
+              <p className="col-span-1">{item.org_name ? item.org_name : "-"}</p>
+              <p className="col-span-3">{item.ncode}</p>
+              <p className="col-span-3">{item.mobile}</p>
+              <p className="col-span-3">
                 {item.org_registration_Number
                   ? item.org_registration_Number
                   : "-"}
@@ -71,10 +71,9 @@ function LegalUsers({
                 onClick={() =>
                   deleteUser(item.id, token, setAllUsers, AllUsersData)
                 }
-                className="flex justify-center"
+                className="flex justify-center col-span-1"
               >
                 <RxCross1 />
-                {/* <Image src={vieweye} alt="مشاهده" width={20} height={20} /> */}
               </span>
             </div>
           )

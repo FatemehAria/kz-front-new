@@ -41,7 +41,7 @@ function PersonalInfoHeader({
         }}
         className="hidden md:inline-block"
       ></div>
-      <div className="text-center absolute -top-5 left-1/2 text-[20px] -translate-x-1/2 bg-transparent flex flex-row gap-5">
+      <div className="text-center absolute -top-5 left-1/2 text-[20px] -translate-x-1/2 bg-transparent flex flex-row gap-5 md:text-base text-lg">
         <button
           className={`rounded-[4px] py-[3%] px-[8%] ${
             step === "Genuine" || step === "haghighi"
