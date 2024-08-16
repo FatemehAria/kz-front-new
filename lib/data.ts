@@ -736,7 +736,10 @@ export const userSidebarOptions = [
     text: "مدیریت سفارش ها",
     imgSrc: Images.OrderSubmissionIcon,
     address: "/panel/user/order-management",
-    path: ["/panel/user/order-management","/panel/user/order-management/order-payment"],
+    path: [
+      "/panel/user/order-management",
+      "/panel/user/order-management/order-payment",
+    ],
   },
   // {
   //   text: "وضعیت مالی",
@@ -754,7 +757,7 @@ export const userSidebarOptions = [
 export const mainAdminSidebarOptions = [
   {
     text: "مدیریت کاربران",
-    imgSrc: "/Panel/dashboard.svg",
+    imgSrc: Images.DashboardIcon,
     address: "/panel/admin/view-users",
     path: [
       "/panel/admin/view-users",
@@ -772,7 +775,7 @@ export const mainAdminSidebarOptions = [
   },
   {
     text: "مدیریت سازمان ها",
-    imgSrc: "/Panel/orgmanagement.svg", //عکس ادیت شه
+    imgSrc: Images.OrgManagementIcon, //عکس ادیت شه
     address: "/panel/admin/org_management",
     path: [
       "/panel/admin/org_management",
@@ -787,13 +790,16 @@ export const mainAdminSidebarOptions = [
   },
   {
     text: "مشاوره ها",
-    imgSrc: "/Panel/consultation.svg", //عکس ادیت شه
+    imgSrc: Images.ConsultationIcon, //عکس ادیت شه
     address: "/panel/admin/consultations",
-    path: ["/panel/admin/consultations","/panel/admin/consultations/consult-detail"],
+    path: [
+      "/panel/admin/consultations",
+      "/panel/admin/consultations/consult-detail",
+    ],
   },
   {
     text: "مدیریت پروژه ها",
-    imgSrc: "/Panel/projectsmanagement.svg",
+    imgSrc: Images.ProjectManagementIcon,
     address: "/panel/admin/project-management",
     path: [
       "/panel/admin/project-management",
@@ -803,7 +809,7 @@ export const mainAdminSidebarOptions = [
   },
   {
     text: "مدیریت پلن ها",
-    imgSrc: "/Panel/searchprojectssidebar.svg", //icon
+    imgSrc: Images.SearchProjectSidebarIcon, //icon
     address: "/panel/admin/plan-management",
     path: [
       "/panel/admin/plan-management",
@@ -813,18 +819,9 @@ export const mainAdminSidebarOptions = [
       "/panel/admin/plan-management/site-types/create-site-type",
     ],
   },
-  // {
-  //   text: "جستجو پروژه",
-  //   imgSrc: "/Panel/searchprojectssidebar.svg",
-  //   address: "/panel/admin/search-project",
-  //   path: [
-  //     "/panel/admin/search-project",
-  //     "/panel/admin/search-project/project-detail",
-  //   ],
-  // },
   {
     text: "پشتیبانی",
-    imgSrc: "/Panel/support.svg",
+    imgSrc: Images.SupportIcon,
     address: "/panel/admin/support",
     path: [
       "/panel/admin/support",
@@ -834,9 +831,12 @@ export const mainAdminSidebarOptions = [
   },
   {
     text: "خبرنامه",
-    imgSrc: "/Panel/newsletter.svg",
+    imgSrc: Images.NewsletterIcon,
     address: "/panel/admin/newsletter",
-    path: ["/panel/admin/newsletter","/panel/admin/newsletter/create-newsletter"],
+    path: [
+      "/panel/admin/newsletter",
+      "/panel/admin/newsletter/create-newsletter",
+    ],
   },
 ];
 export const UserDashboardInfo = [

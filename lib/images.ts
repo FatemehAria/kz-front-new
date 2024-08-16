@@ -49,15 +49,22 @@ import hoveredMail from "../public/Reason/mailhover.svg";
 import book from "../public/Reason/book.svg";
 import hoveredBook from "../public/Reason/bookhover.svg";
 import DashboardIcon from "../public/Panel/dashboard.svg";
+import OrgManagementIcon from "../public/Panel/orgmanagement.svg";
+import ConsultationIcon from "../public/Panel/consultation.svg";
 import PersoanlInfoIcon from "../public/Panel/personalinfo.svg";
 import ProjectManagementIcon from "../public/Panel/projectsmanagement.svg";
+import SearchProjectSidebarIcon from "../public/Panel/searchprojectssidebar.svg";
 import SupportIcon from "../public/Panel/support.svg";
+import NewsletterIcon from "../public/Panel/newsletter.svg";
 import OrderSubmissionIcon from "../public/Panel/orders.svg";
 import FinancialStatusIcon from "../public/Panel/financialstatus.svg";
 import SettingsIcon from "../public/Panel/settings.svg";
 
-
 export const Images = {
+  NewsletterIcon,
+  SearchProjectSidebarIcon,
+  ConsultationIcon,
+  OrgManagementIcon,
   SettingsIcon,
   FinancialStatusIcon,
   OrderSubmissionIcon,
