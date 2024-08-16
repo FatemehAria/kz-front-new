@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import FinanceInput from "../../finance/components/finance-input";
 import { handleBudegtChange, sendAmount } from "@/utils/utils";
+import { useRouter } from "next/navigation";
 
 function FirstPayment({
   firstOrderPayment,
@@ -14,14 +15,24 @@ function FirstPayment({
   };
   token: string;
 }) {
-    
+  const [url, setUrl] = useState("");
+  const router = useRouter();
   const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await sendAmount(token, firstOrderPayment.amount, firstOrderPayment.id);
+    await sendAmount(
+      token,
+      100000,
+      firstOrderPayment.id,
+      setUrl
+    );
+    router.replace(url);
   };
 
   return (
-    <form onSubmit={(e) => handleSubmission(e)} className="grid grid-cols-1 gap-5">
+    <form
+      onSubmit={(e) => handleSubmission(e)}
+      className="grid grid-cols-1 gap-5"
+    >
       <div>
         <p className="font-semibold my-4 border-b-2 border-[#4866CE] text-[18px] max-w-[15rem]">
           اطلاعات قسط اول:

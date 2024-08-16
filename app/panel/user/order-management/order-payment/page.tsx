@@ -15,6 +15,7 @@ function OrderPayment() {
   const params = useSearchParams();
   const orderId = params.get("id");
   const [File, setFile] = useState<any>(null);
+
   const [fileSelected, setFileSelected] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
   const [isPaid, setIsPaid] = useState(false);
@@ -37,16 +38,22 @@ function OrderPayment() {
     getOrderDetail(token, Number(orderId), setOrderDetail, seOrderDetailStatus);
   }, []);
 
+  // console.log(orderDetail);
   const firstOrderPayment = orderDetail.payments?.[0];
   const secondOrderPayment = orderDetail.payments?.[1];
   const thirdOrderPayment = orderDetail.payments?.[2];
   const totalPaid =
     Number(firstOrderPayment?.amount) + Number(secondOrderPayment?.amount);
 
-  const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    await sendAmount(token, firstOrderPayment.amount, firstOrderPayment.id);
-  };
+  // const handleSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   await sendAmount(
+  //     token,
+  //     firstOrderPayment.amount,
+  //     firstOrderPayment.id,
+  //     setUrl
+  //   );
+  // };
 
   return (
     <div className="bg-white shadow mx-auto rounded-2xl py-[3%] px-[3%] grid grid-cols-1 gap-5">

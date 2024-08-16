@@ -30,6 +30,7 @@ function PlanDetail() {
   const { token } = useSelector((state: any) => state.userData);
   const params = useSearchParams();
   const planId = params.get("id");
+  const [planAttrs, setPlanAttrs] = useState<PlanAttrType[]>([]);
 
   const [planDetail, setPlanDetail] = useState<PlanDetailType>({
     title: "",
@@ -65,8 +66,6 @@ function PlanDetail() {
     getPlanDetail(planId, setPlanDetail);
   }, []);
 
-
-
   return (
     <div className="flex flex-col gap-5">
       {/* attr info form */}
@@ -82,23 +81,12 @@ function PlanDetail() {
         >
           + افزودن ویژگی
         </button>
-        {/* <Link
-          href={`/panel/admin/plan-management/plan-detail/manage-values?plan_id=${planId}`}
-          className="text-white bg-[#4866CF] p-2 rounded-[5px] w-[140px]"
-          onClick={() =>
-            setAddAttrAndValue((last) => ({
-              ...last,
-              addAttr: { ...last.addAttr, add: !last.addAttr.add },
-            }))
-          }
-        >
-          مدیریت ویژگی ها
-        </Link> */}
       </div>
       {addAtrrAndValue.addAttr.add && (
         <AttrAdditionForm
           setAddAttrAndValue={setAddAttrAndValue}
           addAtrrAndValue={addAtrrAndValue}
+          setPlanAttrs={setPlanAttrs}
         />
       )}
       {/* plan info */}
@@ -121,6 +109,8 @@ function PlanDetail() {
         setEditAttrAndValue={setEditAttrAndValue}
         addAtrrAndValue={addAtrrAndValue}
         setAddAttrAndValue={setAddAttrAndValue}
+        setPlanAttrs={setPlanAttrs}
+        planAttrs={planAttrs}
       />
       {/* value */}
       {addAtrrAndValue.addValue.add && (

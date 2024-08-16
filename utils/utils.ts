@@ -1608,7 +1608,7 @@ export const getPlanDetail = async (
 ) => {
   try {
     const { data } = await app.get(`/plan/show/${planId ? planId : ""}`);
-    console.log("plan detail",data);
+    console.log("plan detail", data);
     setPlanDetail(data.data);
   } catch (error) {
     console.log(error);
@@ -1636,7 +1636,8 @@ export const createNewPlanAttr = async (
   planId: number,
   token: string,
   title: string,
-  description: string
+  description: string,
+  setPlanAttrs: React.Dispatch<React.SetStateAction<PlanAttrType[]>>
 ) => {
   try {
     const { data } = await app.post(
@@ -1665,6 +1666,7 @@ export const createNewPlanAttr = async (
       rtl: true,
     });
     console.log(data);
+    getPlanAttrs(token, setPlanAttrs);
   } catch (error) {
     toast.error("خطا در ایجاد ویژگی", {
       position: "top-right",
@@ -3800,8 +3802,10 @@ export const handlePaymentFileUpload = async (
 export const sendAmount = async (
   token: string,
   amount: number,
-  paymentId: number
+  paymentId: number,
+  setUrl: React.Dispatch<React.SetStateAction<string>>
 ) => {
+  console.log(paymentId);
   try {
     const { data } = await app.post(
       `/pay/post`,
@@ -3815,7 +3819,8 @@ export const sendAmount = async (
         },
       }
     );
-    console.log("paid", data);
+    console.log("paid", data.data.url);
+    setUrl(data.data.url);
   } catch (error: any) {
     console.log(error.response.data.message);
   }

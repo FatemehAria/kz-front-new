@@ -3,10 +3,11 @@ import { createNewPlanAttr, createNewPlanValue } from "@/utils/utils";
 import { useSearchParams } from "next/navigation";
 import React, { useContext, useState } from "react";
 import { useSelector } from "react-redux";
-import { PlanContext } from "../context/ValueContext";
 import { AttrIdContext } from "../context/AttrIdContext";
+import { PlanAttrType } from "../plan-detail/page";
 
 type AttrAdditionFormProps = {
+  setPlanAttrs: React.Dispatch<React.SetStateAction<PlanAttrType[]>>;
   setAddAttrAndValue: React.Dispatch<
     React.SetStateAction<{
       addAttr: {
@@ -38,6 +39,7 @@ type AttrAdditionFormProps = {
 function AttrAdditionForm({
   setAddAttrAndValue,
   addAtrrAndValue,
+  setPlanAttrs,
 }: AttrAdditionFormProps) {
   const { token } = useSelector((state: any) => state.userData);
   const params = useSearchParams();
@@ -49,12 +51,13 @@ function AttrAdditionForm({
       Number(planId),
       token,
       addAtrrAndValue.addAttr.attrTitle,
-      addAtrrAndValue.addAttr.attrDesc
+      addAtrrAndValue.addAttr.attrDesc,
+      setPlanAttrs
     );
     setAddAttrAndValue((last) => ({
       ...last,
       addAttr: { ...last.addAttr, attrDesc: "", attrTitle: "", add: false },
-      addValue: { ...last.addValue, valueTitle: "" },
+      addValue: { ...last.addValue, valueTitle: "", valueDesc: "" },
     }));
   };
 
