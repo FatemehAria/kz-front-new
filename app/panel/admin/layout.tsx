@@ -26,9 +26,9 @@ import { UserContext } from "./context/user-context/UserContext";
 import { BrandType } from "./org_management/brands/page";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
-  const { token, userProfile, status, numberOfAnnouncements, role, userId } =
-    useSelector((store: any) => store.userData);
+  const { token, userId } = useSelector((store: any) => store.userData);
   const dispatch = useDispatch();
+  const [role, setRole] = useState("");
   const [userNotifications, setUserNotifications] = useState([]);
   const { setAllPlans, setSiteTypes } = useContext(OrderSubmissionContext);
   const { setRoles, setDataLoading } = useContext(RoleContext);
@@ -45,16 +45,20 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
+      const localRole = JSON.parse(
+        window.localStorage.getItem("role") as string
+      );
+      setRole(localRole);
+    }
+  }, []);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
       Promise.all([
-        // getUserNotification(token, Number(userId), setUserNotifications),
-        // getAllSiteTypes(token, setSiteTypes),
-        // getAllDepartments(token, setDepartments),
         getAllUsers(token, setAllUsersData, setUsersStatus),
         getUserNotification(token, Number(userId), setUserNotifications),
         getAllPositions(token, setPositions),
         getAllPermissions(token, setPermissions, setPermissionStatus),
         getAllRole(token, setRoles, setDataLoading),
-        // getAllDepartments(token, setDepartments),
         getAllBrands(setBrands),
       ]);
     }
@@ -70,6 +74,6 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
     setAllUsersData,
     setPermissionStatus,
   ]);
-  return <div dir="rtl">{children}</div>;
+  return <div dir="rtl">{role === "Admin" && children}</div>;
 };
 export default AdminLayout;

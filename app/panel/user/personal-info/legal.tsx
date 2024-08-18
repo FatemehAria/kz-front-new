@@ -19,8 +19,8 @@ function Legal({
   path,
 }: LegalProps) {
   return (
-    <div className="flex flex-col gap-5">
-      <div className="grid grid-cols-2 gap-[5%]">
+    <div className="flex flex-col gap-5 py-8 lg:py-0">
+      <div className="grid lg:grid-cols-2 grid-cols-1 gap-[5%]">
         <div className="flex flex-col justify-between gap-3">
           <PanelFields
             label="نام سازمان:"
@@ -35,12 +35,12 @@ function Legal({
           />
           <PanelFields
             label="شناسه ملی:"
-            value={shenase_melli}
+            value={shenase_melli[0] ? shenase_melli[0] : "-"}
             name="National_ID"
             disable={true}
           />
         </div>
-        <div className="flex flex-col justify-between">
+        <div className="flex lg:flex-col lg:gap-0 gap-5 flex-col-reverse justify-between">
           <div className="self-center">
             <Image
               src={path ? `http://localhost:8000/storage/${path}` : malegender}
