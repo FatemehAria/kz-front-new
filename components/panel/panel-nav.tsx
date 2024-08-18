@@ -35,16 +35,14 @@ const PanelNav = ({
       changeNotificationStatus(token, notif_id);
     }
   };
-  const handleShowNotifDropdown = () => {
-    setShowAnnouncementDropdown(true);
-  };
+
   return (
     <div
       className="flex flex-col items-end relative justify-center"
       dir="rtl"
       onMouseLeave={() => setShowAnnouncementDropdown(false)}
     >
-      <div className="flex justify-end items-center font-YekanBakh font-bold w-full p-3 px-9 border-b-2 border-r-[0.3px] overflow-hidden rounded-lt-lg ">
+      <div className="flex justify-center lg:justify-end items-center font-YekanBakh font-bold w-full p-3 px-9 border-b-2 border-r-[0.3px] overflow-hidden rounded-lt-lg ">
         <div className="flex flex-row gap-3 items-center py-1">
           <div>
             <div className="rounded-full bg-[#EAEFF6] flex justify-center items-center p-2 relative">

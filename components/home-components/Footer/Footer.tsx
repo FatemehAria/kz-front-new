@@ -4,15 +4,14 @@ import PhoneIcon from "@/public/footer/phone.svg";
 import MailIcon from "@/public/footer/mail.svg";
 import Image from "next/image";
 import Link from "next/link";
-import Logo from "@/app/authorization/components/logo";
 import SocialMedia from "@/home-components/Footer/SocialMedia";
 import Copyright from "@/home-components/Footer/Copyright";
 import SenfiLogo from "@/public/footer/senfi.svg";
 import EnamaadLogo from "@/public/footer/enamaad.svg";
 import styles from "./footer.module.css";
 import FooterNewsLetter from "./FooterNewsLetter";
+
 function Footer() {
-  // bg:#ECF3F9,#FCFBFC,#EAEFF6,#4866CF
   return (
     <div className="text-[#000000] bg-slate-100 pt-7">
       <div
@@ -20,7 +19,6 @@ function Footer() {
         dir="rtl"
       >
         <div className="hidden md:flex col-span-2">
-          {/* <Logo /> */}
           <FooterNewsLetter />
         </div>
         <Contact />
@@ -46,7 +44,7 @@ const Contact = () => {
 
       <div className="flex flex-row items-center gap-1">
         <Image src={PhoneIcon} alt="phone" width={16} />
-        <p className="font-faNum text-[16px]">91691650</p>
+        <p className="font-faNum text-[16px]">021-91691650</p>
       </div>
 
       <div className="flex flex-row items-center gap-1">

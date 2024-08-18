@@ -221,7 +221,7 @@ function TicketDetail() {
           <IoArrowBack />
         </div>
       </div>
-      <div className="bg-white shadow mx-auto rounded-2xl py-[3%] px-[3%] w-full relative grid grid-cols-1 gap-8">
+      <div className="bg-white shadow mx-auto rounded-2xl py-[3%] px-[3%] w-full relative grid grid-cols-1 gap-8 lg:mt-0 mt-10">
         {ticketDetailStatus.loading ? (
           <SkeletonTheme>
             <Skeleton count={1} className="p-2" baseColor="#EAEFF6" />
@@ -229,7 +229,7 @@ function TicketDetail() {
         ) : ticketDetailStatus.error ? (
           <NotFound text={`${ticketDetailStatus.error}`} />
         ) : (
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid lg:grid-cols-2 grid-cols-1 gap-5">
             <TicketInfoField
               label="عنوان تیکت:"
               text={ticketDetail.Title}

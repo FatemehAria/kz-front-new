@@ -24,7 +24,7 @@ const ProjectDetailNav = [
 function ProjectDetail() {
   const router = useRouter();
   const { token, localUserId } = useSelector((state: any) => state.userData);
-  const [projectDetail, setProjectDetail] = useState([]);
+  const [projectDetail, setProjectDetail] = useState<any>([]);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getIdFromLocal());
@@ -39,6 +39,17 @@ function ProjectDetail() {
   }, []);
   // console.log(projectDetail);
   const projectCurrentState = projectDetail.status?.title;
+  const returnStatus = (item: string) => {
+    if (projectCurrentState) {
+      if (item === projectCurrentState) {
+        return item;
+      } else {
+        return "...";
+      }
+    } else {
+      return "وضعیتی یافت نشد.";
+    }
+  };
   // console.log(projectCurrentState);
   return (
     <div className="relative">
@@ -50,18 +61,34 @@ function ProjectDetail() {
           <IoArrowBack />
         </div>
       </div>
-      <ul className="grid grid-cols-7 justify-between bg-[#4866CE] text-white text-center rounded-t-2xl overflow-hidden">
-        {ProjectDetailNav.map((item, index) => (
-          <li
-            key={index}
-            className={`${
-              item === projectCurrentState ? "bg-[#EAEFF6] text-[#4866CE]" : ""
-            }  p-5  border border-[#4866CE]`}
-          >
-            {item}
-          </li>
-        ))}
-      </ul>
+      <div className="mt-10 lg:mt-0">
+        {projectCurrentState ? (
+          ProjectDetailNav.includes(projectCurrentState) ? (
+            <ul className="grid grid-cols-7 justify-between bg-[#4866CE] text-white text-center rounded-t-2xl overflow-hidden">
+              {ProjectDetailNav.map((item, index) => (
+                <li
+                  key={index}
+                  className={`${
+                    item === projectCurrentState
+                      ? "bg-[#EAEFF6] text-[#4866CE]"
+                      : ""
+                  }  p-5  border border-[#4866CE]`}
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="bg-[#4866CE] text-white text-center rounded-t-2xl overflow-hidden">
+              ...
+            </p>
+          )
+        ) : (
+          <p className="bg-[#4866CE] text-white text-center rounded-t-2xl overflow-hidden">
+            وضعیتی یافت نشد.
+          </p>
+        )}
+      </div>
     </div>
   );
 }

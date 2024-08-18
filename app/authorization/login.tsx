@@ -83,7 +83,7 @@ const Login = ({
 
   useEffect(() => {
     if (result && loginApproach === 1 && loginwithPass && !token) {
-      console.log("first");
+      // console.log("first");
       dispatch<any>(
         fetchUserInLoginWithPassword({
           mobile: values.PhoneNumber,
@@ -92,8 +92,11 @@ const Login = ({
       );
       setAnswer("");
     }
-    if (status === "failed" && loginApproach === 1 && loginwithPass) {
-      console.log("second");
+  }, [loginApproach, loginwithPass, token, dispatch, result, answer, status]);
+
+  useEffect(() => {
+    if (status === "failed" && loginApproach === 1 && loginwithPass && result) {
+      // console.log("second");
       dispatch<any>(
         fetchUserInLoginWithPassword({
           mobile: values.PhoneNumber,
@@ -101,7 +104,7 @@ const Login = ({
         })
       );
     }
-  }, [loginApproach, loginwithPass, token, dispatch, result, answer]);
+  }, [status]);
 
   return (
     <React.Fragment>

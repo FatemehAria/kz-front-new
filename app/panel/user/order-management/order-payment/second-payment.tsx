@@ -63,7 +63,7 @@ function SecondPayment({
               setToBlue={true}
             />
             {/* فایل آپلود */}
-            <div className="flex flex-row gap-5">
+            <div className="flex lg:flex-row flex-col gap-5">
               <p className="my-2 font-medium">
                 لطفا فایل چک قسط دوم را آپلود کنید:
               </p>

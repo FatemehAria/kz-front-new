@@ -14,9 +14,9 @@ type GenuineProps = {
 };
 function Genuine({ userProfile }: GenuineProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <div className="grid grid-cols-2 gap-[5%]">
-        <div className="flex flex-col justify-between">
+    <div className="flex flex-col gap-2 py-8 lg:py-0">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-[5%]">
+        <div className="flex flex-col justify-between lg:gap-0 gap-3">
           <PanelFields
             label="نام و نام خانوادگی:"
             value={userProfile.name + " " + userProfile.surname}

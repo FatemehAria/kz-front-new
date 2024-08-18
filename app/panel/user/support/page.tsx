@@ -49,11 +49,11 @@ const Support = () => {
       </Link>
       <div className="bg-white shadow mx-auto rounded-2xl py-[3%] px-[3%] w-full">
         <div className="flex flex-col gap-5">
-          <div className="grid grid-cols-5 text-center">
-            <p>شماره</p>
-            <p>عنوان</p>
-            <p>وضعیت</p>
-            <p>تاریخ به روزرسانی</p>
+          <div className="grid lg:grid-cols-5 grid-cols-8 text-center">
+            <p className="col-span-1">شماره</p>
+            <p className="col-span-2 lg:col-span-1">عنوان</p>
+            <p className="col-span-2 lg:col-span-1">وضعیت</p>
+            <p className="col-span-2 lg:col-span-1">تاریخ به روزرسانی</p>
             <p>عملیات</p>
           </div>
           {supportStatus.loading ? (
@@ -66,12 +66,12 @@ const Support = () => {
             allTickets.map((item: any, index) => (
               <div
                 key={item.id}
-                className="grid grid-cols-5 text-center py-1 bg-[#EAEFF6] rounded-[4px]"
+                className="grid lg:grid-cols-5 grid-cols-8 text-center py-1 bg-[#EAEFF6] rounded-[4px]"
               >
-                <p className="font-faNum">{index + 1}</p>
-                <p className="font-faNum">{item.title}</p>
+                <p className="font-faNum col-span-1">{index + 1}</p>
+                <p className="font-faNum col-span-2 lg:col-span-1">{item.title}</p>
                 {/* item.priority_id */}
-                <div>
+                <div className="col-span-2 lg:col-span-1">
                   {item.status_id === 2 ? (
                     <p>
                       بسته{" "}
@@ -86,7 +86,7 @@ const Support = () => {
                     </p>
                   )}
                 </div>
-                <p className="font-faNum">
+                <p className="font-faNum col-span-2 lg:col-span-1">
                   {moment(item.updated_at, "YYYY-MM-DDTHH:mm:ss.SSSZ").format(
                     "jYYYY/jM/jD"
                   )}

@@ -11,8 +11,7 @@ function TicketFields({ label, width, value, type , onChange }: TicketFieldsProp
     <div className="flex flex-col gap-2">
       <label htmlFor="" className="whitespace-nowrap">{label}</label>
       <input
-        className="bg-[#EAEFF6] rounded-[4px] p-2"
-        style={{ width }}
+        className={`bg-[#EAEFF6] rounded-[4px] p-2 lg:${width} w-full`}
         value={value}
         onChange={onChange}
         type={type ? type : "text"}

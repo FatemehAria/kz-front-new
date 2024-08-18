@@ -20,7 +20,7 @@ type GenuineProps = {
   userId: string;
   token: string;
 };
-function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
+function Genuine({ userId, token }: GenuineProps) {
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const handleFileChange = (file: File) => {
     setSelectedFile(file);
@@ -147,8 +147,8 @@ function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
   });
 
   return (
-    <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
-      <div className="grid grid-cols-2 gap-[5%]">
+    <form className="flex flex-col lg:gap-2 items-center lg:items-end gap-12" onSubmit={handleSubmit}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-[5%]">
         <div className="flex flex-col justify-between gap-3">
           <PanelFields
             label="نام:"
@@ -177,7 +177,7 @@ function Genuine({ PhoneNumber, userId, token }: GenuineProps) {
           />
         </div>
       </div>
-      <div className="flex justify-end">
+      <div className="flex justify-end mt-5">
         <button
           className="bg-[#4866CF] text-white px-3 py-1 rounded-lg"
           type="submit"

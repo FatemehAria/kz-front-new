@@ -61,7 +61,7 @@ function ThirdPayment({
               )} ریال`}
               setToBlue={true}
             />
-            <div className="flex flex-row gap-5">
+            <div className="flex lg:flex-row flex-col gap-5">
               {/* فایل آپلود */}
               <p className="my-2 font-medium">
                 لطفا فایل چک قسط سوم را آپلود کنید:

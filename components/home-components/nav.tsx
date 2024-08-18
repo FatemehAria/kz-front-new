@@ -5,12 +5,10 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchUserProfile,
-  getTokenFromLocal,
   setLocalStorageToken,
 } from "@/redux/features/user/userSlice";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import NavMobile from "./nav-mobile";
-import { useSession } from "next-auth/react";
 
 const Nav = () => {
   // const { data, status } = useSession();
@@ -35,7 +33,9 @@ const Nav = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const locTok = JSON.parse(window.sessionStorage.getItem("token") as string);
+      const locTok = JSON.parse(
+        window.sessionStorage.getItem("token") as string
+      );
       setnavlocaltoken(locTok);
     }
   }, [dispatch]);
@@ -46,7 +46,6 @@ const Nav = () => {
       dispatch<any>(fetchUserProfile());
     }
   }, [dispatch, navlocaltoken]);
-
 
   const routing = () => {
     if (localToken === null) {
@@ -60,7 +59,6 @@ const Nav = () => {
     }
   };
   const route = routing();
-  // console.dir("localToken", localToken);
 
   return (
     <div
@@ -113,6 +111,53 @@ const Nav = () => {
             <li className="bg-[#C9D6E9] text-[#4866CF] p-2 rounded-[4px]">
               <button>دانلود کاتالوگ</button>
             </li>
+            {/* services */}
+            <li
+              className="flex flex-col"
+              onMouseEnter={() => (
+                setShowTwo(true),
+                setShowOne(false),
+                setShowThree(false),
+                setShowFour(false)
+              )}
+            >
+              <div className="flex gap-2 cursor-pointer">
+                {/* <span>
+                  <Image
+                    src="/navarrow.svg"
+                    alt="arrow"
+                    width={22}
+                    height={22}
+                  />
+                </span> */}
+                <Link
+                  href={"/services"}
+                  // onMouseEnter={() => setShowTwo(true)}
+                  className="font-semibold hover:text-[#4866CF]"
+                >
+                  خدمات ما
+                </Link>
+              </div>
+
+              {/* {showTwo && (
+                <React.Fragment>
+                  <ul
+                    className="list-none absolute rounded-2xl border-b-8 bg-white border-b-[#4866CF] w-[120px] px-2 text-right lg:top-[65px] flex flex-col gap-5 z-10"
+                    onMouseEnter={() => setShowTwo(true)}
+                  >
+                    <Link href="/in-hand">
+                      <li className="text-sm pt-1 font-semibold">طراحی سایت</li>
+                    </Link>
+                    <Link href="/in-hand">
+                      <li className="text-sm  font-semibold">طراحی گرافیک</li>
+                    </Link>
+                    <Link href="/in-hand">
+                      <li className="text-sm pb-2 font-semibold">کد نویسی</li>
+                    </Link>
+                  </ul>
+                </React.Fragment>
+              )} */}
+            </li>
             {/* weblog */}
             <li
               className="flex flex-col justify-center items-end"
@@ -123,13 +168,13 @@ const Nav = () => {
                 setShowThree(false)
               )}
             >
-              <div className="flex gap-2 cursor-pointer">
+              <div className="flex gap-2 cursor-default hover:text-[#4866CF]">
                 <span>
                   <Image
                     src="/navarrow.svg"
                     alt="arrow"
-                    width={22}
-                    height={22}
+                    width={18}
+                    height={18}
                   />
                 </span>
                 <span className={`font-semibold`}>وبلاگ</span>
@@ -169,13 +214,13 @@ const Nav = () => {
                 setShowFour(false)
               )}
             >
-              <div className="flex gap-2 cursor-pointer ml-4">
+              <div className="flex gap-2 cursor-default ml-4 hover:text-[#4866CF]">
                 <span>
                   <Image
                     src="/navarrow.svg"
                     alt="arrow"
-                    width={22}
-                    height={22}
+                    width={18}
+                    height={18}
                   />
                 </span>
                 <span className="font-semibold">درباره ما</span>
@@ -189,69 +234,8 @@ const Nav = () => {
                     <Link href="/certificates">
                       <li className="text-sm pt-2 font-semibold">مجوزها</li>
                     </Link>
-                    <Link href="/in-hand">
-                      <li className="text-sm font-semibold">تاریخچه</li>
-                    </Link>
-                    <Link href="/in-hand">
-                      <li className="text-sm font-semibold">مأموریت</li>
-                    </Link>
-                    <Link href="/in-hand">
-                      <li className="text-sm  font-semibold">تقدیرنامه</li>
-                    </Link>
                     <Link href="/contact-us">
                       <li className="text-sm font-semibold">تماس با ما</li>
-                    </Link>
-                  </ul>
-                </React.Fragment>
-              )}
-            </li>
-            {/* services */}
-            <li
-              className="flex flex-col"
-              onMouseEnter={() => (
-                setShowTwo(true),
-                setShowOne(false),
-                setShowThree(false),
-                setShowFour(false)
-              )}
-            >
-              <div className="flex gap-2 cursor-pointer">
-                <span>
-                  <Image
-                    src="/navarrow.svg"
-                    alt="arrow"
-                    width={22}
-                    height={22}
-                  />
-                </span>
-                <span
-                  onMouseEnter={() => setShowTwo(true)}
-                  className="font-semibold"
-                >
-                  خدمات ما
-                </span>
-              </div>
-
-              {showTwo && (
-                <React.Fragment>
-                  <ul
-                    className="list-none absolute rounded-2xl border-b-8 bg-white border-b-[#4866CF] w-[120px] px-2 text-right lg:top-[65px] flex flex-col gap-5 z-10"
-                    onMouseEnter={() => setShowTwo(true)}
-                  >
-                    <Link href="/in-hand">
-                      <li className="text-sm pt-1 font-semibold">طراحی سایت</li>
-                    </Link>
-                    {/* <Link href="/moshavere">
-                      <li className="text-sm  font-semibold">طراحی گرافیک</li>
-                    </Link>
-                    <Link href="/pay/get_redirect/?trans_id=1234567&id_get=12345678">
-                      <li className="text-sm  font-semibold">خدمات وب</li>
-                    </Link> */}
-                    <Link href="/in-hand">
-                      <li className="text-sm  font-semibold">طراحی گرافیک</li>
-                    </Link>
-                    <Link href="/in-hand">
-                      <li className="text-sm pb-2 font-semibold">کد نویسی</li>
                     </Link>
                   </ul>
                 </React.Fragment>

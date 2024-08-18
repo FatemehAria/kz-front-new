@@ -69,7 +69,7 @@ function Chat({
   console.log("combined", combinedMessages);
   return (
     <div className="grid grid-cols-1">
-      <div className="grid grid-cols-1">
+      <div className="grid grid-cols-1 mt-10">
         <div
           className={`${
             styles.chatBubble
@@ -147,7 +147,7 @@ function Chat({
       </div> */}
       <form
         onSubmit={(e) => handleSubmission(e)}
-        className="bg-[#4866CE] rounded-[4px] flex"
+        className="bg-[#4866CE] rounded-[4px] flex flex-row"
       >
         <textarea
           cols={30}
@@ -161,7 +161,7 @@ function Chat({
         <span className="font-faNum flex flex-col self-end p-4 text-[#EAEFF6A1]">
           0/150
         </span>
-        <div className="grid grid-cols-1 justify-center items-center w-[15%] px-3">
+        <div className="grid grid-cols-1 justify-center items-center lg:w-[15%] px-3">
           <button
             className="p-2 rounded-[4px] text-[#4866CE] bg-[#EAEFF6]"
             type="submit"

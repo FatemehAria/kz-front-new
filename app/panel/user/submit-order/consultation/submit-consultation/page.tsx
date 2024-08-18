@@ -58,7 +58,7 @@ function SubmitConsultation() {
       </div>
       <form
         onSubmit={(e) => handleSubmission(e)}
-        className="bg-white shadow mx-auto rounded-2xl py-[3%] px-[3%] w-full grid grid-cols-1 gap-3"
+        className="bg-white shadow mx-auto rounded-2xl py-[3%] px-[3%] w-full grid grid-cols-1 gap-3 mt-10 lg:mt-0"
       >
         <div className="grid grid-cols-1 gap-8 max-w-[27rem]">
           <TicketFields
@@ -104,7 +104,7 @@ function SubmitConsultation() {
               id=""
               cols={30}
               rows={10}
-              className="p-2 bg-[#EAEFF6] w-[30%] rounded-[4px]"
+              className="p-2 bg-[#EAEFF6] lg:w-[30%] w-full rounded-[4px]"
               value={ticket.description}
               onChange={(e) =>
                 setTicket((last) => ({ ...last, description: e.target.value }))

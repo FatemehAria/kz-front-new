@@ -11,14 +11,14 @@ function TicketInfoField({
   ticketDetailStatus,
 }: TicketInfoFieldProps) {
   return (
-    <div className="flex flex-row gap-3 items-center">
+    <div className="flex lg:flex-row flex-col gap-3 lg:items-center">
       <p className="w-[25%] whitespace-nowrap">{label}</p>
       {ticketDetailStatus ? (
         <SkeletonTheme>
           <Skeleton count={1} baseColor="#EAEFF6" />
         </SkeletonTheme>
       ) : (
-        <p className="bg-[#EAEFF6] flex items-center rounded-[4px] w-[75%] p-2 font-faNum">
+        <p className="bg-[#EAEFF6] flex items-center rounded-[4px] lg:w-[75%] w-full p-2 font-faNum">
           {text}
         </p>
       )}

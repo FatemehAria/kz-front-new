@@ -11,7 +11,7 @@ function Consultation() {
       className="py-[3%] w-[100%] shadow mx-auto bg-white rounded-2xl px-[3%] grid grid-cols-1 gap-8"
       dir="ltr"
     >
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 lg:gap-0 lg:grid-cols-2">
         <div>
           <Image src={ConsultImage} alt="consultation" />
         </div>
@@ -28,16 +28,16 @@ function Consultation() {
       </div>
 
       <div
-        className="text-[#4866CE] flex flex-row justify-between items-center gap-5"
+        className="text-[#4866CE] flex flex-col lg:flex-row justify-between items-center gap-5"
         dir="rtl"
       >
-        <div className="border-[2px] border-[#4866CE] bg-[#F9F9F9] p-3 rounded-[12px] flex flex-row items-center justify-between w-[50%]">
+        <div className="border-[2px] border-[#4866CE] bg-[#F9F9F9] p-3 rounded-[12px] flex flex-row items-center justify-between lg:w-[50%] w-full">
           <p>ارتباط از طریق شماره تماس 91691650</p>
           <Image src={PhoneIcon} alt="phone-icon" width={30} />
         </div>
         <Link
           href="/panel/user/submit-order/consultation/submit-consultation"
-          className="border-[2px] border-[#4866CE] bg-[#F9F9F9] p-3 rounded-[12px] flex flex-row items-center justify-between w-[50%] h-full"
+          className="border-[2px] border-[#4866CE] bg-[#F9F9F9] p-3 rounded-[12px] flex flex-row items-center justify-between lg:w-[50%] w-full h-full"
         >
           <p>ثبت مشاوره از طریق تیکت</p>
           <Image src={TicketIcon} alt="phone-icon" width={30} />

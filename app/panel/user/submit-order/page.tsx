@@ -149,7 +149,6 @@ function SubmitOrder() {
   };
 
   return (
-    // w-[90%]
     <div className="relative">
       <div className="flex justify-end text-xl cursor-pointer absolute -top-12 left-0">
         <Link
@@ -161,7 +160,7 @@ function SubmitOrder() {
       </div>
       <form
         onSubmit={(e) => handleSubmission(e)}
-        className="py-[3%] w-[100%] shadow mx-auto bg-white rounded-2xl px-[3%] grid grid-cols-1 gap-5 relative"
+        className="py-[3%] w-[100%] shadow mx-auto bg-white rounded-2xl px-[3%] grid grid-cols-1 gap-5 relative mt-10 lg:mt-0"
       >
         {/* سایت مشابه مودال */}
         {showSimilarModal && (
@@ -207,7 +206,7 @@ function SubmitOrder() {
             setShowModal={setShowPluginModal}
           />
         )}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           <div className="relative pt-3">
             <PanelFields
               label="عنوان پروژه:"
@@ -235,7 +234,7 @@ function SubmitOrder() {
             <p className="absolute top-0 right-[5.5rem] text-[#4866CF]">*</p>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           <div className="relative pt-3">
             <SubmitOrderDropdown
               dropDownTitle="نوع پروژه:"
@@ -304,7 +303,7 @@ function SubmitOrder() {
           data={colorsData}
           setData={setColorsData}
         />
-        <div className="flex flex-row items-center justify-between">
+        <div className="flex lg:flex-row flex-col gap-5 lg:items-center lg:justify-between">
           <PanelFields
             label="کد تخفیف:"
             onChange={(e) =>

@@ -131,15 +131,6 @@ const NavMobile = ({
               <Link href="/certificates">
                 <li className="text-sm font-semibold">مجوزها</li>
               </Link>
-              <Link href="/in-hand">
-                <li className="text-sm font-semibold">تاریخچه</li>
-              </Link>
-              <Link href="/in-hand">
-                <li className="text-sm font-semibold">مأموریت</li>
-              </Link>
-              <Link href="/in-hand">
-                <li className="text-sm font-semibold">تقدیرنامه</li>
-              </Link>
               <Link href="/contact-us">
                 <li className="text-sm font-semibold">تماس با ما</li>
               </Link>
@@ -173,46 +164,9 @@ const NavMobile = ({
           </span>
         </li>
         <li className={style.list}>
-          {/*  w-[120px] too ul bod */}
-          {showThree && (
-            <ul className="list-none absolute top-28 left-0 w-full rounded-2xl border-b-8 bg-white border-b-[#4866CF] p-3 text-right flex flex-col gap-5 z-10">
-              <Link href="/in-hand">
-                <li className="text-sm font-semibold">طراحی سایت</li>
-              </Link>
-              <Link href="/in-hand">
-                <li className="text-sm font-semibold">طراحی گرافیک</li>
-              </Link>
-              <Link href="/in-hand">
-                <li className="text-sm font-semibold">کد نویسی</li>
-              </Link>
-            </ul>
-          )}
-          <span>
-            <Image
-              src="/arrow.png"
-              width={22}
-              height={22}
-              alt="arrow"
-              className={`${showThree ? "rotate-90" : "rotate-180"}`}
-              onClick={() => (
-                setShowThree(!showThree),
-                setShowTwo(false),
-                setShowOne(false),
-                setShowFour(false)
-              )}
-            />
-          </span>
-          <span
-            className="text-lg font-bold"
-            onClick={() => (
-              setShowThree(!showThree),
-              setShowTwo(false),
-              setShowOne(false),
-              setShowFour(false)
-            )}
-          >
+          <Link href="/services" className="text-lg font-bold">
             خدمات ما
-          </span>
+          </Link>
         </li>
       </ul>
     </div>

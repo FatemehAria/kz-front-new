@@ -79,17 +79,17 @@ function AddNewTicket() {
       </div>
       <form
         onSubmit={(e) => handleSubmission(e)}
-        className="bg-white shadow mx-auto rounded-2xl py-[3%] px-[3%] w-full grid grid-cols-1 gap-3"
+        className="bg-white shadow mx-auto rounded-2xl py-[3%] px-[3%] w-full grid grid-cols-1 gap-3 lg:mt-0 mt-10"
       >
         <TicketFields
           label="عنوان تیکت:"
-          width="30%"
+          width="w-[30%]"
           value={ticket.title}
           onChange={(e) =>
             setTicket((last) => ({ ...last, title: e.target.value }))
           }
         />
-        <div className="w-[30%]">
+        <div className="lg:w-[30%] w-full">
           <SubmitOrderDropdown
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setTicket((last) => ({ ...last, dept_id: e.target.value }))
@@ -99,7 +99,7 @@ function AddNewTicket() {
             dropdownItems={departmentInfo}
           />
         </div>
-        <div className="w-[30%]">
+        <div className="lg:w-[30%] w-full">
           <SubmitOrderDropdown
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setTicket((last) => ({ ...last, priority_id: e.target.value }))
@@ -126,7 +126,7 @@ function AddNewTicket() {
               id=""
               cols={30}
               rows={10}
-              className="p-2 bg-[#EAEFF6] w-[30%] rounded-[4px]"
+              className="p-2 bg-[#EAEFF6] lg:w-[30%] rounded-[4px] w-full"
               value={ticket.description}
               onChange={(e) =>
                 setTicket((last) => ({ ...last, description: e.target.value }))

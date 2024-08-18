@@ -20,7 +20,7 @@ function SettingsFileupload({
   };
   return (
     <div>
-      <div className="flex flex-row gap-[8%]">
+      <div className="flex lg:flex-row lg:gap-[8%] flex-col gap-5">
         <div className="flex flex-col justify-between">
           <div className="flex flex-row items-center gap-[5%] whitespace-nowrap">
             <label>{label}</label>
@@ -46,7 +46,7 @@ function SettingsFileupload({
             انتخابی باید 200px * 200px باشد.
           </p>
         </div>
-        <div>
+        <div className="flex justify-center">
           <Image
             src={
               selectedFile && selectedFile.type.startsWith("image/")
@@ -56,6 +56,7 @@ function SettingsFileupload({
             alt="عکس انتخاب شده"
             width={600}
             height={200}
+            
           />
         </div>
       </div>

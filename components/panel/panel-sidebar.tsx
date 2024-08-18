@@ -36,7 +36,7 @@ const PanelSidebar = ({ sideOptions, status }: PanelSidebarProps) => {
             >
               <Image src={item.imgSrc} alt={item.text} width={30} height={30} />
               <p
-                className={`text-[24px] font-extrabold w-full ${
+                className={`text-[23px] font-extrabold w-full ${
                   item?.address === pathname || item.path.includes(pathname)
                     ? "text-[#4866CF] border-l-4 border-l-[#4866CF]"
                     : " text-[#68707A]"
