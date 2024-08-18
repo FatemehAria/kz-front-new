@@ -42,7 +42,7 @@ function PlanCard({ data }: PlanCardProps) {
                   <span>تومان</span>
                 </p>
               </div>
-              <Link href={`/${data.route}`}>
+              <Link href={`${data.route}`}>
                 <button className="text-white bg-[#4866CF] flex justify-center w-full rounded-lg py-[1%]">
                   توضیحات بیشتر
                 </button>

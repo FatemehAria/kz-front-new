@@ -1,7 +1,7 @@
-import base from "../../../public/Plans/base-logo.svg";
-import advanced from "../../../public/Plans/advanced-logo.svg";
-import special from "../../../public/Plans/special-logo.svg";
-import elite from "../../../public/Plans/ellite-logo.svg";
+import base from "@/public/Plans/base-logo.svg";
+import advanced from "@/public/Plans/advanced-logo.svg";
+import special from "@/public/Plans/special-logo.svg";
+import elite from "@/public/Plans/ellite-logo.svg";
 import Image from "next/image";
 import React, { useState } from "react";
 

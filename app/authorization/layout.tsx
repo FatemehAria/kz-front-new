@@ -4,7 +4,7 @@ import InfoContextWrapper from "./context/InfoContextWrapper";
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center h-screen bg-white">
       <div className="sm:max-w-lg w-full">
         <InfoContextWrapper>
           <AuthContextWrapper>

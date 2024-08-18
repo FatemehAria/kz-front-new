@@ -3821,6 +3821,9 @@ export const sendAmount = async (
     );
     console.log("paid", data.data.url);
     setUrl(data.data.url);
+    if(data.url){
+      window.location.href = data.data.url;
+    }
   } catch (error: any) {
     console.log(error.response.data.message);
   }

@@ -60,9 +60,9 @@ function LegalUsers({
             >
               <p className="font-faNum col-span-1">{index + 1}</p>
               <p className="col-span-1">{item.org_name ? item.org_name : "-"}</p>
-              <p className="col-span-3">{item.ncode}</p>
-              <p className="col-span-3">{item.mobile}</p>
-              <p className="col-span-3">
+              <p className="col-span-3 md:col-span-1">{item.ncode}</p>
+              <p className="col-span-3 md:col-span-1">{item.mobile}</p>
+              <p className="col-span-3 md:col-span-1">
                 {item.org_registration_Number
                   ? item.org_registration_Number
                   : "-"}

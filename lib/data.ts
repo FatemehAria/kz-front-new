@@ -50,7 +50,7 @@ export const PlanData = [
     ],
     price: "10",
     imgSrc: Images.news,
-    route: "corporate",
+    route: "/designs/corporate",
   },
   {
     id: 2,
@@ -64,7 +64,7 @@ export const PlanData = [
     ],
     price: "10",
     imgSrc: Images.news,
-    route: "ecommerce",
+    route: "/designs/ecommerce",
   },
   {
     id: 3,
@@ -78,7 +78,7 @@ export const PlanData = [
     ],
     price: "10",
     imgSrc: Images.news,
-    route: "tourism",
+    route: "/designs/tourism",
   },
   {
     id: 4,
@@ -92,7 +92,7 @@ export const PlanData = [
     ],
     price: "10",
     imgSrc: Images.news,
-    route: "medical",
+    route: "/designs/medical",
   },
 ];
 export const ReasonData = [

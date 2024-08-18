@@ -32,10 +32,9 @@ function WebService() {
     idGet: string | null,
     factorId: string | null
   ) => {
-    // return 123
     try {
       const { data } = await app.get(
-        `/pay/get`,
+        `/pay/get?trans_id=${Number(transId)}&id_get=${Number(idGet)}&factorId=${Number(factorId)}`,
         {
           headers: {
             Authorization: `Bearer ${localToken}`,
@@ -58,9 +57,9 @@ function WebService() {
     setIdGet(id_get);
     const factor_id = params.get("factorId");
     setFactorId(factor_id);
-    if (localToken) {
+    // if (localToken) {
       getPayRedirect(transId, idGet, factorId);
-    }
+    // }
   }, []);
   return (
     <div>

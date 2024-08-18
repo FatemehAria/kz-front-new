@@ -124,7 +124,7 @@ const PanelLayout = ({ children }: { children: React.ReactNode }) => {
           <PermissionContextWrapper>
             <AttrIdContextWrapper>
               <div
-                className="font-YekanBakh flex w-full flex-row relative min-h-screen"
+                className="font-YekanBakh flex w-full flex-row relative min-h-screen bg-white"
                 style={{ boxShadow: "0px 0px 90px 2px rgba(0, 0, 0, 0.25)" }}
                 dir="rtl"
               >

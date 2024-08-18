@@ -25,7 +25,7 @@ function FirstPayment({
       firstOrderPayment.id,
       setUrl
     );
-    router.replace(url);
+    // router.replace(url);
   };
 
   return (
