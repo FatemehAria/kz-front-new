@@ -46,12 +46,12 @@ const Contact = () => {
 
       <div className="flex flex-row items-center gap-1">
         <Image src={PhoneIcon} alt="phone" width={16} />
-        <p className="font-faNum text-[16px]">021-88329768</p>
+        <p className="font-faNum text-[16px]">91691650</p>
       </div>
 
       <div className="flex flex-row items-center gap-1">
         <Image src={MailIcon} alt="mail" width={16} />
-        <p className="text-[16px]">info@gmail.com</p>
+        <p className="text-[16px]">info@keykavoos.co</p>
       </div>
     </div>
   );
