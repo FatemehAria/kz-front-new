@@ -36,12 +36,12 @@ function Consultations() {
   return (
     <div>
       <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center grid grid-cols-1 gap-5">
-        <div className="grid grid-cols-5">
-          <div>ردیف</div>
-          <div>تاریخ</div>
-          <div>موضوع</div>
-          <div>توضیحات</div>
-          <div>عملیات</div>
+        <div className="grid lg:grid-cols-5 grid-cols-12 items-center">
+          <div className="col-span-1">ردیف</div>
+          <div className="col-span-2 lg:col-span-1">تاریخ</div>
+          <div className="col-span-3 lg:col-span-1">موضوع</div>
+          <div className="col-span-3 lg:col-span-1">توضیحات</div>
+          <div className="col-span-3 lg:col-span-1">عملیات</div>
         </div>
         {consultStatus.loading ? (
           <SkeletonTheme>
@@ -57,11 +57,11 @@ function Consultations() {
                   consultIsDeleted && item.deleted_at
                     ? "bg-red-300"
                     : "bg-[#EAEFF6]"
-                } grid grid-cols-5 gap-x-5 text-center py-1 rounded-[4px] cursor-pointer`}
+                } grid lg:grid-cols-5 grid-cols-12 gap-x-5 text-center py-1 rounded-[4px] cursor-pointer items-center`}
                 key={index}
               >
-                <p>{index + 1}</p>
-                <p>
+                <p className="col-span-1">{index + 1}</p>
+                <p className="col-span-2 lg:col-span-1">
                   {item.created_at
                     ? moment(
                         item.created_at,
@@ -69,9 +69,9 @@ function Consultations() {
                       ).format("jYYYY/jM/jD")
                     : "-"}
                 </p>
-                <p>{item.title}</p>
-                <p>{item.description}</p>
-                <div className="flex flex-row items-center justify-center gap-3">
+                <p className="col-span-3 lg:col-span-1">{item.title}</p>
+                <p className="col-span-3 lg:col-span-1">{item.description}</p>
+                <div className="flex flex-row items-center justify-center gap- col-span-3 lg:col-span-1">
                   <Link
                     href={`/panel/admin/consultations/consult-detail?id=${item.id}`}
                     className="flex justify-center"

@@ -5,13 +5,12 @@ import {
   restorePosition,
 } from "@/utils/utils";
 import Link from "next/link";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import vieweye from "@/public/ViewUsers/vieweye.svg";
 import Image from "next/image";
 import { RxCross1 } from "react-icons/rx";
 import { MdOutlineSettingsBackupRestore } from "react-icons/md";
-import { PositionContext } from "../../context/position-context/PositionContext";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import NotFound from "../../components/NotFound";
 import NewInfoOnEachPageBtn from "@/app/panel/user/components/NewInfoOnEachPageBtn";
@@ -32,7 +31,6 @@ function PositionManagement() {
     loading: false,
     error: "",
   });
-  // const { positions, setPositions } = useContext(PositionContext);
   const { token } = useSelector((state: any) => state.userData);
   const [positionIsDeleted, setPositionIsDeleted] = useState(false);
 
@@ -65,11 +63,11 @@ function PositionManagement() {
         />
       </div>
       <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center space-y-3">
-        <div className="grid grid-cols-4">
-          <div>ردیف</div>
-          <div>نام موقعیت به فارسی</div>
-          <div>نام موقعیت به انگلیسی</div>
-          <div>عملیات</div>
+        <div className="grid lg:grid-cols-4 grid-cols-9">
+          <div className="col-span-1">ردیف</div>
+          <div className="col-span-3 lg:col-span-1">نام موقعیت به فارسی</div>
+          <div className="col-span-3 lg:col-span-1">نام موقعیت به انگلیسی</div>
+          <div className="col-span-2 lg:col-span-1">عملیات</div>
         </div>
 
         {positionsStatus.loading ? (
@@ -82,56 +80,33 @@ function PositionManagement() {
           positions.map((item: any, index) => (
             <div
               className={`${
-                positionIsDeleted && item.position.deleted_at
+                item.position.deleted_at
                   ? "bg-red-300"
                   : "bg-[#EAEFF6]"
-              } grid grid-cols-4 gap-x-5 text-center py-1 rounded-[4px] cursor-pointer`}
+              } grid lg:grid-cols-4 grid-cols-9 gap-x-5 text-center py-1 rounded-[4px] cursor-pointer`}
               key={index}
             >
-              <p>{index + 1}</p>
-              <input
-                value={
-                  editField.showEditField
-                    ? editField.title_en
-                    : item.position.title_en
-                }
-                onChange={(e) =>
-                  setEditField((last) => ({
-                    ...last,
-                    title_en: e.target.value,
-                  }))
-                }
-                className={`${
-                  editField.showEditField
-                    ? "bg-white"
-                    : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
-                } outline-none`}
-              />
-              <input
-                value={
-                  editField.showEditField
-                    ? editField.title_fa
-                    : item.position.title_fa
-                }
-                onChange={(e) =>
-                  setEditField((last) => ({
-                    ...last,
-                    title_fa: e.target.value,
-                  }))
-                }
-                className={`${
-                  editField.showEditField
-                    ? "bg-white"
-                    : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
-                } outline-none`}
-              />
-              <div className="flex flex-row items-center justify-center gap-3">
-                <Link
-                  href={`/panel/admin/view-users/role-management/position-detail?id=${item.position.id}`}
+              <p className="col-span-1">{index + 1}</p>
+              <p
+                className="bg-[#EAEFF6] caret-transparent cursor-default text-center
+                outline-none col-span-3 lg:col-span-1"
+              >
+                {item.position.title_en}
+              </p>
+              <p
+                className="bg-[#EAEFF6] caret-transparent cursor-default text-center
+                outline-none col-span-3 lg:col-span-1"
+              >
+                {item.position.title_fa}
+              </p>
+
+              <div className="flex flex-row items-center justify-center gap-3 col-span-2 lg:col-span-1">
+                {/* <Link
+                  href={`/panel/admin/view-users/position-management/position-detail?id=${item.position.id}`}
                   className="flex justify-center"
                 >
                   <Image src={vieweye} alt="مشاهده" width={20} height={20} />
-                </Link>
+                </Link> */}
                 <span
                   onClick={() =>
                     deletePosition(

@@ -17,10 +17,11 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setMainLoading(false);
-    }, 1500);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
+  
   if (mainLoading) {
     return <Loading />;
   } else {

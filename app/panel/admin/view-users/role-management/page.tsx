@@ -46,12 +46,6 @@ function RoleManagement() {
     getAllRole(token, setRoles, setRoleLoading);
   }, []);
 
-  const [editField, setEditField] = useState({
-    showEditField: false,
-    name_en: "",
-    name_fa: "",
-  });
-  console.log(roles);
   return (
     <div className="grid grid-cols-1 gap-5">
       <div className="flex">
@@ -61,11 +55,11 @@ function RoleManagement() {
         />
       </div>
       <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center space-y-3">
-        <div className="grid grid-cols-4">
-          <div>ردیف</div>
-          <div>نام نقش به فارسی</div>
-          <div>نام نقش به انگلیسی</div>
-          <div>عملیات</div>
+        <div className="grid lg:grid-cols-4 grid-cols-10">
+          <div className="col-span-1 lg:col-span-1">ردیف</div>
+          <div className="col-span-3 lg:col-span-1">نام نقش به فارسی</div>
+          <div className="col-span-3 lg:col-span-1">نام نقش به انگلیسی</div>
+          <div className="col-span-3 lg:col-span-1">عملیات</div>
         </div>
 
         {roleLoading.loading ? (
@@ -78,24 +72,18 @@ function RoleManagement() {
           roles.map((item: any, index) => (
             <div
               className={`${
-                roleIsDeleted && item.role.deleted_at
-                  ? "bg-red-300"
-                  : "bg-[#EAEFF6]"
-              } grid grid-cols-4 gap-x-5 text-center py-1 rounded-[4px] cursor-pointer`}
+                item.role.deleted_at ? "bg-red-300" : "bg-[#EAEFF6]"
+              } grid lg:grid-cols-4 grid-cols-10 gap-x-5 text-center py-1 rounded-[4px] cursor-pointer items-center`}
               key={index}
             >
-              <p>{index + 1}</p>
-              <input
-                value={item.role.name_en}
-                className="bg-[#EAEFF6] caret-transparent cursor-default text-center"
-                readOnly={true}
-              />
-              <input
-                value={item.role.name_fa}
-                className="bg-[#EAEFF6] caret-transparent cursor-default text-center"
-                readOnly={true}
-              />
-              <div className="flex flex-row items-center justify-center gap-3">
+              <p className="col-span-1">{index + 1}</p>
+              <p className="bg-[#EAEFF6] caret-transparent cursor-default text-center col-span-3 lg:col-span-1">
+                {item.role.name_fa}
+              </p>
+              <p className="bg-[#EAEFF6] caret-transparent cursor-default text-center col-span-3 lg:col-span-1">
+                {item.role.name_en}
+              </p>
+              <div className="flex flex-row items-center justify-center gap-3 col-span-3 lg:col-span-1">
                 <Link
                   href={`/panel/admin/view-users/role-management/role-detail?id=${item.role.id}`}
                   className="flex justify-center"
@@ -104,7 +92,11 @@ function RoleManagement() {
                 </Link>
                 <span
                   onClick={() =>
-                    deleteRole(item.role.id, token, setRoleIsDeleted)
+                    deleteRole(
+                      item.role.id,
+                      token,
+                      setRoleIsDeleted,
+                    )
                   }
                   className="flex justify-center"
                 >
@@ -117,24 +109,6 @@ function RoleManagement() {
                 >
                   <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg" />
                 </span>
-                {/* <span
-                onClick={() =>
-                  setEditField((last) => ({
-                    ...last,
-                    showEditField: !last.showEditField,
-                  }))
-                }
-                className="flex justify-center"
-              >
-                {editField.showEditField ? (
-                  <FaCheck
-                    onClick={() => handleRoleEdit(item.role.id)}
-                    className="text-green-600 text-lg"
-                  />
-                ) : (
-                  <AiOutlineEdit className="text-green-600 text-lg" />
-                )}
-              </span> */}
               </div>
             </div>
           ))

@@ -44,12 +44,12 @@ function OrgManagement() {
         </Link>
       </div>
       <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center space-y-3">
-        <div className="grid grid-cols-5">
-          <div>ردیف</div>
-          <div>نام سازمان</div>
-          <div>شماره تلفن سازمان</div>
-          <div>آدرس سازمان</div>
-          <div>عملیات</div>
+        <div className="grid lg:grid-cols-5 grid-cols-12">
+          <div className="col-span-1">ردیف</div>
+          <div className="col-span-2 lg:col-span-1">نام سازمان</div>
+          <div className="col-span-3 lg:col-span-1">شماره تلفن سازمان</div>
+          <div className="col-span-3 lg:col-span-1">آدرس سازمان</div>
+          <div className="col-span-3 lg:col-span-1">عملیات</div>
         </div>
 
         <div>
@@ -72,14 +72,14 @@ function OrgManagement() {
                   index
                 ) => (
                   <div
-                    className="grid grid-cols-5 bg-[#EAEFF6] caret-transparent cursor-default text-center gap-x-5 py-1 rounded-[4px]"
+                    className="grid lg:grid-cols-5 grid-cols-12 bg-[#EAEFF6] caret-transparent cursor-default text-center gap-x-5 py-1 rounded-[4px]"
                     key={item.id}
                   >
-                    <p>{index + 1}</p>
-                    <p>{item.name}</p>
-                    <p>{item.phone}</p>
-                    <p>{item.address}</p>
-                    <div className="flex flex-row items-center justify-center gap-3">
+                    <p className="col-span-1">{index + 1}</p>
+                    <p className="col-span-2 lg:col-span-1">{item.name}</p>
+                    <p className="col-span-3 lg:col-span-1">{item.phone}</p>
+                    <p className="col-span-3 lg:col-span-1">{item.address}</p>
+                    <div className="flex flex-row items-center justify-center lg:gap-3 col-span-3 gap-1 lg:col-span-1">
                       <Link
                         href={`/panel/admin/org_management/org-detail?id=${item.id}`}
                         className="flex justify-center"

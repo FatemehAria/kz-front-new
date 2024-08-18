@@ -43,24 +43,26 @@ function PermissionManagement() {
 
   return (
     <div className="grid grid-cols-1 gap-5">
-      <div className="flex gap-5">
-        <NewInfoOnEachPageBtn
-          btnText="ایجاد دسترسی"
-          src="/panel/admin/view-users/permission-management/create-permission"
-        />
+      <div className="flex lg:flex-row flex-col gap-5">
+        <div className="w-[150px] lg:w-full">
+          <NewInfoOnEachPageBtn
+            btnText="ایجاد دسترسی"
+            src="/panel/admin/view-users/permission-management/create-permission"
+          />
+        </div>
         <Link
           href={`/panel/admin/view-users/permission-management/change-permission`}
-          className="text-white bg-[#4866CF] p-2 rounded-[5px]"
+          className="text-white bg-[#4866CF] p-2 rounded-[5px] w-[210px] lg:w-full"
         >
           تغییر و مدیریت دسترسی ها
         </Link>
       </div>
       <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center space-y-3">
-        <div className="grid grid-cols-4">
-          <div>ردیف</div>
-          <div>نام دسترسی به فارسی</div>
-          <div>نام دسترسی به انگلیسی</div>
-          <div>عملیات</div>
+        <div className="grid lg:grid-cols-4 grid-cols-10">
+          <div className="col-span-1">ردیف</div>
+          <div className="col-span-3 lg:col-span-1">نام دسترسی به فارسی</div>
+          <div className="col-span-3 lg:col-span-1">نام دسترسی به انگلیسی</div>
+          <div className="col-span-2 lg:col-span-1">عملیات</div>
         </div>
 
         {permissionStatus.loading ? (
@@ -73,24 +75,20 @@ function PermissionManagement() {
           permissions?.map((item: any, index) => (
             <div
               className={`${
-                permissionIsDeleted && item.deleted_at
+                permissionIsDeleted
                   ? "bg-red-300"
                   : "bg-[#EAEFF6]"
-              } grid grid-cols-4 gap-x-5 text-center py-1 rounded-[4px] cursor-pointer`}
+              } grid lg:grid-cols-4 grid-cols-10 gap-x-5 text-center py-1 rounded-[4px] cursor-pointer`}
               key={index}
             >
-              <p>{index + 1}</p>
-              <input
-                value={item.name_en}
-                readOnly={true}
-                className="bg-[#EAEFF6] caret-transparent cursor-default text-center outline-none"
-              />
-              <input
-                value={item.name_fa}
-                readOnly={true}
-                className="bg-[#EAEFF6] caret-transparent cursor-default text-center outline-none"
-              />
-              <div className="flex flex-row items-center justify-center gap-3">
+              <p className="col-span-1">{index + 1}</p>
+              <p className="bg-[#EAEFF6] caret-transparent cursor-default text-center outline-none col-span-3 lg:col-span-1">
+                {item.name_fa}
+              </p>
+              <p className="bg-[#EAEFF6] caret-transparent cursor-default text-center outline-none col-span-3 lg:col-span-1">
+                {item.name_en}
+              </p>
+              <div className="flex flex-row items-center justify-center gap-3 col-span-2 lg:col-span-1">
                 <Link
                   href={`/panel/admin/view-users/permission-management/permission-detail?id=${item.id}`}
                   className="flex justify-center"

@@ -10,7 +10,6 @@ import { AuthContext } from "./context/AuthContext";
 import AdditionalInfoOnRegister from "./additional-info-onregister";
 
 const Auth = () => {
-  const [token, setToken] = useState("");
   const { authSteps, setAuthSteps } = useContext(AuthContext);
   const [loginApproach, setLoginApproach] = useState(0);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -43,15 +42,6 @@ const Auth = () => {
     dispatch(updateStatus());
   }, []);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const localToken = JSON.parse(
-        window.sessionStorage.getItem("token") as string
-      );
-      setToken(localToken);
-    }
-  }, []);
-
-  return <div>{<div dir="rtl">{!token && renderSteps()}</div>}</div>;
+  return <div>{<div dir="rtl">{renderSteps()}</div>}</div>;
 };
 export default Auth;

@@ -83,11 +83,11 @@ function Brands() {
         />
       </div>
       <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center grid grid-cols-1 gap-5">
-        <div className="grid grid-cols-4">
-          <div>ردیف</div>
-          <div>نام برند</div>
-          <div>توضیحات</div>
-          <div>عملیات</div>
+        <div className="grid lg:grid-cols-4 grid-cols-9">
+          <div className="col-span-1">ردیف</div>
+          <div className="col-span-2 lg:col-span-1">نام برند</div>
+          <div className="col-span-3 lg:col-span-1">توضیحات</div>
+          <div className="lg:grid-cols-1 grid-cols-3">عملیات</div>
         </div>
         {brandStatus.loading ? (
           <SkeletonTheme>
@@ -111,50 +111,18 @@ function Brands() {
               ) => (
                 <div
                   className={`${
-                    brandIsDeleted && item.brand.deleted_at
+                    item.brand.deleted_at
                       ? "bg-red-300"
                       : "bg-[#EAEFF6]"
-                  } grid grid-cols-4 gap-x-5 text-center py-1 rounded-[4px] cursor-pointer`}
+                  } grid lg:grid-cols-4 grid-cols-9 gap-x-5 text-center py-1 rounded-[4px] cursor-pointer items-center`}
                   key={index}
                 >
-                  <p>{index + 1}</p>
-                  <input
-                    value={
-                      editField.showEditField
-                        ? editField.editTitle
-                        : item.brand.title
-                    }
-                    onChange={(e) =>
-                      setEditField((last) => ({
-                        ...last,
-                        editTitle: e.target.value,
-                      }))
-                    }
-                    className={`${
-                      editField.showEditField
-                        ? "bg-white"
-                        : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
-                    } outline-none`}
-                  />
-                  <input
-                    value={
-                      editField.showEditField
-                        ? editField.editDesc
-                        : item.brand.description
-                    }
-                    onChange={(e) =>
-                      setEditField((last) => ({
-                        ...last,
-                        editDesc: e.target.value,
-                      }))
-                    }
-                    className={`${
-                      editField.showEditField
-                        ? "bg-white"
-                        : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
-                    } outline-none`}
-                  />
-                  <div className="flex flex-row items-center justify-center gap-3">
+                  <p className="col-span-1">{index + 1}</p>
+                  <p className="bg-[#EAEFF6] caret-transparent cursor-default text-center outline-none col-span-2 lg:col-span-1">{item.brand.title}</p>
+                  <p className="bg-[#EAEFF6] caret-transparent cursor-default text-center outline-none col-span-3 lg:col-span-1">
+                    {item.brand.description ? item.brand.description : "-"}
+                  </p>
+                  <div className="flex flex-row items-center justify-center gap-3 lg:grid-cols-1 grid-cols-3">
                     <Link
                       href={`/panel/admin/org_management/brands/brand-detail?id=${item.brand.id}`}
                       className="flex justify-center"
@@ -181,24 +149,6 @@ function Brands() {
                     >
                       <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg" />
                     </span>
-                    {/* <span
-                  onClick={() =>
-                    setEditField((last) => ({
-                      ...last,
-                      showEditField: !last.showEditField,
-                    }))
-                  }
-                  className="flex justify-center"
-                >
-                  {editField.showEditField ? (
-                    <FaCheck
-                      onClick={() => handleBrandEdit(item.brand.id)}
-                      className="text-green-600 text-lg"
-                    />
-                  ) : (
-                    <AiOutlineEdit className="text-green-600 text-lg" />
-                  )}
-                </span> */}
                   </div>
                 </div>
               )

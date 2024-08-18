@@ -34,8 +34,6 @@ export type DepartmentFinalType = {
   };
 };
 function Departments() {
-  // const { departments } = useContext(DepartmentContext);
-  // const typedDepartments: DepartmentType[] = departments as DepartmentType[];
   const [departments, setDepartments] = useState<
     DepartmentType[] | DepartmentFinalType[]
   >([]);
@@ -73,11 +71,11 @@ function Departments() {
         />
       </div>
       <div className="bg-white shadow mx-auto rounded-2xl w-full p-[3%] text-center grid grid-cols-1 gap-5">
-        <div className="grid grid-cols-4">
-          <div>ردیف</div>
-          <div>نام دپارتمان به انگلیسی</div>
-          <div>نام دپارتمان به فارسی</div>
-          <div>عملیات</div>
+        <div className="grid lg:grid-cols-4 grid-cols-10 items-center">
+          <div className="col-span-1">ردیف</div>
+          <div className="col-span-3 lg:col-span-1">نام دپارتمان به انگلیسی</div>
+          <div className="col-span-3 lg:col-span-1">نام دپارتمان به فارسی</div>
+          <div className="col-span-3 lg:col-span-1">عملیات</div>
         </div>
 
         {departmentLoading.loading ? (
@@ -90,42 +88,20 @@ function Departments() {
           departments.map((item: any, index) => (
             <div
               className={`${
-                departmentIsDeleted && item.department.deleted_at
+                item.department.deleted_at
                   ? "bg-red-300"
                   : "bg-[#EAEFF6]"
-              } grid grid-cols-4 gap-x-5 text-center py-1 rounded-[4px] cursor-pointer`}
+              } grid lg:grid-cols-4 grid-cols-10 gap-x-5 text-center py-1 rounded-[4px] cursor-pointer items-center`}
               key={index}
             >
-              <p>{index + 1}</p>
-              <input
-                value={item.department.name_en}
-                onChange={(e) =>
-                  setEditField((last) => ({
-                    ...last,
-                    name_en: e.target.value,
-                  }))
-                }
-                className={`${
-                  editField.showEditField
-                    ? "bg-white"
-                    : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
-                } outline-none`}
-              />
-              <input
-                value={item.department.name_fa}
-                onChange={(e) =>
-                  setEditField((last) => ({
-                    ...last,
-                    name_fa: e.target.value,
-                  }))
-                }
-                className={`${
-                  editField.showEditField
-                    ? "bg-white"
-                    : "bg-[#EAEFF6] caret-transparent cursor-default text-center"
-                } outline-none`}
-              />
-              <div className="flex flex-row items-center justify-center gap-3">
+              <p className="col-span-1">{index + 1}</p>
+              <p className="bg-[#EAEFF6] caret-transparent cursor-default text-center outline-none col-span-3 lg:col-span-1">
+                {item.department.name_en}
+              </p>
+              <p className="bg-[#EAEFF6] caret-transparent cursor-default text-center outline-none col-span-3 lg:col-span-1">
+                {item.department.name_fa}
+              </p>
+              <div className="flex flex-row items-center justify-center gap-3 col-span-3 lg:col-span-1">
                 <Link
                   href={`/panel/admin/org_management/departments/department-detail?id=${item.department.id}`}
                   className="flex justify-center"
@@ -155,24 +131,6 @@ function Departments() {
                 >
                   <MdOutlineSettingsBackupRestore className="text-yellow-600 text-lg" />
                 </span>
-                {/* <span
-                onClick={() =>
-                  setEditField((last) => ({
-                    ...last,
-                    showEditField: !last.showEditField,
-                  }))
-                }
-                className="flex justify-center"
-              >
-                {editField.showEditField ? (
-                  <FaCheck
-                    onClick={() => handleBrandEdit(item.id)}
-                    className="text-green-600 text-lg"
-                  />
-                ) : (
-                  <AiOutlineEdit className="text-green-600 text-lg" />
-                )}
-              </span> */}
               </div>
             </div>
           ))
